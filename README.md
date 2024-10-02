@@ -48,23 +48,20 @@ XeroLLM is a node-based interface for managing and interacting with various Larg
 2. **Install Dependencies:**
    The script will automatically install Python dependencies like `requests`, `PyYAML`, and `Pygments`. Ensure that you also install `Tkinter`, which is required for the GUI.
 
-   You can manually install dependencies using:
-   ```
-   pip install -r requirements.txt
-   ```
 
 3. **Run the Application:**
    Start the node editor by running the main script, which will open the graphical interface:
    ```
-   python node_editor.py
+   python main.py
    ```
 
 4. **Build Your Workflow:**
    Use the node editor to design and connect different APIs and functions. Save and manage your workflows easily using the provided interface.
 
 ## Future Enhancements
-- Adding support for more API integrations (Google Cloud, Microsoft Azure, etc.).
+- adding a chat history or chronological context window for all output
 - Creating more pre-built node types for common tasks like data transformation, filtering, and aggregation.
+- Add ability to create a library of preset prompts that can be selected in the node properties
 - Enhancing user customization options for node design and interconnectivity.
 
 ## Contributions
