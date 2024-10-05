@@ -1,0 +1,76 @@
+# nodes/search_node.py
+from .base_node import BaseNode
+from node_registry import register_node  # Import the decorator
+
+@register_node('SearchNode')
+class SearchNode(BaseNode):
+    """
+    Search Node: Searches the API response for a specific term and routes the output to 'true' or 'false' based on the result.
+    """
+
+    def define_inputs(self):
+        # Search Node has one input from the previous node
+        return ['input']
+
+    def define_outputs(self):
+        # Search Node has two outputs: 'true_output' for when the term is found, and 'false_output' for when it's not found
+        return ['true_output', 'false_output']
+
+    def define_properties(self):
+        # Start with default properties
+        props = self.get_default_properties()
+
+        # Update default properties specific to SearchNode
+        props.update({
+            'description': {'type': 'text', 'default': 'Searches the response for a specific term'},
+            'Prompt': {'type': 'textarea', 'default': 'Improve the following:'},
+            'api_endpoint': {'type': 'dropdown', 'options': self.get_api_endpoints()},
+            'search_term': {'type': 'text', 'default': ''},  # The term to search for in the response
+            'is_start_node': {'type': 'boolean', 'default': False},
+            'is_end_node': {'type': 'boolean', 'default': False}
+        })
+
+        return props
+
+    def get_api_endpoints(self):
+        # Retrieve API endpoint names from the configuration
+        interfaces = self.config.get('interfaces', {})
+        api_list = list(interfaces.keys())
+        print(f"[SearchNode] Available API endpoints: {api_list}")  # Debug statement
+        return api_list
+
+    def process(self, inputs):
+        # Debugging - log the input received by SearchNode
+        print(f"[SearchNode] Received input: {inputs}")
+
+        # Get properties
+        base_prompt = self.properties.get('Prompt', {}).get('default', '')
+        api_endpoint_name = self.properties.get('api_endpoint', {}).get('default', '')
+        search_term = self.properties.get('search_term', {}).get('default', '').strip()
+
+        # Get user input from inputs
+        user_input = inputs.get('input', '').strip()
+
+        if not user_input:
+            # If there's no user input, return the base prompt as false output
+            return {'false_output': base_prompt}
+
+        # Combine base prompt with user input
+        combined_prompt = f"{base_prompt}\n{user_input}"
+
+        # Log the combined prompt for debugging
+        print(f"[SearchNode] Combined Prompt: {combined_prompt}")
+
+        # Here we delegate the API call to the main.py
+        # We are returning the necessary data for the main controller to handle the API request
+        return {
+            'api_endpoint': api_endpoint_name,
+            'combined_prompt': combined_prompt,
+            'search_term': search_term
+        }
+
+    def requires_api_call(self):
+        """
+        Indicates that SearchNode requires an API call if the api_endpoint is set.
+        """
+        return bool(self.properties.get('api_endpoint', {}).get('default', ''))

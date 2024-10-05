@@ -1,0 +1,255 @@
+graph:
+  connections:
+  - canvas_item: 339
+    from_node: a6b34654-d8f3-4ae3-b383-12aa0b533108
+    from_output: prompt
+    to_input: input
+    to_node: 1b44f28c-d871-41e6-a9be-8aa7cb228321
+  - canvas_item: 340
+    from_node: 1b44f28c-d871-41e6-a9be-8aa7cb228321
+    from_output: prompt
+    to_input: input
+    to_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
+  - canvas_item: 341
+    from_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
+    from_output: output_true
+    to_input: input
+    to_node: 13a96257-66dd-4b64-afea-b15a57d17ed5
+  - canvas_item: 342
+    from_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
+    from_output: output_false
+    to_input: input
+    to_node: f31bdeb9-409a-4a23-8411-7cfb26713597
+  - canvas_item: 343
+    from_node: f31bdeb9-409a-4a23-8411-7cfb26713597
+    from_output: prompt
+    to_input: input
+    to_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
+  nodes:
+    083a6ad8-0b5d-4d59-be0f-aefed6383725:
+      canvas_items:
+        input_input: 6
+        output_output_false: 8
+        output_output_true: 7
+        prop_description: 5
+        rect: 2
+        resize_handle: 9
+        title: 3
+      connections: []
+      height: 80
+      id: 083a6ad8-0b5d-4d59-be0f-aefed6383725
+      inputs:
+      - input
+      outputs:
+      - output_true
+      - output_false
+      properties:
+        Prompt:
+          default: 'rate the following content as if you were an expert in that area.  be
+            critical and give it a rating on a scale of 1 to 10, include some suggestions
+            for improvement.  your expected output is as follows:
+
+            [original content]
+
+            [your rating and review]
+
+            if the rating is 9.3 or above, include the word REVIEWPASS at the very
+            end.  if it is not at least 9.3, do not include the word REVIEWPASS'
+          type: textarea
+        Search Term:
+          default: REVIEWPASS
+          type: text
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: rate and review the content and provide suggested improvements.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: Rate & Review
+          type: text
+      title: Rate & Review
+      type: SearchNode
+      width: 154
+      x: 262
+      y: 210
+    13a96257-66dd-4b64-afea-b15a57d17ed5:
+      canvas_items:
+        input_input: 20
+        prop_description: 19
+        rect: 16
+        resize_handle: 21
+        title: 17
+      connections: []
+      height: 80
+      id: 13a96257-66dd-4b64-afea-b15a57d17ed5
+      inputs:
+      - input
+      outputs: []
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: End of the workflow
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: FinishNode
+          type: text
+      title: Finish Node 1
+      type: FinishNode
+      width: 150
+      x: 481
+      y: 50
+    1b44f28c-d871-41e6-a9be-8aa7cb228321:
+      canvas_items:
+        input_input: 32
+        output_prompt: 33
+        prop_description: 31
+        rect: 28
+        resize_handle: 34
+        title: 29
+      connections: []
+      height: 100
+      id: 1b44f28c-d871-41e6-a9be-8aa7cb228321
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: take the following user request and plan and execute it.  your
+            only expected output is the finished final content.
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: execute the user request with the given plan.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: PlanExecution
+          type: text
+      title: PlanExecution
+      type: ProcessingNode
+      width: 153
+      x: 246
+      y: 51
+    a6b34654-d8f3-4ae3-b383-12aa0b533108:
+      canvas_items:
+        output_prompt: 45
+        prop_description: 44
+        rect: 41
+        resize_handle: 46
+        title: 42
+      connections: []
+      height: 100
+      id: a6b34654-d8f3-4ae3-b383-12aa0b533108
+      inputs: []
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: create a plan for the user request. your expected output is the
+            original user request and your plan.
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: planning phayze
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: Plan It
+          type: text
+      title: Plan It
+      type: StartNode
+      width: 125
+      x: 50
+      y: 50
+    f31bdeb9-409a-4a23-8411-7cfb26713597:
+      canvas_items:
+        input_input: 57
+        output_prompt: 58
+        prop_description: 56
+        rect: 53
+        resize_handle: 59
+        title: 54
+      connections: []
+      height: 102
+      id: f31bdeb9-409a-4a23-8411-7cfb26713597
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: take the following content and review and make the necesssary changes
+            and refactor the content to improve it using the review and suggestions.  your
+            only expected output is the finished content.
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: ProcessingNode
+          type: text
+      title: ProcessingNode
+      type: ProcessingNode
+      width: 187
+      x: 243
+      y: 337
+name: Rinse and Repeat
