@@ -1,0 +1,85 @@
+graph:
+  connections:
+  - canvas_item: 426
+    from_node: b7642dfb-2fb0-4013-ba35-5d8618a0e0dc
+    from_output: prompt
+    to_input: input
+    to_node: 786ceb95-8d87-49b6-a0d6-c81162352f3c
+  nodes:
+    786ceb95-8d87-49b6-a0d6-c81162352f3c:
+      canvas_items:
+        input_input: 13
+        prop_description: 12
+        rect: 9
+        resize_handle: 14
+        title: 10
+      connections: []
+      height: 100
+      id: 786ceb95-8d87-49b6-a0d6-c81162352f3c
+      inputs:
+      - input
+      outputs: []
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: End of the workflow
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: Return Results
+          type: text
+      title: Return Results
+      type: FinishNode
+      width: 156
+      x: 375
+      y: 75
+    b7642dfb-2fb0-4013-ba35-5d8618a0e0dc:
+      canvas_items:
+        output_prompt: 6
+        prop_description: 5
+        rect: 2
+        resize_handle: 7
+        title: 3
+      connections: []
+      height: 100
+      id: b7642dfb-2fb0-4013-ba35-5d8618a0e0dc
+      inputs: []
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: 'Process the following request:'
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Start of the workflow
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: Process User Request
+          type: text
+      title: Process User Request
+      type: StartNode
+      width: 213
+      x: 50
+      y: 50
+name: General Requests
