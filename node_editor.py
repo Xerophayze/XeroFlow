@@ -1,7 +1,14 @@
+# node_editor.py
 import tkinter as tk
 from tkinter import ttk, messagebox
 import uuid
 import math
+import os
+import importlib
+import inspect
+
+from node_registry import NODE_REGISTRY  # Import the registry
+from nodes.base_node import BaseNode  # Absolute import
 
 class NodeEditor:
     def __init__(self, parent, config, api_interfaces, existing_graph=None, existing_name="", save_callback=None, close_callback=None):
@@ -12,7 +19,8 @@ class NodeEditor:
         self.connections = []
         self.selected_node = None
         self.canvas = None
-        self.node_counter = {'Start': 0, 'Processing': 0, 'Finish': 0}
+        self.node_classes = self.load_node_classes()
+        self.node_counter = {cls.__name__: 0 for cls in self.node_classes}
         self.node_drag_data = {'x': 0, 'y': 0}
         self.connection_start = None
         self.temp_line = None
@@ -24,32 +32,31 @@ class NodeEditor:
         self.resizing_node_id = None
         self.resize_start_data = None
 
+        # Modification flag
+        self.is_modified = False
+
         self.create_editor_window()
 
         if existing_graph:
             self.load_graph(existing_graph)
             self.redraw_canvas()
-            
+
     def is_open(self):
         return self.editor_window.winfo_exists()
 
-    def highlight_node(self, node_id):
-        # Remove existing highlights
-        for item in self.canvas.find_withtag('highlight'):
-            self.canvas.itemconfig(item, outline='black', width=1)
-            self.canvas.dtag(item, 'highlight')
+    def load_node_classes(self):
+        """
+        Retrieve node classes from the node registry.
+        Returns a list of node classes.
+        """
+        node_classes = list(NODE_REGISTRY.values())
+        return node_classes
 
-        # Highlight the current node
-        node_items = self.canvas.find_withtag(node_id)
-        # Only consider rectangle items
-        for item in node_items:
-            item_type = self.canvas.type(item)
-            if item_type == 'rectangle':
-                try:
-                    self.canvas.itemconfig(item, outline='green', width=2)
-                    self.canvas.addtag_withtag('highlight', item)
-                except tk.TclError as e:
-                    print(f"Failed to highlight node {node_id}: {e}")
+    def get_node_class_by_type(self, node_type):
+        """
+        Retrieve the node class based on the node type/name.
+        """
+        return NODE_REGISTRY.get(node_type)
 
     def create_editor_window(self):
         self.editor_window = tk.Toplevel(self.parent)
@@ -60,29 +67,32 @@ class NodeEditor:
         # Handle window close event
         self.editor_window.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        # Create toolbar for node types
+        # Create toolbar with dropdown menu for node types
         toolbar = ttk.Frame(self.editor_window)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        start_btn = ttk.Button(toolbar, text="Start Node", command=lambda: self.add_node('Start'))
-        start_btn.pack(side=tk.LEFT, padx=5, pady=5)
+        ttk.Label(toolbar, text="Add Node:").pack(side=tk.LEFT, padx=5, pady=5)
 
-        processing_btn = ttk.Button(toolbar, text="Processing Node", command=lambda: self.add_node('Processing'))
-        processing_btn.pack(side=tk.LEFT, padx=5, pady=5)
+        self.node_var = tk.StringVar()
+        node_names = [cls.__name__.replace('Node', '') for cls in self.node_classes]
+        self.node_dropdown = ttk.Combobox(toolbar, textvariable=self.node_var, values=node_names, state="readonly")
+        self.node_dropdown.pack(side=tk.LEFT, padx=5, pady=5)
+        self.node_dropdown.bind("<<ComboboxSelected>>", self.on_node_dropdown_select)
 
-        finish_btn = ttk.Button(toolbar, text="Finish Node", command=lambda: self.add_node('Finish'))
-        finish_btn.pack(side=tk.LEFT, padx=5, pady=5)
+        add_button = ttk.Button(toolbar, text="Add", command=self.on_add_button)
+        add_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Canvas for node editor
         self.canvas = tk.Canvas(self.editor_window, bg='white')
         self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas.bind("<Button-3>", self.on_canvas_right_click)
 
         # Save and Cancel buttons
         button_frame = ttk.Frame(self.editor_window)
         button_frame.pack(side=tk.BOTTOM, fill=tk.X)
 
-        save_btn = ttk.Button(button_frame, text="Save", command=self.save_node_graph)
-        save_btn.pack(side=tk.RIGHT, padx=5, pady=5)
+        self.save_btn = ttk.Button(button_frame, text="Save", command=self.save_node_graph, state='disabled')
+        self.save_btn.pack(side=tk.RIGHT, padx=5, pady=5)
 
         cancel_btn = ttk.Button(button_frame, text="Cancel", command=self.on_close)
         cancel_btn.pack(side=tk.RIGHT, padx=5, pady=5)
@@ -96,47 +106,71 @@ class NodeEditor:
         name_entry = ttk.Entry(name_frame, textvariable=self.name_var)
         name_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
+    def update_save_button_state(self):
+        if self.is_modified:
+            self.save_btn.config(state='normal')
+        else:
+            self.save_btn.config(state='disabled')
+
     def on_close(self):
-        # Ask for confirmation before closing
-        if messagebox.askokcancel("Quit", "Do you want to discard changes and exit?"):
-            if self.close_callback:
-                self.close_callback(self)
-            self.editor_window.destroy()
+        if self.is_modified:
+            # Ask for confirmation before closing only if there are unsaved changes
+            if not messagebox.askokcancel("Quit", "You have unsaved changes. Do you want to discard them and exit?"):
+                return
+        if self.close_callback:
+            self.close_callback(self)
+        self.editor_window.destroy()
 
     def load_graph(self, graph_data):
         self.nodes = graph_data.get('nodes', {})
-        self.connections = graph_data.get('connections', {})
+        self.connections = graph_data.get('connections', [])
 
         # Update node counters
-        self.node_counter = {'Start': 0, 'Processing': 0, 'Finish': 0}
+        self.node_counter = {cls.__name__: 0 for cls in self.node_classes}
         for node in self.nodes.values():
             node_type = node['type']
             self.node_counter[node_type] += 1
 
+    def on_node_dropdown_select(self, event):
+        pass  # Placeholder for any action on selection
+
+    def on_add_button(self):
+        node_type = self.node_var.get()
+        if node_type:
+            self.add_node(node_type)
+            self.node_var.set('')  # Reset dropdown
+
     def add_node(self, node_type):
+        node_class = self.get_node_class_by_type(node_type + 'Node')
+        if not node_class:
+            messagebox.showerror("Error", f"Node type '{node_type}' not found.")
+            return
+
         node_id = str(uuid.uuid4())
+        node_instance = node_class(node_id, self.config)
+
         node = {
-            'id': node_id,
-            'type': node_type,
-            'title': f"{node_type} Node {self.node_counter[node_type]+1}",
-            'x': 50 + self.node_counter[node_type]*20,
-            'y': 50 + self.node_counter[node_type]*20,
+            'id': node_instance.id,
+            'type': node_class.__name__,
+            'title': f"{node_type} Node {self.node_counter[node_class.__name__]+1}",
+            'x': 50 + self.node_counter[node_class.__name__]*20,
+            'y': 50 + self.node_counter[node_class.__name__]*20,
             'width': 150,
-            'height': 80,
-            'api': None,
-            'prompt': '',
-            'test_criteria': '',
-            'description': '',  # New description field
-            'true_output': None,
-            'false_output': None,
-            'inputs': [],
-            'outputs': []
+            'height': 80,  # Increased height for larger input field and checkboxes
+            'properties': node_instance.properties,
+            'inputs': node_instance.inputs,
+            'outputs': node_instance.outputs,
+            'connections': []
         }
-        self.node_counter[node_type] += 1
+        self.node_counter[node_class.__name__] += 1
 
         # Draw the node on the canvas
         self.nodes[node_id] = node
         self.draw_node(node)
+
+        # Mark as modified
+        self.is_modified = True
+        self.update_save_button_state()
 
     def draw_node(self, node):
         x = node['x']
@@ -145,9 +179,21 @@ class NodeEditor:
         height = node['height']
         node_type = node['type']
 
+        # Calculate the minimum width based on the title length plus padding
+        title_text = node['title']
+        padding = 20  # Padding on each side
+        text_bbox = self.canvas.bbox(self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold')))
+        text_width = text_bbox[2] - text_bbox[0] if text_bbox else 0
+        min_width = text_width + padding * 2
+
+        # Ensure the node width is at least the minimum width
+        if width < min_width:
+            width = min_width
+            node['width'] = min_width
+
         node['canvas_items'] = {}  # Initialize the canvas items dictionary
 
-        # Draw rectangle with an additional 'rect' tag
+        # Draw rectangle
         rect = self.canvas.create_rectangle(x, y, x + width, y + height, fill='lightblue', tags=('node', node['id'], 'rect'))
         node['canvas_items']['rect'] = rect
         self.canvas.tag_bind(rect, "<ButtonPress-1>", self.on_node_press)
@@ -156,47 +202,75 @@ class NodeEditor:
         self.canvas.tag_bind(rect, "<Button-3>", self.on_right_click)
 
         # Draw title
-        title = self.canvas.create_text(x + width / 2, y + 15, text=node['title'], tags=('node', node['id'], 'title'))
+        title = self.canvas.create_text(
+            x + width / 2, y + 15,
+            text=node['title'],
+            tags=('node', node['id'], 'title'),
+            font=('Arial', 12, 'bold')
+        )
         node['canvas_items']['title'] = title
         self.canvas.tag_bind(title, "<ButtonPress-1>", self.on_node_press)
         self.canvas.tag_bind(title, "<B1-Motion>", self.on_node_move)
         self.canvas.tag_bind(title, "<ButtonRelease-1>", self.on_node_release)
         self.canvas.tag_bind(title, "<Button-3>", self.on_right_click)
 
-        # Draw description
-        description = node.get('description', '')
-        if description:
-            desc_text = self.canvas.create_text(x + width / 2, y + 35, text=description, tags=('node', node['id'], 'description'))
-            node['canvas_items']['description'] = desc_text
-            self.canvas.tag_bind(desc_text, "<ButtonPress-1>", self.on_node_press)
-            self.canvas.tag_bind(desc_text, "<B1-Motion>", self.on_node_move)
-            self.canvas.tag_bind(desc_text, "<ButtonRelease-1>", self.on_node_release)
-            self.canvas.tag_bind(desc_text, "<Button-3>", self.on_right_click)
+        # Draw properties (description with character limit)
+        properties_y = y + 40  # Adjust this value to move the description lower than the title
+        description = node['properties'].get('description', {}).get('default', '')  # Get the description
 
-        # Draw connectors
-        if node_type != 'Finish':
-            # Output connectors (True and False)
-            true_output = self.canvas.create_oval(x + width - 10, y + height / 2 - 15, x + width, y + height / 2 - 5, fill='green', tags=('output_true', node['id']))
-            false_output = self.canvas.create_oval(x + width - 10, y + height / 2 + 5, x + width, y + height / 2 + 15, fill='red', tags=('output_false', node['id']))
-            node['canvas_items']['true_output'] = true_output
-            node['canvas_items']['false_output'] = false_output
-            self.canvas.tag_bind(true_output, "<ButtonPress-1>", self.start_connection)
-            self.canvas.tag_bind(false_output, "<ButtonPress-1>", self.start_connection)
-            # Bind right-click to output connectors
-            self.canvas.tag_bind(true_output, "<Button-3>", self.on_connector_right_click)
-            self.canvas.tag_bind(false_output, "<Button-3>", self.on_connector_right_click)
-        if node_type != 'Start':
-            # Input connector
-            input_connector = self.canvas.create_oval(x, y + height / 2 - 5, x + 10, y + height / 2 + 5, fill='black', tags=('input', node['id']))
-            node['canvas_items']['input'] = input_connector
-            # Bind right-click to input connector
-            self.canvas.tag_bind(input_connector, "<Button-3>", self.on_connector_right_click)
+        if description:
+            # Calculate the maximum number of characters that can fit in the node width
+            max_chars = self.calculate_max_chars(width - 20)  # Subtract padding
+            truncated_description = description[:max_chars]  # Truncate the description
+
+            # Draw the truncated description centered
+            prop_item = self.canvas.create_text(
+                x + width / 2, properties_y,  # Center the description
+                text=truncated_description,
+                anchor='center',  # Center the text
+                tags=('node', node['id'], 'prop_description'),
+                font=('Arial', 10)
+            )
+            node['canvas_items']['prop_description'] = prop_item
+
+        # Draw input connectors
+        input_x = x
+        input_y_start = y + 20
+        input_gap = (height - 40) / max(1, len(node['inputs']))
+        for idx, input_name in enumerate(node['inputs']):
+            connector_y = y + 20 + idx * input_gap
+            input_connector = self.canvas.create_oval(
+                input_x, connector_y - 5,
+                input_x + 10, connector_y + 5,
+                fill='black',
+                tags=('input', node['id'], f'input_{input_name}')
+            )
+            node['canvas_items'][f'input_{input_name}'] = input_connector
+            self.canvas.tag_bind(input_connector, "<ButtonPress-1>", self.on_connector_press)
+
+        # Draw output connectors
+        output_x = x + width
+        output_y_start = y + 20
+        output_gap = (height - 40) / max(1, len(node['outputs']))
+        for idx, output_name in enumerate(node['outputs']):
+            connector_y = y + 20 + idx * output_gap
+            output_connector = self.canvas.create_oval(
+                output_x - 10, connector_y - 5,
+                output_x, connector_y + 5,
+                fill='green',
+                tags=('output', node['id'], f'output_{output_name}')
+            )
+            node['canvas_items'][f'output_{output_name}'] = output_connector
+            self.canvas.tag_bind(output_connector, "<ButtonPress-1>", self.start_connection)
 
         # Draw resize handle
         resize_handle_size = 10
         resize_handle = self.canvas.create_rectangle(
             x + width - resize_handle_size, y + height - resize_handle_size,
-            x + width, y + height, fill='gray', tags=('node', node['id'], 'resize_handle'))
+            x + width, y + height,
+            fill='gray',
+            tags=('node', node['id'], 'resize_handle')
+        )
         node['canvas_items']['resize_handle'] = resize_handle
         self.canvas.tag_bind(resize_handle, "<ButtonPress-1>", self.on_resize_press)
         self.canvas.tag_bind(resize_handle, "<B1-Motion>", self.on_resize_move)
@@ -205,11 +279,87 @@ class NodeEditor:
         # Redraw connections to ensure they're on top
         self.redraw_connections()
 
+    def on_resize_move(self, event):
+        if self.resizing_node_id:
+            dx = event.x - self.resize_start_data['x']
+            dy = event.y - self.resize_start_data['y']
+            new_width = self.resize_start_data['width'] + dx
+            new_height = self.resize_start_data['height'] + dy
+
+            # Set minimum size based on the title text length
+            node = self.nodes[self.resizing_node_id]
+            title_text = node['title']
+            padding = 20  # Padding on each side
+            text_bbox = self.canvas.bbox(self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold')))
+            text_width = text_bbox[2] - text_bbox[0] if text_bbox else 0
+            min_width = text_width + padding * 2
+
+            min_height = 100  # Minimum height for the node
+            if new_width < min_width:
+                new_width = min_width
+            if new_height < min_height:
+                new_height = min_height
+
+            # Update node dimensions
+            node['width'] = new_width
+            node['height'] = new_height
+
+            # Update the rectangle
+            rect = node['canvas_items']['rect']
+            x1, y1, x2, y2 = self.canvas.coords(rect)
+            x1 = node['x']
+            y1 = node['y']
+            self.canvas.coords(rect, x1, y1, x1 + new_width, y1 + new_height)
+
+            # Update the resize handle
+            resize_handle = node['canvas_items']['resize_handle']
+            resize_handle_size = 10
+            self.canvas.coords(resize_handle,
+                               x1 + new_width - resize_handle_size,
+                               y1 + new_height - resize_handle_size,
+                               x1 + new_width,
+                               y1 + new_height)
+
+            # Update the title position
+            title = node['canvas_items']['title']
+            self.canvas.coords(title, x1 + new_width / 2, y1 + 15)
+
+            # Update the properties (description) position and text
+            properties_y = y1 + 40
+            description = node['properties'].get('description', {}).get('default', '')  # Get the description
+            if description:
+                max_chars = self.calculate_max_chars(new_width - 20)  # Subtract padding
+                truncated_description = description[:max_chars]  # Truncate the description
+                prop_item = node['canvas_items'].get('prop_description')
+                if prop_item:
+                    self.canvas.itemconfigure(prop_item, text=truncated_description)
+                    self.canvas.coords(prop_item, x1 + new_width / 2, properties_y)
+
+            # Update output connectors
+            output_x = x1 + new_width
+            output_gap = (new_height - 40) / max(1, len(node['outputs']))
+            for idx, output_name in enumerate(node['outputs']):
+                connector_y = y1 + 20 + idx * output_gap
+                output_connector = node['canvas_items'][f'output_{output_name}']
+                self.canvas.coords(output_connector,
+                                   output_x - 10, connector_y - 5,
+                                   output_x, connector_y + 5)
+
+            # Redraw connections
+            self.redraw_connections()
+
+            # Mark as modified
+            self.is_modified = True
+            self.update_save_button_state()
+    
+    def calculate_max_chars(self, width):
+        """Calculate the maximum number of characters that can fit within the specified width."""
+        test_text = "M"  # Use a character that is approximately the average width
+        char_width = self.canvas.bbox(self.canvas.create_text(0, 0, text=test_text, font=('Arial', 10)))[2]
+        max_chars = int((width) / char_width)  # Calculate how many characters fit
+        return max_chars
+
     def on_node_press(self, event):
-        # Ignore if clicking on resize handle
-        tags = self.canvas.gettags('current')
-        if 'resize_handle' in tags:
-            return
         # Record the item and its location
         self.selected_node = self.canvas.find_withtag('current')[0]
         tags = self.canvas.gettags(self.selected_node)
@@ -238,6 +388,10 @@ class NodeEditor:
             node['y'] += dy
             self.redraw_connections()
 
+            # Mark as modified
+            self.is_modified = True
+            self.update_save_button_state()
+
     def on_node_release(self, event):
         self.selected_node = None
 
@@ -256,18 +410,42 @@ class NodeEditor:
 
     def start_connection(self, event):
         tags = self.canvas.gettags('current')
-        output_type = 'true' if 'output_true' in tags else 'false'
-        node_id = tags[tags.index('output_' + output_type) + 1]
-        self.connection_start = (node_id, output_type)
-        self.temp_line_start = (event.x, event.y)
-        self.temp_line = self.canvas.create_line(event.x, event.y, event.x, event.y, fill='gray', dash=(2, 2))
+        if len(tags) < 3:
+            return
+        output_name = tags[2].split('_', 1)[1]  # e.g., output_response -> response
+        node_id = tags[1]
+        self.connection_start = (node_id, output_name)
+        self.temp_line_start = self.get_connector_position(node_id, output_name, 'output')
+        self.temp_line = self.canvas.create_line(
+            self.temp_line_start[0], self.temp_line_start[1],
+            event.x, event.y, fill='gray', dash=(2, 2)
+        )
         self.canvas.bind("<Motion>", self.update_temp_line)
         self.canvas.bind("<ButtonRelease-1>", self.check_connection_end)
 
+    def get_connector_position(self, node_id, connector_name, connector_type):
+        """
+        Get the absolute position of a connector.
+        """
+        node = self.nodes[node_id]
+        key = f'{connector_type}_{connector_name}'
+        item = node['canvas_items'].get(key)
+        if not item:
+            return (0, 0)  # Default position if connector not found
+        coords = self.canvas.coords(item)
+        if len(coords) < 4:
+            return (0, 0)  # Invalid coordinates
+        x = (coords[0] + coords[2]) / 2
+        y = (coords[1] + coords[3]) / 2
+        return (x, y)
+
     def update_temp_line(self, event):
         if self.temp_line:
-            x0, y0 = self.temp_line_start
-            self.canvas.coords(self.temp_line, x0, y0, event.x, event.y)
+            self.canvas.coords(
+                self.temp_line,
+                self.temp_line_start[0], self.temp_line_start[1],
+                event.x, event.y
+            )
 
     def check_connection_end(self, event):
         self.canvas.unbind("<Motion>")
@@ -282,81 +460,91 @@ class NodeEditor:
             tags = self.canvas.gettags(item)
             if 'input' in tags:
                 # Found an input connector
-                node_id = tags[tags.index('input') + 1]
-                self.end_connection(node_id)
+                if len(tags) < 3:
+                    continue
+                input_name = tags[2].split('_', 1)[1]
+                to_node_id = tags[1]
+                self.end_connection(to_node_id, input_name)
                 return
         # If no input connector was found under cursor
         self.connection_start = None
 
-    def end_connection(self, to_node_id):
-        output_node_id, output_type = self.connection_start
+    def end_connection(self, to_node_id, input_name):
+        from_node_id, output_name = self.connection_start
         self.connection_start = None
 
-        if output_node_id == to_node_id:
+        if from_node_id == to_node_id:
             messagebox.showerror("Invalid Connection", "Cannot connect a node to itself.")
             return
 
-        # Prevent multiple connections from the same output to different inputs
-        for conn in self.connections:
-            if conn['from_node'] == output_node_id and conn['from_output'] == output_type:
-                messagebox.showerror("Invalid Connection", "This output is already connected.")
-                return
+        # Removed the restriction on multiple connections to the same input
 
-        self.connections.append({
-            'from_node': output_node_id,
-            'from_output': output_type,
-            'to_node': to_node_id
-        })
-        self.redraw_connections()
+        # Create the connection
+        connection = {
+            'from_node': from_node_id,
+            'from_output': output_name,
+            'to_node': to_node_id,
+            'to_input': input_name,
+            'canvas_item': None  # Will be set when drawing
+        }
+        self.connections.append(connection)
+        self.draw_connection(connection)
+
+        # Mark as modified
+        self.is_modified = True
+        self.update_save_button_state()
 
     def draw_connection(self, conn, min_length=20):
-        from_node = self.nodes[conn['from_node']]
-        to_node = self.nodes[conn['to_node']]
-
-        # Calculate the center positions of the connectors
-        fx = from_node['x'] + from_node['width']
-        if conn['from_output'] == 'true':
-            fy = from_node['y'] + from_node['height'] / 2 - 10
-        else:
-            fy = from_node['y'] + from_node['height'] / 2 + 10
-        tx = to_node['x']
-        ty = to_node['y'] + to_node['height'] / 2
+        from_x, from_y = self.get_connector_position(conn['from_node'], conn['from_output'], 'output')
+        to_x, to_y = self.get_connector_position(conn['to_node'], conn['to_input'], 'input')
 
         # Calculate straight-line distance between connectors
-        distance = math.hypot(tx - fx, ty - fy)
+        distance = math.hypot(to_x - from_x, to_y - from_y)
 
         # Determine if adjustment is needed
         if distance < min_length:
             # Calculate the angle of the connection
-            angle = math.atan2(ty - fy, tx - fx)
+            angle = math.atan2(to_y - from_y, to_x - from_x)
             # Adjust the target position to enforce minimum length
-            tx = fx + min_length * math.cos(angle)
-            ty = fy + min_length * math.sin(angle)
+            to_x = from_x + min_length * math.cos(angle)
+            to_y = from_y + min_length * math.sin(angle)
 
-        # Recalculate the control points based on possibly adjusted tx, ty
-        mx = (fx + tx) / 2
-        my = (fy + ty) / 2
-        offset = 10  # Adjust this value to control the curvature
+        # Control points for a smooth curve
+        mid_x = (from_x + to_x) / 2
+        mid_y = (from_y + to_y) / 2
+        offset = 50  # Adjust for curvature
 
-        # Create a list of points for the Bezier curve
-        points = [fx, fy, mx + offset, fy, mx - offset, ty, tx, ty]
+        # Create a Bezier curve (approximated with a smooth line)
+        points = [
+            from_x, from_y,
+            mid_x, from_y,
+            mid_x, to_y,
+            to_x, to_y
+        ]
 
         # Draw the curved line
-        line = self.canvas.create_line(points, smooth=True, splinesteps=100, arrow=tk.LAST, tags='connection')
-        conn['canvas_item'] = line  # Store the canvas item ID
-        # Bind right-click to the connection line
-        self.canvas.tag_bind(line, "<Button-3>", self.on_connection_right_click)
+        line = self.canvas.create_line(
+            points,
+            smooth=True,
+            splinesteps=100,
+            fill='black',
+            arrow=tk.LAST,
+            tags=('connection',)
+        )
+        conn['canvas_item'] = line
+        self.canvas.tag_bind(line, "<Button-3>", lambda e, c=conn: self.on_connection_right_click(e, c))
 
     def on_right_click(self, event):
         # Show context menu for editing node properties
         item = self.canvas.find_withtag('current')
         if item:
-            tags = self.canvas.gettags(item)
+            tags = self.canvas.gettags(item[0])
             if 'node' in tags:
                 node_id = tags[tags.index('node') + 1]
                 node = self.nodes.get(node_id)
                 if node:
                     self.show_context_menu(event, node)
+                    return "break"  # Prevent further handling
 
     def show_context_menu(self, event, node):
         menu = tk.Menu(self.canvas, tearoff=0)
@@ -371,68 +559,143 @@ class NodeEditor:
         del self.nodes[node['id']]
         self.redraw_canvas()
 
+        # Mark as modified
+        self.is_modified = True
+        self.update_save_button_state()
+
     def edit_node_properties(self, node):
         def save_properties():
-            prompt = prompt_text.get("1.0", tk.END).strip()
-            api = api_var.get()
-            test_criteria = test_criteria_entry.get().strip()
-            description = description_text.get("1.0", tk.END).strip()  # Get description
+            # Collect updated properties from the form
+            for prop_name in node['properties']:
+                prop_details = node['properties'][prop_name]
+                widget = prop_widgets[prop_name]
+                if prop_details['type'] == 'text':
+                    value = widget.get()
+                elif prop_details['type'] == 'dropdown':
+                    value = widget.get()
+                elif prop_details['type'] == 'textarea':
+                    value = widget.get("1.0", tk.END).strip()
+                elif prop_details['type'] == 'boolean':
+                    value = var_states[prop_name].get()
+                else:
+                    value = widget.get()
 
-            if not prompt:
-                messagebox.showwarning("Input Required", "Prompt Text is required.")
-                return
-            if not api:
-                messagebox.showwarning("Input Required", "LLM API Selection is required.")
-                return
+                # Update the property value in the node
+                node['properties'][prop_name]['default'] = value
 
-            # Check if Test Criteria is required
-            false_output_connected = any(conn['from_node'] == node['id'] and conn['from_output'] == 'false' for conn in self.connections)
-            if false_output_connected and not test_criteria:
-                messagebox.showwarning("Input Required", "Test Criteria is required when False output is connected.")
-                return
+                # Update the canvas text if the item exists in canvas_items
+                display_value = value
+                if prop_details['type'] == 'boolean':
+                    display_value = 'Yes' if value else 'No'
 
-            node['prompt'] = prompt
-            node['api'] = api
-            node['test_criteria'] = test_criteria
-            node['description'] = description  # Save description
+                # Update only if the key exists to avoid KeyError
+                canvas_item_key = f'prop_{prop_name}'
+                if canvas_item_key in node['canvas_items']:
+                    self.canvas.itemconfigure(node['canvas_items'][canvas_item_key], text=f"{prop_name}: {display_value}")
+
+            # If the node_name property is updated, change the node's title
+            if 'node_name' in node['properties']:
+                new_node_name = node['properties']['node_name']['default']
+                node['title'] = new_node_name
+                title_item = node['canvas_items'].get('title')
+                if title_item:
+                    self.canvas.itemconfigure(title_item, text=new_node_name)
+
             prop_window.destroy()
-            # Update description text on canvas
-            self.update_node_text(node)
+
+            # Mark as modified
+            self.is_modified = True
+            self.update_save_button_state()
 
         prop_window = tk.Toplevel(self.editor_window)
         prop_window.title(f"Edit Node Properties - {node['title']}")
-        prop_window.geometry("400x500")
+        prop_window.geometry("400x600")
         prop_window.resizable(True, True)
 
-        ttk.Label(prop_window, text="Prompt Text:").pack(pady=5)
-        prompt_text = tk.Text(prop_window, height=5, width=50)
-        prompt_text.pack(pady=5)
-        prompt_text.insert(tk.END, node.get('prompt', ''))
+        prop_widgets = {}
+        var_states = {}
 
-        ttk.Label(prop_window, text="LLM API Selection:").pack(pady=5)
-        api_var = tk.StringVar()
-        api_dropdown = ttk.Combobox(prop_window, textvariable=api_var, values=list(self.api_interfaces.keys()), state="readonly")
-        api_dropdown.pack(pady=5)
-        if node.get('api'):
-            api_dropdown.set(node['api'])
+        # First, display the 'node_name' field if it exists
+        if 'node_name' in node['properties']:
+            prop_details = node['properties']['node_name']
+            ttk.Label(prop_window, text='node_name').pack(pady=5, anchor='w', padx=10)
+            entry = ttk.Entry(prop_window)
+            entry.pack(pady=5, fill=tk.X, padx=10)
+            default_value = prop_details.get('default', '')
+            entry.insert(0, default_value)
+            prop_widgets['node_name'] = entry
 
-        ttk.Label(prop_window, text="Test Criteria:").pack(pady=5)
-        test_criteria_entry = ttk.Entry(prop_window, width=50)
-        test_criteria_entry.pack(pady=5)
-        test_criteria_entry.insert(0, node.get('test_criteria', ''))
+        # Display the rest of the properties, excluding 'node_name'
+        for prop_name, prop_details in node['properties'].items():
+            if prop_name == 'node_name':
+                continue
 
-        ttk.Label(prop_window, text="Description:").pack(pady=5)  # New description label
-        description_text = tk.Text(prop_window, height=3, width=50)
-        description_text.pack(pady=5)
-        description_text.insert(tk.END, node.get('description', ''))
+            ttk.Label(prop_window, text=prop_name).pack(pady=5, anchor='w', padx=10)
+            if prop_details['type'] == 'text':
+                entry = ttk.Entry(prop_window)
+                entry.pack(pady=5, fill=tk.X, padx=10)
+                default_value = prop_details.get('default', '')
+                entry.insert(0, default_value)
+                prop_widgets[prop_name] = entry
+            elif prop_details['type'] == 'dropdown':
+                options = prop_details.get('options', [])
+                combo = ttk.Combobox(prop_window, values=options, state="readonly")
+                combo.pack(pady=5, fill=tk.X, padx=10)
+                default_value = prop_details.get('default', options[0] if options else '')
+                combo.set(default_value)
+                prop_widgets[prop_name] = combo
+            elif prop_details['type'] == 'textarea':
+                text_widget = tk.Text(prop_window, height=10, width=40)
+                text_widget.pack(pady=5, fill=tk.BOTH, expand=True, padx=10)
+                default_value = prop_details.get('default', '')
+                text_widget.insert("1.0", default_value)
+                prop_widgets[prop_name] = text_widget
+            elif prop_details['type'] == 'boolean':
+                var = tk.BooleanVar()
+                var.set(prop_details.get('default', False))
+                check = ttk.Checkbutton(prop_window, variable=var)
+                check.pack(pady=5, anchor='w', padx=10)
+                var_states[prop_name] = var
+                prop_widgets[prop_name] = check
+            else:
+                # Default to text entry for unknown types
+                entry = ttk.Entry(prop_window)
+                entry.pack(pady=5, fill=tk.X, padx=10)
+                default_value = prop_details.get('default', '')
+                entry.insert(0, default_value)
+                prop_widgets[prop_name] = entry
 
         save_btn = ttk.Button(prop_window, text="Save", command=save_properties)
-        save_btn.pack(pady=10)
+        save_btn.pack(pady=20)
+
+    def on_connector_press(self, event):
+        pass  # Placeholder for any connector press actions
+
+    def on_canvas_right_click(self, event):
+        # Check if the click is on a node or not
+        items = self.canvas.find_overlapping(event.x, event.y, event.x, event.y)
+        on_node = False
+        for item in items:
+            tags = self.canvas.gettags(item)
+            if 'node' in tags:
+                on_node = True
+                break
+        if not on_node:
+            # Show context menu with "Add" option and submenu of available nodes
+            menu = tk.Menu(self.canvas, tearoff=0)
+            add_menu = tk.Menu(menu, tearoff=0)
+            node_names = [cls.__name__.replace('Node', '') for cls in self.node_classes]
+            for node_name in node_names:
+                add_menu.add_command(label=node_name, command=lambda n=node_name: self.add_node(n))
+            menu.add_cascade(label="Add", menu=add_menu)
+            menu.post(event.x_root, event.y_root)
 
     def save_node_graph(self):
-        # Validate node graph before saving
-        if not self.validate_node_graph():
-            return
+        # Serialize nodes and connections
+        graph_data = {
+            'nodes': self.nodes,
+            'connections': self.connections
+        }
 
         # Get instruction set name
         name = self.name_var.get().strip()
@@ -441,12 +704,6 @@ class NodeEditor:
             return
         self.instruction_name = name
 
-        # Serialize nodes and connections
-        graph_data = {
-            'nodes': self.nodes,
-            'connections': self.connections
-        }
-
         # Save graph data and name
         self.configured_graph = graph_data
         self.configured_name = self.instruction_name
@@ -454,37 +711,12 @@ class NodeEditor:
         if self.save_callback:
             self.save_callback(self)
 
-        # Do not destroy the editor window; keep it open
-        # self.editor_window.destroy()
+        # Reset modification flag
+        self.is_modified = False
+        self.update_save_button_state()
 
-    def validate_node_graph(self):
-        # Ensure there is exactly one Start Node and one Finish Node
-        start_nodes = [node for node in self.nodes.values() if node['type'] == 'Start']
-        finish_nodes = [node for node in self.nodes.values() if node['type'] == 'Finish']
-        if len(start_nodes) != 1:
-            messagebox.showerror("Validation Error", "There must be exactly one Start Node.")
-            return False
-        if len(finish_nodes) != 1:
-            messagebox.showerror("Validation Error", "There must be exactly one Finish Node.")
-            return False
-        # Check for unconnected nodes
-        for node in self.nodes.values():
-            if node['type'] != 'Start':
-                if not any(conn['to_node'] == node['id'] for conn in self.connections):
-                    messagebox.showerror("Validation Error", f"Node '{node['title']}' is not connected.")
-                    return False
-            if node['type'] != 'Finish':
-                if not any(conn['from_node'] == node['id'] for conn in self.connections):
-                    messagebox.showerror("Validation Error", f"Node '{node['title']}' has no outgoing connections.")
-                    return False
-        # Additional validation can be added here
-        return True
-
-    def get_configured_graph(self):
-        return getattr(self, 'configured_graph', None)
-
-    def get_instruction_name(self):
-        return getattr(self, 'configured_name', None)
+        # Close the editor window
+        self.on_close()
 
     # New methods for resizing
     def on_resize_press(self, event):
@@ -499,169 +731,40 @@ class NodeEditor:
             'height': self.nodes[node_id]['height']
         }
 
-    def on_resize_move(self, event):
-        if self.resizing_node_id:
-            dx = event.x - self.resize_start_data['x']
-            dy = event.y - self.resize_start_data['y']
-            new_width = self.resize_start_data['width'] + dx
-            new_height = self.resize_start_data['height'] + dy
-
-            # Set minimum size
-            min_width = 100
-            min_height = 50
-            if new_width < min_width:
-                new_width = min_width
-            if new_height < min_height:
-                new_height = min_height
-
-            # Update node dimensions
-            node = self.nodes[self.resizing_node_id]
-            node['width'] = new_width
-            node['height'] = new_height
-
-            # Update the rectangle
-            rect = node['canvas_items']['rect']
-            x1, y1, x2, y2 = self.canvas.coords(rect)
-            x1 = node['x']
-            y1 = node['y']
-            self.canvas.coords(rect, x1, y1, x1 + new_width, y1 + new_height)
-
-            # Update the resize handle
-            resize_handle = node['canvas_items']['resize_handle']
-            resize_handle_size = 10
-            self.canvas.coords(resize_handle,
-                               x1 + new_width - resize_handle_size,
-                               y1 + new_height - resize_handle_size,
-                               x1 + new_width,
-                               y1 + new_height)
-
-            # Update the title position
-            title = node['canvas_items']['title']
-            self.canvas.coords(title, x1 + new_width / 2, y1 + 15)
-
-            # Update the description position
-            if 'description' in node['canvas_items']:
-                desc_text = node['canvas_items']['description']
-                self.canvas.coords(desc_text, x1 + new_width / 2, y1 + 35)
-
-            # Update connectors positions
-            node_type = node['type']
-            if node_type != 'Finish':
-                true_output = node['canvas_items']['true_output']
-                false_output = node['canvas_items']['false_output']
-                # True output connector
-                self.canvas.coords(true_output,
-                                   x1 + new_width - 10, y1 + new_height / 2 - 15,
-                                   x1 + new_width, y1 + new_height / 2 - 5)
-                # False output connector
-                self.canvas.coords(false_output,
-                                   x1 + new_width - 10, y1 + new_height / 2 + 5,
-                                   x1 + new_width, y1 + new_height / 2 + 15)
-            if node_type != 'Start':
-                input_connector = node['canvas_items']['input']
-                self.canvas.coords(input_connector,
-                                   x1, y1 + new_height / 2 - 5,
-                                   x1 + 10, y1 + new_height / 2 + 5)
-
-            # Redraw connections
-            self.redraw_connections()
-
     def on_resize_release(self, event):
         self.resizing_node_id = None
         self.resize_start_data = None
 
-    def update_node_text(self, node):
-        # Update the description text on the canvas
-        if 'description' in node['canvas_items']:
-            desc_text_item = node['canvas_items']['description']
-            self.canvas.itemconfigure(desc_text_item, text=node.get('description', ''))
-        else:
-            # If description was previously empty, add it
-            if node.get('description', ''):
-                x = node['x']
-                y = node['y']
-                width = node['width']
-                desc_text = self.canvas.create_text(x + width / 2, y + 35, text=node['description'], tags=('node', node['id'], 'description'))
-                node['canvas_items']['description'] = desc_text
-                self.canvas.tag_bind(desc_text, "<ButtonPress-1>", self.on_node_press)
-                self.canvas.tag_bind(desc_text, "<B1-Motion>", self.on_node_move)
-                self.canvas.tag_bind(desc_text, "<ButtonRelease-1>", self.on_node_release)
-                self.canvas.tag_bind(desc_text, "<Button-3>", self.on_right_click)
-
-    # New methods for handling right-click on connectors and connections
-    def on_connector_right_click(self, event):
-        # Get the item under the cursor
-        item = self.canvas.find_withtag('current')[0]
-        tags = self.canvas.gettags(item)
-        if 'input' in tags:
-            connector_type = 'input'
-            node_id = tags[tags.index('input') + 1]
-        elif 'output_true' in tags:
-            connector_type = 'output_true'
-            node_id = tags[tags.index('output_true') + 1]
-        elif 'output_false' in tags:
-            connector_type = 'output_false'
-            node_id = tags[tags.index('output_false') + 1]
-        else:
-            return  # Not a recognized connector
-
-        # Build the context menu
-        menu = tk.Menu(self.canvas, tearoff=0)
-        menu.add_command(label="Delete Connection", command=lambda: self.delete_connection_from_connector(node_id, connector_type))
-        menu.post(event.x_root, event.y_root)
-
-    def delete_connection_from_connector(self, node_id, connector_type):
-        # Find the connection(s) associated with this connector
-        if connector_type == 'input':
-            # Find connection where to_node == node_id
-            connections_to_delete = [conn for conn in self.connections if conn['to_node'] == node_id]
-        elif connector_type == 'output_true':
-            # Find connection where from_node == node_id and from_output == 'true'
-            connections_to_delete = [conn for conn in self.connections if conn['from_node'] == node_id and conn['from_output'] == 'true']
-        elif connector_type == 'output_false':
-            # Find connection where from_node == node_id and from_output == 'false'
-            connections_to_delete = [conn for conn in self.connections if conn['from_node'] == node_id and conn['from_output'] == 'false']
-        else:
-            return
-
-        # If there are connections, delete them
-        for conn in connections_to_delete:
-            self.delete_connection(conn)
-
-    def on_connection_right_click(self, event):
-        # Get the canvas item
-        item = self.canvas.find_withtag('current')[0]
-        # Find the connection associated with this item
-        for conn in self.connections:
-            if conn.get('canvas_item') == item:
-                self.show_connection_context_menu(event, conn)
-                break
-
-    def show_connection_context_menu(self, event, conn):
+    def on_connection_right_click(self, event, conn):
+        # Show context menu for deleting the connection
         menu = tk.Menu(self.canvas, tearoff=0)
         menu.add_command(label="Delete Connection", command=lambda: self.delete_connection(conn))
         menu.post(event.x_root, event.y_root)
 
     def delete_connection(self, conn):
         # Remove the line from the canvas
-        if 'canvas_item' in conn:
+        if 'canvas_item' in conn and conn['canvas_item']:
             self.canvas.delete(conn['canvas_item'])
         # Remove the connection from the connections list
         if conn in self.connections:
             self.connections.remove(conn)
-        # No need to redraw connections since we just deleted one
 
-    # Example usage:
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.withdraw()  # Hide the root window
+        # Mark as modified
+        self.is_modified = True
+        self.update_save_button_state()
 
-    # Mock config and API interfaces
-    config = {}
-    api_interfaces = {
-        'OpenAI API': {'url': 'https://api.openai.com', 'api_key': 'your-api-key'},
-        'Local LLM': {'url': 'http://localhost:8000'}
-    }
+    def clear_all_highlights(self):
+        """Remove highlights from all nodes."""
+        for node_id, node_data in self.nodes.items():
+            rect = node_data['canvas_items']['rect']
+            self.canvas.itemconfig(rect, outline='black', width=1)
 
-    editor = NodeEditor(root, config, api_interfaces)
-    root.mainloop()
+    def highlight_node(self, node_id):
+        """Highlight the specified node."""
+        rect = self.nodes[node_id]['canvas_items']['rect']
+        self.canvas.itemconfig(rect, outline='red', width=2)
+
+    def remove_highlight(self, node_id):
+        """Remove highlight from the specified node."""
+        rect = self.nodes[node_id]['canvas_items']['rect']
+        self.canvas.itemconfig(rect, outline='black', width=1)
