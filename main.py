@@ -1,6 +1,16 @@
 import sys
 import subprocess
 import os
+from pathlib import Path
+import importlib
+import pkgutil
+import traceback
+import threading
+import uuid
+import math
+import re  # For parsing markdown-like formatting
+
+from node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
 
 def install(package):
     """Install a package using pip."""
@@ -67,24 +77,103 @@ from node_editor import NodeEditor
 
 from ollama import Client
 
+# Import the base node class
+from nodes.base_node import BaseNode
+
+def load_nodes():
+    """
+    Dynamically load all node modules from the 'nodes' directory.
+    """
+    nodes_package = 'nodes'
+    try:
+        package = importlib.import_module(nodes_package)
+    except ImportError:
+        print(f"Failed to import '{nodes_package}' package.")
+        sys.exit(1)
+
+    package_path = package.__path__
+
+    for _, module_name, _ in pkgutil.iter_modules(package_path):
+        try:
+            importlib.import_module(f"{nodes_package}.{module_name}")
+            print(f"Loaded node module: {module_name}")
+        except Exception as e:
+            print(f"Failed to load node module '{module_name}': {e}")
+            traceback.print_exc()
+
+# Define new load_workflows function
+def load_workflows(workflow_dir='workflows'):
+    """Load all workflow files from the workflow directory."""
+    workflows = []
+    workflow_path = Path(workflow_dir)
+    
+    if not workflow_path.exists():
+        workflow_path.mkdir(parents=True, exist_ok=True)
+        print(f"Created workflow directory at {workflow_path}")
+
+    # Load each workflow YAML file from the directory
+    for workflow_file in workflow_path.glob("*.yaml"):
+        try:
+            with open(workflow_file, 'r') as file:
+                workflow = yaml.safe_load(file)
+                if workflow:
+                    workflows.append({'name': workflow_file.stem, 'graph': workflow.get('graph', {})})
+        except Exception as e:
+            print(f"Error loading workflow from {workflow_file}: {e}")
+    
+    return workflows
+    
+# Modify save_config to save workflows individually
+def save_workflow(workflow, workflow_dir='workflows'):
+    """Save a single workflow to a YAML file in the workflow directory."""
+    workflow_path = Path(workflow_dir)
+    
+    if not workflow_path.exists():
+        workflow_path.mkdir(parents=True, exist_ok=True)
+    
+    workflow_file = workflow_path / f"{workflow['name']}.yaml"
+    
+    try:
+        with open(workflow_file, 'w') as file:
+            yaml.safe_dump(workflow, file)
+            print(f"Saved workflow '{workflow['name']}' to {workflow_file}")
+    except Exception as e:
+        print(f"Failed to save workflow '{workflow['name']}': {e}")
+        
 def load_config(config_file='config.yaml'):
     """Load configuration from a YAML file."""
     try:
         with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
+            print(f"Loaded configuration from '{config_file}'.")
     except FileNotFoundError:
         config = {'interfaces': {}, 'seed_prompts': []}
+        print(f"Configuration file '{config_file}' not found. Using default configuration.")
 
     # Ensure seed_prompts is a list
     if 'seed_prompts' not in config or not isinstance(config['seed_prompts'], list):
         config['seed_prompts'] = []
+        print("Initialized 'seed_prompts' as an empty list.")
+
+    # Ensure interfaces is a dictionary
+    if 'interfaces' not in config or not isinstance(config['interfaces'], dict):
+        config['interfaces'] = {}
+        print("Initialized 'interfaces' as an empty dictionary.")
+
+    # Print loaded interfaces for debugging
+    print(f"Available API Interfaces: {list(config['interfaces'].keys())}")
 
     return config
 
 def save_config(config, config_file='config.yaml'):
     """Save the updated config to the YAML file."""
-    with open(config_file, 'w') as file:
-        yaml.safe_dump(config, file)
+    try:
+        with open(config_file, 'w') as file:
+            yaml.safe_dump(config, file)
+            print(f"Configuration saved to '{config_file}'.")
+    except Exception as e:
+        print(f"Failed to save configuration to '{config_file}': {e}")
+        messagebox.showerror("Error", f"Failed to save configuration: {e}")
 
 # Initialize a dictionary to keep track of open NodeEditor instances
 open_editors = {}
@@ -92,17 +181,19 @@ open_editors = {}
 def add_instruction_prompt(config, chat_instruction_listbox):
     """Add a new instruction prompt using NodeEditor."""
     def on_save(editor):
-        graph_data = editor.get_configured_graph()
-        name = editor.get_instruction_name()
+        graph_data = editor.configured_graph
+        name = editor.configured_name
         if graph_data and name:
-            # Check for duplicate names
-            if any(item['name'] == name for item in config['seed_prompts']):
-                messagebox.showerror("Error", "An instruction prompt with this name already exists.")
+            # Check for duplicate names in the workflows directory
+            existing_workflows = [wf['name'] for wf in load_workflows()]
+            if name in existing_workflows:
+                messagebox.showerror("Error", "A workflow with this name already exists.")
                 return
-            config['seed_prompts'].append({'name': name, 'graph': graph_data})
-            save_config(config)
+            # Save to individual workflow file
+            save_workflow({'name': name, 'graph': graph_data})
             chat_instruction_listbox.insert(END, name)
-            messagebox.showinfo("Success", "New instruction prompt added.")
+            messagebox.showinfo("Success", "New workflow added.")
+            update_workflow_list(chat_instruction_listbox)  # Dynamically update the list
 
     def on_close(editor):
         # Remove editor from open_editors if it's there
@@ -112,6 +203,14 @@ def add_instruction_prompt(config, chat_instruction_listbox):
     editor = NodeEditor(root, config, config['interfaces'], save_callback=on_save, close_callback=on_close)
     # For new prompts, we can't assign a name yet; skip adding to open_editors
 
+# Update list dynamically based on workflows directory
+def update_workflow_list(chat_instruction_listbox):
+    """Dynamically update the instruction prompt list based on available workflows."""
+    chat_instruction_listbox.delete(0, END)
+    workflows = load_workflows()
+    for workflow in workflows:
+        chat_instruction_listbox.insert(END, workflow['name'])
+        
 def edit_instruction_prompt(config, chat_instruction_listbox):
     """Edit an existing instruction prompt using NodeEditor."""
     selected_indices = chat_instruction_listbox.curselection()
@@ -119,27 +218,24 @@ def edit_instruction_prompt(config, chat_instruction_listbox):
         messagebox.showwarning("Selection Required", "Please select an instruction prompt to edit.")
         return
     index = selected_indices[0]
-    selected_item = config['seed_prompts'][index]
+    selected_item = load_workflows()[index]  # Load workflows from directory
     selected_name = selected_item['name']
     graph_data = selected_item.get('graph', {})
 
     def on_save(editor):
-        new_graph_data = editor.get_configured_graph()
-        new_name = editor.get_instruction_name()
+        new_graph_data = editor.configured_graph
+        new_name = editor.configured_name
         if new_graph_data and new_name:
-            # Check for duplicate names (if name has changed)
-            if new_name != selected_name and any(item['name'] == new_name for item in config['seed_prompts']):
-                messagebox.showerror("Error", "An instruction prompt with this name already exists.")
+            existing_workflows = [wf['name'] for wf in load_workflows()]
+            if new_name != selected_name and new_name in existing_workflows:
+                messagebox.showerror("Error", "A workflow with this name already exists.")
                 return
-            config['seed_prompts'][index] = {'name': new_name, 'graph': new_graph_data}
-            save_config(config)
+            # Save the updated workflow to its own file
+            save_workflow({'name': new_name, 'graph': new_graph_data})
             chat_instruction_listbox.delete(index)
             chat_instruction_listbox.insert(index, new_name)
-            messagebox.showinfo("Success", "Instruction prompt updated.")
-            # Update open_editors with the new name
-            if selected_name in open_editors:
-                open_editors[new_name] = open_editors.pop(selected_name)
-                open_editors[new_name].instruction_name = new_name
+            messagebox.showinfo("Success", "Workflow updated.")
+            update_workflow_list(chat_instruction_listbox)  # Dynamically update the list
 
     def on_close(editor):
         # Remove editor from open_editors if it's there
@@ -156,18 +252,19 @@ def delete_instruction_prompt(config, chat_instruction_listbox):
         messagebox.showwarning("Selection Required", "Please select an instruction prompt to delete.")
         return
     index = selected_indices[0]
-    selected_prompt = config['seed_prompts'][index]
+    selected_prompt = load_workflows()[index]  # Load from directory
     selected_name = selected_prompt['name']
-    confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the instruction prompt '{selected_name}'?")
+    confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the workflow '{selected_name}'?")
     if confirm:
-        config['seed_prompts'].pop(index)
-        save_config(config)
-        chat_instruction_listbox.delete(index)
-        # Close the editor if it's open
-        if selected_name in open_editors:
-            open_editors[selected_name].editor_window.destroy()
-            del open_editors[selected_name]
-        messagebox.showinfo("Success", f"Instruction prompt '{selected_name}' has been deleted.")
+        # Delete the workflow file
+        workflow_file = Path('workflows') / f"{selected_name}.yaml"
+        if workflow_file.exists():
+            workflow_file.unlink()  # Delete the file
+            chat_instruction_listbox.delete(index)
+            messagebox.showinfo("Success", f"Workflow '{selected_name}' has been deleted.")
+            update_workflow_list(chat_instruction_listbox)  # Dynamically update the list
+        else:
+            messagebox.showerror("Error", f"Workflow file '{selected_name}.yaml' not found.")
 
 def manage_apis(config):
     """Manage APIs (Add/Edit/Delete) in a separate window."""
@@ -186,7 +283,7 @@ def manage_apis(config):
     api_manage_listbox = tk.Listbox(api_manage_frame, selectmode=SINGLE, yscrollcommand=api_manage_scrollbar.set, width=50, height=15, exportselection=False)
     for key in config['interfaces']:
         api_manage_listbox.insert(END, key)
-    api_manage_listbox.pack(side=tk.LEFT, fill='both', expand=True)
+    api_manage_listbox.pack(side=tk.LEFT, fill='both', expand=True)  # Changed to fill='both' for dynamic resizing
     api_manage_scrollbar.config(command=api_manage_listbox.yview)
 
     # Frame for Add, Edit, Delete buttons
@@ -370,7 +467,7 @@ def edit_api_interface_manage(config, api_manage_listbox):
         elif new_api_type == "Ollama":
             new_models_endpoint = "/api/tags"
         else:
-            messagebox.showerror("Error", "Unsupported API Type selected.")
+            messagebox.showerror("Error", f"Unsupported API Type '{new_api_type}'.")
             return
 
         # Update the interface
@@ -454,12 +551,6 @@ def edit_api_interface_manage(config, api_manage_listbox):
 
     save_button = Button(edit_window, text="Save", command=save_edited_interface)
     save_button.pack(pady=20)
-
-    # Set initial values
-    update_models_dropdown()
-    # Set the model if it's available
-    if interface_details.get('model'):
-        model_dropdown.set(interface_details.get('model'))
 
 def delete_api_interface_manage(config, api_manage_listbox):
     """Delete an existing API interface from Manage APIs window."""
@@ -685,17 +776,27 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
     if selected_prompt_index is None:
         messagebox.showerror("Error", "Please select an instruction prompt from the list.")
         return
+    
+    # Load the workflows from the 'workflows' directory
+    workflows = load_workflows()
+
     # Retrieve the node graph based on the selected index
-    selected_prompt = config['seed_prompts'][selected_prompt_index]
+    try:
+        selected_prompt = workflows[selected_prompt_index]
+    except IndexError:
+        messagebox.showerror("Error", "Selected workflow is out of range.")
+        return
+
     node_graph = selected_prompt.get('graph', None)
     if not node_graph:
-        messagebox.showerror("Error", "Selected instruction prompt is not properly configured.")
+        messagebox.showerror("Error", "Selected workflow is not properly configured.")
         return
+
     # We will process the node graph using the APIs specified in the nodes
-    api_details = None
+    api_details = None  # Not needed as nodes handle API calls
 
     # Get the selected prompt name
-    selected_prompt_name = chat_tab.selected_prompt_name
+    selected_prompt_name = selected_prompt['name']  # Correctly retrieve the name
 
     # Reset the stop_event
     chat_tab.stop_event.clear()
@@ -710,167 +811,181 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
         node_graph, selected_prompt_name))
     thread.start()
 
+def process_api_request(api_details, prompt):
+    """
+    Handles the actual API call given API details and a prompt.
+    Returns a standardized response dictionary.
+    """
+    api_type = api_details.get('api_type', 'OpenAI')
+    model = api_details.get('model')
+    max_tokens = api_details.get('max_tokens', 100)
+
+    if api_type == "OpenAI":
+        api_url = api_details['url'].rstrip('/') + api_details['models_endpoint']
+        headers = {
+            'Authorization': f"Bearer {api_details.get('api_key', '')}",
+            'Content-Type': 'application/json'
+        }
+        data = {
+            'model': model,
+            'messages': [{"role": "user", "content": prompt}],
+            'max_tokens': max_tokens
+        }
+        response = requests.post(api_url, headers=headers, json=data)
+        if response.status_code == 200:
+            return response.json()  # Keep the original structure for further handling
+        else:
+            return {'error': f"OpenAI API Error: {response.text}"}
+
+    elif api_type == "Ollama":
+        client = Client(host=api_details['url'])
+        messages = [{"role": "user", "content": prompt}]
+        response = client.post(model=model, messages=messages)
+        if response.status_code == 200:
+            # Assuming Ollama returns {'response': '...'}
+            return response.json()
+        else:
+            return {'error': f"Ollama API Error: {response.text}"}
+
+    else:
+        return {'error': f"Unsupported API type '{api_type}'."}
+
 def process_node_graph(config, default_api_details, user_input, output_box, submit_button, stop_button, stop_event, node_graph, selected_prompt_name):
     """Process the node graph and execute the instructions."""
+    MAX_ITERATIONS = 20  # Define a reasonable limit to prevent infinite loops
+    iteration_count = 0
+
     try:
         if not node_graph:
-            # No instruction prompts, proceed to send the request directly
-            if not default_api_details:
-                messagebox.showerror("Error", "No API interface specified.")
+            return  # Return if no graph
+
+        # Process the node graph
+        nodes = node_graph['nodes']
+        connections = node_graph['connections']
+
+        # Create a lookup for nodes by id
+        node_lookup = {nid: node for nid, node in nodes.items()}
+
+        # Find the Start Node
+        start_nodes = [node for node in nodes.values() if node['type'] == 'StartNode']
+        if len(start_nodes) != 1:
+            messagebox.showerror("Error", "There must be exactly one Start Node.")
+            return
+        start_node = start_nodes[0]
+
+        current_node_id = start_node['id']
+        input_data = user_input
+
+        print(f"Starting to process the node graph with start node ID: {start_node['id']}")
+
+        # Get the editor if it's open
+        editor = open_editors.get(selected_prompt_name)
+
+        # Clear all previous highlights before starting the workflow
+        if editor and editor.is_open():
+            root.after(0, editor.clear_all_highlights)
+
+        # Use a stack to handle nodes and their corresponding input data
+        node_stack = [(current_node_id, {'input': input_data})]
+
+        while node_stack:
+            if iteration_count >= MAX_ITERATIONS:
+                messagebox.showerror("Error", "Maximum iterations reached. Possible infinite loop detected.")
+                break
+            iteration_count += 1
+
+            current_node_id, current_input = node_stack.pop()
+
+            current_node = node_lookup.get(current_node_id)
+            if not current_node:
+                messagebox.showerror("Error", f"Node with ID '{current_node_id}' not found.")
                 return
-            api_type = default_api_details.get('api_type', 'OpenAI')
-            model = default_api_details['model']
-            max_tokens = default_api_details.get('max_tokens', 100)
-            messages = [{"role": "user", "content": user_input}]
 
-            if api_type == "OpenAI":
-                api_url = default_api_details['url'].rstrip('/') + default_api_details['models_endpoint']
-                headers = {
-                    'Authorization': f'Bearer {default_api_details.get("api_key", "")}',
-                    'Content-Type': 'application/json'
-                }
-                data = {
-                    'model': model,
-                    'messages': messages,
-                    'max_tokens': max_tokens
-                }
-                response = send_openai_request(api_url, headers, data)
-            else:
-                client = Client(host=default_api_details['url'])
-                response = send_ollama_request(client, model, messages)
+            # Highlight the current node in the editor if it's open
+            if editor and editor.is_open():
+                node_id = current_node['id']
+                root.after(0, lambda nid=node_id: editor.highlight_node(nid))
 
-            # Apply formatting and display the response
-            root.after(0, lambda: apply_formatting(output_box, response))
-        else:
-            # Process the node graph
-            nodes = node_graph['nodes']
-            connections = node_graph['connections']
-
-            # Create a lookup for nodes by id
-            node_lookup = {nid: node for nid, node in nodes.items()}
-
-            # Find the Start Node
-            start_node = next((node for node in nodes.values() if node['type'] == 'Start'), None)
-            if not start_node:
-                messagebox.showerror("Error", "No Start Node found in the instruction prompt.")
+            # Instantiate the node class based on its type
+            node_type = current_node['type']
+            node_class = NODE_REGISTRY.get(node_type)
+            if not node_class:
+                messagebox.showerror("Error", f"No node class registered for type '{node_type}'.")
                 return
 
-            current_node = start_node
-            input_data = user_input
-            response = None
+            # Instantiate the node
+            node_instance = node_class(node_id=current_node['id'], config=config)
 
-            # Get the editor if it's open
-            editor = open_editors.get(selected_prompt_name)
+            # Set node properties
+            node_instance.set_properties(current_node)
 
-            while True:
-                if stop_event.is_set():
-                    # Exiting due to stop request
-                    print("Process was stopped by the user.")
-                    return
+            # Execute the node's processing logic
+            node_output = node_instance.process(current_input)
 
-                # Highlight the current node in the editor if it's open
+            print(f"Processed Node '{current_node_id}'. Output: {node_output}")
+
+            # Store the output data back into the node for downstream nodes
+            current_node['output_data'] = node_output
+
+            # **Handle End Nodes**
+            is_end_node = node_instance.properties.get('is_end_node', {}).get('default', False)
+            print(f"Node '{current_node_id}' is_end_node: {is_end_node}")
+            if is_end_node:
+                final_output = node_output.get('final_output', 'No input received for final processing.')
+                print(f"[FinishNode] Final Output: {final_output}")
+
+                # Apply formatting and display the response
+                root.after(0, lambda: apply_formatting(output_box, final_output))
+
+                # Re-enable Submit button and disable Stop Process button
+                root.after(0, lambda: submit_button.config(state=tk.NORMAL))
+                root.after(0, lambda: stop_button.config(state=tk.DISABLED))
+
+                # Clear all highlights when the workflow finishes
                 if editor and editor.is_open():
-                    node_id = current_node['id']
-                    # Schedule the highlight on the main thread
-                    root.after(0, lambda nid=node_id: editor.highlight_node(nid))
+                    root.after(0, editor.clear_all_highlights)
 
-                # Get API details for the node
-                api_name = current_node.get('api')
-                api_details = config['interfaces'].get(api_name)
-                if not api_details:
-                    messagebox.showerror("Error", f"API Interface '{api_name}' not found.")
-                    return
+                # Exit the processing loop since it's an end node
+                break
 
-                api_type = api_details.get('api_type', 'OpenAI')
-                model = api_details['model']
-                max_tokens = api_details.get('max_tokens', 100)
-
-                # Prepare messages
-                prompt = current_node['prompt'] + "\n" + input_data
-                messages = [{"role": "user", "content": prompt}]
-
-                if stop_event.is_set():
-                    # Exiting due to stop request
-                    print("Process was stopped by the user.")
-                    return
-
-                # Send request
-                if api_type == "OpenAI":
-                    api_url = api_details['url'].rstrip('/') + api_details['models_endpoint']
-                    headers = {
-                        'Authorization': f'Bearer {api_details.get("api_key", "")}',
-                        'Content-Type': 'application/json'
-                    }
-                    data = {
-                        'model': model,
-                        'messages': messages,
-                        'max_tokens': max_tokens
-                    }
-                    response = send_openai_request(api_url, headers, data)
-                else:
-                    client = Client(host=api_details['url'])
-                    response = send_ollama_request(client, model, messages)
-
-                if stop_event.is_set():
-                    # Exiting due to stop request
-                    print("Process was stopped by the user.")
-                    return
-
-                # Determine next node based on test criteria
-                test_criteria = current_node.get('test_criteria', '').strip()
-                if test_criteria:
-                    # Test criteria is specified
-                    if test_criteria in response:
-                        # Move to the node connected to True output
-                        next_conn = next((conn for conn in connections if conn['from_node'] == current_node['id'] and conn['from_output'] == 'true'), None)
-                        if not next_conn:
-                            # No True output connection; try False output
-                            next_conn = next((conn for conn in connections if conn['from_node'] == current_node['id'] and conn['from_output'] == 'false'), None)
+            # Handle multiple outputs (e.g., output_true and output_false)
+            found_next_node = False
+            for output_key, output_value in node_output.items():
+                if output_key.startswith('output_') or output_key == 'prompt':
+                    # Find the connected node(s) for this output
+                    connected_nodes = [
+                        conn['to_node'] for conn in connections
+                        if conn['from_node'] == current_node_id and conn['from_output'] == output_key
+                    ]
+                    if connected_nodes:
+                        found_next_node = True
+                        for to_node_id in connected_nodes:
+                            node_stack.append((to_node_id, {'input': output_value}))
                     else:
-                        # Move to the node connected to False output
-                        next_conn = next((conn for conn in connections if conn['from_node'] == current_node['id'] and conn['from_output'] == 'false'), None)
-                        if not next_conn:
-                            # No False output connection; try True output
-                            next_conn = next((conn for conn in connections if conn['from_node'] == current_node['id'] and conn['from_output'] == 'true'), None)
-                else:
-                    # No test criteria; proceed to True output by default
-                    next_conn = next((conn for conn in connections if conn['from_node'] == current_node['id'] and conn['from_output'] == 'true'), None)
-                    if not next_conn:
-                        # No True output; try False output
-                        next_conn = next((conn for conn in connections if conn['from_node'] == current_node['id'] and conn['from_output'] == 'false'), None)
+                        print(f"Warning: No next node found for output '{output_key}' of node '{current_node_id}'")
 
-                if not next_conn:
-                    # No further nodes; check if current node is connected to Finish Node
-                    finish_node_connected = any(
-                        node_lookup.get(conn['to_node'])['type'] == 'Finish'
-                        for conn in connections if conn['from_node'] == current_node['id']
-                    )
-                    if finish_node_connected:
-                        # Reached Finish Node
-                        break
-                    else:
-                        # No connected nodes; exit loop
-                        break
+            if not found_next_node:
+                messagebox.showerror("Error", f"No next node found for output '{output_key}' of node '{current_node_id}'.")
 
-                next_node = node_lookup.get(next_conn['to_node'])
-                if not next_node:
-                    messagebox.showerror("Error", "Next node not found in the graph.")
-                    return
+            # Remove highlight from the node after processing
+            if editor and editor.is_open():
+                root.after(0, lambda nid=current_node_id: editor.remove_highlight(nid))
 
-                if next_node['type'] == 'Finish':
-                    # Reached Finish Node
-                    break
+        # Re-enable Submit button and disable Stop Process button
+        root.after(0, lambda: submit_button.config(state=tk.NORMAL))
+        root.after(0, lambda: stop_button.config(state=tk.DISABLED))
 
-                # Prepare for next iteration
-                current_node = next_node
-                input_data = response
+        # Clear all highlights when the workflow finishes
+        if editor and editor.is_open():
+            root.after(0, editor.clear_all_highlights)
 
-            # Apply formatting and display the final response
-            final_response = response if response else "No response generated."
-            root.after(0, lambda: apply_formatting(output_box, final_response))
-    finally:
-        # Re-enable the submit button and disable the stop button
-        root.after(0, lambda: [submit_button.config(state=tk.NORMAL), stop_button.config(state=tk.DISABLED)])
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
+        # Re-enable Submit button and disable Stop Process button in case of error
+        root.after(0, lambda: submit_button.config(state=tk.NORMAL))
+        root.after(0, lambda: stop_button.config(state=tk.DISABLED))
+        if editor and editor.is_open():
+            root.after(0, editor.clear_all_highlights)
 
 def stop_process(chat_tab):
     """Stop the ongoing process."""
@@ -886,8 +1001,8 @@ def create_gui(config):
     global root
     root = tk.Tk()
     root.title("XeroLLM")
-    root.geometry("400x500")  # Increased size to accommodate buttons and layout
-    root.minsize(400, 500)  # Set minimum size
+    root.geometry("800x600")  # Increased size to accommodate buttons and layout
+    root.minsize(800, 600)  # Set minimum size
 
     # Create a Notebook (tabbed interface)
     notebook = ttk.Notebook(root)
@@ -915,10 +1030,11 @@ def create_gui(config):
     chat_instruction_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     chat_instruction_listbox = tk.Listbox(chat_instruction_frame, selectmode=SINGLE, yscrollcommand=chat_instruction_scrollbar.set, height=5, exportselection=False)
-    for item in config['seed_prompts']:
-        chat_instruction_listbox.insert(END, item['name'])
     chat_instruction_listbox.pack(side=tk.LEFT, fill='both', expand=True)  # Changed to fill='both' for dynamic resizing
     chat_instruction_scrollbar.config(command=chat_instruction_listbox.yview)
+
+    # Call update_workflow_list to populate the list when the GUI loads
+    update_workflow_list(chat_instruction_listbox)
 
     # Add Instruction Prompt Management Buttons beneath the Instruction listbox
     instruction_buttons_frame = ttk.Frame(instruction_selection_frame)
@@ -1034,10 +1150,62 @@ def create_gui(config):
     # Run the main event loop
     root.mainloop()
 
-# Entry point
-if __name__ == "__main__":
+def main():
+    # Load node classes dynamically
+    load_nodes()
+
+    # Verify NODE_REGISTRY
+    print(f"NODE_REGISTRY contains: {list(NODE_REGISTRY.keys())}")
+
     # Load configuration from YAML file
     config = load_config()
 
     # Create and start the GUI
     create_gui(config)
+
+    # Assign the current module as 'your_api_module' so that nodes can import it
+    sys.modules['your_api_module'] = sys.modules[__name__]
+
+# Define process_api_request here so it can be imported by nodes
+def process_api_request(api_details, prompt):
+    """
+    Handles the actual API call given API details and a prompt.
+    Returns a standardized response dictionary.
+    """
+    api_type = api_details.get('api_type', 'OpenAI')
+    model = api_details.get('model')
+    max_tokens = api_details.get('max_tokens', 100)
+
+    if api_type == "OpenAI":
+        api_url = api_details['url'].rstrip('/') + api_details['models_endpoint']
+        headers = {
+            'Authorization': f"Bearer {api_details.get('api_key', '')}",
+            'Content-Type': 'application/json'
+        }
+        data = {
+            'model': model,
+            'messages': [{"role": "user", "content": prompt}],
+            'max_tokens': max_tokens
+        }
+        response = requests.post(api_url, headers=headers, json=data)
+        if response.status_code == 200:
+            return response.json()  # Keep the original structure for further handling
+        else:
+            return {'error': f"OpenAI API Error: {response.text}"}
+
+    elif api_type == "Ollama":
+        client = Client(host=api_details['url'])
+        messages = [{"role": "user", "content": prompt}]
+        response = client.post(model=model, messages=messages)
+        if response.status_code == 200:
+            # Assuming Ollama returns {'response': '...'}
+            return response.json()
+        else:
+            return {'error': f"Ollama API Error: {response.text}"}
+
+    else:
+        return {'error': f"Unsupported API type '{api_type}'."}
+
+# Entry point
+if __name__ == "__main__":
+    main()
