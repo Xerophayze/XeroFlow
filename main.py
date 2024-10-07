@@ -798,7 +798,9 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
     # Get the selected prompt name
     selected_prompt_name = selected_prompt['name']  # Correctly retrieve the name
 
-    # Reset the stop_event
+    # Initialize and reset the stop_event
+    if not hasattr(chat_tab, 'stop_event') or not isinstance(chat_tab.stop_event, threading.Event):
+        chat_tab.stop_event = threading.Event()
     chat_tab.stop_event.clear()
 
     # Disable the submit button and enable the stop button
@@ -866,10 +868,13 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
         # Create a lookup for nodes by id
         node_lookup = {nid: node for nid, node in nodes.items()}
 
-        # Find the Start Node
-        start_nodes = [node for node in nodes.values() if node['type'] == 'StartNode']
+        # Find the Start Node(s) by checking is_start_node property
+        start_nodes = [
+            node for node in nodes.values()
+            if node.get('properties', {}).get('is_start_node', {}).get('default', False)
+        ]
         if len(start_nodes) != 1:
-            messagebox.showerror("Error", "There must be exactly one Start Node.")
+            messagebox.showerror("Error", "There must be exactly one node marked as Start Node (is_start_node set to True).")
             return
         start_node = start_nodes[0]
 
@@ -889,6 +894,21 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
         node_stack = [(current_node_id, {'input': input_data})]
 
         while node_stack:
+            # **Check for Stop Event**
+            if stop_event.is_set():
+                print("Processing has been stopped by the user.")
+                messagebox.showinfo("Stopped", "Processing has been stopped.")
+                
+                # Re-enable Submit button and disable Stop button
+                root.after(0, lambda: submit_button.config(state=tk.NORMAL))
+                root.after(0, lambda: stop_button.config(state=tk.DISABLED))
+                
+                # Clear all highlights
+                if editor and editor.is_open():
+                    root.after(0, editor.clear_all_highlights)
+                
+                break  # Exit the processing loop
+
             if iteration_count >= MAX_ITERATIONS:
                 messagebox.showerror("Error", "Maximum iterations reached. Possible infinite loop detected.")
                 break
@@ -923,6 +943,21 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
             node_output = node_instance.process(current_input)
 
             print(f"Processed Node '{current_node_id}'. Output: {node_output}")
+
+            # **Check for Stop Event After Processing Each Node**
+            if stop_event.is_set():
+                print("Processing has been stopped by the user.")
+                messagebox.showinfo("Stopped", "Processing has been stopped.")
+                
+                # Re-enable Submit button and disable Stop button
+                root.after(0, lambda: submit_button.config(state=tk.NORMAL))
+                root.after(0, lambda: stop_button.config(state=tk.DISABLED))
+                
+                # Clear all highlights
+                if editor and editor.is_open():
+                    root.after(0, editor.clear_all_highlights())
+                
+                break  # Exit the processing loop
 
             # Store the output data back into the node for downstream nodes
             current_node['output_data'] = node_output
@@ -965,7 +1000,7 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
                         print(f"Warning: No next node found for output '{output_key}' of node '{current_node_id}'")
 
             if not found_next_node:
-                messagebox.showerror("Error", f"No next node found for output '{output_key}' of node '{current_node_id}'.")
+                messagebox.showerror("Error", f"No next node found for outputs of node '{current_node_id}'.")
 
             # Remove highlight from the node after processing
             if editor and editor.is_open():
@@ -1165,46 +1200,6 @@ def main():
 
     # Assign the current module as 'your_api_module' so that nodes can import it
     sys.modules['your_api_module'] = sys.modules[__name__]
-
-# Define process_api_request here so it can be imported by nodes
-def process_api_request(api_details, prompt):
-    """
-    Handles the actual API call given API details and a prompt.
-    Returns a standardized response dictionary.
-    """
-    api_type = api_details.get('api_type', 'OpenAI')
-    model = api_details.get('model')
-    max_tokens = api_details.get('max_tokens', 100)
-
-    if api_type == "OpenAI":
-        api_url = api_details['url'].rstrip('/') + api_details['models_endpoint']
-        headers = {
-            'Authorization': f"Bearer {api_details.get('api_key', '')}",
-            'Content-Type': 'application/json'
-        }
-        data = {
-            'model': model,
-            'messages': [{"role": "user", "content": prompt}],
-            'max_tokens': max_tokens
-        }
-        response = requests.post(api_url, headers=headers, json=data)
-        if response.status_code == 200:
-            return response.json()  # Keep the original structure for further handling
-        else:
-            return {'error': f"OpenAI API Error: {response.text}"}
-
-    elif api_type == "Ollama":
-        client = Client(host=api_details['url'])
-        messages = [{"role": "user", "content": prompt}]
-        response = client.post(model=model, messages=messages)
-        if response.status_code == 200:
-            # Assuming Ollama returns {'response': '...'}
-            return response.json()
-        else:
-            return {'error': f"Ollama API Error: {response.text}"}
-
-    else:
-        return {'error': f"Unsupported API type '{api_type}'."}
 
 # Entry point
 if __name__ == "__main__":
