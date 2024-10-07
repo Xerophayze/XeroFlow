@@ -172,6 +172,23 @@ class NodeEditor:
         self.is_modified = True
         self.update_save_button_state()
 
+    def create_rounded_rectangle(self, x1, y1, x2, y2, radius=20, **kwargs):
+        points = [
+            x1 + radius, y1,
+            x2 - radius, y1,
+            x2, y1,
+            x2, y1 + radius,
+            x2, y2 - radius,
+            x2, y2,
+            x2 - radius, y2,
+            x1 + radius, y2,
+            x1, y2,
+            x1, y2 - radius,
+            x1, y1 + radius,
+            x1, y1
+        ]
+        return self.canvas.create_polygon(points, smooth=True, **kwargs)
+
     def draw_node(self, node):
         x = node['x']
         y = node['y']
@@ -182,7 +199,9 @@ class NodeEditor:
         # Calculate the minimum width based on the title length plus padding
         title_text = node['title']
         padding = 20  # Padding on each side
-        text_bbox = self.canvas.bbox(self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold')))
+        temp_text = self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold'))
+        text_bbox = self.canvas.bbox(temp_text)
+        self.canvas.delete(temp_text)
         text_width = text_bbox[2] - text_bbox[0] if text_bbox else 0
         min_width = text_width + padding * 2
 
@@ -193,13 +212,22 @@ class NodeEditor:
 
         node['canvas_items'] = {}  # Initialize the canvas items dictionary
 
-        # Draw rectangle
-        rect = self.canvas.create_rectangle(x, y, x + width, y + height, fill='lightblue', tags=('node', node['id'], 'rect'))
+        # Draw rounded rectangle
+        rect = self.create_rounded_rectangle(
+            x, y, x + width, y + height,
+            radius=20,
+            fill='#ADD8E6',  # Light blue
+            outline='black',
+            width=2,
+            tags=('node', node['id'], 'rect')
+        )
         node['canvas_items']['rect'] = rect
         self.canvas.tag_bind(rect, "<ButtonPress-1>", self.on_node_press)
         self.canvas.tag_bind(rect, "<B1-Motion>", self.on_node_move)
         self.canvas.tag_bind(rect, "<ButtonRelease-1>", self.on_node_release)
         self.canvas.tag_bind(rect, "<Button-3>", self.on_right_click)
+        self.canvas.tag_bind(rect, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
+        self.canvas.tag_bind(rect, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
 
         # Draw title
         title = self.canvas.create_text(
@@ -213,6 +241,8 @@ class NodeEditor:
         self.canvas.tag_bind(title, "<B1-Motion>", self.on_node_move)
         self.canvas.tag_bind(title, "<ButtonRelease-1>", self.on_node_release)
         self.canvas.tag_bind(title, "<Button-3>", self.on_right_click)
+        self.canvas.tag_bind(title, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
+        self.canvas.tag_bind(title, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
 
         # Draw properties (description with character limit)
         properties_y = y + 40  # Adjust this value to move the description lower than the title
@@ -220,25 +250,26 @@ class NodeEditor:
 
         if description:
             # Calculate the maximum number of characters that can fit in the node width
-            max_chars = self.calculate_max_chars(width - 20)  # Subtract padding
+            max_chars = self.calculate_max_chars(width - 40)  # Subtract padding
             truncated_description = description[:max_chars]  # Truncate the description
 
             # Draw the truncated description centered
             prop_item = self.canvas.create_text(
-                x + width / 2, properties_y,  # Center the description
+                x + width / 2, properties_y,
                 text=truncated_description,
-                anchor='center',  # Center the text
+                anchor='n',  # Align text to top center
                 tags=('node', node['id'], 'prop_description'),
-                font=('Arial', 10)
+                font=('Arial', 10),
+                width=width - 40  # Wrap text within the node
             )
             node['canvas_items']['prop_description'] = prop_item
 
         # Draw input connectors
         input_x = x
-        input_y_start = y + 20
-        input_gap = (height - 40) / max(1, len(node['inputs']))
+        num_inputs = len(node['inputs'])
+        input_gap = (height - 40) / (num_inputs + 1)
         for idx, input_name in enumerate(node['inputs']):
-            connector_y = y + 20 + idx * input_gap
+            connector_y = y + 20 + (idx + 1) * input_gap
             input_connector = self.canvas.create_oval(
                 input_x, connector_y - 5,
                 input_x + 10, connector_y + 5,
@@ -247,13 +278,15 @@ class NodeEditor:
             )
             node['canvas_items'][f'input_{input_name}'] = input_connector
             self.canvas.tag_bind(input_connector, "<ButtonPress-1>", self.on_connector_press)
+            self.canvas.tag_bind(input_connector, "<Enter>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='red'))
+            self.canvas.tag_bind(input_connector, "<Leave>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='black'))
 
         # Draw output connectors
         output_x = x + width
-        output_y_start = y + 20
-        output_gap = (height - 40) / max(1, len(node['outputs']))
+        num_outputs = len(node['outputs'])
+        output_gap = (height - 40) / (num_outputs + 1)
         for idx, output_name in enumerate(node['outputs']):
-            connector_y = y + 20 + idx * output_gap
+            connector_y = y + 20 + (idx + 1) * output_gap
             output_connector = self.canvas.create_oval(
                 output_x - 10, connector_y - 5,
                 output_x, connector_y + 5,
@@ -262,6 +295,8 @@ class NodeEditor:
             )
             node['canvas_items'][f'output_{output_name}'] = output_connector
             self.canvas.tag_bind(output_connector, "<ButtonPress-1>", self.start_connection)
+            self.canvas.tag_bind(output_connector, "<Enter>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='lime'))
+            self.canvas.tag_bind(output_connector, "<Leave>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='green'))
 
         # Draw resize handle
         resize_handle_size = 10
@@ -275,6 +310,8 @@ class NodeEditor:
         self.canvas.tag_bind(resize_handle, "<ButtonPress-1>", self.on_resize_press)
         self.canvas.tag_bind(resize_handle, "<B1-Motion>", self.on_resize_move)
         self.canvas.tag_bind(resize_handle, "<ButtonRelease-1>", self.on_resize_release)
+        self.canvas.tag_bind(resize_handle, "<Enter>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='darkgray'))
+        self.canvas.tag_bind(resize_handle, "<Leave>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='gray'))
 
         # Redraw connections to ensure they're on top
         self.redraw_connections()
@@ -290,7 +327,9 @@ class NodeEditor:
             node = self.nodes[self.resizing_node_id]
             title_text = node['title']
             padding = 20  # Padding on each side
-            text_bbox = self.canvas.bbox(self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold')))
+            temp_text = self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold'))
+            text_bbox = self.canvas.bbox(temp_text)
+            self.canvas.delete(temp_text)
             text_width = text_bbox[2] - text_bbox[0] if text_bbox else 0
             min_width = text_width + padding * 2
 
@@ -304,12 +343,26 @@ class NodeEditor:
             node['width'] = new_width
             node['height'] = new_height
 
-            # Update the rectangle
+            # Update the rounded rectangle
             rect = node['canvas_items']['rect']
-            x1, y1, x2, y2 = self.canvas.coords(rect)
-            x1 = node['x']
-            y1 = node['y']
-            self.canvas.coords(rect, x1, y1, x1 + new_width, y1 + new_height)
+            x1, y1 = node['x'], node['y']
+            x2, y2 = x1 + new_width, y1 + new_height
+            self.canvas.delete(rect)
+            new_rect = self.create_rounded_rectangle(
+                x1, y1, x2, y2,
+                radius=20,
+                fill='#ADD8E6',
+                outline='black',
+                width=2,
+                tags=('node', node['id'], 'rect')
+            )
+            node['canvas_items']['rect'] = new_rect
+            self.canvas.tag_bind(new_rect, "<ButtonPress-1>", self.on_node_press)
+            self.canvas.tag_bind(new_rect, "<B1-Motion>", self.on_node_move)
+            self.canvas.tag_bind(new_rect, "<ButtonRelease-1>", self.on_node_release)
+            self.canvas.tag_bind(new_rect, "<Button-3>", self.on_right_click)
+            self.canvas.tag_bind(new_rect, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
+            self.canvas.tag_bind(new_rect, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
 
             # Update the resize handle
             resize_handle = node['canvas_items']['resize_handle']
@@ -328,34 +381,58 @@ class NodeEditor:
             properties_y = y1 + 40
             description = node['properties'].get('description', {}).get('default', '')  # Get the description
             if description:
-                max_chars = self.calculate_max_chars(new_width - 20)  # Subtract padding
+                max_chars = self.calculate_max_chars(new_width - 40)  # Subtract padding
                 truncated_description = description[:max_chars]  # Truncate the description
                 prop_item = node['canvas_items'].get('prop_description')
                 if prop_item:
-                    self.canvas.itemconfigure(prop_item, text=truncated_description)
+                    self.canvas.itemconfigure(prop_item, text=truncated_description, width=new_width - 40)
                     self.canvas.coords(prop_item, x1 + new_width / 2, properties_y)
+
+            # Update input connectors
+            input_x = x1
+            num_inputs = len(node['inputs'])
+            input_gap = (new_height - 40) / (num_inputs + 1)
+            for idx, input_name in enumerate(node['inputs']):
+                connector_y = y1 + 20 + (idx + 1) * input_gap
+                input_connector = node['canvas_items'][f'input_{input_name}']
+                self.canvas.coords(
+                    input_connector,
+                    input_x, connector_y - 5,
+                    input_x + 10, connector_y + 5
+                )
 
             # Update output connectors
             output_x = x1 + new_width
-            output_gap = (new_height - 40) / max(1, len(node['outputs']))
+            num_outputs = len(node['outputs'])
+            output_gap = (new_height - 40) / (num_outputs + 1)
             for idx, output_name in enumerate(node['outputs']):
-                connector_y = y1 + 20 + idx * output_gap
+                connector_y = y1 + 20 + (idx + 1) * output_gap
                 output_connector = node['canvas_items'][f'output_{output_name}']
-                self.canvas.coords(output_connector,
-                                   output_x - 10, connector_y - 5,
-                                   output_x, connector_y + 5)
+                self.canvas.coords(
+                    output_connector,
+                    output_x - 10, connector_y - 5,
+                    output_x, connector_y + 5
+                )
 
             # Redraw connections
             self.redraw_connections()
 
+            # Raise all items except the rectangle to ensure they are visible
+            for key, item in node['canvas_items'].items():
+                if key != 'rect':
+                    self.canvas.tag_raise(item)
+
             # Mark as modified
             self.is_modified = True
             self.update_save_button_state()
-    
+
     def calculate_max_chars(self, width):
         """Calculate the maximum number of characters that can fit within the specified width."""
         test_text = "M"  # Use a character that is approximately the average width
-        char_width = self.canvas.bbox(self.canvas.create_text(0, 0, text=test_text, font=('Arial', 10)))[2]
+        temp_text = self.canvas.create_text(0, 0, text=test_text, font=('Arial', 10))
+        char_bbox = self.canvas.bbox(temp_text)
+        char_width = char_bbox[2] - char_bbox[0] if char_bbox else 7
+        self.canvas.delete(temp_text)
         max_chars = int((width) / char_width)  # Calculate how many characters fit
         return max_chars
 
@@ -372,14 +449,12 @@ class NodeEditor:
         if self.selected_node:
             dx = event.x - self.node_drag_data['x']
             dy = event.y - self.node_drag_data['y']
-            self.canvas.move(self.selected_node, dx, dy)
             # Move all items with the same node id
             tags = self.canvas.gettags(self.selected_node)
             node_id = tags[tags.index('node') + 1]
             items = self.canvas.find_withtag(node_id)
             for item in items:
-                if item != self.selected_node:
-                    self.canvas.move(item, dx, dy)
+                self.canvas.move(item, dx, dy)
             self.node_drag_data['x'] = event.x
             self.node_drag_data['y'] = event.y
             # Update node position
@@ -514,7 +589,7 @@ class NodeEditor:
         mid_y = (from_y + to_y) / 2
         offset = 50  # Adjust for curvature
 
-        # Create a Bezier curve (approximated with a smooth line)
+        # Create a Bezier-like curve using a smooth line
         points = [
             from_x, from_y,
             mid_x, from_y,
@@ -602,6 +677,7 @@ class NodeEditor:
                     self.canvas.itemconfigure(title_item, text=new_node_name)
 
             prop_window.destroy()
+            self.redraw_canvas()
 
             # Mark as modified
             self.is_modified = True
@@ -757,7 +833,7 @@ class NodeEditor:
         """Remove highlights from all nodes."""
         for node_id, node_data in self.nodes.items():
             rect = node_data['canvas_items']['rect']
-            self.canvas.itemconfig(rect, outline='black', width=1)
+            self.canvas.itemconfig(rect, outline='black', width=2)
 
     def highlight_node(self, node_id):
         """Highlight the specified node."""
@@ -767,4 +843,4 @@ class NodeEditor:
     def remove_highlight(self, node_id):
         """Remove highlight from the specified node."""
         rect = self.nodes[node_id]['canvas_items']['rect']
-        self.canvas.itemconfig(rect, outline='black', width=1)
+        self.canvas.itemconfig(rect, outline='black', width=2)
