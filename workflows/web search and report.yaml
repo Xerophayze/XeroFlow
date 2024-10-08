@@ -1,0 +1,186 @@
+graph:
+  connections:
+  - canvas_item: 88
+    from_node: 67afba72-1294-49a6-9c5e-e7bcc84ee689
+    from_output: prompt
+    to_input: input
+    to_node: 08f4fbad-833f-4a8b-8125-7efd4539ca91
+  - canvas_item: 89
+    from_node: 8001e11f-8a81-4daa-84fa-fba2caec1d7d
+    from_output: prompt
+    to_input: input
+    to_node: bee17b9f-aecb-433b-9c3e-c2d6078602a9
+  - canvas_item: 90
+    from_node: bee17b9f-aecb-433b-9c3e-c2d6078602a9
+    from_output: prompt
+    to_input: input
+    to_node: 67afba72-1294-49a6-9c5e-e7bcc84ee689
+  nodes:
+    08f4fbad-833f-4a8b-8125-7efd4539ca91:
+      canvas_items:
+        input_input: 51
+        prop_description: 50
+        rect: 47
+        resize_handle: 52
+        title: 48
+      connections: []
+      height: 80
+      id: 08f4fbad-833f-4a8b-8125-7efd4539ca91
+      inputs:
+      - input
+      outputs: []
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: End of the workflow
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: FinishNode
+          type: text
+      title: FinishNode
+      type: FinishNode
+      width: 150
+      x: 563
+      y: 182
+    67afba72-1294-49a6-9c5e-e7bcc84ee689:
+      canvas_items:
+        input_input: 61
+        output_prompt: 62
+        prop_description: 60
+        rect: 57
+        resize_handle: 63
+        title: 58
+      connections: []
+      height: 80
+      id: 67afba72-1294-49a6-9c5e-e7bcc84ee689
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: 'take the following content and write a well formatted and very
+            detailed report including references:'
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: ProcessingNode
+          type: text
+      title: ProcessingNode
+      type: ProcessingNode
+      width: 187
+      x: 268
+      y: 249
+    8001e11f-8a81-4daa-84fa-fba2caec1d7d:
+      canvas_items:
+        output_prompt: 72
+        prop_description: 71
+        rect: 68
+        resize_handle: 73
+        title: 69
+      connections: []
+      height: 80
+      id: 8001e11f-8a81-4daa-84fa-fba2caec1d7d
+      inputs: []
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: 'I dont want any of your own information, please take the folowing
+            content and form it into a good web search term:'
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Start of the workflow
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: StartNode
+          type: text
+      title: StartNode
+      type: StartNode
+      width: 150
+      x: 50
+      y: 50
+    bee17b9f-aecb-433b-9c3e-c2d6078602a9:
+      canvas_items:
+        input_input: 82
+        output_prompt: 83
+        prop_description: 81
+        rect: 78
+        resize_handle: 84
+        title: 79
+      connections: []
+      height: 80
+      id: bee17b9f-aecb-433b-9c3e-c2d6078602a9
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Processes the input for web search and scraping.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: ProcessingNode
+          type: text
+        num_results_to_skip:
+          default: '0'
+          type: number
+        num_search_results:
+          default: '5'
+          type: number
+        searxng_api_url:
+          default: http://192.168.76.50:8888/search
+          type: text
+      title: ProcessingNode
+      type: SearchAndScrapeNode
+      width: 239
+      x: 271
+      y: 52
+name: web search and report

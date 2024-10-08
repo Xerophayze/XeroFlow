@@ -898,15 +898,15 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
             if stop_event.is_set():
                 print("Processing has been stopped by the user.")
                 messagebox.showinfo("Stopped", "Processing has been stopped.")
-                
+
                 # Re-enable Submit button and disable Stop button
                 root.after(0, lambda: submit_button.config(state=tk.NORMAL))
                 root.after(0, lambda: stop_button.config(state=tk.DISABLED))
-                
+
                 # Clear all highlights
                 if editor and editor.is_open():
                     root.after(0, editor.clear_all_highlights)
-                
+
                 break  # Exit the processing loop
 
             if iteration_count >= MAX_ITERATIONS:
@@ -944,30 +944,17 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
 
             print(f"Processed Node '{current_node_id}'. Output: {node_output}")
 
-            # **Check for Stop Event After Processing Each Node**
-            if stop_event.is_set():
-                print("Processing has been stopped by the user.")
-                messagebox.showinfo("Stopped", "Processing has been stopped.")
-                
-                # Re-enable Submit button and disable Stop button
-                root.after(0, lambda: submit_button.config(state=tk.NORMAL))
-                root.after(0, lambda: stop_button.config(state=tk.DISABLED))
-                
-                # Clear all highlights
-                if editor and editor.is_open():
-                    root.after(0, editor.clear_all_highlights())
-                
-                break  # Exit the processing loop
-
-            # Store the output data back into the node for downstream nodes
-            current_node['output_data'] = node_output
-
-            # **Handle End Nodes**
+            # **Check if the node is an end node**
             is_end_node = node_instance.properties.get('is_end_node', {}).get('default', False)
             print(f"Node '{current_node_id}' is_end_node: {is_end_node}")
             if is_end_node:
-                final_output = node_output.get('final_output', 'No input received for final processing.')
-                print(f"[FinishNode] Final Output: {final_output}")
+                # Retrieve the final output from node_output regardless of key
+                if node_output:
+                    # Get the first output value
+                    final_output = next(iter(node_output.values()))
+                else:
+                    final_output = 'No input received for final processing.'
+                print(f"[EndNode] Final Output: {final_output}")
 
                 # Apply formatting and display the response
                 root.after(0, lambda: apply_formatting(output_box, final_output))
@@ -983,23 +970,27 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
                 # Exit the processing loop since it's an end node
                 break
 
-            # Handle multiple outputs (e.g., output_true and output_false)
+            # Store the output data back into the node for downstream nodes
+            current_node['output_data'] = node_output
+
+            # **Handle all outputs from the node**
             found_next_node = False
             for output_key, output_value in node_output.items():
-                if output_key.startswith('output_') or output_key == 'prompt':
-                    # Find the connected node(s) for this output
-                    connected_nodes = [
-                        conn['to_node'] for conn in connections
-                        if conn['from_node'] == current_node_id and conn['from_output'] == output_key
-                    ]
-                    if connected_nodes:
-                        found_next_node = True
-                        for to_node_id in connected_nodes:
-                            node_stack.append((to_node_id, {'input': output_value}))
-                    else:
+                # Process all outputs regardless of their names
+                connected_nodes = [
+                    conn['to_node'] for conn in connections
+                    if conn['from_node'] == current_node_id and conn['from_output'] == output_key
+                ]
+                if connected_nodes:
+                    found_next_node = True
+                    for to_node_id in connected_nodes:
+                        node_stack.append((to_node_id, {'input': output_value}))
+                else:
+                    # Only show warning if node is not an end node
+                    if not is_end_node:
                         print(f"Warning: No next node found for output '{output_key}' of node '{current_node_id}'")
 
-            if not found_next_node:
+            if not found_next_node and not is_end_node:
                 messagebox.showerror("Error", f"No next node found for outputs of node '{current_node_id}'.")
 
             # Remove highlight from the node after processing
@@ -1035,7 +1026,7 @@ def create_gui(config):
     # Create the main window
     global root
     root = tk.Tk()
-    root.title("XeroLLM")
+    root.title("XeroFlow")
     root.geometry("800x600")  # Increased size to accommodate buttons and layout
     root.minsize(800, 600)  # Set minimum size
 
