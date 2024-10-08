@@ -1,0 +1,146 @@
+graph:
+  connections:
+  - canvas_item: 61
+    from_node: 19468775-4499-40cd-961e-94ea3b469011
+    from_output: prompt
+    to_input: input
+    to_node: 8f4787bb-510c-4cd2-889e-da7a35beab81
+  - canvas_item: 62
+    from_node: 8f4787bb-510c-4cd2-889e-da7a35beab81
+    from_output: prompt
+    to_input: input
+    to_node: 6cd32afd-e65f-49a7-97fc-5048633a4920
+  nodes:
+    19468775-4499-40cd-961e-94ea3b469011:
+      canvas_items:
+        input_input: 37
+        output_prompt: 38
+        prop_description: 36
+        rect: 33
+        resize_handle: 39
+        title: 34
+      connections: []
+      height: 80
+      id: 19468775-4499-40cd-961e-94ea3b469011
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Processes the input for web search and scraping.
+          type: text
+        enable_url_selection:
+          default: false
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: SearchAndScrapeNode
+          type: text
+        num_results_to_skip:
+          default: ''
+          type: number
+        num_search_results:
+          default: '5'
+          type: number
+        searxng_api_url:
+          default: http://192.168.76.50:8888/search
+          type: text
+      title: SearchAndScrapeNode
+      type: SearchAndScrapeNode
+      width: 239
+      x: 50
+      y: 50
+    6cd32afd-e65f-49a7-97fc-5048633a4920:
+      canvas_items:
+        input_input: 47
+        prop_description: 46
+        rect: 43
+        resize_handle: 48
+        title: 44
+      connections: []
+      height: 80
+      id: 6cd32afd-e65f-49a7-97fc-5048633a4920
+      inputs:
+      - input
+      outputs: []
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: End of the workflow
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: FinishNode
+          type: text
+      title: Finish Node 1
+      type: FinishNode
+      width: 150
+      x: 605
+      y: 52
+    8f4787bb-510c-4cd2-889e-da7a35beab81:
+      canvas_items:
+        input_input: 56
+        output_prompt: 57
+        prop_description: 55
+        rect: 52
+        resize_handle: 58
+        title: 53
+      connections: []
+      height: 80
+      id: 8f4787bb-510c-4cd2-889e-da7a35beab81
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: 'Take the following content and give me a well formatted and organized
+            summarization of the content:'
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: ProcessingNode
+          type: text
+      title: ProcessingNode
+      type: ProcessingNode
+      width: 187
+      x: 353
+      y: 49
+name: web search

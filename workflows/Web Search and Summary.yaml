@@ -1,0 +1,146 @@
+graph:
+  connections:
+  - canvas_item: 61
+    from_node: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
+    from_output: prompt
+    to_input: input
+    to_node: 1315b138-fc65-4527-9ff0-b83faf22c796
+  - canvas_item: 62
+    from_node: 5d7b8b45-b555-4b69-ab9e-f756a7477576
+    from_output: prompt
+    to_input: input
+    to_node: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
+  nodes:
+    1315b138-fc65-4527-9ff0-b83faf22c796:
+      canvas_items:
+        input_input: 37
+        prop_description: 36
+        rect: 33
+        resize_handle: 38
+        title: 34
+      connections: []
+      height: 80
+      id: 1315b138-fc65-4527-9ff0-b83faf22c796
+      inputs:
+      - input
+      outputs: []
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: End of the workflow
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: FinishNode
+          type: text
+      title: Finish Node 1
+      type: FinishNode
+      width: 150
+      x: 550
+      y: 51
+    5d7b8b45-b555-4b69-ab9e-f756a7477576:
+      canvas_items:
+        input_input: 46
+        output_prompt: 47
+        prop_description: 45
+        rect: 42
+        resize_handle: 48
+        title: 43
+      connections: []
+      height: 80
+      id: 5d7b8b45-b555-4b69-ab9e-f756a7477576
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Processes the input for web search and scraping.
+          type: text
+        enable_url_selection:
+          default: true
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: SearchAndScrapeNode
+          type: text
+        num_results_to_skip:
+          default: '20'
+          type: number
+        num_search_results:
+          default: '5'
+          type: number
+        searxng_api_url:
+          default: http://192.168.76.50:8888/search
+          type: text
+      title: SearchAndScrapeNode
+      type: SearchAndScrapeNode
+      width: 239
+      x: 70
+      y: 70
+    e644d4f8-dd04-4f92-9c5d-0f1f71e09821:
+      canvas_items:
+        input_input: 56
+        output_prompt: 57
+        prop_description: 55
+        rect: 52
+        resize_handle: 58
+        title: 53
+      connections: []
+      height: 80
+      id: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: please provide me with a summary of the following content.  format
+            it to be easy to read.
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: ProcessingNode
+          type: text
+      title: ProcessingNode
+      type: ProcessingNode
+      width: 187
+      x: 330
+      y: 126
+name: Web Search and Summary
