@@ -1,18 +1,18 @@
-# XeroLLM
+# XeroFlow
 
 [GitHub Repository](https://github.com/Xerophayze/XeroLLM)
 
-XeroLLM is a node-based interface for managing and interacting with various Large Language Model (LLM) APIs. It provides a flexible and customizable platform for building workflows that integrate multiple APIs to generate and manage content. The platform allows users to visually create, connect, and manage these workflows through a graphical interface. This system is designed to be modular, making it easy to expand with new nodes or APIs as required.
+XeroFlow is a node-based interface for managing and interacting with various Large Language Model (LLM) APIs. It provides a flexible and customizable platform for building workflows that integrate multiple APIs to generate and manage content. The platform allows users to visually create, connect, and manage these workflows through a graphical interface. This system is designed to be modular, making it easy to expand with new nodes or APIs as required.
 
 ## Features
 
 ### 1. **Node-Based Workflow Creation**
-   - XeroLLM allows users to design workflows using a visual interface. Nodes represent different functions, processes, or APIs that you want to interact with. The nodes can be connected to define the data flow between them.
+   - XeroFlow allows users to design workflows using a visual interface. Nodes represent different functions, processes, or APIs that you want to interact with. The nodes can be connected to define the data flow between them.
    - The node editor provides intuitive drag-and-drop functionality, allowing users to design and configure complex workflows without having to manage the underlying code manually.
    - Nodes are now saved as separate, customizable files, offering more flexibility and personalization of workflow components.
 
 ### 2. **Custom Module Creation**
-   - XeroLLM now supports creating custom modules using Python. This allows users to extend the system with custom logic, making it even more adaptable to specific project needs.
+   - XeroFlow now supports creating custom modules using Python. This allows users to extend the system with custom logic, making it even more adaptable to specific project needs.
 
 ### 3. **Save and Share Workflows**
    - Workflows can now be saved as individual files, enabling users to easily share them with others or reload them for future use. This makes collaboration and reuse of workflows seamless.
