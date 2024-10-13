@@ -1,0 +1,48 @@
+graph:
+  connections: []
+  nodes:
+    08a5d2a4-9078-468f-9441-21c20718d2ef:
+      canvas_items:
+        input_input: 22
+        output_chat_history: 23
+        prop_description: 21
+        rect: 18
+        resize_handle: 24
+        title: 19
+      connections: []
+      height: 80
+      id: 08a5d2a4-9078-468f-9441-21c20718d2ef
+      inputs:
+      - input
+      outputs:
+      - chat_history
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Handles a chat conversation with the user.
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: ChatNode
+          type: text
+      title: ChatNode
+      type: ChatNode
+      width: 150
+      x: 70
+      y: 70
+name: Interactive Chat

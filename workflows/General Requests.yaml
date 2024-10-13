@@ -1,6 +1,6 @@
 graph:
   connections:
-  - canvas_item: 34
+  - canvas_item: 293
     from_node: b7642dfb-2fb0-4013-ba35-5d8618a0e0dc
     from_output: prompt
     to_input: input
@@ -38,8 +38,8 @@ graph:
       title: Return Results
       type: FinishNode
       width: 156
-      x: 375
-      y: 75
+      x: 462
+      y: 56
     b7642dfb-2fb0-4013-ba35-5d8618a0e0dc:
       canvas_items:
         output_prompt: 31
@@ -55,10 +55,10 @@ graph:
       - prompt
       properties:
         Prompt:
-          default: 'Process the following request:'
+          default: 'perform the following user request:'
           type: textarea
         api_endpoint:
-          default: OpenAI GPT gpt-4o-mini
+          default: Groq llama-3.1-70b-versatile
           options:
           - Groq llama-3.1-70b-versatile
           - Ollama llama-3.2-3b
@@ -80,6 +80,6 @@ graph:
       title: Process User Request
       type: StartNode
       width: 213
-      x: 50
-      y: 50
+      x: 62
+      y: 103
 name: General Requests

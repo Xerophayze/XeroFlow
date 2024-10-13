@@ -1,0 +1,45 @@
+graph:
+  connections: []
+  nodes:
+    171e2ccb-1b84-47bc-b753-2243b1a2878b:
+      canvas_items:
+        input_input: 22
+        output_scraped_text: 23
+        prop_description: 21
+        rect: 18
+        resize_handle: 24
+        title: 19
+      connections: []
+      height: 80
+      id: 171e2ccb-1b84-47bc-b753-2243b1a2878b
+      inputs:
+      - input
+      outputs:
+      - scraped_text
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        depth:
+          default: '1'
+          description: Depth to follow links (1 = only the first page)
+          min: 1
+          type: number
+        description:
+          default: Scrapes data from provided URLs.
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: WebScrapingNode
+          type: text
+      title: WebScrapingNode
+      type: WebScrapingNode
+      width: 203
+      x: 70
+      y: 70
+name: webscraping

@@ -1,0 +1,112 @@
+graph:
+  connections:
+  - canvas_item: 109
+    from_node: 78f39300-611e-4dc4-a2c8-7abf8ad0a39d
+    from_output: prompt
+    to_input: input
+    to_node: d950e7d5-627f-4cc7-9824-94e10737adcd
+  nodes:
+    78f39300-611e-4dc4-a2c8-7abf8ad0a39d:
+      canvas_items:
+        input_input: 6
+        output_prompt: 7
+        prop_description: 5
+        rect: 2
+        resize_handle: 8
+        title: 3
+      connections: []
+      height: 80
+      id: 78f39300-611e-4dc4-a2c8-7abf8ad0a39d
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: 'I want you to take the user requestw below and create an outline
+            for the story, each part of the outline should be an individual self contained
+            paragraph separated by a blank line. please use the following structure:
+
+
+            Title and Prologue paragraph.
+
+
+            Chapter or section #, each chapter or section will be its own paragraph
+            containing the chapter or section number at the beginning of the paragraph,
+            then a dash and then a short description of what this chapter or section
+            is about. the chapter or section number and name will never be separate
+            from the paragraph.
+
+
+            each section will be a whole paragraph, the section or chapter number
+            and heading or title will always be included at the very beginning of
+            the paragraph. for example:
+
+            Title - prologue.
+
+
+            Chapter 1 - the beginning - the content of chapter 1.
+
+
+            the user request is as follows:'
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes a list of items through the API, combining responses.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: LongOutputNode
+          type: text
+      title: LongOutputNode
+      type: LongOutputNode
+      width: 192
+      x: 117
+      y: 170
+    d950e7d5-627f-4cc7-9824-94e10737adcd:
+      canvas_items:
+        input_input: 15
+        prop_description: 14
+        rect: 11
+        resize_handle: 16
+        title: 12
+      connections: []
+      height: 80
+      id: d950e7d5-627f-4cc7-9824-94e10737adcd
+      inputs:
+      - input
+      outputs: []
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: End of the workflow
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: FinishNode
+          type: text
+      title: Finish Node 1
+      type: FinishNode
+      width: 150
+      x: 436
+      y: 228
+name: Long Form Content Creation

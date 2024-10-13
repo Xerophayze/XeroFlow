@@ -640,7 +640,6 @@ class NodeEditor:
 
     def edit_node_properties(self, node):
         def save_properties():
-            # Collect updated properties from the form
             for prop_name in node['properties']:
                 prop_details = node['properties'][prop_name]
                 widget = prop_widgets[prop_name]
@@ -655,20 +654,13 @@ class NodeEditor:
                 else:
                     value = widget.get()
 
-                # Update the property value in the node
                 node['properties'][prop_name]['default'] = value
 
-                # Update the canvas text if the item exists in canvas_items
-                display_value = value
-                if prop_details['type'] == 'boolean':
-                    display_value = 'Yes' if value else 'No'
-
-                # Update only if the key exists to avoid KeyError
+                display_value = 'Yes' if prop_details['type'] == 'boolean' and value else value
                 canvas_item_key = f'prop_{prop_name}'
                 if canvas_item_key in node['canvas_items']:
                     self.canvas.itemconfigure(node['canvas_items'][canvas_item_key], text=f"{prop_name}: {display_value}")
 
-            # If the node_name property is updated, change the node's title
             if 'node_name' in node['properties']:
                 new_node_name = node['properties']['node_name']['default']
                 node['title'] = new_node_name
@@ -678,72 +670,101 @@ class NodeEditor:
 
             prop_window.destroy()
             self.redraw_canvas()
-
-            # Mark as modified
             self.is_modified = True
             self.update_save_button_state()
 
+        # Main properties window
         prop_window = tk.Toplevel(self.editor_window)
         prop_window.title(f"Edit Node Properties - {node['title']}")
-        prop_window.geometry("400x600")
+        prop_window.geometry("350x600")
+        prop_window.minsize(350, 550)  # Set minimum window size
         prop_window.resizable(True, True)
 
+        # Scrollable frame setup
+        content_frame = ttk.Frame(prop_window)
+        content_frame.pack(fill=tk.BOTH, expand=True)
+
+        canvas = tk.Canvas(content_frame)
+        scrollbar = ttk.Scrollbar(content_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # Enable mouse scrolling for the canvas
+        def on_mouse_wheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+            
+        canvas.bind_all("<MouseWheel>", on_mouse_wheel)
+
+        # Packing scrollable area and scrollbar
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        # Property widgets
         prop_widgets = {}
         var_states = {}
 
-        # First, display the 'node_name' field if it exists
+        # Node name field
         if 'node_name' in node['properties']:
             prop_details = node['properties']['node_name']
-            ttk.Label(prop_window, text='node_name').pack(pady=5, anchor='w', padx=10)
-            entry = ttk.Entry(prop_window)
+            ttk.Label(scrollable_frame, text='node_name').pack(pady=5, anchor='w', padx=10)
+            entry = ttk.Entry(scrollable_frame)
             entry.pack(pady=5, fill=tk.X, padx=10)
-            default_value = prop_details.get('default', '')
-            entry.insert(0, default_value)
+            entry.insert(0, prop_details.get('default', ''))
             prop_widgets['node_name'] = entry
 
-        # Display the rest of the properties, excluding 'node_name'
+        # Rest of the properties
         for prop_name, prop_details in node['properties'].items():
             if prop_name == 'node_name':
                 continue
 
-            ttk.Label(prop_window, text=prop_name).pack(pady=5, anchor='w', padx=10)
+            ttk.Label(scrollable_frame, text=prop_name).pack(pady=5, anchor='w', padx=10)
             if prop_details['type'] == 'text':
-                entry = ttk.Entry(prop_window)
+                entry = ttk.Entry(scrollable_frame)
                 entry.pack(pady=5, fill=tk.X, padx=10)
-                default_value = prop_details.get('default', '')
-                entry.insert(0, default_value)
+                entry.insert(0, prop_details.get('default', ''))
                 prop_widgets[prop_name] = entry
             elif prop_details['type'] == 'dropdown':
                 options = prop_details.get('options', [])
-                combo = ttk.Combobox(prop_window, values=options, state="readonly")
+                combo = ttk.Combobox(scrollable_frame, values=options, state="readonly")
                 combo.pack(pady=5, fill=tk.X, padx=10)
-                default_value = prop_details.get('default', options[0] if options else '')
-                combo.set(default_value)
+                combo.set(prop_details.get('default', options[0] if options else ''))
                 prop_widgets[prop_name] = combo
             elif prop_details['type'] == 'textarea':
-                text_widget = tk.Text(prop_window, height=10, width=40)
+                text_widget = tk.Text(scrollable_frame, height=10, width=40)
                 text_widget.pack(pady=5, fill=tk.BOTH, expand=True, padx=10)
-                default_value = prop_details.get('default', '')
-                text_widget.insert("1.0", default_value)
+                text_widget.insert("1.0", prop_details.get('default', ''))
                 prop_widgets[prop_name] = text_widget
             elif prop_details['type'] == 'boolean':
                 var = tk.BooleanVar()
                 var.set(prop_details.get('default', False))
-                check = ttk.Checkbutton(prop_window, variable=var)
+                check = ttk.Checkbutton(scrollable_frame, variable=var)
                 check.pack(pady=5, anchor='w', padx=10)
                 var_states[prop_name] = var
                 prop_widgets[prop_name] = check
             else:
-                # Default to text entry for unknown types
-                entry = ttk.Entry(prop_window)
+                entry = ttk.Entry(scrollable_frame)
                 entry.pack(pady=5, fill=tk.X, padx=10)
-                default_value = prop_details.get('default', '')
-                entry.insert(0, default_value)
+                entry.insert(0, prop_details.get('default', ''))
                 prop_widgets[prop_name] = entry
 
-        save_btn = ttk.Button(prop_window, text="Save", command=save_properties)
-        save_btn.pack(pady=20)
+        # Centered button frame
+        button_frame = ttk.Frame(prop_window)
+        button_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=10)
 
+        inner_button_frame = ttk.Frame(button_frame)
+        inner_button_frame.pack()
+
+        save_btn = ttk.Button(inner_button_frame, text="Save", command=save_properties)
+        save_btn.pack(side=tk.LEFT, padx=10)
+        cancel_btn = ttk.Button(inner_button_frame, text="Cancel", command=prop_window.destroy)
+        cancel_btn.pack(side=tk.LEFT, padx=10)
+    
     def on_connector_press(self, event):
         pass  # Placeholder for any connector press actions
 

@@ -1,58 +1,19 @@
 graph:
   connections:
-  - canvas_item: 61
-    from_node: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
-    from_output: prompt
-    to_input: input
-    to_node: 1315b138-fc65-4527-9ff0-b83faf22c796
-  - canvas_item: 62
+  - canvas_item: 38
     from_node: 5d7b8b45-b555-4b69-ab9e-f756a7477576
     from_output: prompt
     to_input: input
     to_node: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
   nodes:
-    1315b138-fc65-4527-9ff0-b83faf22c796:
-      canvas_items:
-        input_input: 37
-        prop_description: 36
-        rect: 33
-        resize_handle: 38
-        title: 34
-      connections: []
-      height: 80
-      id: 1315b138-fc65-4527-9ff0-b83faf22c796
-      inputs:
-      - input
-      outputs: []
-      properties:
-        Prompt:
-          default: ''
-          type: textarea
-        description:
-          default: End of the workflow
-          type: text
-        is_end_node:
-          default: true
-          type: boolean
-        is_start_node:
-          default: false
-          type: boolean
-        node_name:
-          default: FinishNode
-          type: text
-      title: Finish Node 1
-      type: FinishNode
-      width: 150
-      x: 550
-      y: 51
     5d7b8b45-b555-4b69-ab9e-f756a7477576:
       canvas_items:
-        input_input: 46
-        output_prompt: 47
-        prop_description: 45
-        rect: 42
-        resize_handle: 48
-        title: 43
+        input_input: 25
+        output_prompt: 26
+        prop_description: 24
+        rect: 21
+        resize_handle: 27
+        title: 22
       connections: []
       height: 80
       id: 5d7b8b45-b555-4b69-ab9e-f756a7477576
@@ -91,7 +52,7 @@ graph:
           default: '5'
           type: number
         searxng_api_url:
-          default: http://192.168.76.50:8888/search
+          default: http://192.168.76.105:8888/search
           type: text
       title: SearchAndScrapeNode
       type: SearchAndScrapeNode
@@ -100,12 +61,12 @@ graph:
       y: 70
     e644d4f8-dd04-4f92-9c5d-0f1f71e09821:
       canvas_items:
-        input_input: 56
-        output_prompt: 57
-        prop_description: 55
-        rect: 52
-        resize_handle: 58
-        title: 53
+        input_input: 34
+        output_prompt: 35
+        prop_description: 33
+        rect: 30
+        resize_handle: 36
+        title: 31
       connections: []
       height: 80
       id: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
@@ -130,7 +91,7 @@ graph:
           default: Processes the input prompt and prepares it for the API.
           type: text
         is_end_node:
-          default: false
+          default: true
           type: boolean
         is_start_node:
           default: false
@@ -141,6 +102,6 @@ graph:
       title: ProcessingNode
       type: ProcessingNode
       width: 187
-      x: 330
-      y: 126
+      x: 486
+      y: 75
 name: Web Search and Summary
