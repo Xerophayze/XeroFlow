@@ -1,4 +1,5 @@
 # node_registry.py
+
 import os
 import importlib
 from pathlib import Path
@@ -17,10 +18,41 @@ def register_node(node_type):
         return cls
     return decorator
 
-# Automatically import all node modules in the 'nodes' directory
-nodes_dir = Path(__file__).parent / 'nodes'
-for filename in os.listdir(nodes_dir):
-    if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py'):
-        module_name = filename[:-3]
-        module_path = f'nodes.{module_name}'
-        importlib.import_module(module_path)
+def reload_nodes():
+    """
+    Reload all node modules from the 'nodes' directory and update NODE_REGISTRY.
+    """
+    global NODE_REGISTRY
+    NODE_REGISTRY.clear()
+    print("Cleared NODE_REGISTRY for reloading nodes.")
+
+    nodes_dir = Path(__file__).parent / 'nodes'
+    for filename in os.listdir(nodes_dir):
+        if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py'):
+            module_name = filename[:-3]
+            module_path = f'nodes.{module_name}'
+            try:
+                importlib.reload(importlib.import_module(module_path))
+                print(f"Reloaded node module: {module_path}")
+            except ModuleNotFoundError:
+                # If the module isn't already loaded, import it
+                importlib.import_module(module_path)
+                print(f"Imported node module: {module_path}")
+            except Exception as e:
+                print(f"Failed to reload/import node module '{module_path}': {e}")
+
+# Automatically import all node modules in the 'nodes' directory upon initial load
+def initial_load_nodes():
+    nodes_dir = Path(__file__).parent / 'nodes'
+    for filename in os.listdir(nodes_dir):
+        if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py'):
+            module_name = filename[:-3]
+            module_path = f'nodes.{module_name}'
+            try:
+                importlib.import_module(module_path)
+                print(f"Initially loaded node module: {module_path}")
+            except Exception as e:
+                print(f"Failed to load node module '{module_path}': {e}")
+
+# Perform the initial loading of nodes
+initial_load_nodes()

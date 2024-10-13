@@ -1,0 +1,52 @@
+graph:
+  connections: []
+  nodes:
+    8e1328be-d8bb-4579-96df-46d9a292e168:
+      canvas_items:
+        input_input: 14
+        output_urls: 15
+        prop_description: 13
+        rect: 10
+        resize_handle: 16
+        title: 11
+      connections: []
+      height: 80
+      id: 8e1328be-d8bb-4579-96df-46d9a292e168
+      inputs:
+      - input
+      outputs:
+      - urls
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Performs web search and returns URLs only.
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: WebSearchNode
+          type: text
+        num_results_to_skip:
+          default: '0'
+          type: number
+        num_search_results:
+          default: '5'
+          type: number
+        search_query:
+          default: ''
+          type: textarea
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          type: text
+      title: WebSearchNode
+      type: WebSearchNode
+      width: 188
+      x: 303
+      y: 190
+name: websearch

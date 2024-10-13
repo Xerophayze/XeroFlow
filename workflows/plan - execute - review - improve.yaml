@@ -1,21 +1,21 @@
 graph:
   connections:
-  - canvas_item: 92
+  - canvas_item: 99
     from_node: a6b34654-d8f3-4ae3-b383-12aa0b533108
     from_output: prompt
     to_input: input
     to_node: 1b44f28c-d871-41e6-a9be-8aa7cb228321
-  - canvas_item: 93
+  - canvas_item: 100
     from_node: 1b44f28c-d871-41e6-a9be-8aa7cb228321
     from_output: prompt
     to_input: input
     to_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
-  - canvas_item: 94
+  - canvas_item: 101
     from_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
     from_output: output_true
     to_input: input
     to_node: 13a96257-66dd-4b64-afea-b15a57d17ed5
-  - canvas_item: 95
+  - canvas_item: 102
     from_node: 083a6ad8-0b5d-4d59-be0f-aefed6383725
     from_output: output_false
     to_input: input
@@ -23,13 +23,13 @@ graph:
   nodes:
     083a6ad8-0b5d-4d59-be0f-aefed6383725:
       canvas_items:
-        input_input: 6
-        output_output_false: 8
-        output_output_true: 7
-        prop_description: 5
-        rect: 2
-        resize_handle: 9
-        title: 3
+        input_input: 57
+        output_output_false: 59
+        output_output_true: 58
+        prop_description: 56
+        rect: 53
+        resize_handle: 60
+        title: 54
       connections: []
       height: 80
       id: 083a6ad8-0b5d-4d59-be0f-aefed6383725
@@ -43,11 +43,11 @@ graph:
           default: "as an expert in the area represented by the content below, rate\
             \ the following content as if you were an expert in that area.  give it\
             \ a rating on a scale of 1 to 10, include some suggestions for improvement.\
-            \  your expected output will always include the following:\n[original\
-            \ content]\n[your rating and review]\nif your rating is above 8.4 then\
-            \ you will include the word \"REVIEWPASS\" at the very end.  \nif your\
-            \ rating is less than 8.4then dont include the word \"REVIEWPASS\"\nThe\
-            \ content is as follows:"
+            \  your expected output will always include the following:\n\n[list the\
+            \ original content here]\n\n[provide your rating and review]\n\nif your\
+            \ rating is above 8.4 then you will include the word \"REVIEWPASS\" at\
+            \ the very end.  \nif your rating is less than 8.4then dont include the\
+            \ word \"REVIEWPASS\"\n\nThe content is as follows:"
           type: textarea
         Search Term:
           default: REVIEWPASS
@@ -67,7 +67,7 @@ graph:
           default: false
           type: boolean
         is_start_node:
-          default: false
+          default: true
           type: boolean
         node_name:
           default: Rate & Review
@@ -79,11 +79,11 @@ graph:
       y: 195
     13a96257-66dd-4b64-afea-b15a57d17ed5:
       canvas_items:
-        input_input: 19
-        prop_description: 18
-        rect: 15
-        resize_handle: 20
-        title: 16
+        input_input: 70
+        prop_description: 69
+        rect: 66
+        resize_handle: 71
+        title: 67
       connections: []
       height: 80
       id: 13a96257-66dd-4b64-afea-b15a57d17ed5
@@ -113,12 +113,12 @@ graph:
       y: 50
     1b44f28c-d871-41e6-a9be-8aa7cb228321:
       canvas_items:
-        input_input: 30
-        output_prompt: 31
-        prop_description: 29
-        rect: 26
-        resize_handle: 32
-        title: 27
+        input_input: 81
+        output_prompt: 82
+        prop_description: 80
+        rect: 77
+        resize_handle: 83
+        title: 78
       connections: []
       height: 100
       id: 1b44f28c-d871-41e6-a9be-8aa7cb228321
@@ -159,11 +159,11 @@ graph:
       y: 51
     a6b34654-d8f3-4ae3-b383-12aa0b533108:
       canvas_items:
-        output_prompt: 42
-        prop_description: 41
-        rect: 38
-        resize_handle: 43
-        title: 39
+        output_prompt: 93
+        prop_description: 92
+        rect: 89
+        resize_handle: 94
+        title: 90
       connections: []
       height: 100
       id: a6b34654-d8f3-4ae3-b383-12aa0b533108
@@ -190,7 +190,7 @@ graph:
           default: false
           type: boolean
         is_start_node:
-          default: true
+          default: false
           type: boolean
         node_name:
           default: Plan It

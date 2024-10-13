@@ -1,0 +1,13 @@
+requests
+PyYAML
+ollama
+Pygments
+faiss-cpu
+langchain
+langchain-huggingface
+langchain-community
+sentence-transformers
+pandas
+numpy
+transformers
+urllib3<2.0.0

@@ -1,16 +1,16 @@
 # nodes/long_output_node.py
-"""
-LongOutputNode: Processes an initial prompt and input by sending them to the API endpoint.
-The API response is expected to be split by paragraph (empty lines between blocks of text).
-It then iteratively processes each item from this list, sending each to the API,
-and accumulates the responses by appending each new response to the previous one along with the next item.
-"""
 from .base_node import BaseNode
 from node_registry import register_node  # Import the decorator
 from api_handler import process_api_request  # Correct import
 
 @register_node('LongOutputNode')
 class LongOutputNode(BaseNode):
+    """
+    LongOutputNode: Processes an initial prompt and input by sending them to the API endpoint.
+    The API response is expected to be split by paragraph (empty lines between blocks of text).
+    It then iteratively processes each item from this list, sending each to the API,
+    and accumulates the responses by appending each new response to the previous one along with the next item.
+    """
 
     def define_inputs(self):
         return ['input']  # Input from the previous node
@@ -100,13 +100,10 @@ class LongOutputNode(BaseNode):
         for index, item in enumerate(items):
             if index == 0:
                 # First item, send it to API
-                prompt = f'\nyou will be writing a story based on the following context: {initial_api_response} \nThe content below may be the Title or prologue. If it is the Title, you will just repeat the title.  the title or beginning is as follows:\n{item}'
-            elif index == len(items) - 1:
-                # Last item, perform a final API call
-                prompt = last_response + f'\nThis is the final section to be processed, based on: {initial_api_response}. Continue writing as follows:\n{item}'
+                prompt = item
             else:
-                # Intermediate items
-                prompt = last_response + f'\nUsing the following outline: {initial_api_response} continue writing the content for the following section and only this seciont without any other commentary. make sure Chapter headings are bold:\n{item}'
+                # Append current item to last response
+                prompt = last_response + f'\nplease continue writing the content for the above in the context of {previous_input} using the following item as the next thing to continue writing about. do not rewrite any of the previous content, and it is assumed that there will be more content so do not end with any phrases like, to be continued. your only expected output is the next section of content with no other commentary, the next section to write about is as follows:\n{item}'
 
             print(f"[LongOutputNode] Sending to API: {prompt}")
 
@@ -131,7 +128,7 @@ class LongOutputNode(BaseNode):
             last_response = api_response  # Replace last_response with current response
 
             # Append the response to the combined_response
-            combined_response += '\n' + api_response + '\n'
+            combined_response += api_response + '\n'
 
         # Step 5: Return the final combined response
         final_output = combined_response.strip()
