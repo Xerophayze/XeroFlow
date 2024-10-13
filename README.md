@@ -47,25 +47,28 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
 
 ## How to Use
 
-1. **Clone the Repository:**
+1. **Install Python and Pip:**
+   - Ensure you have Python (version 3.8 or higher) and pip installed on your system. You can download and install them from the official [Python website](https://www.python.org/downloads/).
+
+2. **Clone the Repository:**
    ```
    git clone https://github.com/Xerophayze/XeroFlow.git
    cd XeroFlow
    ```
 
-2. **Run the Setup:**
+3. **Run the Setup:**
    Run the setup script to install Python, pip, and other necessary dependencies:
    ```
    setup.bat
    ```
 
-3. **Run the Application:**
+4. **Run the Application:**
    Start the application with `run.bat`, which will set up a virtual environment and launch the main program:
    ```
    run.bat
    ```
 
-4. **Build Your Workflow:**
+5. **Build Your Workflow:**
    Use the node editor to design and connect different APIs and functions. Save and manage your workflows easily using the provided interface.
 
 ## Future Enhancements
