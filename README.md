@@ -1,4 +1,4 @@
-
+so the setup may not work.  there are a lot of requirements that i am sorting through.  I already had a lot of things installed on my dev system so i am testing on a clean system.
 # XeroFlow
 
 [GitHub Repository](https://github.com/Xerophayze/XeroFlow)
