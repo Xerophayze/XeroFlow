@@ -586,6 +586,11 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
         messagebox.showerror("Error", "Selected workflow is not properly configured.")
         return
 
+    # Clear the output box before displaying new output
+    output_box.config(state=tk.NORMAL)
+    output_box.delete('1.0', tk.END)
+    output_box.config(state=tk.DISABLED)
+
     # Retrieve the selected API endpoint from config
     api_endpoint = config.get("api_endpoint")  # Fetch selected endpoint dynamically
 
@@ -602,7 +607,6 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
         config, api_endpoint, user_input, output_box, submit_button, stop_button, chat_tab.stop_event,
         node_graph, selected_prompt_name, root, open_editors))
     thread.start()
-
 
 def stop_process(chat_tab):
     """Stop the ongoing process."""
