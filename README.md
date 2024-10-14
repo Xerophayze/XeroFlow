@@ -1,4 +1,3 @@
-so the setup may not work.  there are a lot of requirements that i am sorting through.  I already had a lot of things installed on my dev system so i am testing on a clean system.
 # XeroFlow
 
 [GitHub Repository](https://github.com/Xerophayze/XeroFlow)
@@ -57,7 +56,7 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
    ```
 
 3. **Run the Setup:**
-   Run the setup script to install Python, pip, and other necessary dependencies:
+   Run the setup script to install necessary dependencies:
    ```
    setup.bat
    ```
