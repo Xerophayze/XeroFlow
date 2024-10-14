@@ -27,19 +27,22 @@ def manage_apis_window(parent, config, refresh_callback):
         index = selected[0]
         selected_interface = api_manage_listbox.get(index)
         interface_details = config['interfaces'][selected_interface]
-        
+
+        # Ensure values are strings and handle None values
         name_entry.delete(0, tk.END)
         name_entry.insert(0, selected_interface)
         url_entry.delete(0, tk.END)
-        url_entry.insert(0, interface_details['url'])
+        url_entry.insert(0, interface_details.get('url', ''))
         api_key_entry.delete(0, tk.END)
-        api_key_entry.insert(0, interface_details.get('api_key', ''))
+        api_key_value = interface_details.get('api_key', '') or ''
+        api_key_entry.insert(0, api_key_value)
         api_type_dropdown.set(interface_details.get('api_type', 'OpenAI'))
         max_tokens_entry.delete(0, tk.END)
-        max_tokens_entry.insert(0, str(interface_details.get('max_tokens', '')))
-        
-        update_models_dropdown()
-        
+        max_tokens_value = str(interface_details.get('max_tokens', '')) or ''
+        max_tokens_entry.insert(0, max_tokens_value)
+
+        update_models_dropdown(default_model=interface_details.get('model', ''))
+
         save_button.config(text="Save Changes", command=lambda: save_edited_interface(selected_interface))
 
     def delete_api_interface():
@@ -136,7 +139,7 @@ def manage_apis_window(parent, config, refresh_callback):
         refresh_callback()  # Notify main app to refresh dropdowns if necessary
         messagebox.showinfo("Success", "API Interface updated successfully.")
 
-    def update_models_dropdown():
+    def update_models_dropdown(default_model=None):
         api_url = url_entry.get().strip()
         api_key = api_key_entry.get().strip()
         api_type = api_type_dropdown.get().strip()
@@ -153,11 +156,13 @@ def manage_apis_window(parent, config, refresh_callback):
 
         if models:
             model_dropdown['values'] = models
-            if models:
-                model_dropdown.set(models[0])
+            if default_model and default_model in models:
+                model_dropdown.set(default_model)
             else:
-                model_dropdown.set('')
+                model_dropdown.set(models[0])
         else:
+            model_dropdown['values'] = []
+            model_dropdown.set('')
             messagebox.showerror("Error", "Failed to fetch models. Check the URL, API key, or network connection.")
 
     def fetch_models(api_url, api_key, api_type):
@@ -214,99 +219,102 @@ def manage_apis_window(parent, config, refresh_callback):
     api_list_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
     api_list_frame.columnconfigure(0, weight=1)
     api_list_frame.rowconfigure(0, weight=1)
-    
+
     api_manage_scrollbar = ttk.Scrollbar(api_list_frame, orient=tk.VERTICAL)
     api_manage_listbox = tk.Listbox(
-        api_list_frame, 
-        selectmode=tk.SINGLE, 
-        yscrollcommand=api_manage_scrollbar.set, 
+        api_list_frame,
+        selectmode=tk.SINGLE,
+        yscrollcommand=api_manage_scrollbar.set,
         exportselection=False
     )
     for key in config['interfaces']:
         api_manage_listbox.insert(tk.END, key)
-    api_manage_listbox.grid(row=0, column=0, sticky="nsew", padx=(5,0), pady=5)
+    api_manage_listbox.grid(row=0, column=0, sticky="nsew", padx=(5, 0), pady=5)
     api_manage_scrollbar.config(command=api_manage_listbox.yview)
-    api_manage_scrollbar.grid(row=0, column=1, sticky="ns", pady=5, padx=(0,5))
-    
+    api_manage_scrollbar.grid(row=0, column=1, sticky="ns", pady=5, padx=(0, 5))
+
     # ------------------ Buttons Frame ------------------
     buttons_frame = ttk.Frame(parent)
     buttons_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
-    buttons_frame.columnconfigure((0,1,2), weight=1)
-    
+    buttons_frame.columnconfigure((0, 1, 2), weight=1)
+
     add_api_button = ttk.Button(buttons_frame, text="Add", command=add_api_interface)
     add_api_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
-    
+
     edit_api_button = ttk.Button(buttons_frame, text="Edit", command=edit_api_interface)
     edit_api_button.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-    
+
     delete_api_button = ttk.Button(buttons_frame, text="Delete", command=delete_api_interface)
     delete_api_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
-    
+
     # ------------------ API Details Form Frame ------------------
     form_frame = ttk.LabelFrame(parent, text="API Interface Details")
     form_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
     form_frame.columnconfigure(1, weight=1)
-    
+
     # Name
     ttk.Label(form_frame, text="Name:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
     name_entry = ttk.Entry(form_frame)
     name_entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-    
+
     # URL
     ttk.Label(form_frame, text="URL:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
     url_entry = ttk.Entry(form_frame)
     url_entry.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
-    
+
     # API Key
     ttk.Label(form_frame, text="API Key (Optional):").grid(row=2, column=0, padx=5, pady=5, sticky="e")
     api_key_entry = ttk.Entry(form_frame, show='*')
     api_key_entry.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
-    
+
     # API Type
     ttk.Label(form_frame, text="API Type:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
     api_type_dropdown = ttk.Combobox(form_frame, values=["OpenAI", "Ollama"], state="readonly")
     api_type_dropdown.set("OpenAI")
     api_type_dropdown.grid(row=3, column=1, padx=5, pady=5, sticky="ew")
-    
+
     # Fetch Models Button
-    fetch_models_button = ttk.Button(form_frame, text="Fetch Models", command=update_models_dropdown)
+    fetch_models_button = ttk.Button(form_frame, text="Fetch Models", command=lambda: update_models_dropdown())
     fetch_models_button.grid(row=4, column=1, padx=5, pady=5, sticky="w")
-    
+
     # Model
     ttk.Label(form_frame, text="Model:").grid(row=5, column=0, padx=5, pady=5, sticky="e")
     model_dropdown = ttk.Combobox(form_frame, state="readonly")
     model_dropdown.grid(row=5, column=1, padx=5, pady=5, sticky="ew")
-    
+
     # Max Tokens
     ttk.Label(form_frame, text="Max Tokens (Optional):").grid(row=6, column=0, padx=5, pady=5, sticky="e")
     max_tokens_entry = ttk.Entry(form_frame)
     max_tokens_entry.grid(row=6, column=1, padx=5, pady=5, sticky="ew")
-    
+
     # Save Button
     save_button = ttk.Button(form_frame, text="Add API Interface", command=save_new_interface)
     save_button.grid(row=7, column=0, columnspan=2, pady=20)
-    
+
     def on_select(event):
         selected = api_manage_listbox.curselection()
         if selected:
             index = selected[0]
             selected_interface = api_manage_listbox.get(index)
             interface_details = config['interfaces'][selected_interface]
-            
+
+            # Ensure values are strings and handle None values
             name_entry.delete(0, tk.END)
             name_entry.insert(0, selected_interface)
             url_entry.delete(0, tk.END)
-            url_entry.insert(0, interface_details['url'])
+            url_entry.insert(0, interface_details.get('url', ''))
             api_key_entry.delete(0, tk.END)
-            api_key_entry.insert(0, interface_details.get('api_key', ''))
+            api_key_value = interface_details.get('api_key', '') or ''
+            api_key_entry.insert(0, api_key_value)
             api_type_dropdown.set(interface_details.get('api_type', 'OpenAI'))
             max_tokens_entry.delete(0, tk.END)
-            max_tokens_entry.insert(0, str(interface_details.get('max_tokens', '')))
-            
-            update_models_dropdown()
+            max_tokens_value = str(interface_details.get('max_tokens', '')) or ''
+            max_tokens_entry.insert(0, max_tokens_value)
+
+            update_models_dropdown(default_model=interface_details.get('model', ''))
             save_button.config(text="Save Changes", command=lambda: save_edited_interface(selected_interface))
 
     api_manage_listbox.bind('<<ListboxSelect>>', on_select)
-    
+
     # Initial population of the API list
     refresh_api_list()
