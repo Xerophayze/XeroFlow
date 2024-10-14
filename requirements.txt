@@ -1,13 +1,58 @@
+# General dependencies
 requests
 PyYAML
 ollama
 Pygments
-faiss-cpu
+bs4
+httpx
+
+# Core langchain dependencies
 langchain
 langchain-huggingface
-langchain-community
+langchain_core
 sentence-transformers
-pandas
-numpy
+pandas==2.1.0  # Specific version for stability
+numpy==1.26.4
 transformers
+typing_extensions
+pydantic==2.9.2
+
+# Additional dependencies for transformers
+filelock
+huggingface-hub<1.0,>=0.23.2
+regex!=2019.12.17
+safetensors>=0.4.1
+tokenizers<0.21,>=0.20
+tqdm
+
+# Dependencies for faiss-cpu and others
+faiss-cpu
 urllib3<2.0.0
+
+# Modules required for pydantic and httpx functionality
+pydantic_core==2.23.4
+annotated_types
+sniffio
+httpcore
+h11
+
+# Pandas dependencies
+python-dateutil>=2.8.2
+pytz>=2020.1
+tzdata>=2022.7
+
+# Newly observed dependencies
+torch>=1.11.0
+pillow
+scikit-learn==1.5.0  # Specific version for compatibility
+scipy
+fsspec
+joblib
+threadpoolctl
+colorama
+jinja2
+networkx
+sympy
+mpmath<1.4,>=1.1.0
+pypdf  # For PDF support
+markupsafe  # Required by Jinja2

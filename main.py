@@ -23,66 +23,9 @@ from manage_documents_window import manage_documents_window
 from manage_settings import manage_settings_window
 from process_node_graph import process_node_graph
 
-def install(package):
-    """Install a package using pip."""
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-def check_dependencies():
-    """
-    Check for required dependencies and install any that are missing.
-    For non-pip-installable packages like tkinter, notify the user.
-    """
-    dependencies = {
-        'requests': 'requests',
-        'yaml': 'PyYAML',
-        'ollama': 'ollama',  # Needed for Client
-        'pygments': 'Pygments',  # For syntax highlighting
-        'faiss': 'faiss-cpu',
-        'langchain': 'langchain',
-        'langchain_huggingface': 'langchain-huggingface',
-        'langchain_community': 'langchain-community',
-        'sentence_transformers': 'sentence-transformers',
-        'pandas': 'pandas',
-        'numpy': 'numpy',
-        'transformers': 'transformers',
-        'urllib3': 'urllib3<2.0.0',
-        'beautifulsoup4': 'beautifulsoup4',  # Added to handle bs4 dependencies
-        'pypdf': 'pypdf',  # Added to handle PDF documents
-    }
-
-    for module, package in dependencies.items():
-        try:
-            __import__(module)
-        except ImportError:
-            try:
-                install(package)
-            except subprocess.CalledProcessError:
-                if package == 'ollama':
-                    print(f"Failed to install '{package}'. Please install it manually.")
-                else:
-                    print(f"Failed to install '{package}'. Please install it manually.")
-                sys.exit(1)
-
-    # Check for tkinter separately as it cannot be installed via pip
-    try:
-        import tkinter
-    except ImportError:
-        print("The 'tkinter' module is not installed.")
-        print("Please install it manually:")
-        if sys.platform.startswith('linux'):
-            print("For Debian/Ubuntu: sudo apt-get install python3-tk")
-            print("For Fedora: sudo dnf install python3-tkinter")
-            print("For Arch: sudo pacman -S tk")
-        elif sys.platform == 'darwin':
-            print("For macOS with Homebrew: brew install python-tk")
-        elif sys.platform == 'win32':
-            print("Please ensure that Tkinter is included in your Python installation.")
-        sys.exit(1)
-
-# Perform dependency check before importing other modules
-check_dependencies()
 
 import tkinter as tk
+import _tkinter
 from tkinter import ttk, messagebox, Menu, Toplevel, Label, Entry, Button, Scrollbar, END, SINGLE, filedialog
 import requests
 import yaml
@@ -251,6 +194,14 @@ def delete_instruction_prompt(config, chat_instruction_listbox):
         else:
             messagebox.showerror("Error", f"Workflow file '{selected_name}.yaml' not found.")
 
+def on_mouse_wheel(event, canvas):
+    try:
+        if canvas.winfo_exists():
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+    except _tkinter.TclError:
+        # The canvas no longer exists; ignore the event or perform cleanup
+        pass
+        
 def update_workflow_list(chat_instruction_listbox):
     """Dynamically update the instruction prompt list based on available workflows."""
     chat_instruction_listbox.delete(0, END)

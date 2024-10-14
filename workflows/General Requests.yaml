@@ -1,6 +1,6 @@
 graph:
   connections:
-  - canvas_item: 293
+  - canvas_item: 34
     from_node: b7642dfb-2fb0-4013-ba35-5d8618a0e0dc
     from_output: prompt
     to_input: input
@@ -58,7 +58,7 @@ graph:
           default: 'perform the following user request:'
           type: textarea
         api_endpoint:
-          default: Groq llama-3.1-70b-versatile
+          default: Ollama llama3.1-8b
           options:
           - Groq llama-3.1-70b-versatile
           - Ollama llama-3.2-3b
