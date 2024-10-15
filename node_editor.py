@@ -1,4 +1,5 @@
 # node_editor.py
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import uuid
@@ -694,12 +695,6 @@ class NodeEditor:
         )
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
-
-        # Enable mouse scrolling for the canvas
-        def on_mouse_wheel(event):
-            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-            
-        canvas.bind_all("<MouseWheel>", on_mouse_wheel)
 
         # Packing scrollable area and scrollbar
         canvas.pack(side="left", fill="both", expand=True)

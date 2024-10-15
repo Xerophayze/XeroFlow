@@ -194,14 +194,13 @@ def delete_instruction_prompt(config, chat_instruction_listbox):
         else:
             messagebox.showerror("Error", f"Workflow file '{selected_name}.yaml' not found.")
 
-def on_mouse_wheel(event, canvas):
+def on_mouse_wheel(self, event):
     try:
-        if canvas.winfo_exists():
-            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-    except _tkinter.TclError:
-        # The canvas no longer exists; ignore the event or perform cleanup
+        event.widget.yview_scroll(int(-1 * (event.delta / 120)), "units")
+    except tk.TclError:
+        # The widget no longer exists; ignore the event
         pass
-        
+
 def update_workflow_list(chat_instruction_listbox):
     """Dynamically update the instruction prompt list based on available workflows."""
     chat_instruction_listbox.delete(0, END)

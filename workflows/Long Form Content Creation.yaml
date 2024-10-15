@@ -1,6 +1,6 @@
 graph:
   connections:
-  - canvas_item: 109
+  - canvas_item: 36
     from_node: 78f39300-611e-4dc4-a2c8-7abf8ad0a39d
     from_output: prompt
     to_input: input
@@ -8,12 +8,12 @@ graph:
   nodes:
     78f39300-611e-4dc4-a2c8-7abf8ad0a39d:
       canvas_items:
-        input_input: 6
-        output_prompt: 7
-        prop_description: 5
-        rect: 2
-        resize_handle: 8
-        title: 3
+        input_input: 24
+        output_prompt: 25
+        prop_description: 23
+        rect: 20
+        resize_handle: 26
+        title: 21
       connections: []
       height: 80
       id: 78f39300-611e-4dc4-a2c8-7abf8ad0a39d
@@ -51,7 +51,7 @@ graph:
             the user request is as follows:'
           type: textarea
         api_endpoint:
-          default: OpenAI GPT gpt-4o-mini
+          default: Ollama llama3.1-8b
           options:
           - Groq llama-3.1-70b-versatile
           - Ollama llama-3.2-3b
@@ -77,11 +77,11 @@ graph:
       y: 170
     d950e7d5-627f-4cc7-9824-94e10737adcd:
       canvas_items:
-        input_input: 15
-        prop_description: 14
-        rect: 11
-        resize_handle: 16
-        title: 12
+        input_input: 33
+        prop_description: 32
+        rect: 29
+        resize_handle: 34
+        title: 30
       connections: []
       height: 80
       id: d950e7d5-627f-4cc7-9824-94e10737adcd

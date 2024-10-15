@@ -21,20 +21,47 @@ class LongOutputNode(BaseNode):
     def define_properties(self):
         props = self.get_default_properties()
         props.update({
-            'node_name': {'type': 'text', 'default': 'LongOutputNode'},
-            'description': {'type': 'text', 'default': 'Processes a list of items through the API, combining responses.'},
-            'Prompt': {'type': 'textarea', 'default': ''},  # User-defined prompt
-            'api_endpoint': {'type': 'dropdown', 'options': self.get_api_endpoints()},
-            'is_start_node': {'type': 'boolean', 'default': False},
-            'is_end_node': {'type': 'boolean', 'default': False}
+            'node_name': {
+                'type': 'text',
+                'label': 'Custom Node Name',
+                'default': 'LongOutputNode'
+            },
+            'description': {
+                'type': 'text',
+                'label': 'Description',
+                'default': 'Processes a list of items through the API, combining responses.'
+            },
+            'Prompt': {
+                'type': 'textarea',
+                'label': 'Prompt',
+                'default': ''  # User-defined prompt
+            },
+            'api_endpoint': {
+                'type': 'dropdown',
+                'label': 'API Endpoint',
+                'options': self.get_api_endpoints(),
+                'default': self.get_api_endpoints()[0] if self.get_api_endpoints() else ''
+            },
+            'is_start_node': {
+                'type': 'boolean',
+                'label': 'Start Node',
+                'default': False
+            },
+            'is_end_node': {
+                'type': 'boolean',
+                'label': 'End Node',
+                'default': False
+            }
         })
         return props
 
     def get_api_endpoints(self):
         # Retrieve API endpoint names from the configuration
         interfaces = self.config.get('interfaces', {})
+        if interfaces is None:
+            interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[LongOutputNode] Available API endpoints: {api_list}")
+        print(f"[LongOutputNode] Available API endpoints: {api_list}")  # Debug statement
         return api_list
 
     def process(self, inputs):
@@ -49,7 +76,7 @@ class LongOutputNode(BaseNode):
 
         if not api_endpoint_name:
             print("[LongOutputNode] API endpoint not specified.")
-            return {}  # Or handle as error
+            return {"output": "API endpoint not specified."}  # Or handle as error
 
         # Get input
         previous_input = inputs.get('input', '').strip()
@@ -59,13 +86,13 @@ class LongOutputNode(BaseNode):
 
         if not combined_prompt.strip():
             print("[LongOutputNode] No input provided.")
-            return {}
+            return {"output": "No input provided."}
 
         # Retrieve API details from configuration
         api_details = self.config['interfaces'].get(api_endpoint_name)
         if not api_details:
             print(f"[LongOutputNode] API interface '{api_endpoint_name}' not found in configuration.")
-            return {}  # Or handle as error
+            return {"output": f"API interface '{api_endpoint_name}' not found."}  # Or handle as error
 
         # Step 1: Send the combined prompt to the API endpoint
         print(f"[LongOutputNode] Sending initial prompt to API: {combined_prompt}")
@@ -73,24 +100,25 @@ class LongOutputNode(BaseNode):
 
         if 'error' in initial_api_response_content:
             print(f"[LongOutputNode] API Error: {initial_api_response_content['error']}")
-            return {}  # Or handle as error
+            return {"output": f"API Error: {initial_api_response_content['error']}"}
 
         # Extract the actual response based on API type
         api_type = api_details.get('api_type')
         if api_type == "OpenAI":
             initial_api_response = initial_api_response_content.get('choices', [{}])[0].get('message', {}).get('content', '')
         elif api_type == "Ollama":
-            initial_api_response = initial_api_response_content.get('response', '')
+            message = initial_api_response_content.get('message', {})
+            initial_api_response = message.get('content', '') if isinstance(message, dict) else ''
         else:
             initial_api_response = 'Unsupported API type.'
 
         print(f"[LongOutputNode] Initial API Response: {initial_api_response}")
 
-        # Step 2: Split the initial API response into items (array), assuming paragraphs (double newline-separated values)
+        # Step 2: Split the initial API response into items (paragraphs separated by double newlines)
         items = [item.strip() for item in initial_api_response.split('\n\n') if item.strip()]
         if not items:
             print("[LongOutputNode] No valid items found in initial API response.")
-            return {}
+            return {"output": "No valid items found in API response."}
 
         # Step 3: Initialize combined_response and last_response
         combined_response = ''
@@ -100,13 +128,13 @@ class LongOutputNode(BaseNode):
         for index, item in enumerate(items):
             if index == 0:
                 # First item, send it to API
-                prompt = f'\nyou will be writing a story based on the following context: {initial_api_response} \nThe content below may be the Title or prologue. If it is the Title, you will just repeat the title.  the title or beginning is as follows:\n{item}'
+                prompt = f"You will be writing a story based on the following context: {initial_api_response}.\nThe content below may be the Title or prologue. If it is the Title, you will just repeat the title. The title or beginning is as follows:\n{item}"
             elif index == len(items) - 1:
                 # Last item, perform a final API call
-                prompt = last_response + f'\nThis is the final section to be processed, based on: {initial_api_response}. Continue writing as follows:\n{item}'
+                prompt = f"{last_response}\nThis is the final section to be processed, based on: {initial_api_response}. Continue writing as follows:\n{item}"
             else:
                 # Intermediate items
-                prompt = last_response + f'\nUsing the following outline: {initial_api_response} continue writing the content for the following section and only this seciont without any other commentary. make sure Chapter headings are bold:\n{item}'
+                prompt = f"{last_response}\nUsing the following outline: {initial_api_response}, continue writing the content for the following section and only this section without any other commentary. Make sure chapter headings are bold:\n{item}"
 
             print(f"[LongOutputNode] Sending to API: {prompt}")
 
@@ -115,13 +143,14 @@ class LongOutputNode(BaseNode):
 
             if 'error' in api_response_content:
                 print(f"[LongOutputNode] API Error: {api_response_content['error']}")
-                return {}  # Or handle as error
+                return {"output": f"API Error: {api_response_content['error']}"}
 
             # Extract the actual response based on API type
             if api_type == "OpenAI":
                 api_response = api_response_content.get('choices', [{}])[0].get('message', {}).get('content', '')
             elif api_type == "Ollama":
-                api_response = api_response_content.get('response', '')
+                message = api_response_content.get('message', {})
+                api_response = message.get('content', '') if isinstance(message, dict) else ''
             else:
                 api_response = 'Unsupported API type.'
 
@@ -139,4 +168,4 @@ class LongOutputNode(BaseNode):
         return {'prompt': final_output}
 
     def requires_api_call(self):
-        return False  # API call is handled within the node
+        return True  # API call is handled within the node
