@@ -1,18 +1,68 @@
 graph:
   connections:
-  - canvas_item: 34
-    from_node: b7642dfb-2fb0-4013-ba35-5d8618a0e0dc
-    from_output: prompt
+  - canvas_item: 36
+    from_node: 27dd61af-33af-4b3e-a825-db416fb2e2d1
+    from_output: output
     to_input: input
     to_node: 786ceb95-8d87-49b6-a0d6-c81162352f3c
   nodes:
+    27dd61af-33af-4b3e-a825-db416fb2e2d1:
+      canvas_items:
+        input_input: 24
+        output_output: 25
+        prop_description: 23
+        rect: 20
+        resize_handle: 26
+        title: 21
+      connections: []
+      height: 80
+      id: 27dd61af-33af-4b3e-a825-db416fb2e2d1
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: 'process the following user request:'
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Ollama llama3.1-8b
+          label: API Endpoint
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 70
+      y: 70
     786ceb95-8d87-49b6-a0d6-c81162352f3c:
       canvas_items:
-        input_input: 23
-        prop_description: 22
-        rect: 19
-        resize_handle: 24
-        title: 20
+        input_input: 33
+        prop_description: 32
+        rect: 29
+        resize_handle: 34
+        title: 30
       connections: []
       height: 100
       id: 786ceb95-8d87-49b6-a0d6-c81162352f3c
@@ -40,46 +90,4 @@ graph:
       width: 156
       x: 462
       y: 56
-    b7642dfb-2fb0-4013-ba35-5d8618a0e0dc:
-      canvas_items:
-        output_prompt: 31
-        prop_description: 30
-        rect: 27
-        resize_handle: 32
-        title: 28
-      connections: []
-      height: 100
-      id: b7642dfb-2fb0-4013-ba35-5d8618a0e0dc
-      inputs: []
-      outputs:
-      - prompt
-      properties:
-        Prompt:
-          default: 'perform the following user request:'
-          type: textarea
-        api_endpoint:
-          default: Ollama llama3.1-8b
-          options:
-          - Groq llama-3.1-70b-versatile
-          - Ollama llama-3.2-3b
-          - Ollama llama3.1-8b
-          - OpenAI GPT gpt-4o-mini
-          type: dropdown
-        description:
-          default: Start of the workflow
-          type: text
-        is_end_node:
-          default: false
-          type: boolean
-        is_start_node:
-          default: true
-          type: boolean
-        node_name:
-          default: Process User Request
-          type: text
-      title: Process User Request
-      type: StartNode
-      width: 213
-      x: 62
-      y: 103
 name: General Requests

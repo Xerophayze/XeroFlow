@@ -4,7 +4,7 @@ graph:
     from_node: 5d7b8b45-b555-4b69-ab9e-f756a7477576
     from_output: prompt
     to_input: input
-    to_node: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
+    to_node: 965a4396-5ad6-4f5b-90c7-a4610cb2b43e
   nodes:
     5d7b8b45-b555-4b69-ab9e-f756a7477576:
       canvas_items:
@@ -46,7 +46,7 @@ graph:
           default: SearchAndScrapeNode
           type: text
         num_results_to_skip:
-          default: '20'
+          default: '0'
           type: number
         num_search_results:
           default: '5'
@@ -59,28 +59,30 @@ graph:
       width: 239
       x: 70
       y: 70
-    e644d4f8-dd04-4f92-9c5d-0f1f71e09821:
+    965a4396-5ad6-4f5b-90c7-a4610cb2b43e:
       canvas_items:
         input_input: 34
-        output_prompt: 35
+        output_output: 35
         prop_description: 33
         rect: 30
         resize_handle: 36
         title: 31
       connections: []
       height: 80
-      id: e644d4f8-dd04-4f92-9c5d-0f1f71e09821
+      id: 965a4396-5ad6-4f5b-90c7-a4610cb2b43e
       inputs:
       - input
       outputs:
-      - prompt
+      - output
       properties:
         Prompt:
           default: please provide me with a summary of the following content.  format
             it to be easy to read.
+          label: Prompt
           type: textarea
         api_endpoint:
           default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
           options:
           - Groq llama-3.1-70b-versatile
           - Ollama llama-3.2-3b
@@ -89,19 +91,23 @@ graph:
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
+          label: Description
           type: text
         is_end_node:
           default: true
+          label: End Node
           type: boolean
         is_start_node:
           default: false
+          label: Start Node
           type: boolean
         node_name:
-          default: ProcessingNode
+          default: BasicNode
+          label: Custom Node Name
           type: text
-      title: ProcessingNode
-      type: ProcessingNode
-      width: 187
-      x: 486
-      y: 75
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 508
+      y: 144
 name: Web Search and Summary

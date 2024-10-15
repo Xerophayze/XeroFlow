@@ -1,17 +1,17 @@
 graph:
   connections: []
   nodes:
-    08a5d2a4-9078-468f-9441-21c20718d2ef:
+    7bf13952-c6db-48d0-b28d-11afd16ed221:
       canvas_items:
-        input_input: 14
-        output_chat_history: 15
-        prop_description: 13
-        rect: 10
-        resize_handle: 16
-        title: 11
+        input_input: 22
+        output_chat_history: 23
+        prop_description: 21
+        rect: 18
+        resize_handle: 24
+        title: 19
       connections: []
       height: 80
-      id: 08a5d2a4-9078-468f-9441-21c20718d2ef
+      id: 7bf13952-c6db-48d0-b28d-11afd16ed221
       inputs:
       - input
       outputs:
@@ -21,12 +21,18 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Ollama llama3.1-8b
+          default: Groq llama-3.1-70b-versatile
           options:
           - Groq llama-3.1-70b-versatile
           - Ollama llama-3.2-3b
           - Ollama llama3.1-8b
           - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        database:
+          default: TEK Utah
+          options:
+          - Sci-fi Novels
+          - TEK Utah
           type: dropdown
         description:
           default: Handles a chat conversation with the user.

@@ -129,7 +129,12 @@ def process_node_graph(config, default_api_details, user_input, output_box, subm
             # **Handle all outputs from the node**
             found_next_node = False
             for output_key, output_value in node_output.items():
-                # Process all outputs regardless of their names
+                # **Skip empty outputs**
+                if not output_value:
+                    print(f"[process_node_graph] Skipping output '{output_key}' as it is empty.")
+                    continue
+
+                # Process only outputs with non-empty values
                 connected_nodes = [
                     conn['to_node'] for conn in connections
                     if conn['from_node'] == current_node_id and conn['from_output'] == output_key

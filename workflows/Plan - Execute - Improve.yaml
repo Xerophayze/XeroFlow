@@ -1,0 +1,243 @@
+graph:
+  connections:
+  - canvas_item: 103
+    from_node: 95e9b65a-a6c3-4c38-bd5b-3bce22b3d70d
+    from_output: output
+    to_input: input
+    to_node: 787c1a08-da5e-47e3-98fd-45c32bf4b0e0
+  - canvas_item: 104
+    from_node: 787c1a08-da5e-47e3-98fd-45c32bf4b0e0
+    from_output: output
+    to_input: input
+    to_node: 37f95b80-f764-42e7-99cb-7ac77610f527
+  - canvas_item: 105
+    from_node: 37f95b80-f764-42e7-99cb-7ac77610f527
+    from_output: output_true
+    to_input: input
+    to_node: 541d1303-f7cf-4190-8a70-33bbc22337e7
+  - canvas_item: 106
+    from_node: 37f95b80-f764-42e7-99cb-7ac77610f527
+    from_output: output_false
+    to_input: input
+    to_node: 787c1a08-da5e-47e3-98fd-45c32bf4b0e0
+  nodes:
+    37f95b80-f764-42e7-99cb-7ac77610f527:
+      canvas_items:
+        input_input: 59
+        output_output_false: 61
+        output_output_true: 60
+        prop_description: 58
+        rect: 55
+        resize_handle: 62
+        title: 56
+      connections: []
+      height: 80
+      id: 37f95b80-f764-42e7-99cb-7ac77610f527
+      inputs:
+      - input
+      outputs:
+      - output_true
+      - output_false
+      properties:
+        Prompt:
+          default: "as an expert critic in written content, please rate and review\
+            \ the following content below on a scale of 1 to 10 and provide 3 or 4\
+            \ suggestions for improvement. \nyou expected output is: \nALWAYS repeat\
+            \ the original content first\nprovide an overall number rating and 3 or\
+            \ 4 suggestions for improvement, and if the number rating is above 8.5\
+            \ then print the word REVIEWPASS at the end:\n\nremember to always reprint\
+            \ the original content below first then give your rating and suggestions.\n\
+            The content is as follows:"
+          label: Prompt
+          type: textarea
+        Search Term:
+          default: REVIEWPASS
+          label: Search Term
+          type: text
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          label: API Endpoint
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt, sends it to the API, and searches for
+            a specified term in the response.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: SearchNode
+          label: Custom Node Name
+          type: text
+      title: SearchNode
+      type: SearchNode
+      width: 154
+      x: 279
+      y: 209
+    541d1303-f7cf-4190-8a70-33bbc22337e7:
+      canvas_items:
+        input_input: 72
+        output_output: 73
+        prop_description: 71
+        rect: 68
+        resize_handle: 74
+        title: 69
+      connections: []
+      height: 80
+      id: 541d1303-f7cf-4190-8a70-33bbc22337e7
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Groq llama-3.1-70b-versatile
+          label: API Endpoint
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Finished Content
+          label: Custom Node Name
+          type: text
+      title: Finished Content
+      type: BasicNode
+      width: 173
+      x: 530
+      y: 49
+    787c1a08-da5e-47e3-98fd-45c32bf4b0e0:
+      canvas_items:
+        input_input: 84
+        output_output: 85
+        prop_description: 83
+        rect: 80
+        resize_handle: 86
+        title: 81
+      connections: []
+      height: 80
+      id: 787c1a08-da5e-47e3-98fd-45c32bf4b0e0
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: Acting as an expert in the subject of the content below, you will
+            fullfill the following user request following the plan. your only expected
+            output should be the finished content. do not give any of your own commentary.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Execute
+          label: Custom Node Name
+          type: text
+      title: Execute
+      type: BasicNode
+      width: 150
+      x: 286
+      y: 48
+    95e9b65a-a6c3-4c38-bd5b-3bce22b3d70d:
+      canvas_items:
+        input_input: 96
+        output_output: 97
+        prop_description: 95
+        rect: 92
+        resize_handle: 98
+        title: 93
+      connections: []
+      height: 80
+      id: 95e9b65a-a6c3-4c38-bd5b-3bce22b3d70d
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: take the following user request, and as an expert in the area of
+            this request, create a plan for the user request. your expected output
+            is the original user request and your plan outline.  do not execute the
+            outline yet.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq llama-3.1-70b-versatile
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Plan
+          label: Custom Node Name
+          type: text
+      title: Plan
+      type: BasicNode
+      width: 150
+      x: 50
+      y: 50
+name: Plan - Execute - Improve

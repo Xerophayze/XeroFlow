@@ -30,24 +30,13 @@ def process_api_request(api_details, prompt):
             return {'error': f"OpenAI API Error: {str(e)}"}
 
     elif api_type == "Ollama":
-        print("Connecting to Ollama API...")
-        client = Client(host=api_details['url'])
-        messages = [{"role": "user", "content": prompt}]
-        
-        print("Sending the following messages to Ollama API:", messages)
-        response = client.chat(model=model, messages=messages)
-        
-        # Check if 'message' key exists in response to verify it's a valid response
-        print("Response received from Ollama API:", response)
-        if 'message' in response and 'content' in response['message']:
-            # Extract only the 'content' part of the assistant's message
-            assistant_message = response['message']['content']
-            print("Parsed assistant message:", assistant_message)
-            return {'response': assistant_message}
-        else:
-            error_message = {'error': "Ollama API Error: Unexpected response format."}
-            print("Error encountered:", error_message)
-            return error_message
+        try:
+            client = Client(host=api_details['url'])
+            messages = [{"role": "user", "content": prompt}]
+            response = client.chat(model=model, messages=messages)
+            return response  # Assuming Ollama returns {'response': '...'}
+        except Exception as e:
+            return {'error': f"Ollama API Error: {str(e)}"}
 
     else:
         return {'error': f"Unsupported API type '{api_type}'."}
