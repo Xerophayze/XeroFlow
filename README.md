@@ -13,7 +13,8 @@
   </tr>
 </table>
 
-<!-- Centered video link below the table -->
+<!-- Title and centered video link below the table -->
+<h2 align="center">Watch the Tutorial Here</h2>
 <p align="center">
   <a href="https://youtu.be/dxEQNHmMuqQ">
     <img src="https://img.youtube.com/vi/dxEQNHmMuqQ/0.jpg" alt="Watch the video" width="600" />
