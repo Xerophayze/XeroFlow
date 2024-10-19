@@ -184,7 +184,7 @@ def delete_instruction_prompt(config, chat_instruction_listbox):
         return
     selected_prompt = workflows[index]
     selected_name = selected_prompt['name']
-    confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the workflow '{selected_name}'?")
+    confirm = messagebox.showyesno("Confirm Deletion", f"Are you sure you want to delete the workflow '{selected_name}'?")
     if confirm:
         workflow_file = Path('workflows') / f"{selected_name}.yaml"
         if workflow_file.exists():
@@ -413,9 +413,30 @@ def create_gui(config):
     input_label = ttk.Label(chat_tab, text="Enter your prompt:")
     input_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
 
-    input_box = tk.Text(chat_tab, height=8)
-    input_box.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
+    input_box_frame = ttk.Frame(chat_tab)
+    input_box_frame.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
     chat_tab.rowconfigure(2, weight=1)
+
+    input_box = tk.Text(input_box_frame, height=8)
+    input_box.pack(side=tk.LEFT, fill='both', expand=True)
+
+    input_scrollbar = Scrollbar(input_box_frame, orient=tk.VERTICAL, command=input_box.yview)
+    input_scrollbar.pack(side=tk.RIGHT, fill='y')
+    input_box.configure(yscrollcommand=input_scrollbar.set)
+
+    # Context menu for input_box
+    input_context_menu = Menu(root, tearoff=0)
+    input_context_menu.add_command(label="Cut", command=lambda: input_box.event_generate("<<Cut>>"))
+    input_context_menu.add_command(label="Copy", command=lambda: input_box.event_generate("<<Copy>>"))
+    input_context_menu.add_command(label="Paste", command=lambda: input_box.event_generate("<<Paste>>"))
+    input_context_menu.add_separator()
+    input_context_menu.add_command(label="Select All", command=lambda: input_box.tag_add('sel', '1.0', 'end'))
+
+    def show_input_context_menu(event):
+        input_box.focus_set()
+        input_context_menu.tk_popup(event.x_root, event.y_root)
+
+    input_box.bind("<Button-3>", show_input_context_menu)
 
     buttons_frame = ttk.Frame(chat_tab)
     buttons_frame.grid(row=3, column=0, columnspan=1, padx=5, pady=10, sticky='ew')
@@ -468,13 +489,31 @@ def create_gui(config):
     output_label = ttk.Label(chat_tab, text="Response:")
     output_label.grid(row=4, column=0, padx=5, pady=5, sticky="w")
 
-    output_box = tk.Text(chat_tab, height=15, wrap=tk.WORD)
-    output_box.grid(row=5, column=0, columnspan=1, padx=5, pady=5, sticky="nsew")
-    output_box.config(state=tk.DISABLED)
-
-    chat_tab.rowconfigure(2, weight=1)
+    output_box_frame = ttk.Frame(chat_tab)
+    output_box_frame.grid(row=5, column=0, columnspan=1, padx=5, pady=5, sticky="nsew")
     chat_tab.rowconfigure(5, weight=2)
     chat_tab.columnconfigure(0, weight=1)
+
+    output_box = tk.Text(output_box_frame, height=15, wrap=tk.WORD, state=tk.DISABLED)
+    output_box.pack(side=tk.LEFT, fill='both', expand=True)
+
+    output_scrollbar = Scrollbar(output_box_frame, orient=tk.VERTICAL, command=output_box.yview)
+    output_scrollbar.pack(side=tk.RIGHT, fill='y')
+    output_box.configure(yscrollcommand=output_scrollbar.set)
+
+    # Context menu for output_box
+    output_context_menu = Menu(root, tearoff=0)
+    output_context_menu.add_command(label="Cut", command=lambda: output_box.event_generate("<<Cut>>"))
+    output_context_menu.add_command(label="Copy", command=lambda: output_box.event_generate("<<Copy>>"))
+    output_context_menu.add_command(label="Paste", command=lambda: output_box.event_generate("<<Paste>>"))
+    output_context_menu.add_separator()
+    output_context_menu.add_command(label="Select All", command=lambda: output_box.tag_add('sel', '1.0', 'end'))
+
+    def show_output_context_menu(event):
+        output_box.focus_set()
+        output_context_menu.tk_popup(event.x_root, event.y_root)
+
+    output_box.bind("<Button-3>", show_output_context_menu)
 
     menubar = Menu(root)
     root.config(menu=menubar)
