@@ -6,10 +6,10 @@ from api_handler import process_api_request
 @register_node('BasicNode')
 class BasicNode(BaseNode):
     def define_inputs(self):
-        return ['input']  # Single input named 'input'
+        return ['input','input2','input3']  # Single input named 'input'
 
     def define_outputs(self):
-        return ['output']  # Single output named 'output'
+        return ['output','output2','output3']  # Single output named 'output'
 
     def define_properties(self):
         props = self.get_default_properties()

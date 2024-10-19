@@ -124,8 +124,8 @@ class ChatNode(BaseNode):
             root.destroy()
 
         root = tk.Tk()
-        root.title("Chat")
-        root.geometry("500x500")
+        root.title("Interactive Chat")
+        root.geometry("500x700")
         root.protocol("WM_DELETE_WINDOW", close_chat)
 
         api_options = self.get_api_endpoints()

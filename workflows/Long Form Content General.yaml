@@ -1,0 +1,111 @@
+graph:
+  connections:
+  - canvas_item: 76
+    from_node: 1d61acfc-545d-4029-ac9b-a58f49ea2441
+    from_output: output
+    to_input: input
+    to_node: 76c43573-d081-415d-8303-49069925f6db
+  nodes:
+    1d61acfc-545d-4029-ac9b-a58f49ea2441:
+      canvas_items:
+        input_input: 63
+        output_output: 64
+        prop_description: 62
+        rect: 59
+        resize_handle: 65
+        title: 60
+      connections: []
+      height: 80
+      id: 1d61acfc-545d-4029-ac9b-a58f49ea2441
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: I want you to take the user requestw below and create an outline
+            using the content provided, each part of the outline should be an individual
+            self contained paragraph separated by a blank line.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Create Outline
+          label: Custom Node Name
+          type: text
+      title: Create Outline
+      type: BasicNode
+      width: 150
+      x: 84
+      y: 126
+    76c43573-d081-415d-8303-49069925f6db:
+      canvas_items:
+        input_input: 72
+        output_prompt: 73
+        prop_description: 71
+        rect: 68
+        resize_handle: 74
+        title: 69
+      connections: []
+      height: 80
+      id: 76c43573-d081-415d-8303-49069925f6db
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes a list of items through the API, combining responses.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: LongOutputNode
+          label: Custom Node Name
+          type: text
+      title: LongOutputNode
+      type: LongOutputNode
+      width: 192
+      x: 328
+      y: 129
+name: Long Form Content General

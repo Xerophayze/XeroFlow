@@ -128,7 +128,7 @@ class LongOutputNode(BaseNode):
         for index, item in enumerate(items):
             if index == 0:
                 # First item, send it to API
-                prompt = f"You will be writing a story based on the following context: {initial_api_response}.\nThe content below may be the Title or prologue. If it is the Title, you will just repeat the title. The title or beginning is as follows:\n{item}"
+                prompt = f"You will be writing the content based on the following context: {initial_api_response}.\nThe content below may be the Title. If it is the Title, you will just repeat the title. The title or beginning is as follows:\n{item}"
             elif index == len(items) - 1:
                 # Last item, perform a final API call
                 prompt = f"{last_response}\nThis is the final section to be processed, based on: {initial_api_response}. Continue writing as follows:\n{item}"
