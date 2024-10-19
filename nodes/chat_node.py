@@ -50,6 +50,7 @@ class ChatNode(BaseNode):
 
     def process(self, inputs):
         self.chat_history_output = ''
+        self.window_closed = False  # Track whether the window is closed
         api_endpoint_property = self.properties.get('api_endpoint', {})
         api_endpoint_name = api_endpoint_property.get('value') or api_endpoint_property.get('default', '')
         if not api_endpoint_name:
@@ -74,22 +75,22 @@ class ChatNode(BaseNode):
                 chat_history.append({'role': 'assistant', 'content': response})
 
         def update_chat_window():
-            chat_output_widget.config(state=tk.NORMAL)
-            chat_output_widget.delete('1.0', END)
-            for message in chat_history:
-                role = message['role']
-                content = message['content']
-                if role == 'system':
-                    # Style system messages differently if desired
-                    chat_output_widget.insert(END, f"System:\n", 'system')
-                    apply_formatting(chat_output_widget, content, base_tag='system_content')
-                else:
-                    chat_output_widget.insert(END, f"{role.capitalize()}:\n", 'role')
-                    base_tag = f"{role}_content"
-                    apply_formatting(chat_output_widget, content, base_tag=base_tag)
-                chat_output_widget.insert(END, '\n')
-            chat_output_widget.config(state=tk.DISABLED)
-            chat_output_widget.see(END)
+            if not self.window_closed:  # Ensure window is still open before updating UI
+                chat_output_widget.config(state=tk.NORMAL)
+                chat_output_widget.delete('1.0', END)
+                for message in chat_history:
+                    role = message['role']
+                    content = message['content']
+                    if role == 'system':
+                        chat_output_widget.insert(END, f"System:\n", 'system')
+                        apply_formatting(chat_output_widget, content, base_tag='system_content')
+                    else:
+                        chat_output_widget.insert(END, f"{role.capitalize()}:\n", 'role')
+                        base_tag = f"{role}_content"
+                        apply_formatting(chat_output_widget, content, base_tag=base_tag)
+                    chat_output_widget.insert(END, '\n')
+                chat_output_widget.config(state=tk.DISABLED)
+                chat_output_widget.see(END)
 
         def submit_input(event=None):
             user_input = user_input_entry.get().strip()
@@ -98,35 +99,39 @@ class ChatNode(BaseNode):
                 user_input_entry.delete(0, END)
                 update_chat_window()
                 submit_button.config(state=tk.DISABLED)
-                threading.Thread(target=handle_api_request, args=(user_input,)).start()
+                threading.Thread(target=handle_api_request, args=(user_input,), daemon=True).start()
 
         def handle_api_request(user_input):
-            # Prepare the input with /doc search results if any
+            if self.window_closed:  # Avoid running if window is closed
+                return
             modified_input = self.prepare_input_with_search(user_input, db_manager, selected_database)
-            
-            # If modified_input differs from user_input, it contains search results
             if modified_input != user_input:
-                # Append the search results as a system message
                 chat_history.append({'role': 'system', 'content': modified_input})
-                # Update the chat window to display search results
-                chat_output_widget.after(0, update_chat_window)
-            
-            # Send the modified input to the API
+                if not self.window_closed:
+                    chat_output_widget.after(0, update_chat_window)
+
+            if self.window_closed:  # Avoid processing if window is closed
+                return
+
             response = self.send_to_api(chat_history, modified_input, api_details)
-            if response:
-                # Add assistant's response to chat history
+            if response and not self.window_closed:
                 chat_history.append({'role': 'assistant', 'content': response})
                 chat_output_widget.after(0, update_chat_window)
-            submit_button.after(0, lambda: submit_button.config(state=tk.NORMAL))
+
+            if not self.window_closed:
+                submit_button.after(0, lambda: submit_button.config(state=tk.NORMAL))
 
         def close_chat():
+            self.window_closed = True  # Mark window as closed
             self.chat_history_output = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in chat_history])
-            root.destroy()
+            chat_history.clear()  # Reset chat history
+            root.quit()  # Ensure mainloop is exited
+            root.destroy()  # Properly destroy the Tkinter window
 
         root = tk.Tk()
         root.title("Interactive Chat")
         root.geometry("500x700")
-        root.protocol("WM_DELETE_WINDOW", close_chat)
+        root.protocol("WM_DELETE_WINDOW", close_chat)  # For 'X' button
 
         api_options = self.get_api_endpoints()
         api_var = tk.StringVar(value=api_endpoint_name)
@@ -179,7 +184,7 @@ class ChatNode(BaseNode):
         submit_button = tk.Button(input_frame, text="Submit", command=submit_input)
         submit_button.pack(side=tk.LEFT, padx=(0, 5))
 
-        close_button = tk.Button(input_frame, text="Close", command=close_chat)
+        close_button = tk.Button(input_frame, text="Close", command=close_chat)  # Close button uses close_chat
         close_button.pack(side=tk.LEFT)
 
         update_chat_window()
@@ -207,15 +212,11 @@ class ChatNode(BaseNode):
         return user_input
 
     def send_to_api(self, chat_history, combined_input, api_details):
-        # Construct prompt using only `chat_history`
         prompt = "\n".join([f"{msg['role']}: {msg['content']}" for msg in chat_history])
-
-        # Send the prompt to the API
         api_response_content = process_api_request(api_details, prompt)
         if 'error' in api_response_content:
             return None
 
-        # Extract response based on API type
         api_type = api_details.get('api_type')
         if api_type == "OpenAI":
             return api_response_content.get('choices', [{}])[0].get('message', {}).get('content', 'No response available')
