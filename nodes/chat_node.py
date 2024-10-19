@@ -220,9 +220,13 @@ class ChatNode(BaseNode):
         if api_type == "OpenAI":
             return api_response_content.get('choices', [{}])[0].get('message', {}).get('content', 'No response available')
         elif api_type == "Ollama":
-            return api_response_content.get('response', 'No response available')
-        else:
-            return 'Unsupported API type.'
+            if isinstance(api_response_content, dict):
+                message = api_response_content.get('message', {})
+                return message.get('content', 'No response available')
+            elif isinstance(api_response_content, str):
+                return api_response_content
+            else:
+                return 'No response available'
 
     def requires_api_call(self):
         return False
