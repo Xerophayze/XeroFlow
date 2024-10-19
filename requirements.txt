@@ -43,7 +43,20 @@ pytz>=2020.1
 tzdata>=2022.7
 
 # Newly observed dependencies
-torch>=1.11.0  # PyTorch with CUDA or CPU will be installed based on setup.sh
-torchvision>=0.12.0  # Optional, related to PyTorch
-torcha
+torch>=1.11.0
+torchvision>=0.12.0
+torchaudio>=0.11.0
+pillow
+scikit-learn==1.5.0  # Specific version for compatibility
+scipy
+fsspec
+joblib
+threadpoolctl
+colorama
+jinja2
+networkx
+sympy
+mpmath<1.4,>=1.1.0
+pypdf  # For PDF support
+markupsafe  # Required by Jinja2
 
