@@ -3,7 +3,8 @@ requests
 PyYAML
 ollama
 Pygments
-bs4
+beautifulsoup4  # bs4 dependency
+soupsieve  # To avoid warning with BeautifulSoup
 httpx
 
 # Core langchain dependencies
@@ -42,17 +43,7 @@ pytz>=2020.1
 tzdata>=2022.7
 
 # Newly observed dependencies
-torch>=1.11.0
-pillow
-scikit-learn==1.5.0  # Specific version for compatibility
-scipy
-fsspec
-joblib
-threadpoolctl
-colorama
-jinja2
-networkx
-sympy
-mpmath<1.4,>=1.1.0
-pypdf  # For PDF support
-markupsafe  # Required by Jinja2
+torch>=1.11.0  # PyTorch with CUDA or CPU will be installed based on setup.sh
+torchvision>=0.12.0  # Optional, related to PyTorch
+torcha
+
