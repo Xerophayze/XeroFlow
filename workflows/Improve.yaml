@@ -101,7 +101,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Groq llama-3.1-70b-versatile
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq llama-3.1-70b-versatile

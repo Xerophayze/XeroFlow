@@ -1,0 +1,171 @@
+graph:
+  connections:
+  - canvas_item: 656
+    from_node: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
+    from_output: output
+    to_input: input
+    to_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
+  - canvas_item: 657
+    from_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
+    from_output: prompt
+    to_input: input
+    to_node: 1c697778-23e8-405f-9539-bd40e4eae1a7
+  nodes:
+    1c697778-23e8-405f-9539-bd40e4eae1a7:
+      canvas_items:
+        input_input: 405
+        output_chat_history: 406
+        prop_description: 404
+        rect: 401
+        resize_handle: 407
+        title: 402
+      connections: []
+      height: 80
+      id: 1c697778-23e8-405f-9539-bd40e4eae1a7
+      inputs:
+      - input
+      outputs:
+      - chat_history
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        database:
+          default: Sci-fi Novels
+          options:
+          - Sci-fi Novels
+          - TEK Utah
+          - test
+          type: dropdown
+        description:
+          default: Handles a chat conversation with the user.
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: ChatNode
+          type: text
+      title: ChatNode
+      type: ChatNode
+      width: 150
+      x: 680
+      y: 98
+    6e15a2ae-fae9-414d-a6c3-73dbae8931a3:
+      canvas_items:
+        input_input: 385
+        output_output: 386
+        prop_description: 384
+        rect: 381
+        resize_handle: 387
+        title: 382
+      connections: []
+      height: 80
+      id: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: 'take the following user request and create a web search term for
+            the request:
+
+            the user request is as follows:'
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Ollama llama3.1-8b
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 56
+      y: 102
+    7ee360a1-2a70-41dc-a1f2-f61a439acb86:
+      canvas_items:
+        input_input: 395
+        output_prompt: 396
+        prop_description: 394
+        rect: 391
+        resize_handle: 397
+        title: 392
+      connections: []
+      height: 80
+      id: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Processes the input for web search and scraping.
+          type: text
+        enable_url_selection:
+          default: false
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: SearchAndScrapeNode
+          type: text
+        num_results_to_skip:
+          default: '0'
+          type: number
+        num_search_results:
+          default: '5'
+          type: number
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          type: text
+      title: SearchAndScrapeNode
+      type: SearchAndScrapeNode
+      width: 239
+      x: 315
+      y: 112
+name: WebSearchScrape-Chat

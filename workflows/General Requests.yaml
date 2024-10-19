@@ -1,36 +1,31 @@
 graph:
-  connections:
-  - canvas_item: 36
-    from_node: 27dd61af-33af-4b3e-a825-db416fb2e2d1
-    from_output: output
-    to_input: input
-    to_node: 786ceb95-8d87-49b6-a0d6-c81162352f3c
+  connections: []
   nodes:
-    27dd61af-33af-4b3e-a825-db416fb2e2d1:
+    02a37996-1ccf-4924-9a31-317f30eaf7aa:
       canvas_items:
-        input_input: 24
-        output_output: 25
-        prop_description: 23
-        rect: 20
-        resize_handle: 26
-        title: 21
+        input_input: 14
+        output_output: 15
+        prop_description: 13
+        rect: 10
+        resize_handle: 16
+        title: 11
       connections: []
       height: 80
-      id: 27dd61af-33af-4b3e-a825-db416fb2e2d1
+      id: 02a37996-1ccf-4924-9a31-317f30eaf7aa
       inputs:
       - input
       outputs:
       - output
       properties:
         Prompt:
-          default: 'process the following user request:'
+          default: ''
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Ollama llama3.1-8b
+          default: Groq
           label: API Endpoint
           options:
-          - Groq llama-3.1-70b-versatile
+          - Groq
           - Ollama llama-3.2-3b
           - Ollama llama3.1-8b
           - OpenAI GPT gpt-4o-mini
@@ -40,7 +35,7 @@ graph:
           label: Description
           type: text
         is_end_node:
-          default: false
+          default: true
           label: End Node
           type: boolean
         is_start_node:
@@ -54,40 +49,6 @@ graph:
       title: BasicNode
       type: BasicNode
       width: 150
-      x: 70
-      y: 70
-    786ceb95-8d87-49b6-a0d6-c81162352f3c:
-      canvas_items:
-        input_input: 33
-        prop_description: 32
-        rect: 29
-        resize_handle: 34
-        title: 30
-      connections: []
-      height: 100
-      id: 786ceb95-8d87-49b6-a0d6-c81162352f3c
-      inputs:
-      - input
-      outputs: []
-      properties:
-        Prompt:
-          default: ''
-          type: textarea
-        description:
-          default: End of the workflow
-          type: text
-        is_end_node:
-          default: true
-          type: boolean
-        is_start_node:
-          default: false
-          type: boolean
-        node_name:
-          default: Return Results
-          type: text
-      title: Return Results
-      type: FinishNode
-      width: 156
-      x: 462
-      y: 56
+      x: 184
+      y: 113
 name: General Requests
