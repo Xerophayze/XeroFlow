@@ -111,7 +111,7 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
    ./setup.sh
    ```
 
-4. **Change Direcotries:**
+4. **Change Directories:**
    ```
    cd XeroFlow
    ```
@@ -132,6 +132,18 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
 
 7. **Build Your Workflow:**
    Use the node editor to design and connect different APIs and functions. Save and manage your workflows easily using the provided interface.
+
+### API Endpoint Setup
+
+Once you have completed the initial installation and started XeroFlow, you will need to set up your API endpoints:
+
+1. Go to the **File** menu and select **Management**.
+2. Under the **API Management** tab, you can begin adding your API endpoints.
+3. For OpenAI-style endpoints, enter the API URL (e.g., `https://api.openai.com/`) and provide your API key.
+4. For Ollama-style endpoints, you can enter the URL of your Ollama system, such as `http://192.168.76.130:11434`.
+5. You can also configure other OpenAI-conformant endpoints, such as Groq with the URL `https://api.groq.com/openai/`.
+
+Once your API endpoints are configured, you can start building workflows that integrate these endpoints to power your nodes and processes.
 
 ## Future Enhancements
 - **Database Selection Improvement**: Currently, the database selection dropdown in the interactive chat node does not function fully and defaults to the database specified in the node’s properties.
