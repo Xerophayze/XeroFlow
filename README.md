@@ -1,3 +1,4 @@
+
 # XeroFlow
 
 <table>
@@ -21,7 +22,6 @@
   </a>
 </p>
 
-
 [GitHub Repository](https://github.com/Xerophayze/XeroFlow)
 
 XeroFlow is a node-based interface for managing and interacting with various Large Language Model (LLM) APIs. It provides a flexible and customizable platform for building workflows that integrate multiple APIs to generate and manage content. The platform allows users to visually create, connect, and manage these workflows through a graphical interface. This system is designed to be modular, making it easy to expand with new nodes or APIs as required.
@@ -34,15 +34,15 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
    - The workflow consists of different types of nodes like **Start**, **Processing**, and **Finish** nodes, which can be customized and connected to form powerful automation pipelines.
    - Newly added advanced nodes include capabilities like database search and interactive chat.
 
-### 2. **Improved Setup with Batch Files**
-   - The installation process is streamlined using two batch files:
-     - `setup.bat` checks for and installs all required components, including Python and pip, if not already installed.
-     - `run.bat` sets up a virtual environment and runs the main program.
+### 2. **Improved Setup with Batch and Bash Files**
+   - The installation process is streamlined using two batch or bash files depending on if you are using windows or linux:
+     - `setup.bat` or `setup.sh` checks for and installs all required components, including Python and pip, if not already installed.
+     - `run.bat` or `run.sh` sets up a virtual environment and runs the main program.
    - The main program also checks for dependencies; however, this may be further refined in future updates.
 
 ### 3. **Enhanced Node Editor with New Advanced Nodes**
    - The node editor has been expanded with several advanced nodes, including:
-     - **Interactive LOL Chat Node**: Incorporates database search functionality through the `/doc` command, allowing users to query documents directly within the chat.
+     - **Interactive Chat Node**: Incorporates database search functionality through the `/doc` command, allowing users to query documents directly within the chat.
      - **Long-Form Content Creation Mode**: Designed to generate long-form content such as stories, manuals, blog posts, etc. An example in the database includes a 90,000-word sci-fi story with 30 chapters and multiple subsections.
    - A refined management panel consolidates various management tasks (like API endpoints, databases, document management, and node management) into a single interface with multiple tabs.
 
@@ -68,6 +68,8 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
 
 ## How to Use
 
+### Windows Installation
+
 1. **Install Python and Pip:**
    - Ensure you have Python (version 3.8 or higher) and pip installed on your system. You can download and install them from the official [Python website](https://www.python.org/downloads/).
 
@@ -90,6 +92,45 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
    ```
 
 5. **Build Your Workflow:**
+   Use the node editor to design and connect different APIs and functions. Save and manage your workflows easily using the provided interface.
+
+### Linux/Mac Installation
+
+1. **Download `setup.sh`:**
+   - Download the `setup.sh` script from the repository and place it in the folder where you plan to clone the XeroFlow project.
+
+2. **Make `setup.sh` Executable:**
+   - Make sure the `setup.sh` script has executable permissions:
+   ```
+   chmod +x setup.sh
+   ```
+
+3. **Run the Setup Script:**
+   - Run the `setup.sh` script to clone the repository and install dependencies and set up the environment:
+   ```
+   ./setup.sh
+   ```
+
+4. **Change Direcotries:**
+   ```
+   cd XeroFlow
+   ```
+
+5. **Ensure `run.sh` is Executable:**
+   - Once inside the `XeroFlow` project folder, ensure that the `run.sh` file has executable permissions:
+   ```
+   chmod +x run.sh
+   ```
+
+6. **Run the Application:**
+   - Launch the program with:
+   ```
+   ./run.sh
+   ```
+
+   **Note:** On Linux systems without GPUs or CUDA modules, the setup script will automatically download the necessary files to enable CPU utilization for running the software.
+
+7. **Build Your Workflow:**
    Use the node editor to design and connect different APIs and functions. Save and manage your workflows easily using the provided interface.
 
 ## Future Enhancements
