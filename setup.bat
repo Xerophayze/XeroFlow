@@ -41,39 +41,28 @@ IF NOT EXIST %VENV_DIR%\Scripts\activate (
 REM Activate the virtual environment
 echo Activating virtual environment...
 CALL %VENV_DIR%\Scripts\activate
+IF %ERRORLEVEL% NEQ 0 (
+    echo Failed to activate virtual environment.
+    exit /b %ERRORLEVEL%
+)
 
 REM Upgrade pip and install wheel separately to avoid conflicts
 echo Upgrading pip and installing wheel...
-%VENV_DIR%\Scripts\python.exe -m pip install --upgrade pip wheel
+python -m pip install --upgrade pip wheel
 IF %ERRORLEVEL% NEQ 0 (
     echo Failed to upgrade pip or install wheel.
     exit /b %ERRORLEVEL%
 )
 
-REM Install numpy without strict version constraint
-echo Installing numpy without version constraint...
-pip install numpy
-IF %ERRORLEVEL% NEQ 0 (
-    echo Failed to install numpy.
-    exit /b %ERRORLEVEL%
-)
-
-REM Attempt to install faiss-cpu if available (optional)
-echo Attempting to install faiss-cpu from prebuilt wheels...
-pip install faiss-cpu || echo "Warning: faiss-cpu installation failed. Skipping faiss-cpu installation."
-IF %ERRORLEVEL% NEQ 0 (
-    echo Skipping faiss-cpu installation due to compatibility issues.
-)
-
-REM Install additional dependencies from requirements.txt
-echo Installing additional dependencies...
-pip install -r requirements.txt --no-deps
+REM Install dependencies from requirements.txt
+echo Installing dependencies from requirements.txt...
+pip install -r requirements.txt
 IF %ERRORLEVEL% NEQ 0 (
     echo Failed to install dependencies.
     exit /b %ERRORLEVEL%
 )
 
-REM Ensure langchain_community is installed
+REM Ensure langchain_community is installed (if not already in requirements.txt)
 pip show langchain_community >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo langchain_community module not found. Attempting to install it separately...
