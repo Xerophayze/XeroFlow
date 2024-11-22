@@ -170,9 +170,11 @@ pip install numpy
 # Check for CUDA and install the correct version of PyTorch
 if check_cuda; then
     echo "Installing PyTorch with CUDA support..."
+    pip install --upgrade pip
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 else
     echo "Installing CPU-only version of PyTorch..."
+    pip install --upgrade pip
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 fi
 
