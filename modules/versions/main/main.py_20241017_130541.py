@@ -11,7 +11,6 @@ import threading
 import uuid
 import math
 import re  # For parsing markdown-like formatting
-import queue  # Add this import at the top
 
 from node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
 from db_tools import DatabaseManager  # Import from db_tools.py
@@ -27,7 +26,7 @@ from process_node_graph import process_node_graph
 
 import tkinter as tk
 import _tkinter
-from tkinter import ttk, messagebox, Menu, Toplevel, Label, Entry, Button, Scrollbar, END, SINGLE, filedialog, BooleanVar
+from tkinter import ttk, messagebox, Menu, Toplevel, Label, Entry, Button, Scrollbar, END, SINGLE, filedialog
 import requests
 import yaml
 from pygments import lex
@@ -43,7 +42,7 @@ from ollama import Client
 from nodes.base_node import BaseNode
 
 # Import formatting utilities
-from formatting_utils import append_formatted_text, set_formatting_enabled  # Import set_formatting_enabled
+from formatting_utils import append_formatted_text
 
 # Setup logging for main.py
 LOG_DIR = "logs"
@@ -144,15 +143,14 @@ def edit_instruction_prompt(config, chat_instruction_listbox):
         messagebox.showwarning("Selection Required", "Please select an instruction prompt to edit.")
         return
     index = selected_indices[0]
-    selected_name = chat_instruction_listbox.get(index)
     workflows = load_workflows()
-    # Find the workflow with the selected name
-    selected_item = next((wf for wf in workflows if wf['name'] == selected_name), None)
-    if not selected_item:
-        messagebox.showerror("Error", f"Workflow '{selected_name}' not found.")
+    if index >= len(workflows):
+        messagebox.showerror("Error", "Selected workflow index is out of range.")
         return
+    selected_item = workflows[index]
+    selected_name = selected_item['name']
     graph_data = selected_item.get('graph', {})
-    
+
     def on_save(editor):
         new_graph_data = editor.configured_graph
         new_name = editor.configured_name
@@ -161,21 +159,15 @@ def edit_instruction_prompt(config, chat_instruction_listbox):
             if new_name != selected_name and new_name in existing_workflows:
                 messagebox.showerror("Error", "A workflow with this name already exists.")
                 return
-            # Delete old file if the name has changed
-            if new_name != selected_name:
-                old_file = Path('workflows') / f"{selected_name}.yaml"
-                if old_file.exists():
-                    old_file.unlink()
             save_workflow({'name': new_name, 'graph': new_graph_data})
-            # Update the listbox
             chat_instruction_listbox.delete(index)
             chat_instruction_listbox.insert(index, new_name)
-            chat_instruction_listbox.selection_set(index)
-    
+            update_workflow_list(chat_instruction_listbox)  # Dynamically update the list
+
     def on_close(editor):
         if editor.instruction_name in open_editors:
             del open_editors[editor.instruction_name]
-    
+
     editor = NodeEditor(root, config, config['interfaces'], existing_graph=graph_data, existing_name=selected_name, save_callback=on_save, close_callback=on_close)
     open_editors[selected_name] = editor
 
@@ -186,18 +178,19 @@ def delete_instruction_prompt(config, chat_instruction_listbox):
         messagebox.showwarning("Selection Required", "Please select an instruction prompt to delete.")
         return
     index = selected_indices[0]
-    selected_name = chat_instruction_listbox.get(index)
+    workflows = load_workflows()
+    if index >= len(workflows):
+        messagebox.showerror("Error", "Selected workflow index is out of range.")
+        return
+    selected_prompt = workflows[index]
+    selected_name = selected_prompt['name']
     confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the workflow '{selected_name}'?")
     if confirm:
         workflow_file = Path('workflows') / f"{selected_name}.yaml"
         if workflow_file.exists():
-            try:
-                workflow_file.unlink()
-                chat_instruction_listbox.delete(index)
-                # Optionally refresh the list
-                # update_workflow_list(chat_instruction_listbox)
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to delete workflow '{selected_name}': {e}")
+            workflow_file.unlink()
+            chat_instruction_listbox.delete(index)
+            update_workflow_list(chat_instruction_listbox)  # Dynamically update the list
         else:
             messagebox.showerror("Error", f"Workflow file '{selected_name}.yaml' not found.")
 
@@ -278,20 +271,6 @@ def create_gui(config):
     y = (root.winfo_screenheight() // 2) - (height // 2)
     root.geometry(f"{width}x{height}+{x}+{y}")
 
-    gui_queue = queue.Queue()  # Initialize the queue for GUI updates
-
-    def process_gui_queue():
-        try:
-            while True:
-                func = gui_queue.get_nowait()
-                func()
-        except queue.Empty:
-            pass
-        root.after(100, process_gui_queue)
-
-    # Start processing the GUI queue
-    root.after(100, process_gui_queue)
-
     notebook = ttk.Notebook(root)
     notebook.pack(fill='both', expand=True)
 
@@ -307,9 +286,6 @@ def create_gui(config):
     chat_tab.rowconfigure(3, weight=0)
     chat_tab.rowconfigure(4, weight=0)
     chat_tab.rowconfigure(5, weight=2)
-    chat_tab.rowconfigure(6, weight=0)  # Added for formatting checkbox
-
-    chat_tab.response_content = ""  # Initialize variable to store original content
 
     top_container = ttk.Frame(chat_tab)
     top_container.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
@@ -421,8 +397,6 @@ def create_gui(config):
     top_k_entry.insert(0, "10")
     top_k_entry.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
-    output_box = None  # Initialize output_box before usage
-
     search_button = ttk.Button(
         db_search_frame,
         text="Search",
@@ -439,117 +413,15 @@ def create_gui(config):
     input_label = ttk.Label(chat_tab, text="Enter your prompt:")
     input_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
 
-    input_box_frame = ttk.Frame(chat_tab)
-    input_box_frame.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
+    input_box = tk.Text(chat_tab, height=8)
+    input_box.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
     chat_tab.rowconfigure(2, weight=1)
-
-    input_box = tk.Text(input_box_frame, height=8)
-    input_box.pack(side=tk.LEFT, fill='both', expand=True)
-
-    input_scrollbar = Scrollbar(input_box_frame, orient=tk.VERTICAL, command=input_box.yview)
-    input_scrollbar.pack(side=tk.RIGHT, fill='y')
-    input_box.configure(yscrollcommand=input_scrollbar.set)
-
-    # Context menu for input_box
-    input_context_menu = Menu(root, tearoff=0)
-    input_context_menu.add_command(label="Cut", command=lambda: input_box.event_generate("<<Cut>>"))
-    input_context_menu.add_command(label="Copy", command=lambda: input_box.event_generate("<<Copy>>"))
-    input_context_menu.add_command(label="Paste", command=lambda: input_box.event_generate("<<Paste>>"))
-    input_context_menu.add_separator()
-    input_context_menu.add_command(label="Select All", command=lambda: input_box.tag_add('sel', '1.0', 'end'))
-
-    def show_input_context_menu(event):
-        input_box.focus_set()
-        input_context_menu.tk_popup(event.x_root, event.y_root)
-
-    input_box.bind("<Button-3>", show_input_context_menu)
 
     buttons_frame = ttk.Frame(chat_tab)
     buttons_frame.grid(row=3, column=0, columnspan=1, padx=5, pady=10, sticky='ew')
     buttons_frame.columnconfigure(0, weight=1)
     buttons_frame.columnconfigure(1, weight=1)
     buttons_frame.columnconfigure(2, weight=1)
-
-    stop_button = ttk.Button(
-        buttons_frame,
-        text="Stop Process",
-        state=tk.DISABLED,
-        command=lambda: stop_process(chat_tab)
-    )
-    stop_button.grid(row=0, column=1, padx=5, sticky='ew')
-
-    def clear_all(chat_instruction_listbox, input_box, output_box):
-        chat_instruction_listbox.selection_clear(0, tk.END)
-        chat_tab.selected_prompt_index = None
-        chat_tab.selected_prompt_name = None
-        input_box.delete('1.0', tk.END)
-        output_box.config(state=tk.NORMAL)
-        output_box.delete('1.0', END)
-        output_box.config(state=tk.DISABLED)
-        chat_tab.response_content = ""  # Clear stored response content
-
-    clear_button = ttk.Button(
-        buttons_frame,
-        text="Clear All",
-        command=lambda: clear_all(chat_instruction_listbox, input_box, output_box)
-    )
-    clear_button.grid(row=0, column=2, padx=5, sticky='ew')
-
-    output_label = ttk.Label(chat_tab, text="Response:")
-    output_label.grid(row=4, column=0, padx=5, pady=5, sticky="w")
-
-    output_box_frame = ttk.Frame(chat_tab)
-    output_box_frame.grid(row=5, column=0, columnspan=1, padx=5, pady=5, sticky="nsew")
-    chat_tab.rowconfigure(5, weight=2)
-    chat_tab.columnconfigure(0, weight=1)
-
-    output_box = tk.Text(output_box_frame, height=15, wrap=tk.WORD, state=tk.DISABLED)
-    output_box.pack(side=tk.LEFT, fill='both', expand=True)
-
-    output_scrollbar = Scrollbar(output_box_frame, orient=tk.VERTICAL, command=output_box.yview)
-    output_scrollbar.pack(side=tk.RIGHT, fill='y')
-    output_box.configure(yscrollcommand=output_scrollbar.set)
-
-    # Context menu for output_box
-    output_context_menu = Menu(root, tearoff=0)
-    output_context_menu.add_command(label="Cut", command=lambda: output_box.event_generate("<<Cut>>"))
-    output_context_menu.add_command(label="Copy", command=lambda: output_box.event_generate("<<Copy>>"))
-    output_context_menu.add_command(label="Paste", command=lambda: output_box.event_generate("<<Paste>>"))
-    output_context_menu.add_separator()
-    output_context_menu.add_command(label="Select All", command=lambda: output_box.tag_add('sel', '1.0', 'end'))
-
-    def show_output_context_menu(event):
-        output_box.focus_set()
-        output_context_menu.tk_popup(event.x_root, event.y_root)
-
-    output_box.bind("<Button-3>", show_output_context_menu)
-
-    # Add formatting checkbox
-    formatting_enabled = BooleanVar(value=True)
-    formatting_checkbox = ttk.Checkbutton(
-        chat_tab,
-        text="Enable Formatting",
-        variable=formatting_enabled
-    )
-    formatting_checkbox.grid(row=6, column=0, padx=5, pady=5, sticky='w')
-
-    # Update formatting state when checkbox is toggled
-    def on_formatting_toggle():
-        set_formatting_enabled(formatting_enabled.get())
-        # Get original content
-        content = chat_tab.response_content
-        if content:
-            # Clear the output box
-            output_box.config(state=tk.NORMAL)
-            output_box.delete('1.0', tk.END)
-            output_box.config(state=tk.DISABLED)
-            # Re-insert the content with or without formatting
-            append_formatted_text(output_box, content)
-
-    formatting_checkbox.config(command=on_formatting_toggle)
-
-    # Set initial formatting state
-    set_formatting_enabled(formatting_enabled.get())
 
     submit_button = ttk.Button(
         buttons_frame,
@@ -562,14 +434,47 @@ def create_gui(config):
             submit_button,
             stop_button,
             chat_tab,
-            chat_instruction_listbox,
-            gui_queue,
-            formatting_enabled  # Pass the formatting flag
+            chat_instruction_listbox
         )
     )
     submit_button.grid(row=0, column=0, padx=5, sticky='ew')
 
+    stop_button = ttk.Button(
+        buttons_frame,
+        text="Stop Process",
+        state=tk.DISABLED,
+        command=lambda: stop_process(chat_tab)
+    )
+    stop_button.grid(row=0, column=1, padx=5, sticky='ew')
+
     chat_tab.stop_button = stop_button
+
+    clear_button = ttk.Button(
+        buttons_frame,
+        text="Clear All",
+        command=lambda: clear_all(chat_instruction_listbox, input_box, output_box)
+    )
+    clear_button.grid(row=0, column=2, padx=5, sticky='ew')
+
+    def clear_all(chat_instruction_listbox, input_box, output_box):
+        chat_instruction_listbox.selection_clear(0, tk.END)
+        chat_tab.selected_prompt_index = None
+        chat_tab.selected_prompt_name = None
+        input_box.delete('1.0', tk.END)
+        output_box.config(state=tk.NORMAL)
+        output_box.delete('1.0', END)
+        output_box.config(state=tk.DISABLED)
+
+    output_label = ttk.Label(chat_tab, text="Response:")
+    output_label.grid(row=4, column=0, padx=5, pady=5, sticky="w")
+
+    output_box = tk.Text(chat_tab, height=15, wrap=tk.WORD)
+    output_box.grid(row=5, column=0, columnspan=1, padx=5, pady=5, sticky="nsew")
+    output_box.config(state=tk.DISABLED)
+
+    chat_tab.rowconfigure(2, weight=1)
+    chat_tab.rowconfigure(5, weight=2)
+    chat_tab.columnconfigure(0, weight=1)
 
     menubar = Menu(root)
     root.config(menu=menubar)
@@ -586,7 +491,7 @@ def create_gui(config):
             db_manager_list.set('')
 
         for widget in root.winfo_children():
-            if isinstance(widget, tk.Toplevel):
+            if isinstance(widget, Toplevel):
                 for child in widget.winfo_children():
                     if isinstance(child, ttk.Notebook):
                         for tab_id in child.tabs():
@@ -608,7 +513,7 @@ def create_gui(config):
 
     root.mainloop()
     
-def submit_request(config, selected_prompt_index, user_input, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox, gui_queue, formatting_enabled):
+def submit_request(config, selected_prompt_index, user_input, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox):
     """Handle submitting the request."""
     if not user_input.strip():
         messagebox.showwarning("Input Required", "Please enter some text in the input box.")
@@ -617,7 +522,7 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
     if selected_prompt_index is None:
         messagebox.showerror("Error", "Please select an instruction prompt from the list.")
         return
-
+    
     workflows = load_workflows()
 
     try:
@@ -635,7 +540,6 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
     output_box.config(state=tk.NORMAL)
     output_box.delete('1.0', tk.END)
     output_box.config(state=tk.DISABLED)
-    chat_tab.response_content = ""  # Clear stored response content
 
     # Retrieve the selected API endpoint from config
     api_endpoint = config.get("api_endpoint")  # Fetch selected endpoint dynamically
@@ -651,7 +555,7 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
 
     thread = threading.Thread(target=process_node_graph, args=(
         config, api_endpoint, user_input, output_box, submit_button, stop_button, chat_tab.stop_event,
-        node_graph, selected_prompt_name, root, open_editors, gui_queue, formatting_enabled.get(), chat_tab))  # Pass chat_tab
+        node_graph, selected_prompt_name, root, open_editors))
     thread.start()
 
 def stop_process(chat_tab):
@@ -671,3 +575,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

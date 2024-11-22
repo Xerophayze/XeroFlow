@@ -1,11 +1,11 @@
 graph:
   connections:
-  - canvas_item: 656
+  - canvas_item: 63
     from_node: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
     from_output: output
     to_input: input
     to_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
-  - canvas_item: 657
+  - canvas_item: 64
     from_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
     from_output: prompt
     to_input: input
@@ -13,12 +13,12 @@ graph:
   nodes:
     1c697778-23e8-405f-9539-bd40e4eae1a7:
       canvas_items:
-        input_input: 405
-        output_chat_history: 406
-        prop_description: 404
-        rect: 401
-        resize_handle: 407
-        title: 402
+        input_input: 38
+        output_chat_history: 39
+        prop_description: 37
+        rect: 34
+        resize_handle: 40
+        title: 35
       connections: []
       height: 80
       id: 1c697778-23e8-405f-9539-bd40e4eae1a7
@@ -60,16 +60,16 @@ graph:
       title: ChatNode
       type: ChatNode
       width: 150
-      x: 680
-      y: 98
+      x: 580
+      y: 251
     6e15a2ae-fae9-414d-a6c3-73dbae8931a3:
       canvas_items:
-        input_input: 385
-        output_output: 386
-        prop_description: 384
-        rect: 381
-        resize_handle: 387
-        title: 382
+        input_input: 48
+        output_output: 49
+        prop_description: 47
+        rect: 44
+        resize_handle: 50
+        title: 45
       connections: []
       height: 80
       id: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
@@ -117,12 +117,12 @@ graph:
       y: 102
     7ee360a1-2a70-41dc-a1f2-f61a439acb86:
       canvas_items:
-        input_input: 395
-        output_prompt: 396
-        prop_description: 394
-        rect: 391
-        resize_handle: 397
-        title: 392
+        input_input: 58
+        output_prompt: 59
+        prop_description: 57
+        rect: 54
+        resize_handle: 60
+        title: 55
       connections: []
       height: 80
       id: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
@@ -138,7 +138,7 @@ graph:
           default: Processes the input for web search and scraping.
           type: text
         enable_url_selection:
-          default: false
+          default: true
           description: Enable URL Selection
           type: boolean
         enable_web_search:
@@ -158,7 +158,7 @@ graph:
           default: '0'
           type: number
         num_search_results:
-          default: '5'
+          default: '20'
           type: number
         searxng_api_url:
           default: http://xeroserv:8888/search
@@ -166,6 +166,6 @@ graph:
       title: SearchAndScrapeNode
       type: SearchAndScrapeNode
       width: 239
-      x: 315
-      y: 112
+      x: 268
+      y: 179
 name: WebSearchScrape-Chat

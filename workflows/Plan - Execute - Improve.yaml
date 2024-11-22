@@ -42,12 +42,11 @@ graph:
         Prompt:
           default: "as an expert critic in written content, please rate and review\
             \ the following content below on a scale of 1 to 10 and provide 3 or 4\
-            \ suggestions for improvement. \nyou expected output is: \nALWAYS repeat\
-            \ the original content first\nprovide an overall number rating and 3 or\
-            \ 4 suggestions for improvement, and if the number rating is above 8.5\
-            \ then print the word REVIEWPASS at the end:\n\nremember to always reprint\
-            \ the original content below first then give your rating and suggestions.\n\
-            The content is as follows:"
+            \ suggestions for improvement. \nyou expected output is the original content\
+            \ first then provide an overall number rating between 1 and 10 and then\
+            \ 3 or 4 suggestions for improvement, and if the number rating is above\
+            \ 8.5 then print the word REVIEWPASS at the end:\n\nThe content is as\
+            \ follows:"
           label: Prompt
           type: textarea
         Search Term:
@@ -55,7 +54,7 @@ graph:
           label: Search Term
           type: text
         api_endpoint:
-          default: Groq llama-3.1-70b-versatile
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq llama-3.1-70b-versatile
@@ -106,7 +105,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Groq llama-3.1-70b-versatile
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq llama-3.1-70b-versatile

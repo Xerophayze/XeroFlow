@@ -1,8 +1,8 @@
 # nodes/long_output_node.py
 """
-LongOutputNode: Processes an initial prompt and input by sending them to the API endpoint.
-The API response is expected to be split by paragraph (empty lines between blocks of text).
-It then iteratively processes each item from this list, sending each to the API,
+LongOutputNode: Processes an initial input by sending each item to the API endpoint.
+The initial input is expected to be split by paragraph (empty lines between blocks of text).
+It iteratively processes each item from this list, sending each to the API,
 and accumulates the responses by appending each new response to the previous one along with the next item.
 """
 from .base_node import BaseNode
@@ -67,12 +67,9 @@ class LongOutputNode(BaseNode):
     def process(self, inputs):
         print("[LongOutputNode] Starting process method.")
 
-        # Get properties and reset combined prompt
+        # Get properties
         prompt_property = self.properties.get('Prompt', {}).get('default', '')
         api_endpoint_name = self.properties.get('api_endpoint', {}).get('default', '')
-
-        # Reset the combined prompt explicitly to an empty string
-        combined_prompt = ""
 
         if not api_endpoint_name:
             print("[LongOutputNode] API endpoint not specified.")
@@ -81,12 +78,15 @@ class LongOutputNode(BaseNode):
         # Get input
         previous_input = inputs.get('input', '').strip()
 
-        # Append the input to the end of the Prompt property
-        combined_prompt = f"{prompt_property}\n{previous_input}" if previous_input else prompt_property
-
-        if not combined_prompt.strip():
+        if not previous_input:
             print("[LongOutputNode] No input provided.")
             return {"output": "No input provided."}
+
+        # Split the input into items (paragraphs separated by double newlines)
+        items = [item.strip() for item in previous_input.split('\n\n') if item.strip()]
+        if not items:
+            print("[LongOutputNode] No valid items found in input.")
+            return {"output": "No valid items found in input."}
 
         # Retrieve API details from configuration
         api_details = self.config['interfaces'].get(api_endpoint_name)
@@ -94,47 +94,26 @@ class LongOutputNode(BaseNode):
             print(f"[LongOutputNode] API interface '{api_endpoint_name}' not found in configuration.")
             return {"output": f"API interface '{api_endpoint_name}' not found."}  # Or handle as error
 
-        # Step 1: Send the combined prompt to the API endpoint
-        print(f"[LongOutputNode] Sending initial prompt to API: {combined_prompt}")
-        initial_api_response_content = process_api_request(api_details, combined_prompt)
-
-        if 'error' in initial_api_response_content:
-            print(f"[LongOutputNode] API Error: {initial_api_response_content['error']}")
-            return {"output": f"API Error: {initial_api_response_content['error']}"}
-
-        # Extract the actual response based on API type
         api_type = api_details.get('api_type')
-        if api_type == "OpenAI":
-            initial_api_response = initial_api_response_content.get('choices', [{}])[0].get('message', {}).get('content', '')
-        elif api_type == "Ollama":
-            message = initial_api_response_content.get('message', {})
-            initial_api_response = message.get('content', '') if isinstance(message, dict) else ''
-        else:
-            initial_api_response = 'Unsupported API type.'
+        if not api_type:
+            print(f"[LongOutputNode] API type not specified for endpoint '{api_endpoint_name}'.")
+            return {"output": f"API type not specified for endpoint '{api_endpoint_name}'."}
 
-        print(f"[LongOutputNode] Initial API Response: {initial_api_response}")
-
-        # Step 2: Split the initial API response into items (paragraphs separated by double newlines)
-        items = [item.strip() for item in initial_api_response.split('\n\n') if item.strip()]
-        if not items:
-            print("[LongOutputNode] No valid items found in initial API response.")
-            return {"output": "No valid items found in API response."}
-
-        # Step 3: Initialize combined_response and last_response
+        # Initialize combined_response and last_response
         combined_response = ''
         last_response = ''
 
-        # Step 4: Iterate over the items
+        # Iterate over the items
         for index, item in enumerate(items):
             if index == 0:
-                # First item, send it to API
-                prompt = f"You will be writing the content based on the following context: {initial_api_response}.\nThe content below may be the Title. If it is the Title, you will just repeat the title. The title or beginning is as follows:\n{item}"
+                # First item, use the base prompt
+                prompt = f"{previous_input}\n\n the following should just be the title from the outline above, please just repeat the title and nothing else:\n{item}"
             elif index == len(items) - 1:
                 # Last item, perform a final API call
-                prompt = f"{last_response}\nThis is the final section to be processed, based on: {initial_api_response}. Continue writing as follows:\n{item}"
+                prompt = f"{previous_input}\n\n The section below should be the final section from the outline above, please finish writting the contend for this last outline item:\n{item}"
             else:
                 # Intermediate items
-                prompt = f"{last_response}\nUsing the following outline: {initial_api_response}, continue writing the content for the following section and only this section without any other commentary. Make sure chapter headings are bold:\n{item}"
+                prompt = f"The outline is as follows:\n{previous_input}\n\nThe last section or chapter written is as follows:\n{last_response}\n\nAs a professional writter, Continue writing the detailed content for the next chapter/section shown below. do not include any of your own commentary, just write the content based on the next section listed below. Always include the chapter/section number and title in bold:\n{item}"
 
             print(f"[LongOutputNode] Sending to API: {prompt}")
 

@@ -18,11 +18,19 @@ graph:
       - output
       properties:
         Prompt:
-          default: ''
+          default: 'If the content is already an outline, you will only repeat the
+            outline exacltly as provided below in the user request.  If the user request
+            below is not an outline then your only goals is to write a very detailed
+            outline for the user request below.  each section/chapter description
+            will be very detailed and in a self contained paragraph that will include
+            the section/chapter number and title at the beginning of each paragraph.  you
+            will always put the title first before creating the rest of the detailed
+            outline.  each chapter/section paragraph will include intricate detailes
+            about that section.  The user request is as follows:'
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Groq
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq

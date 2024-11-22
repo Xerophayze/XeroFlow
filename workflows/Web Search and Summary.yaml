@@ -52,7 +52,7 @@ graph:
           default: '5'
           type: number
         searxng_api_url:
-          default: http://192.168.76.105:8888/search
+          default: http://xeroserv:8888/search
           type: text
       title: SearchAndScrapeNode
       type: SearchAndScrapeNode
