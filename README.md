@@ -71,7 +71,7 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
 ### Windows Installation
 
 1. **Install Python and Pip:**
-   - Ensure you have Python (version 3.8 or higher) and pip installed on your system. You can download and install them from the official [Python website](https://www.python.org/downloads/).
+   - Ensure you have Git and Python (version 3.10) installed. You can download and install them from the official [Python website](https://www.python.org/downloads/).
 
 2. **Clone the Repository:**
    ```
