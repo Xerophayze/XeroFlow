@@ -1,0 +1,117 @@
+graph:
+  connections:
+  - canvas_item: 35
+    from_node: 1bf6a82e-8db3-4367-999d-ec3df9e114b8
+    from_output: output
+    to_input: input
+    to_node: 76c43573-d081-415d-8303-49069925f6db
+  nodes:
+    1bf6a82e-8db3-4367-999d-ec3df9e114b8:
+      canvas_items:
+        input_input: 6
+        output_output: 7
+        prop_description: 5
+        rect: 2
+        resize_handle: 8
+        title: 3
+      connections: []
+      height: 80
+      id: 1bf6a82e-8db3-4367-999d-ec3df9e114b8
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: 'If the content is already an outline, you will only repeat the
+            outline exacltly as provided below in the user request.  If the user request
+            below is not an outline then your only goals is to write a detailed outline
+            for the user request below.  each section/chapter description will be
+            very detailed and in a self contained paragraph that will include the
+            section/chapter number and title at the beginning of each paragraph.  you
+            will always put the title first before creating the rest of the detailed
+            outline.  each chapter/section paragraph will include intricate detailes
+            about that section.  The user request is as follows:'
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 50
+      y: 50
+    76c43573-d081-415d-8303-49069925f6db:
+      canvas_items:
+        input_input: 15
+        output_prompt: 16
+        prop_description: 14
+        rect: 11
+        resize_handle: 17
+        title: 12
+      connections: []
+      height: 80
+      id: 76c43573-d081-415d-8303-49069925f6db
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes a list of items through the API, combining responses.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: LongOutputNode
+          label: Custom Node Name
+          type: text
+      title: LongOutputNode
+      type: LongOutputNode
+      width: 192
+      x: 326
+      y: 66
+name: Long Form Content General v2

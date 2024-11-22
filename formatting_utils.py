@@ -7,6 +7,24 @@ from pygments import lex
 from pygments.lexers import get_lexer_by_name, TextLexer
 from pygments.token import Token
 
+formatting_enabled = True  # Global variable to control formatting
+
+def set_formatting_enabled(flag):
+    """Set the global formatting flag."""
+    global formatting_enabled
+    formatting_enabled = flag
+
+def append_formatted_text(text_widget, text):
+    """
+    Appends text to the text_widget with optional formatting applied.
+    """
+    text_widget.config(state=tk.NORMAL)
+    if formatting_enabled:
+        apply_formatting(text_widget, text)
+    else:
+        text_widget.insert(tk.END, text)
+    text_widget.config(state=tk.DISABLED)
+
 def apply_formatting(text_widget, text, base_tag=None):
     """
     Parses markdown-like syntax in the text and applies formatting tags to the Text widget.
@@ -176,11 +194,3 @@ def apply_formatting(text_widget, text, base_tag=None):
                         tag = "code"
                     insert_with_base_tag(value, tag)
                 insert_with_base_tag("\n")
-
-def append_formatted_text(text_widget, text):
-    """
-    Appends text to the text_widget with basic formatting applied.
-    """
-    text_widget.config(state=tk.NORMAL)
-    text_widget.insert(tk.END, text)
-    text_widget.config(state=tk.DISABLED)

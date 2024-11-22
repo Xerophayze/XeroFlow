@@ -93,10 +93,10 @@ class ChatNode(BaseNode):
                 chat_output_widget.see(END)
 
         def submit_input(event=None):
-            user_input = user_input_entry.get().strip()
+            user_input = user_input_text.get('1.0', END).strip()
             if user_input:
                 chat_history.append({'role': 'user', 'content': user_input})
-                user_input_entry.delete(0, END)
+                user_input_text.delete('1.0', END)
                 update_chat_window()
                 submit_button.config(state=tk.DISABLED)
                 threading.Thread(target=handle_api_request, args=(user_input,), daemon=True).start()
@@ -174,18 +174,25 @@ class ChatNode(BaseNode):
         chat_output_widget.tag_configure('assistant_content', foreground='dark blue')
         chat_output_widget.tag_configure('system_content', foreground='dark green')
 
+        # Adjusted input_frame layout
         input_frame = tk.Frame(root)
         input_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=5)
 
-        user_input_entry = tk.Entry(input_frame)
-        user_input_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
-        user_input_entry.bind("<Return>", submit_input)
+        user_input_text = tk.Text(input_frame, height=4)
+        user_input_text.pack(side=tk.TOP, fill=tk.X, expand=True, padx=(0, 5), pady=(0, 5))
 
-        submit_button = tk.Button(input_frame, text="Submit", command=submit_input)
-        submit_button.pack(side=tk.LEFT, padx=(0, 5))
+        # Bind Ctrl+Enter to submit the input
+        user_input_text.bind("<Control-Return>", submit_input)
 
-        close_button = tk.Button(input_frame, text="Close", command=close_chat)  # Close button uses close_chat
-        close_button.pack(side=tk.LEFT)
+        # Buttons frame
+        buttons_frame = tk.Frame(input_frame)
+        buttons_frame.pack(side=tk.BOTTOM, fill=tk.X)
+
+        submit_button = tk.Button(buttons_frame, text="Submit", command=submit_input)
+        submit_button.pack(side=tk.TOP, fill=tk.X, padx=(0, 5), pady=(0, 5))
+
+        close_button = tk.Button(buttons_frame, text="Close", command=close_chat)  # Close button uses close_chat
+        close_button.pack(side=tk.TOP, fill=tk.X, padx=(0, 5))
 
         update_chat_window()
         root.mainloop()

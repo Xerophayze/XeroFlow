@@ -1,0 +1,125 @@
+graph:
+  connections:
+  - canvas_item: 56
+    from_node: 06b95059-a5e2-4fb6-8306-1182f2bd2dbe
+    from_output: output
+    to_input: input
+    to_node: 58ee04e6-9820-4ba8-be10-143455cc2b25
+  nodes:
+    06b95059-a5e2-4fb6-8306-1182f2bd2dbe:
+      canvas_items:
+        input_input: 43
+        output_output: 44
+        prop_description: 42
+        rect: 39
+        resize_handle: 45
+        title: 40
+      connections: []
+      height: 80
+      id: 06b95059-a5e2-4fb6-8306-1182f2bd2dbe
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "If the content is already an outline, you will only repeat the\
+            \ outline exactly as provided below in the user request.  If the user\
+            \ request below is not an outline then your only goals is to write a detailed\
+            \ outline for the user request below.  the format of the outline will\
+            \ include the title first, then a blank line, then each section will be\
+            \ a self contained paragraph with no special formatting or markup or separator\
+            \ lines.  There should always be a Blank Line between each and every paragraph.\
+            \ Never include any of your own dialogue or comments. ALWAYS complete\
+            \ the entire request even if you have to continue.\nFor example:\nTitle:\
+            \ the title of the content\n[always include a blank line]\nparagraph for\
+            \ Introduction/prologue/etc - excerp or details of the introduction/prologue\n\
+            [always include a blank line]\nChapter number: chapter heading or title\n\
+            Chapter number and heading - paragraph for chapter/section number - detailed\
+            \ outline description of chapter/section.\n[always include a blank line]\n\
+            paragraph for chapter/section number - detailed outline description of\
+            \ chapter/section.\n[always include a blank line]\n\n The user request\
+            \ is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 50
+      y: 50
+    58ee04e6-9820-4ba8-be10-143455cc2b25:
+      canvas_items:
+        input_input: 52
+        output_prompt: 53
+        prop_description: 51
+        rect: 48
+        resize_handle: 54
+        title: 49
+      connections: []
+      height: 80
+      id: 58ee04e6-9820-4ba8-be10-143455cc2b25
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes a list of items through the API, combining responses.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: LongOutputNode
+          label: Custom Node Name
+          type: text
+      title: LongOutputNode
+      type: LongOutputNode
+      width: 192
+      x: 346
+      y: 52
+name: Long Form content creation v3

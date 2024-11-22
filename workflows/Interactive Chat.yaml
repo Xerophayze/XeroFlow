@@ -21,7 +21,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Groq
+          default: Ollama llama3.1-8b
           options:
           - Ollama llama-3.2-3b
           - Ollama llama3.1-8b

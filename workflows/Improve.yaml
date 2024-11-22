@@ -1,22 +1,22 @@
 graph:
   connections:
   - canvas_item: 72
-    from_node: 37f95b80-f764-42e7-99cb-7ac77610f527
-    from_output: output_true
-    to_input: input
-    to_node: 541d1303-f7cf-4190-8a70-33bbc22337e7
-  - canvas_item: 73
     from_node: 80742400-6af8-4260-8331-12f90a172d88
     from_output: output
     to_input: input
-    to_node: 37f95b80-f764-42e7-99cb-7ac77610f527
-  - canvas_item: 74
-    from_node: 37f95b80-f764-42e7-99cb-7ac77610f527
+    to_node: 39cf7cbc-1f0c-4509-a25b-862de48d8687
+  - canvas_item: 73
+    from_node: 39cf7cbc-1f0c-4509-a25b-862de48d8687
     from_output: output_false
     to_input: input
     to_node: 80742400-6af8-4260-8331-12f90a172d88
+  - canvas_item: 74
+    from_node: 39cf7cbc-1f0c-4509-a25b-862de48d8687
+    from_output: output_true
+    to_input: input
+    to_node: 8d783593-50a8-489c-b2e9-b7dbb2cd4df2
   nodes:
-    37f95b80-f764-42e7-99cb-7ac77610f527:
+    39cf7cbc-1f0c-4509-a25b-862de48d8687:
       canvas_items:
         input_input: 43
         output_output_false: 45
@@ -27,7 +27,7 @@ graph:
         title: 40
       connections: []
       height: 80
-      id: 37f95b80-f764-42e7-99cb-7ac77610f527
+      id: 39cf7cbc-1f0c-4509-a25b-862de48d8687
       inputs:
       - input
       outputs:
@@ -35,14 +35,20 @@ graph:
       - output_false
       properties:
         Prompt:
-          default: "as an expert critic in written content, please rate and review\
-            \ the following content below on a scale of 1 to 10 and provide 3 or 4\
-            \ suggestions for improvement. \nyou expected output is: \nALWAYS repeat\
-            \ the original content provided below first.\nthen provide an overall\
-            \ number rating and 3 or 4 suggestions for improvement, and if the number\
-            \ rating is above 9.0 then print the word REVIEWPASS at the end:\n\nremember\
-            \ to always reprint the original content below first then give your rating\
-            \ and suggestions.\nThe content is as follows:"
+          default: "You are a world renowned content reviewer, please provide a short\
+            \ review of the content below, knowing it is part of a larger manuscript,\
+            \ to include what you like and dont like about it, and then rate and the\
+            \ following content below on a scale of 1.0 to 10.0 in a few different\
+            \ categories related to the content and then provide an overal average\
+            \ rating between 1.0 and 10.0, and then provide 4 or 5 detailed suggestions\
+            \ that would improve the overall rating. \n\nyou only expected output\
+            \ is: \nyour review, which includes what you like and what you dont like,\
+            \ then 4 different categorized ratings between 1.0 and 10.0, then the\
+            \ overall rating between 1.0 and 10.0, then 4 or 5 detailed suggestions\
+            \ for improvement. do not include suggestions for any kind of visaul elements.\
+            \ \n\nREMEMBER ONLY if the overall rating is 8.2 or greater then you will\
+            \ include the word \"REVIEWPASS\" at the very end.\nThe content is as\
+            \ follows:"
           label: Prompt
           type: textarea
         Search Term:
@@ -53,14 +59,14 @@ graph:
           default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
-          - Groq llama-3.1-70b-versatile
+          - Groq
           - Ollama llama-3.2-3b
           - Ollama llama3.1-8b
           - OpenAI GPT gpt-4o-mini
           type: dropdown
         description:
-          default: Processes the input prompt, sends it to the API, and searches for
-            a specified term in the response.
+          default: Processes the input, appends API response, and searches for a specified
+            term in the combined text.
           label: Description
           type: text
         is_end_node:
@@ -72,15 +78,15 @@ graph:
           label: Start Node
           type: boolean
         node_name:
-          default: SearchNode
+          default: ReviewNode
           label: Custom Node Name
           type: text
-      title: SearchNode
-      type: SearchNode
-      width: 154
-      x: 279
-      y: 209
-    541d1303-f7cf-4190-8a70-33bbc22337e7:
+      title: ReviewNode
+      type: ReviewNode
+      width: 156
+      x: 282
+      y: 318
+    80742400-6af8-4260-8331-12f90a172d88:
       canvas_items:
         input_input: 55
         output_output: 56
@@ -90,56 +96,6 @@ graph:
         title: 52
       connections: []
       height: 80
-      id: 541d1303-f7cf-4190-8a70-33bbc22337e7
-      inputs:
-      - input
-      outputs:
-      - output
-      properties:
-        Prompt:
-          default: ''
-          label: Prompt
-          type: textarea
-        api_endpoint:
-          default: OpenAI GPT gpt-4o-mini
-          label: API Endpoint
-          options:
-          - Groq llama-3.1-70b-versatile
-          - Ollama llama-3.2-3b
-          - Ollama llama3.1-8b
-          - OpenAI GPT gpt-4o-mini
-          type: dropdown
-        description:
-          default: Processes the input prompt and prepares it for the API.
-          label: Description
-          type: text
-        is_end_node:
-          default: true
-          label: End Node
-          type: boolean
-        is_start_node:
-          default: false
-          label: Start Node
-          type: boolean
-        node_name:
-          default: Finished Content
-          label: Custom Node Name
-          type: text
-      title: Finished Content
-      type: BasicNode
-      width: 173
-      x: 530
-      y: 49
-    80742400-6af8-4260-8331-12f90a172d88:
-      canvas_items:
-        input_input: 66
-        output_output: 67
-        prop_description: 65
-        rect: 62
-        resize_handle: 68
-        title: 63
-      connections: []
-      height: 80
       id: 80742400-6af8-4260-8331-12f90a172d88
       inputs:
       - input
@@ -147,10 +103,10 @@ graph:
       - output
       properties:
         Prompt:
-          default: Acting as an expert in the subject of the content below, you will
-            implement the provided suggestions to improvie the content below.  your
-            only expected output should be the finished content. do not give any of
-            your own commentary.
+          default: 'you are a world renowned writter.  please implement the suggestions
+            provided below for the content provided. your only expected output is
+            the revised content and none of your own commentary or suggestions. The
+            content and suggestions are as follows:'
           label: Prompt
           type: textarea
         api_endpoint:
@@ -183,4 +139,54 @@ graph:
       width: 150
       x: 275
       y: 52
+    8d783593-50a8-489c-b2e9-b7dbb2cd4df2:
+      canvas_items:
+        input_input: 66
+        output_output: 67
+        prop_description: 65
+        rect: 62
+        resize_handle: 68
+        title: 63
+      connections: []
+      height: 80
+      id: 8d783593-50a8-489c-b2e9-b7dbb2cd4df2
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: 'just repeat the content below exactly:'
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 529
+      y: 171
 name: Improve
