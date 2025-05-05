@@ -6,13 +6,32 @@ Pygments
 beautifulsoup4  # bs4 dependency
 soupsieve  # To avoid warning with BeautifulSoup
 httpx
+python-docx>=1.1.2  # For processing Word documents
+Pillow  # For image handling in formatting utils
+pytube>=15.0.0  # For YouTube video metadata and transcripts
+yt-dlp>=2023.12.30
+mutagen==1.47.0  # Audio file metadata handling, fixed version to avoid import issues
+matplotlib>=3.7.0  # For charts in admin console
+mermaid-py>=0.7.1  # For rendering Mermaid diagrams
+ipython>=8.0.0  # For Mermaid magic functions in notebooks
+defusedxml>=0.7.1  # Required for YouTube transcript node
+
+# Optional audio libraries (uncomment to install)
+librosa>=0.10.0  # For more accurate audio duration detection
+soundfile>=0.12.1  # Alternative for audio file processing
+
+# AI API dependencies
+openai>=1.0.0  # For OpenAI API
+anthropic>=0.8.0  # For Claude API
+groq>=0.3.0  # For Groq API
 
 # Core langchain dependencies
 langchain
 langchain-huggingface
 langchain_core
+langchain_community
 sentence-transformers
-pandas==2.1.0  # Specific version for stability
+pandas==1.5.3  # Changed to a more compatible version for Python 3.12 on Windows
 numpy==1.26.4
 transformers
 typing_extensions
@@ -46,6 +65,13 @@ tzdata>=2022.7
 torch>=1.11.0
 torchvision>=0.12.0
 torchaudio>=0.11.0
+
+# YouTube transcript dependencies
+youtube-transcript-api>=0.6.2
+
+# GUI dependencies
+PyQt5>=5.15.11  # Required for OutlineWriterNode review window
+
 pillow
 scikit-learn==1.5.0  # Specific version for compatibility
 scipy
@@ -60,3 +86,12 @@ mpmath<1.4,>=1.1.0
 pypdf  # For PDF support
 markupsafe  # Required by Jinja2
 
+# Text-to-speech dependencies
+gradio_client>=0.10.0
+pydub
+
+# File processing dependencies
+watchdog  # For file system monitoring
+pydub  # For audio processing
+PyPDF2  # For PDF processing
+quickchart.io  # For chart generation

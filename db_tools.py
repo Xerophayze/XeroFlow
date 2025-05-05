@@ -10,9 +10,21 @@ from typing import List, Dict, Any
 from langchain_community.document_loaders import PyPDFLoader, CSVLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.documents import Document
 import json
 import shutil
 import uuid  # For generating unique chunk IDs
+import docx  # For .docx files
+import tempfile
+
+# Try to import Windows-specific modules, but don't fail if they're not available
+try:
+    import win32com.client
+    import pythoncom
+    WORD_SUPPORT = True
+except ImportError:
+    WORD_SUPPORT = False
+    logging.warning("win32com not available. Legacy .doc file support will be disabled.")
 
 # Setup logging
 LOG_DIR = "logs"
@@ -60,7 +72,7 @@ class DatabaseManager:
             uploaded_file (file object): File object opened in binary mode.
 
         Returns:
-            str: The file type ('pdf', 'csv', 'txt', etc.).
+            str: The file type ('pdf', 'csv', 'txt', 'docx', 'doc', etc.).
         """
         _, ext = os.path.splitext(uploaded_file.name)
         file_type = ext.lower().lstrip('.')
@@ -90,6 +102,77 @@ class DatabaseManager:
         except Exception as e:
             logging.error(f"Failed to save uploaded file '{uploaded_file.name}': {e}")
             raise e
+
+    def _extract_text_from_docx(self, file_path: str) -> str:
+        """
+        Extract text from a .docx file.
+        
+        Args:
+            file_path (str): Path to the .docx file.
+            
+        Returns:
+            str: Extracted text content.
+        """
+        try:
+            doc = docx.Document(file_path)
+            text = []
+            for paragraph in doc.paragraphs:
+                if paragraph.text.strip():  # Skip empty paragraphs
+                    text.append(paragraph.text)
+            for table in doc.tables:
+                for row in table.rows:
+                    row_text = []
+                    for cell in row.cells:
+                        if cell.text.strip():  # Skip empty cells
+                            row_text.append(cell.text)
+                    if row_text:  # Skip empty rows
+                        text.append(" | ".join(row_text))
+            return "\n".join(text)
+        except Exception as e:
+            logging.error(f"Error extracting text from .docx file '{file_path}': {e}")
+            raise
+
+    def _extract_text_from_doc(self, file_path: str) -> str:
+        """
+        Extract text from a legacy .doc file using Word COM object.
+        
+        Args:
+            file_path (str): Path to the .doc file.
+            
+        Returns:
+            str: Extracted text content.
+        """
+        if not WORD_SUPPORT:
+            raise ImportError("win32com is not available. Cannot process .doc files.")
+            
+        try:
+            pythoncom.CoInitialize()  # Initialize COM
+            word = win32com.client.Dispatch("Word.Application")
+            word.Visible = False
+            
+            # Create a temporary file for the .docx version
+            with tempfile.NamedTemporaryFile(suffix='.docx', delete=False) as temp_file:
+                temp_path = temp_file.name
+            
+            try:
+                # Open and save as .docx
+                doc = word.Documents.Open(file_path)
+                doc.SaveAs2(temp_path, FileFormat=16)  # 16 = .docx format
+                doc.Close()
+                
+                # Extract text from the .docx version
+                text = self._extract_text_from_docx(temp_path)
+                
+                return text
+            finally:
+                word.Quit()
+                # Clean up the temporary file
+                if os.path.exists(temp_path):
+                    os.unlink(temp_path)
+                pythoncom.CoUninitialize()
+        except Exception as e:
+            logging.error(f"Error extracting text from .doc file '{file_path}': {e}")
+            raise
 
     def add_documents(self, db_name: str, uploaded_files: List[Any]) -> Dict[str, Any]:
         """
@@ -132,16 +215,31 @@ class DatabaseManager:
 
                 file_path = self._save_uploaded_file(db_name, uploaded_file)
                 file_type = self._get_file_type(uploaded_file)
+                
+                # Get the document content based on file type
                 if file_type == 'pdf':
                     loader = PyPDFLoader(file_path)
+                    documents = loader.load()
                 elif file_type == 'csv':
                     loader = CSVLoader(file_path)
+                    documents = loader.load()
                 elif file_type == 'txt':
                     loader = TextLoader(file_path)
+                    documents = loader.load()
+                elif file_type == 'docx':
+                    text_content = self._extract_text_from_docx(file_path)
+                    documents = [Document(page_content=text_content, metadata={"source": uploaded_file.name})]
+                elif file_type == 'doc':
+                    if WORD_SUPPORT:
+                        text_content = self._extract_text_from_doc(file_path)
+                        documents = [Document(page_content=text_content, metadata={"source": uploaded_file.name})]
+                    else:
+                        logging.warning(f"Skipping .doc file '{uploaded_file.name}' - win32com not available")
+                        continue
                 else:
                     logging.warning(f"Unsupported file type: {file_type}")
-                    continue  # Unsupported file type
-                documents = loader.load()
+                    continue  # Skip unsupported file types
+                
                 # Split documents into chunks
                 text_splitter = RecursiveCharacterTextSplitter(
                     chunk_size=500,       # Reduced chunk size for finer granularity
@@ -247,26 +345,44 @@ class DatabaseManager:
             self.save_metadata(db_name, updated_metadata)
 
             # Delete the file from the filesystem
-            file_path = os.path.join(db_path, doc_name)
+            file_path = os.path.join(db_path, os.path.basename(doc_name))
             if os.path.exists(file_path):
                 os.remove(file_path)
                 logging.info(f"Deleted file '{file_path}'.")
             else:
                 logging.warning(f"File '{file_path}' does not exist.")
 
-            # Rebuild the FAISS index
-            new_index = faiss.IndexFlatIP(self.embeddings.embed_query("test").shape[0])
-            for meta in updated_metadata:
-                embedding = self.embeddings.embed_documents([meta['content']])[0]
-                embedding = np.array(embedding).astype('float32')
-                norm = np.linalg.norm(embedding)
-                if norm == 0:
-                    logging.warning("Encountered zero norm embedding. Skipping this chunk.")
-                    continue
-                embedding /= norm
-                new_index.add(np.array([embedding]).astype('float32'))
-            self.save_faiss_index(db_name, new_index)
-            logging.info(f"Rebuilt FAISS index after deleting document '{doc_name}'.")
+            # Rebuild the FAISS index if there are remaining documents
+            if updated_metadata:
+                # Get dimension from existing index
+                old_index = self.load_faiss_index(db_name)
+                if old_index is None:
+                    raise Exception("Could not load existing FAISS index")
+                dimension = old_index.d
+                
+                # Create new index with same dimension
+                new_index = faiss.IndexFlatIP(dimension)
+                
+                # Add embeddings from remaining documents
+                for meta in updated_metadata:
+                    embedding = self.embeddings.embed_documents([meta['content']])[0]
+                    embedding = np.array(embedding).astype('float32')
+                    norm = np.linalg.norm(embedding)
+                    if norm == 0:
+                        logging.warning("Encountered zero norm embedding. Skipping this chunk.")
+                        continue
+                    embedding /= norm
+                    new_index.add(np.array([embedding]).astype('float32'))
+                
+                self.save_faiss_index(db_name, new_index)
+            else:
+                # If no documents left, create empty index with correct dimension
+                test_embedding = self.embeddings.embed_query("test")
+                dimension = len(test_embedding)
+                empty_index = faiss.IndexFlatIP(dimension)
+                self.save_faiss_index(db_name, empty_index)
+            
+            logging.info(f"Successfully deleted document '{doc_name}' and rebuilt index.")
             return {"success": True}
         except Exception as e:
             error_msg = f"Failed to delete document: {str(e)}"

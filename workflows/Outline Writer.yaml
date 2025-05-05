@@ -1,0 +1,149 @@
+graph:
+  connections:
+  - canvas_item: 39
+    from_node: 7a195db5-afec-44ed-b56a-16b38a80c488
+    from_output: output
+    to_input: input
+    to_node: 37a756bb-911c-4b4f-8749-479ec9e17cd2
+  - canvas_item: 40
+    from_node: 37a756bb-911c-4b4f-8749-479ec9e17cd2
+    from_output: output
+    to_input: input
+    to_node: 7a195db5-afec-44ed-b56a-16b38a80c488
+  nodes:
+    37a756bb-911c-4b4f-8749-479ec9e17cd2:
+      canvas_items:
+        description: 24
+        drag_bar: 22
+        input_input: 25
+        input_label_input: 26
+        output_label_output: 28
+        output_output: 27
+        rect: 21
+        resize_handle: 29
+        title: 23
+      connections: []
+      height: 80
+      id: 37a756bb-911c-4b4f-8749-479ec9e17cd2
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are a world renouned writter and content creator.  you are\
+            \ known for creating some of the worlds most engaging content and narratives.\
+            \  you are especially good and writting high level outlines that are chronologically\
+            \ structures and very detailed.  \neach chapter will be a single self\
+            \ contained paragraph containing all the high level chronologically ordered\
+            \ details about what happens in that chapter.\n\neach chapter or paragraph\
+            \ will be structured as follows:\nchapter number - [key points, people,\
+            \ actions, events, places and important items and noteable characteristics\
+            \ of the chapter that structure the chapter]\n\nThe user request below\
+            \ will specify the total number of chapters in the outline. below is the\
+            \ user request and any existing content for this outline.  your only expected\
+            \ output is the next chapter in the outline.  you will only write one\
+            \ chapter at a time.  the number of chapters specified in the user request\
+            \ is only to help you know how many chapters will eventually be in the\
+            \ outline.  if there are no chapters already provided below, you will\
+            \ write only the first chapter outline. do not write duplicate chapters\
+            \ numbers.  the next chapter should always be in numerical order and continue\
+            \ the story from the first chapter outline.\nThe user request and existing\
+            \ chapters are as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 267
+      y: 195
+    7a195db5-afec-44ed-b56a-16b38a80c488:
+      canvas_items:
+        description: 33
+        drag_bar: 31
+        input_input: 34
+        input_label_input: 35
+        output_label_output: 37
+        output_output: 36
+        rect: 30
+        resize_handle: 38
+        title: 32
+      connections: []
+      height: 80
+      id: 7a195db5-afec-44ed-b56a-16b38a80c488
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        accumulated_data:
+          default: ''
+          type: hidden
+        append_accumulated_data:
+          default: true
+          description: If checked, appends "But completely different from the following
+            prompts:" and the accumulated data to the initial input during iterations.
+          label: Append Accumulated Data
+          type: boolean
+        description:
+          default: Accumulates inputs over a specified number of iterations.
+          label: Description
+          type: text
+        initial_input:
+          default: ''
+          type: hidden
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        iteration_count:
+          default: '0'
+          type: hidden
+        iterations:
+          default: '5'
+          description: Specify how many times to iterate.
+          label: Number of Iterations
+          min: 1
+          type: number
+        node_name:
+          default: AccumulatorNode
+          label: Custom Node Name
+          type: text
+      title: AccumulatorNode
+      type: AccumulatorNode
+      width: 150
+      x: 50
+      y: 50
+name: Outline Writer

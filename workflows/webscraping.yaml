@@ -3,12 +3,15 @@ graph:
   nodes:
     171e2ccb-1b84-47bc-b753-2243b1a2878b:
       canvas_items:
-        input_input: 22
-        output_scraped_text: 23
-        prop_description: 21
-        rect: 18
-        resize_handle: 24
-        title: 19
+        description: 4
+        drag_bar: 2
+        input_input: 5
+        input_label_input: 6
+        output_label_scraped_text: 8
+        output_scraped_text: 7
+        rect: 1
+        resize_handle: 9
+        title: 3
       connections: []
       height: 80
       id: 171e2ccb-1b84-47bc-b753-2243b1a2878b
@@ -40,6 +43,6 @@ graph:
       title: WebScrapingNode
       type: WebScrapingNode
       width: 203
-      x: 70
-      y: 70
+      x: 148
+      y: 95
 name: webscraping

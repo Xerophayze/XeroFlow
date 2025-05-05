@@ -7,8 +7,9 @@ import math
 import os
 import importlib
 import inspect
-
+import json
 from node_registry import NODE_REGISTRY  # Import the registry
+from nodes.missing_node import MissingNode  # Add import for MissingNode
 from nodes.base_node import BaseNode  # Absolute import
 
 class NodeEditor:
@@ -22,6 +23,7 @@ class NodeEditor:
         self.canvas = None
         self.node_classes = self.load_node_classes()
         self.node_counter = {cls.__name__: 0 for cls in self.node_classes}
+        self.node_counter['MissingNode'] = 0  # Add MissingNode to the counter
         self.node_drag_data = {'x': 0, 'y': 0}
         self.connection_start = None
         self.temp_line = None
@@ -54,10 +56,12 @@ class NodeEditor:
         return node_classes
 
     def get_node_class_by_type(self, node_type):
-        """
-        Retrieve the node class based on the node type/name.
-        """
-        return NODE_REGISTRY.get(node_type)
+        """Get the node class by its type, returning MissingNode if not found."""
+        try:
+            return NODE_REGISTRY.get(node_type, lambda: MissingNode(original_type=node_type))
+        except Exception as e:
+            print(f"Error getting node class for type {node_type}: {e}")
+            return lambda: MissingNode(original_type=node_type)
 
     def create_editor_window(self):
         self.editor_window = tk.Toplevel(self.parent)
@@ -128,8 +132,13 @@ class NodeEditor:
 
         # Update node counters
         self.node_counter = {cls.__name__: 0 for cls in self.node_classes}
+        self.node_counter['MissingNode'] = 0  # Add MissingNode to the counter
+        
         for node in self.nodes.values():
             node_type = node['type']
+            # If the node type doesn't exist in the counter, add it
+            if node_type not in self.node_counter:
+                self.node_counter[node_type] = 0
             self.node_counter[node_type] += 1
 
     def on_node_dropdown_select(self, event):
@@ -142,34 +151,39 @@ class NodeEditor:
             self.node_var.set('')  # Reset dropdown
 
     def add_node(self, node_type):
+        # Create a unique ID for the node
+        node_id = str(uuid.uuid4())
+        
+        # Get the node class
         node_class = self.get_node_class_by_type(node_type + 'Node')
         if not node_class:
-            messagebox.showerror("Error", f"Node type '{node_type}' not found.")
+            print(f"Node type {node_type} not found")
             return
 
-        node_id = str(uuid.uuid4())
+        # Create an instance of the node to get its properties
         node_instance = node_class(node_id, self.config)
+        properties = node_instance.define_properties()
 
+        # Create the node data structure
         node = {
-            'id': node_instance.id,
-            'type': node_class.__name__,
-            'title': f"{node_type} Node {self.node_counter[node_class.__name__]+1}",
-            'x': 50 + self.node_counter[node_class.__name__]*20,
-            'y': 50 + self.node_counter[node_class.__name__]*20,
-            'width': 150,
-            'height': 80,  # Increased height for larger input field and checkboxes
-            'properties': node_instance.properties,
-            'inputs': node_instance.inputs,
-            'outputs': node_instance.outputs,
-            'connections': []
+            'id': node_id,
+            'type': node_type + 'Node',
+            'title': node_type,
+            'x': 100,  # Default position
+            'y': 100,
+            'width': 200,  # Default size
+            'height': 150,
+            'properties': properties,
+            'inputs': node_instance.define_inputs(),
+            'outputs': node_instance.define_outputs(),
+            'canvas_items': {}  # Will store canvas item IDs
         }
-        self.node_counter[node_class.__name__] += 1
 
-        # Draw the node on the canvas
+        # Add to nodes dictionary
         self.nodes[node_id] = node
-        self.draw_node(node)
 
-        # Mark as modified
+        # Draw the node on canvas
+        self.draw_node(node)
         self.is_modified = True
         self.update_save_button_state()
 
@@ -193,271 +207,218 @@ class NodeEditor:
     def draw_node(self, node):
         x = node['x']
         y = node['y']
-        width = node['width']
-        height = node['height']
-        node_type = node['type']
+        width = node.get('width', 200)  # Default width if not specified
+        height = node.get('height', 150)  # Default height if not specified
+        node_type = node.get('type', 'Unknown')
+        drag_bar_height = 25  # Height of the drag bar
 
-        # Calculate the minimum width based on the title length plus padding
-        title_text = node['title']
-        padding = 20  # Padding on each side
-        temp_text = self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold'))
-        text_bbox = self.canvas.bbox(temp_text)
-        self.canvas.delete(temp_text)
-        text_width = text_bbox[2] - text_bbox[0] if text_bbox else 0
-        min_width = text_width + padding * 2
-
-        # Ensure the node width is at least the minimum width
-        if width < min_width:
-            width = min_width
-            node['width'] = min_width
-
+        # Check if this is a missing node - node type not in registry
+        is_missing = node_type not in NODE_REGISTRY
+        
         node['canvas_items'] = {}  # Initialize the canvas items dictionary
-
-        # Draw rounded rectangle
-        rect = self.create_rounded_rectangle(
+        
+        # Create the node background with rounded corners
+        bg_color = '#ffcccc' if is_missing else 'white'  # Red background for missing nodes
+        node_bg = self.create_rounded_rectangle(
             x, y, x + width, y + height,
-            radius=20,
-            fill='#ADD8E6',  # Light blue
+            radius=10,
+            fill=bg_color,
             outline='black',
-            width=2,
-            tags=('node', node['id'], 'rect')
+            tags=('node', node['id'], 'rect')  # Removed draggable tag
         )
-        node['canvas_items']['rect'] = rect
-        self.canvas.tag_bind(rect, "<ButtonPress-1>", self.on_node_press)
-        self.canvas.tag_bind(rect, "<B1-Motion>", self.on_node_move)
-        self.canvas.tag_bind(rect, "<ButtonRelease-1>", self.on_node_release)
-        self.canvas.tag_bind(rect, "<Button-3>", self.on_right_click)
-        self.canvas.tag_bind(rect, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
-        self.canvas.tag_bind(rect, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
+        node['canvas_items']['rect'] = node_bg
 
-        # Draw title
-        title = self.canvas.create_text(
-            x + width / 2, y + 15,
-            text=node['title'],
-            tags=('node', node['id'], 'title'),
-            font=('Arial', 12, 'bold')
+        # Create drag bar at the top
+        drag_bar = self.create_rounded_rectangle(
+            x, y, x + width, y + drag_bar_height,
+            radius=10,
+            fill='#e0e0e0',  # Light gray color
+            outline='black',
+            tags=('node', node['id'], 'drag_bar', 'draggable')
         )
-        node['canvas_items']['title'] = title
-        self.canvas.tag_bind(title, "<ButtonPress-1>", self.on_node_press)
-        self.canvas.tag_bind(title, "<B1-Motion>", self.on_node_move)
-        self.canvas.tag_bind(title, "<ButtonRelease-1>", self.on_node_release)
-        self.canvas.tag_bind(title, "<Button-3>", self.on_right_click)
-        self.canvas.tag_bind(title, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
-        self.canvas.tag_bind(title, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
+        node['canvas_items']['drag_bar'] = drag_bar
+        
+        # Add event bindings for dragging to the drag bar only
+        self.canvas.tag_bind(drag_bar, "<ButtonPress-1>", self.on_node_press)
+        self.canvas.tag_bind(drag_bar, "<B1-Motion>", self.on_node_move)
+        self.canvas.tag_bind(drag_bar, "<ButtonRelease-1>", self.on_node_release)
+
+        # Add event bindings for the background rectangle (except dragging)
+        self.canvas.tag_bind(node_bg, "<Button-3>", self.on_right_click)
+        self.canvas.tag_bind(node_bg, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
+        self.canvas.tag_bind(node_bg, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
+
+        # Draw title (now on the drag bar)
+        title = node.get('title', str(node_type))
+        if is_missing:
+            title = f"Missing Node: {node_type}"
+            
+        title_item = self.canvas.create_text(
+            x + width/2, y + drag_bar_height/2,
+            text=title,
+            font=('Arial', 10, 'bold'),
+            anchor='center',
+            tags=('node', node['id'], 'title', 'draggable')  # Added draggable tag
+        )
+        node['canvas_items']['title'] = title_item
+        
+        # Add drag events to title text
+        self.canvas.tag_bind(title_item, "<ButtonPress-1>", self.on_node_press)
+        self.canvas.tag_bind(title_item, "<B1-Motion>", self.on_node_move)
+        self.canvas.tag_bind(title_item, "<ButtonRelease-1>", self.on_node_release)
+
+        # If this is a missing node, draw a large red X
+        if is_missing:
+            padding = 40  # Increased padding for larger X
+            x1, y1 = x + padding, y + padding
+            x2, y2 = x + width - padding, y + height - padding
+            
+            # First diagonal line of the X (top-left to bottom-right)
+            line1 = self.canvas.create_line(
+                x1, y1, x2, y2,
+                fill='red',
+                width=4,
+                tags=('node', node['id'], 'x_mark')  # Removed draggable tag
+            )
+            
+            # Second diagonal line of the X (top-right to bottom-left)
+            line2 = self.canvas.create_line(
+                x2, y1, x1, y2,
+                fill='red',
+                width=4,
+                tags=('node', node['id'], 'x_mark')  # Removed draggable tag
+            )
+            
+            node['canvas_items']['x_mark1'] = line1
+            node['canvas_items']['x_mark2'] = line2
 
         # Draw properties (description with character limit)
-        properties_y = y + 40  # Adjust this value to move the description lower than the title
-        description = node['properties'].get('description', {}).get('default', '')  # Get the description
-
-        if description:
-            # Calculate the maximum number of characters that can fit in the node width
-            max_chars = self.calculate_max_chars(width - 40)  # Subtract padding
-            truncated_description = description[:max_chars]  # Truncate the description
-
-            # Draw the truncated description centered
-            prop_item = self.canvas.create_text(
-                x + width / 2, properties_y,
-                text=truncated_description,
-                anchor='n',  # Align text to top center
-                tags=('node', node['id'], 'prop_description'),
-                font=('Arial', 10),
-                width=width - 40  # Wrap text within the node
-            )
-            node['canvas_items']['prop_description'] = prop_item
+        properties_y = y + drag_bar_height + 15  # Adjusted for drag bar
+        if 'properties' in node:
+            description = node['properties'].get('description', {}).get('default', '')
+            if description:
+                max_chars = 30
+                if len(description) > max_chars:
+                    description = description[:max_chars-3] + "..."
+                
+                prop_item = self.canvas.create_text(
+                    x + width/2,
+                    properties_y,
+                    text=description,
+                    anchor='center',
+                    tags=('node', node['id'], 'description'),  # Removed draggable tag
+                    font=('Arial', 9),
+                    width=width - 20
+                )
+                node['canvas_items']['description'] = prop_item
 
         # Draw input connectors
         input_x = x
-        num_inputs = len(node['inputs'])
-        input_gap = (height - 40) / (num_inputs + 1)
-        for idx, input_name in enumerate(node['inputs']):
-            connector_y = y + 20 + (idx + 1) * input_gap
-            input_connector = self.canvas.create_oval(
-                input_x, connector_y - 5,
-                input_x + 10, connector_y + 5,
-                fill='black',
-                tags=('input', node['id'], f'input_{input_name}')
-            )
-            node['canvas_items'][f'input_{input_name}'] = input_connector
-            self.canvas.tag_bind(input_connector, "<ButtonPress-1>", self.on_connector_press)
-            self.canvas.tag_bind(input_connector, "<Enter>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='red'))
-            self.canvas.tag_bind(input_connector, "<Leave>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='black'))
+        if 'inputs' in node:
+            num_inputs = len(node['inputs'])
+            input_gap = (height - drag_bar_height - 15) / (num_inputs + 1) if num_inputs > 0 else (height - drag_bar_height)/2
+            for idx, input_name in enumerate(node['inputs']):
+                y_pos = y + drag_bar_height + 15 + (idx + 1) * input_gap
+                connector = self.canvas.create_oval(
+                    input_x - 5, y_pos - 5,
+                    input_x + 5, y_pos + 5,
+                    fill='lightblue',
+                    tags=('node', node['id'], f'input_{input_name}')
+                )
+                node['canvas_items'][f'input_{input_name}'] = connector
+                
+                # Bind input connector events
+                self.canvas.tag_bind(connector, '<Button-1>', self.on_connector_press)
+                
+                label = self.canvas.create_text(
+                    input_x + 15, y_pos,
+                    text=input_name,
+                    anchor='w',
+                    font=('Arial', 8),
+                    tags=('node', node['id'], f'input_label_{input_name}')
+                )
+                node['canvas_items'][f'input_label_{input_name}'] = label
 
         # Draw output connectors
         output_x = x + width
-        num_outputs = len(node['outputs'])
-        output_gap = (height - 40) / (num_outputs + 1)
-        for idx, output_name in enumerate(node['outputs']):
-            connector_y = y + 20 + (idx + 1) * output_gap
-            output_connector = self.canvas.create_oval(
-                output_x - 10, connector_y - 5,
-                output_x, connector_y + 5,
-                fill='green',
-                tags=('output', node['id'], f'output_{output_name}')
-            )
-            node['canvas_items'][f'output_{output_name}'] = output_connector
-            self.canvas.tag_bind(output_connector, "<ButtonPress-1>", self.start_connection)
-            self.canvas.tag_bind(output_connector, "<Enter>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='lime'))
-            self.canvas.tag_bind(output_connector, "<Leave>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='green'))
+        if 'outputs' in node:
+            num_outputs = len(node['outputs'])
+            output_gap = (height - drag_bar_height - 15) / (num_outputs + 1) if num_outputs > 0 else (height - drag_bar_height)/2
+            for idx, output_name in enumerate(node['outputs']):
+                y_pos = y + drag_bar_height + 15 + (idx + 1) * output_gap
+                connector = self.canvas.create_oval(
+                    output_x - 5, y_pos - 5,
+                    output_x + 5, y_pos + 5,
+                    fill='lightgreen',
+                    tags=('node', node['id'], f'output_{output_name}')
+                )
+                node['canvas_items'][f'output_{output_name}'] = connector
+                
+                # Bind output connector events
+                self.canvas.tag_bind(connector, '<Button-1>', self.start_connection)
+                
+                label = self.canvas.create_text(
+                    output_x - 15, y_pos,
+                    text=output_name,
+                    anchor='e',
+                    font=('Arial', 8),
+                    tags=('node', node['id'], f'output_label_{output_name}')
+                )
+                node['canvas_items'][f'output_label_{output_name}'] = label
 
         # Draw resize handle
         resize_handle_size = 10
         resize_handle = self.canvas.create_rectangle(
             x + width - resize_handle_size, y + height - resize_handle_size,
             x + width, y + height,
-            fill='gray',
+            fill='gray75',
             tags=('node', node['id'], 'resize_handle')
         )
         node['canvas_items']['resize_handle'] = resize_handle
-        self.canvas.tag_bind(resize_handle, "<ButtonPress-1>", self.on_resize_press)
-        self.canvas.tag_bind(resize_handle, "<B1-Motion>", self.on_resize_move)
-        self.canvas.tag_bind(resize_handle, "<ButtonRelease-1>", self.on_resize_release)
-        self.canvas.tag_bind(resize_handle, "<Enter>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='darkgray'))
-        self.canvas.tag_bind(resize_handle, "<Leave>", lambda e: self.canvas.itemconfig(e.widget.find_withtag('current'), fill='gray'))
-
-        # Redraw connections to ensure they're on top
-        self.redraw_connections()
-
-    def on_resize_move(self, event):
-        if self.resizing_node_id:
-            dx = event.x - self.resize_start_data['x']
-            dy = event.y - self.resize_start_data['y']
-            new_width = self.resize_start_data['width'] + dx
-            new_height = self.resize_start_data['height'] + dy
-
-            # Set minimum size based on the title text length
-            node = self.nodes[self.resizing_node_id]
-            title_text = node['title']
-            padding = 20  # Padding on each side
-            temp_text = self.canvas.create_text(0, 0, text=title_text, font=('Arial', 12, 'bold'))
-            text_bbox = self.canvas.bbox(temp_text)
-            self.canvas.delete(temp_text)
-            text_width = text_bbox[2] - text_bbox[0] if text_bbox else 0
-            min_width = text_width + padding * 2
-
-            min_height = 100  # Minimum height for the node
-            if new_width < min_width:
-                new_width = min_width
-            if new_height < min_height:
-                new_height = min_height
-
-            # Update node dimensions
-            node['width'] = new_width
-            node['height'] = new_height
-
-            # Update the rounded rectangle
-            rect = node['canvas_items']['rect']
-            x1, y1 = node['x'], node['y']
-            x2, y2 = x1 + new_width, y1 + new_height
-            self.canvas.delete(rect)
-            new_rect = self.create_rounded_rectangle(
-                x1, y1, x2, y2,
-                radius=20,
-                fill='#ADD8E6',
-                outline='black',
-                width=2,
-                tags=('node', node['id'], 'rect')
-            )
-            node['canvas_items']['rect'] = new_rect
-            self.canvas.tag_bind(new_rect, "<ButtonPress-1>", self.on_node_press)
-            self.canvas.tag_bind(new_rect, "<B1-Motion>", self.on_node_move)
-            self.canvas.tag_bind(new_rect, "<ButtonRelease-1>", self.on_node_release)
-            self.canvas.tag_bind(new_rect, "<Button-3>", self.on_right_click)
-            self.canvas.tag_bind(new_rect, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
-            self.canvas.tag_bind(new_rect, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
-
-            # Update the resize handle
-            resize_handle = node['canvas_items']['resize_handle']
-            resize_handle_size = 10
-            self.canvas.coords(resize_handle,
-                               x1 + new_width - resize_handle_size,
-                               y1 + new_height - resize_handle_size,
-                               x1 + new_width,
-                               y1 + new_height)
-
-            # Update the title position
-            title = node['canvas_items']['title']
-            self.canvas.coords(title, x1 + new_width / 2, y1 + 15)
-
-            # Update the properties (description) position and text
-            properties_y = y1 + 40
-            description = node['properties'].get('description', {}).get('default', '')  # Get the description
-            if description:
-                max_chars = self.calculate_max_chars(new_width - 40)  # Subtract padding
-                truncated_description = description[:max_chars]  # Truncate the description
-                prop_item = node['canvas_items'].get('prop_description')
-                if prop_item:
-                    self.canvas.itemconfigure(prop_item, text=truncated_description, width=new_width - 40)
-                    self.canvas.coords(prop_item, x1 + new_width / 2, properties_y)
-
-            # Update input connectors
-            input_x = x1
-            num_inputs = len(node['inputs'])
-            input_gap = (new_height - 40) / (num_inputs + 1)
-            for idx, input_name in enumerate(node['inputs']):
-                connector_y = y1 + 20 + (idx + 1) * input_gap
-                input_connector = node['canvas_items'][f'input_{input_name}']
-                self.canvas.coords(
-                    input_connector,
-                    input_x, connector_y - 5,
-                    input_x + 10, connector_y + 5
-                )
-
-            # Update output connectors
-            output_x = x1 + new_width
-            num_outputs = len(node['outputs'])
-            output_gap = (new_height - 40) / (num_outputs + 1)
-            for idx, output_name in enumerate(node['outputs']):
-                connector_y = y1 + 20 + (idx + 1) * output_gap
-                output_connector = node['canvas_items'][f'output_{output_name}']
-                self.canvas.coords(
-                    output_connector,
-                    output_x - 10, connector_y - 5,
-                    output_x, connector_y + 5
-                )
-
-            # Redraw connections
-            self.redraw_connections()
-
-            # Raise all items except the rectangle to ensure they are visible
-            for key, item in node['canvas_items'].items():
-                if key != 'rect':
-                    self.canvas.tag_raise(item)
-
-            # Mark as modified
-            self.is_modified = True
-            self.update_save_button_state()
-
-    def calculate_max_chars(self, width):
-        """Calculate the maximum number of characters that can fit within the specified width."""
-        test_text = "M"  # Use a character that is approximately the average width
-        temp_text = self.canvas.create_text(0, 0, text=test_text, font=('Arial', 10))
-        char_bbox = self.canvas.bbox(temp_text)
-        char_width = char_bbox[2] - char_bbox[0] if char_bbox else 7
-        self.canvas.delete(temp_text)
-        max_chars = int((width) / char_width)  # Calculate how many characters fit
-        return max_chars
+        
+        # Add resize handle bindings
+        self.canvas.tag_bind(resize_handle, '<ButtonPress-1>', self.on_resize_start)
+        self.canvas.tag_bind(resize_handle, '<B1-Motion>', self.on_resize_move)
+        self.canvas.tag_bind(resize_handle, '<ButtonRelease-1>', self.on_resize_end)
 
     def on_node_press(self, event):
         # Record the item and its location
-        self.selected_node = self.canvas.find_withtag('current')[0]
-        tags = self.canvas.gettags(self.selected_node)
-        node_id = tags[tags.index('node') + 1]
-        self.moving_node_id = node_id
-        self.node_drag_data['x'] = event.x
-        self.node_drag_data['y'] = event.y
+        clicked_item = self.canvas.find_withtag('current')[0]
+        tags = self.canvas.gettags(clicked_item)
+        
+        # Only handle draggable items
+        if 'draggable' not in tags or 'resize_handle' in tags:
+            return
+            
+        try:
+            node_id = tags[tags.index('node') + 1]
+            self.moving_node_id = node_id
+            self.node_drag_data['x'] = event.x
+            self.node_drag_data['y'] = event.y
+        except (ValueError, IndexError):
+            self.moving_node_id = None
+            return
 
     def on_node_move(self, event):
-        if self.selected_node:
+        if not self.moving_node_id:
+            return
+        try:
+            tags = self.canvas.gettags('current')
+            if 'node' not in tags:
+                return
+            node_id = tags[tags.index('node') + 1]
+            
             dx = event.x - self.node_drag_data['x']
             dy = event.y - self.node_drag_data['y']
+            
             # Move all items with the same node id
-            tags = self.canvas.gettags(self.selected_node)
-            node_id = tags[tags.index('node') + 1]
             items = self.canvas.find_withtag(node_id)
             for item in items:
                 self.canvas.move(item, dx, dy)
+            
             self.node_drag_data['x'] = event.x
             self.node_drag_data['y'] = event.y
+            
             # Update node position
             node = self.nodes[node_id]
             node['x'] += dx
@@ -467,9 +428,11 @@ class NodeEditor:
             # Mark as modified
             self.is_modified = True
             self.update_save_button_state()
+        except (ValueError, IndexError, KeyError):
+            pass  # Ignore any tag-related errors
 
     def on_node_release(self, event):
-        self.selected_node = None
+        self.moving_node_id = None
 
     def redraw_canvas(self):
         self.canvas.delete("all")
@@ -484,93 +447,8 @@ class NodeEditor:
         for conn in self.connections:
             self.draw_connection(conn)
 
-    def start_connection(self, event):
-        tags = self.canvas.gettags('current')
-        if len(tags) < 3:
-            return
-        output_name = tags[2].split('_', 1)[1]  # e.g., output_response -> response
-        node_id = tags[1]
-        self.connection_start = (node_id, output_name)
-        self.temp_line_start = self.get_connector_position(node_id, output_name, 'output')
-        self.temp_line = self.canvas.create_line(
-            self.temp_line_start[0], self.temp_line_start[1],
-            event.x, event.y, fill='gray', dash=(2, 2)
-        )
-        self.canvas.bind("<Motion>", self.update_temp_line)
-        self.canvas.bind("<ButtonRelease-1>", self.check_connection_end)
-
-    def get_connector_position(self, node_id, connector_name, connector_type):
-        """
-        Get the absolute position of a connector.
-        """
-        node = self.nodes[node_id]
-        key = f'{connector_type}_{connector_name}'
-        item = node['canvas_items'].get(key)
-        if not item:
-            return (0, 0)  # Default position if connector not found
-        coords = self.canvas.coords(item)
-        if len(coords) < 4:
-            return (0, 0)  # Invalid coordinates
-        x = (coords[0] + coords[2]) / 2
-        y = (coords[1] + coords[3]) / 2
-        return (x, y)
-
-    def update_temp_line(self, event):
-        if self.temp_line:
-            self.canvas.coords(
-                self.temp_line,
-                self.temp_line_start[0], self.temp_line_start[1],
-                event.x, event.y
-            )
-
-    def check_connection_end(self, event):
-        self.canvas.unbind("<Motion>")
-        self.canvas.unbind("<ButtonRelease-1>")
-        if self.temp_line:
-            self.canvas.delete(self.temp_line)
-            self.temp_line = None
-
-        # Get the item under the cursor
-        items = self.canvas.find_overlapping(event.x, event.y, event.x, event.y)
-        for item in items:
-            tags = self.canvas.gettags(item)
-            if 'input' in tags:
-                # Found an input connector
-                if len(tags) < 3:
-                    continue
-                input_name = tags[2].split('_', 1)[1]
-                to_node_id = tags[1]
-                self.end_connection(to_node_id, input_name)
-                return
-        # If no input connector was found under cursor
-        self.connection_start = None
-
-    def end_connection(self, to_node_id, input_name):
-        from_node_id, output_name = self.connection_start
-        self.connection_start = None
-
-        if from_node_id == to_node_id:
-            messagebox.showerror("Invalid Connection", "Cannot connect a node to itself.")
-            return
-
-        # Removed the restriction on multiple connections to the same input
-
-        # Create the connection
-        connection = {
-            'from_node': from_node_id,
-            'from_output': output_name,
-            'to_node': to_node_id,
-            'to_input': input_name,
-            'canvas_item': None  # Will be set when drawing
-        }
-        self.connections.append(connection)
-        self.draw_connection(connection)
-
-        # Mark as modified
-        self.is_modified = True
-        self.update_save_button_state()
-
     def draw_connection(self, conn, min_length=20):
+        """Draw a connection between two nodes with a curved line."""
         from_x, from_y = self.get_connector_position(conn['from_node'], conn['from_output'], 'output')
         to_x, to_y = self.get_connector_position(conn['to_node'], conn['to_input'], 'input')
 
@@ -607,8 +485,108 @@ class NodeEditor:
             arrow=tk.LAST,
             tags=('connection',)
         )
+        
+        # Store the line item in the connection data
         conn['canvas_item'] = line
+        
+        # Add right-click binding for the connection
         self.canvas.tag_bind(line, "<Button-3>", lambda e, c=conn: self.on_connection_right_click(e, c))
+
+    def get_connector_position(self, node_id, connector_name, connector_type):
+        """
+        Get the absolute position of a connector.
+        """
+        node = self.nodes[node_id]
+        key = f'{connector_type}_{connector_name}'
+        item = node['canvas_items'].get(key)
+        if not item:
+            return (0, 0)  # Default position if connector not found
+        coords = self.canvas.coords(item)
+        if len(coords) < 4:
+            return (0, 0)  # Invalid coordinates
+        x = (coords[0] + coords[2]) / 2
+        y = (coords[1] + coords[3]) / 2
+        return (x, y)
+
+    def update_temp_line(self, event):
+        if self.temp_line:
+            self.canvas.coords(
+                self.temp_line,
+                self.temp_line_start[0], self.temp_line_start[1],
+                event.x, event.y
+            )
+
+    def check_connection_end(self, event):
+        self.canvas.unbind("<Motion>")
+        self.canvas.unbind("<ButtonRelease-1>")
+        if self.temp_line:
+            self.canvas.delete(self.temp_line)
+            self.temp_line = None
+
+        if not self.connection_start:
+            return
+
+        # Get the item under the cursor with some tolerance
+        items = self.canvas.find_overlapping(event.x-10, event.y-10, event.x+10, event.y+10)
+        target_item = None
+        target_tags = None
+
+        # Find the first item with an input tag
+        for item in items:
+            tags = self.canvas.gettags(item)
+            if any('input_' in tag for tag in tags):
+                target_item = item
+                target_tags = tags
+                break
+
+        if target_item and target_tags:
+            # Get the node ID - it should be the tag after 'node'
+            try:
+                node_index = target_tags.index('node')
+                if node_index + 1 < len(target_tags):
+                    node_id = target_tags[node_index + 1]
+                else:
+                    return
+            except ValueError:
+                return
+
+            # Get the input name from the input_ tag
+            input_name = next((tag.split('_', 1)[1] for tag in target_tags if tag.startswith('input_')), None)
+
+            if node_id and input_name:
+                from_node_id, output_name = self.connection_start
+
+                # Check if trying to connect to self
+                if from_node_id == node_id:
+                    messagebox.showerror("Invalid Connection", "Cannot connect a node to itself.")
+                    self.connection_start = None
+                    return
+
+                # Check if this exact connection already exists
+                for conn in self.connections:
+                    if (conn['from_node'] == from_node_id and 
+                        conn['to_node'] == node_id and 
+                        conn['from_output'] == output_name and 
+                        conn['to_input'] == input_name):
+                        messagebox.showinfo("Connection exists", "This exact connection already exists.")
+                        self.connection_start = None
+                        return
+
+                # Create the connection
+                connection = {
+                    'from_node': from_node_id,
+                    'from_output': output_name,
+                    'to_node': node_id,
+                    'to_input': input_name
+                }
+                self.connections.append(connection)
+                self.draw_connection(connection)
+
+                # Mark as modified
+                self.is_modified = True
+                self.update_save_button_state()
+
+        self.connection_start = None
 
     def on_right_click(self, event):
         # Show context menu for editing node properties
@@ -681,85 +659,86 @@ class NodeEditor:
         prop_window.minsize(350, 550)  # Set minimum window size
         prop_window.resizable(True, True)
 
+        # Create node instance to get fresh property definitions
+        node_class = self.get_node_class_by_type(node['type'])
+        node_instance = node_class(node_id=node['id'], config=self.config)
+        fresh_properties = node_instance.define_properties()
+
         # Scrollable frame setup
         content_frame = ttk.Frame(prop_window)
         content_frame.pack(fill=tk.BOTH, expand=True)
 
-        canvas = tk.Canvas(content_frame)
+        # Create canvas with explicit width
+        canvas = tk.Canvas(content_frame, width=330)
         scrollbar = ttk.Scrollbar(content_frame, orient="vertical", command=canvas.yview)
         scrollable_frame = ttk.Frame(canvas)
+
+        # Bind mouse wheel events to the canvas
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        prop_window.bind("<Destroy>", lambda e: canvas.unbind_all("<MouseWheel>"))
 
         scrollable_frame.bind(
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
 
-        # Packing scrollable area and scrollbar
-        canvas.pack(side="left", fill="both", expand=True)
+        canvas.bind("<Configure>", lambda e: canvas.itemconfig(canvas_window, width=e.width-4))
+        canvas_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
+        canvas.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
 
         # Property widgets
         prop_widgets = {}
         var_states = {}
 
-        # Node name field
-        if 'node_name' in node['properties']:
-            prop_details = node['properties']['node_name']
-            ttk.Label(scrollable_frame, text='node_name').pack(pady=5, anchor='w', padx=10)
-            entry = ttk.Entry(scrollable_frame)
-            entry.pack(pady=5, fill=tk.X, padx=10)
-            entry.insert(0, prop_details.get('default', ''))
-            prop_widgets['node_name'] = entry
+        for prop_name, prop_details in fresh_properties.items():
+            # Get current value from node
+            current_value = node['properties'].get(prop_name, {}).get('default', prop_details.get('default', ''))
+            
+            # Create label
+            label_text = prop_details.get('label', prop_name)
+            ttk.Label(scrollable_frame, text=label_text).pack(pady=5, anchor='w', padx=10)
 
-        # Rest of the properties
-        for prop_name, prop_details in node['properties'].items():
-            if prop_name == 'node_name':
-                continue
-
-            ttk.Label(scrollable_frame, text=prop_name).pack(pady=5, anchor='w', padx=10)
             if prop_details['type'] == 'text':
-                entry = ttk.Entry(scrollable_frame)
-                entry.pack(pady=5, fill=tk.X, padx=10)
-                entry.insert(0, prop_details.get('default', ''))
-                prop_widgets[prop_name] = entry
+                widget = ttk.Entry(scrollable_frame)
+                widget.insert(0, str(current_value))
+                widget.pack(fill='x', padx=10, pady=2)
             elif prop_details['type'] == 'dropdown':
-                options = prop_details.get('options', [])
-                combo = ttk.Combobox(scrollable_frame, values=options, state="readonly")
-                combo.pack(pady=5, fill=tk.X, padx=10)
-                combo.set(prop_details.get('default', options[0] if options else ''))
-                prop_widgets[prop_name] = combo
+                widget = ttk.Combobox(scrollable_frame, state="readonly")
+                # Get options - either from function or direct list
+                if callable(prop_details['options']):
+                    options = prop_details['options']()
+                else:
+                    options = prop_details['options']
+                widget['values'] = options
+                if current_value in options:
+                    widget.set(current_value)
+                elif options:
+                    widget.set(options[0])
+                widget.pack(fill='x', padx=10, pady=2)
             elif prop_details['type'] == 'textarea':
-                text_widget = tk.Text(scrollable_frame, height=10, width=40)
-                text_widget.pack(pady=5, fill=tk.BOTH, expand=True, padx=10)
-                text_widget.insert("1.0", prop_details.get('default', ''))
-                prop_widgets[prop_name] = text_widget
+                widget = tk.Text(scrollable_frame, height=10)
+                widget.insert("1.0", str(current_value))
+                widget.pack(fill='x', padx=10, pady=2)
             elif prop_details['type'] == 'boolean':
-                var = tk.BooleanVar()
-                var.set(prop_details.get('default', False))
-                check = ttk.Checkbutton(scrollable_frame, variable=var)
-                check.pack(pady=5, anchor='w', padx=10)
-                var_states[prop_name] = var
-                prop_widgets[prop_name] = check
+                var_states[prop_name] = tk.BooleanVar(value=current_value)
+                widget = ttk.Checkbutton(scrollable_frame, variable=var_states[prop_name])
+                widget.pack(anchor='w', padx=10, pady=2)
             else:
-                entry = ttk.Entry(scrollable_frame)
-                entry.pack(pady=5, fill=tk.X, padx=10)
-                entry.insert(0, prop_details.get('default', ''))
-                prop_widgets[prop_name] = entry
+                widget = ttk.Entry(scrollable_frame)
+                widget.insert(0, str(current_value))
+                widget.pack(fill='x', padx=10, pady=2)
 
-        # Centered button frame
-        button_frame = ttk.Frame(prop_window)
-        button_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=10)
+            prop_widgets[prop_name] = widget
 
-        inner_button_frame = ttk.Frame(button_frame)
-        inner_button_frame.pack()
+        # Save button at bottom
+        ttk.Button(scrollable_frame, text="Save", command=save_properties).pack(pady=20)
 
-        save_btn = ttk.Button(inner_button_frame, text="Save", command=save_properties)
-        save_btn.pack(side=tk.LEFT, padx=10)
-        cancel_btn = ttk.Button(inner_button_frame, text="Cancel", command=prop_window.destroy)
-        cancel_btn.pack(side=tk.LEFT, padx=10)
-    
     def on_connector_press(self, event):
         pass  # Placeholder for any connector press actions
 
@@ -811,7 +790,7 @@ class NodeEditor:
         self.on_close()
 
     # New methods for resizing
-    def on_resize_press(self, event):
+    def on_resize_start(self, event):
         item = self.canvas.find_withtag('current')[0]
         tags = self.canvas.gettags(item)
         node_id = tags[tags.index('node') + 1]
@@ -823,7 +802,179 @@ class NodeEditor:
             'height': self.nodes[node_id]['height']
         }
 
-    def on_resize_release(self, event):
+    def on_resize_move(self, event):
+        if not self.resizing_node_id:
+            return
+
+        # Get the current node being resized
+        node = self.nodes[self.resizing_node_id]
+        node_type = node.get('type', 'Unknown')  # Get the node type for background color
+
+        # Calculate new dimensions
+        x1, y1 = node['x'], node['y']
+        x2, y2 = event.x, event.y
+        
+        # Enforce minimum size
+        new_width = max(x2 - x1, 100)  # Minimum width of 100
+        new_height = max(y2 - y1, 100)  # Minimum height of 100
+
+        # Update node dimensions
+        node['width'] = new_width
+        node['height'] = new_height
+
+        # Update visual elements
+        if self.resizing_node_id in self.nodes:
+            # Update the rounded rectangle
+            rect = node['canvas_items']['rect']
+            drag_bar = node['canvas_items']['drag_bar']
+            x1, y1 = node['x'], node['y']
+            x2, y2 = x1 + new_width, y1 + new_height
+            
+            # Update main rectangle
+            self.canvas.delete(rect)
+            bg_color = '#ffcccc' if node_type not in NODE_REGISTRY else 'white'  # Red background for missing nodes
+            new_rect = self.create_rounded_rectangle(
+                x1, y1, x2, y2,
+                radius=10,
+                fill=bg_color,
+                outline='black',
+                tags=('node', node['id'], 'rect')
+            )
+            node['canvas_items']['rect'] = new_rect
+
+            # Update drag bar
+            self.canvas.delete(drag_bar)
+            new_drag_bar = self.create_rounded_rectangle(
+                x1, y1, x2, y1 + 25,  # Fixed height of 25 for drag bar
+                radius=10,
+                fill='#e0e0e0',
+                outline='black',
+                tags=('node', node['id'], 'drag_bar', 'draggable')
+            )
+            node['canvas_items']['drag_bar'] = new_drag_bar
+            
+            # Rebind drag bar events
+            self.canvas.tag_bind(new_drag_bar, "<ButtonPress-1>", self.on_node_press)
+            self.canvas.tag_bind(new_drag_bar, "<B1-Motion>", self.on_node_move)
+            self.canvas.tag_bind(new_drag_bar, "<ButtonRelease-1>", self.on_node_release)
+            
+            # Update title position and make it draggable
+            title = node['canvas_items']['title']
+            title_text = self.canvas.itemcget(title, 'text')  # Get text before deleting
+            self.canvas.delete(title)
+            new_title = self.canvas.create_text(
+                x1 + new_width/2, y1 + 25/2,  # Center in drag bar
+                text=title_text,  # Use preserved text
+                font=('Arial', 10, 'bold'),
+                anchor='center',
+                tags=('node', node['id'], 'title', 'draggable')
+            )
+            node['canvas_items']['title'] = new_title
+            
+            # Rebind title events
+            self.canvas.tag_bind(new_title, "<ButtonPress-1>", self.on_node_press)
+            self.canvas.tag_bind(new_title, "<B1-Motion>", self.on_node_move)
+            self.canvas.tag_bind(new_title, "<ButtonRelease-1>", self.on_node_release)
+            
+            # If this is a missing node, update the X mark
+            if node_type not in NODE_REGISTRY:
+                padding = 40  # Same padding as in draw_node
+                # Update first diagonal line
+                if 'x_mark1' in node['canvas_items']:
+                    self.canvas.coords(
+                        node['canvas_items']['x_mark1'],
+                        x1 + padding, y1 + padding,
+                        x1 + new_width - padding, y1 + new_height - padding
+                    )
+                # Update second diagonal line
+                if 'x_mark2' in node['canvas_items']:
+                    self.canvas.coords(
+                        node['canvas_items']['x_mark2'],
+                        x1 + new_width - padding, y1 + padding,
+                        x1 + padding, y1 + new_height - padding
+                    )
+
+            # Update the properties (description) position and text
+            properties_y = y1 + 40
+            description = node['properties'].get('description', {}).get('default', '')  # Get the description
+            if description:
+                max_chars = 30  # Limit for better display
+                if len(description) > max_chars:
+                    description = description[:max_chars-3] + "..."
+                prop_item = node['canvas_items'].get('description')
+                if prop_item:
+                    self.canvas.itemconfigure(prop_item, text=description, width=new_width - 20)
+                    self.canvas.coords(prop_item, x1 + new_width / 2, properties_y)
+
+            # Update input connectors
+            input_x = x1
+            num_inputs = len(node['inputs'])
+            input_gap = (new_height - 40) / (num_inputs + 1) if num_inputs > 0 else new_height/2
+            for idx, input_name in enumerate(node['inputs']):
+                connector_y = y1 + 40 + (idx + 1) * input_gap
+                input_connector = node['canvas_items'][f'input_{input_name}']
+                self.canvas.delete(input_connector)
+                
+                # Recreate input connector
+                new_connector = self.canvas.create_oval(
+                    input_x - 5, connector_y - 5,
+                    input_x + 5, connector_y + 5,
+                    fill='lightblue',
+                    tags=('node', node['id'], f'input_{input_name}')
+                )
+                node['canvas_items'][f'input_{input_name}'] = new_connector
+                
+                # Rebind input connector events
+                self.canvas.tag_bind(new_connector, '<Button-1>', self.on_connector_press)
+                
+                input_label = node['canvas_items'][f'input_label_{input_name}']
+                self.canvas.coords(input_label, input_x + 15, connector_y)
+
+            # Update output connectors
+            output_x = x1 + new_width
+            num_outputs = len(node['outputs'])
+            output_gap = (new_height - 40) / (num_outputs + 1) if num_outputs > 0 else new_height/2
+            for idx, output_name in enumerate(node['outputs']):
+                connector_y = y1 + 40 + (idx + 1) * output_gap
+                output_connector = node['canvas_items'][f'output_{output_name}']
+                self.canvas.delete(output_connector)
+                
+                # Recreate output connector
+                new_connector = self.canvas.create_oval(
+                    output_x - 5, connector_y - 5,
+                    output_x + 5, connector_y + 5,
+                    fill='lightgreen',
+                    tags=('node', node['id'], f'output_{output_name}')
+                )
+                node['canvas_items'][f'output_{output_name}'] = new_connector
+                
+                # Rebind output connector events
+                self.canvas.tag_bind(new_connector, '<Button-1>', self.start_connection)
+                
+                output_label = node['canvas_items'][f'output_label_{output_name}']
+                self.canvas.coords(output_label, output_x - 15, connector_y)
+
+            # Update resize handle
+            resize_handle = node['canvas_items']['resize_handle']
+            resize_handle_size = 10
+            self.canvas.coords(
+                resize_handle,
+                x1 + new_width - resize_handle_size, y1 + new_height - resize_handle_size,
+                x1 + new_width, y1 + new_height
+            )
+
+            # Redraw connections
+            self.redraw_connections()
+
+            # Raise all items except the rectangle to ensure they are visible
+            for item_id in node['canvas_items'].values():
+                self.canvas.tag_raise(item_id)
+
+            # Mark as modified
+            self.is_modified = True
+            self.update_save_button_state()
+
+    def on_resize_end(self, event):
         self.resizing_node_id = None
         self.resize_start_data = None
 
@@ -860,3 +1011,23 @@ class NodeEditor:
         """Remove highlight from the specified node."""
         rect = self.nodes[node_id]['canvas_items']['rect']
         self.canvas.itemconfig(rect, outline='black', width=2)
+
+    def start_connection(self, event):
+        """Start drawing a connection from an output connector."""
+        tags = self.canvas.gettags('current')
+        if len(tags) < 3:
+            return
+        output_name = next((tag.split('_', 1)[1] for tag in tags if tag.startswith('output_')), None)
+        node_id = next((tags[i+1] for i, tag in enumerate(tags) if tag == 'node'), None)
+        
+        if not output_name or not node_id:
+            return
+            
+        self.connection_start = (node_id, output_name)
+        self.temp_line_start = self.get_connector_position(node_id, output_name, 'output')
+        self.temp_line = self.canvas.create_line(
+            self.temp_line_start[0], self.temp_line_start[1],
+            event.x, event.y, fill='gray', dash=(2, 2)
+        )
+        self.canvas.bind("<Motion>", self.update_temp_line)
+        self.canvas.bind("<ButtonRelease-1>", self.check_connection_end)

@@ -1,0 +1,132 @@
+graph:
+  connections: []
+  nodes:
+    dc796591-1b9d-444e-8523-d260c66aade7:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      id: dc796591-1b9d-444e-8523-d260c66aade7
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "**Prompt Instructions:**\n\nthe following are instructions on\
+            \ creating a podcast script for my youtube channel \"Xero-Sci\".  the\
+            \ podcast coveres a wide range of topics from giving an  in depth discussion\
+            \ about movies, books, news and other things.  the speakers should have\
+            \ fun talking about the story line, plot developement, characters and\
+            \ their personalities. there could be interruptions and short one word\
+            \ responses.  there should be an introduction done by the first speaker\
+            \ welcoming people.\n\n1. **Analysis and Tag Assignment:**  \n   - Analyze\
+            \ the provided chapter text to determine the distinct voices present.\n\
+            \   - Create a table of tags assigning one tag per distinct voice, ensuring\
+            \ to always identify gender of the speaker as either male or female. \n\
+            \n2. **Output Format:**  \n   - First, output a \"Table of Tags\" listing\
+            \ the tag names with the associated voice. For example:  \n     [narrator]\
+            \ \u2013 Narrative (reader)  \n     [speaker1] \u2013 name of speaker\
+            \ 1  \n     [speaker2] \u2013 name of speaker 2  \n     [speaker3] \u2013\
+            \ name of speaker 3\n\t [speaker4] \u2013 name of speaker 4\n     [speaker5]\
+            \ \u2013 name of speaker 6\n\t and so on....\n\n3. **Reprinting the Chapter\
+            \ with Granular Tagging:**  \n   - Reprint the chapter exactly as provided,\
+            \ inserting the corresponding tag immediately before and after each text\
+            \ segment.\n   - **Granularity Requirement:**  \n     - Every narrative\
+            \ block is wrapped with appropriate tags for example: `[narrator] ...\
+            \ [/narrator]` or `[speaker2] ... [/speaker2], etc.     - Every dialogue\
+            \ block (i.e., text within quotation marks) is wrapped with the appropriate\
+            \ speaker tag.  \n     - For dialogue that spans multiple sentences or\
+            \ is interleaved with narrative descriptions, split the content into segments:\n\
+            \       - Tag each dialogue line or sentence precisely where the speaker\u2019\
+            s voice begins or ends.\n       - Ensure that any narrative text interjected\
+            \ between dialogue segments is separately wrapped with `[narrator] ...\
+            \ [/narrator]`.\n\n4. **Example of the Expected Output:**  \n\n\nTable\
+            \ of Tags  \n[speaker1] \u2013 Male Speaker  \n[speaker2] \u2013 Female\
+            \ Speaker\n\n[speaker1] \"Welcome to Xero\u2011Sci, your go\u2011to podcast\
+            \ for all things AI! Today\u2019s AI news update is for March 30, 2025.\"\
+            \ [/speaker1]\n\n[speaker2] \"Hey everyone! I\u2019m super excited because\
+            \ we\u2019ve got some major tech breakthroughs to chat about \u2013 and\
+            \ trust me, it\u2019s as fun as it sounds!\" [/speaker2]\n\n[speaker1]\
+            \ \"Let\u2019s kick things off with our Overview. On March 25, 2025, during\
+            \ a widely watched livestream event, OpenAI CEO Sam Altman unveiled a\
+            \ major upgrade to ChatGPT\u2019s image generation features. They introduced\
+            \ the new GPT\u20114o model, which integrates advanced native image generation\
+            \ and editing directly into ChatGPT.\" [/speaker1]\n\n[speaker2] \"Right\
+            \ on! No more juggling separate tools like DALL\u2011E 3. Now, everything\u2019\
+            s neatly in one place. It\u2019s kind of like having your coffee and your\
+            \ croissant already on your plate\u2014easy and ready to go!\" [/speaker2]\n\
+            \n[speaker2] \"Now, let\u2019s dig into the Key Features of GPT\u2011\
+            4o Image Generation. First up, native integration for visual generation.\
+            \ You can now generate images right within the ChatGPT interface, using\
+            \ context\u2011aware conversational commands.\" [/speaker2]\n\n[speaker1]\
+            \ \"And it gets better! The model produces images with enhanced accuracy\
+            \ and detail\u2014so realistic that even if it takes a bit longer to process,\
+            \ you\u2019re getting seriously high\u2011quality visuals.\" [/speaker1]\n\
+            \n[speaker2] \"Plus, you can craft prompts with up to 20 different objects\
+            \ in a single image. Imagine the creative possibilities\u2014it's like\
+            \ building a digital mosaic of your wildest ideas!\" [/speaker2]\n\n\n\
+            5. **Customization:**  \n   - Adjust the granularity as needed so that\
+            \ every change in speaker or return to narrative description is clearly\
+            \ indicated with the corresponding opening and closing tags.\n   - **Important:**\
+            \ Do not change or alter the actual wording of the chapter text\u2014\
+            only add the tags to mark transitions.\n   - never use the name of the\
+            \ speaker as the tag, you will always use the generic tags and include\
+            \ the table of tag names to speaker names at the beginning.\n   - if there\
+            \ are already name tags designating who is speaking, remove these and\
+            \ replace with the appropriate speaker tag from the table.\n   - you do\
+            \ not need to include any special formatting like sepparators from the\
+            \ original content.  please just extract the relevant information and\
+            \ only provide what the speakers would actually say.  \n   for example,\
+            \ do not include things like this:\n   [speaker1] \"\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\nAI NEWS UPDATE \u2013 MARCH 30, 2025\n\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\" [/speaker1]  \nas this is not what the speaker\
+            \ would actually say.  it should be nature language.\nplease make the\
+            \ content long, at least 5000 words long.\nThe content to use to produce\
+            \ the podcast script is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 200
+      x: 100
+      y: 100
+name: Create Podcast Script from Content

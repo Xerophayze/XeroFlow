@@ -1,0 +1,433 @@
+graph:
+  connections:
+  - canvas_item: 204
+    from_node: c1a90235-9745-4c78-b6d0-0f30fb1330b7
+    from_output: prompt
+    to_input: input
+    to_node: facb0729-ac84-40a6-afc4-351e02f931ad
+  - canvas_item: 205
+    from_node: facb0729-ac84-40a6-afc4-351e02f931ad
+    from_output: output
+    to_input: input
+    to_node: c1a90235-9745-4c78-b6d0-0f30fb1330b7
+  - canvas_item: 206
+    from_node: facb0729-ac84-40a6-afc4-351e02f931ad
+    from_output: output2
+    to_input: input
+    to_node: 86235f6d-bbdf-4cb9-9537-e564e20438af
+  - canvas_item: 207
+    from_node: 86235f6d-bbdf-4cb9-9537-e564e20438af
+    from_output: output
+    to_input: input
+    to_node: ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec
+  - canvas_item: 208
+    from_node: ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec
+    from_output: prompt
+    to_input: input
+    to_node: 6c907a6b-d27b-4247-9810-9319c06684c2
+  nodes:
+    6c907a6b-d27b-4247-9810-9319c06684c2:
+      canvas_items:
+        description: 160
+        drag_bar: 158
+        input_input: 161
+        input_label_input: 162
+        output_label_output: 164
+        output_output: 163
+        rect: 157
+        resize_handle: 165
+        title: 159
+      connections: []
+      height: 100
+      id: 6c907a6b-d27b-4247-9810-9319c06684c2
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes array elements through multiple API calls until condition
+            is met.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        max_iterations:
+          default: '20'
+          description: Maximum number of iterations per array element
+          label: Max Iterations
+          type: text
+        minimum_rating:
+          default: '8.3'
+          description: Minimum overall rating required (e.g., 7.5)
+          label: Minimum Rating
+          type: text
+        node_name:
+          default: ArrayProcessTestProcessNode
+          label: Custom Node Name
+          type: text
+        refinement_prompt:
+          default: "you are a world renowned writter and literary content creator.\
+            \  please implement the review and suggestions provided below for the\
+            \ content provided. your only expected output is the revised content and\
+            \ none of your own commentary or suggestions. remember To incorporate\
+            \ burstiness into your writing, consciously vary sentence lengths and\
+            \ structures as you generate text\u2014mix short, impactful sentences\
+            \ with longer, more complex ones to create a dynamic rhythm; use different\
+            \ grammatical constructions, monitor your output for monotonous patterns\
+            \ in real time, and adjust accordingly to enhance engagement and mirror\
+            \ natural speech patterns. If the content below contains a chapter or\
+            \ heading of some kind, please ensure that it is included, if the content\
+            \ below does not contain a heading or chapter number do not include one.\
+            \  The content and suggestions are as follows:"
+          label: Refinement Prompt
+          type: textarea
+        search_string:
+          default: REVIEWPASS
+          description: String to search for in validation results
+          label: Search String
+          type: text
+        validation_prompt:
+          default: "You are a world renowned content and literature reviewer, please\
+            \ provide a short non-critical review of the content below, to include\
+            \ what you like and dont like about it, and then rate and the following\
+            \ content below on a scale of 1.0 to 10.0 in 6 different categories related\
+            \ to the content and then provide an OVERALL RATING between 1.0 and 10.0,\
+            \ and then provide 8 detailed and very specific suggestions that would\
+            \ help improve the overall rating. \n\nyou only expected output is: \n\
+            your review, which includes what you like and what you dont like, then\
+            \ 6 different categorized ratings between 1.0 and 10.0, then the \"OVERALL\
+            \ RATING\" between 1.0 and 10.0, then 8 detailed and very specific suggestions\
+            \ for improvement. do not include suggestions for any kind content that\
+            \ would require pictures. \n\nThe overal rating should be formatted as\
+            \ follows:\nOVERALL RATING: and then the rating with no other formatting.\n\
+            \nif the following content is just a title or starts with the word \"\
+            Title\", then do not do the review, just print the word \"REVIEWPASS\"\
+            \n\nThe content is as follows:"
+          label: Validation Prompt
+          type: textarea
+      title: ArrayProcessTestProcessNode
+      type: ArrayProcessTestProcessNode
+      width: 225
+      x: 553
+      y: 34
+    86235f6d-bbdf-4cb9-9537-e564e20438af:
+      canvas_items:
+        description: 169
+        drag_bar: 167
+        input_input: 170
+        input_label_input: 171
+        output_label_output: 173
+        output_output: 172
+        rect: 166
+        resize_handle: 174
+        title: 168
+      connections: []
+      height: 80
+      id: 86235f6d-bbdf-4cb9-9537-e564e20438af
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are to take the user request below and write a detailed outline.\
+            \  The outline will consist of a self contained paragraph representing\
+            \ the chapter, or paragraph extending the details of a chapter.  it will\
+            \ contain vital details, information, links, references and data necessary\
+            \ to writing the content for that chapter or section.\n\nYou are responsible\
+            \ for the following duties:\n\n1. Crafting content that aligns with the\
+            \ intended tone, purpose, and audience.\n\n2. Structuring ideas logically\
+            \ to enhance readability and flow.\n\n3. Your expected output will always\
+            \ be a title followed by the exact original user request shown bellow,\
+            \ then a detailed outline for whatever the user request is.  this outline\
+            \ will consist of the title, then the exact original user request shown\
+            \ below, and then a self contained paragraph for each chapter and/or section\
+            \ or sub section that makes up the outline with only the key points, noteable\
+            \ items, and major points of what is in that chapter or section for the\
+            \ content being requested.  the chapter or section number and title or\
+            \ heading for each chapter or section will always be included at the very\
+            \ beginning of that chapter or section making it part of the paragraph.\
+            \ For chapters or sections that require additional length, an addtional\
+            \ one or two paragraphs of details for a chapter can be included right\
+            \ after the paragraph for that chapter. \nHere is what the formatting\
+            \ structure would look like:\nTitle: [content title] - [the exact original\
+            \ user request listed below repeated here]\n\nchapter # - [chronologically\
+            \ structured key points, people, actions, events, places and important\
+            \ items and noteable characteristics of the chapter that structure the\
+            \ chapter.]\n\n[if the user requests [2 paragraphs], then an aditional\
+            \ paragraph of details naturally continuing the outline from chapter #\
+            \ can be added here to add to the details of chapter # for a total of\
+            \ 2 paragraphs per chapter, these details should be a chronological continuation\
+            \ of the first paragraph naturally continuing the story outline from the\
+            \ first paragraph.]\n\n[if the user requests [3 paragraphs], an aditional\
+            \ paragraph of details naturally continuing the outline from chapter #\
+            \ can be added here to add to the details of chapter # for a total of\
+            \ 3 paragraphs per chapter, these details should be a chronological continuation\
+            \ of the second paragraph naturally continuing the story outline from\
+            \ the second paragraph.]\n\ndo not use any special formatting , ie bold,\
+            \ line sepparators, etc.  just one, two or three self contained paragraphs\
+            \ that contains the detailed description of chronologically structured\
+            \ key points, information, data, urls, referencesand important items of\
+            \ the chapter that structure the chapter for each chapter or section.\n\
+            \n6. each paragraph will have a single blank line after it.\n\n7. each\
+            \ paragraph will contain the important data, information, points, urls,\
+            \ references and updated information necessary for writing the chapter\
+            \ or section.\n\n8. if the content requested in more technical or educational\
+            \ in nature, the information in the outline will be structured intuitively\
+            \ to provide the information in the most educational way possible.\n\n\
+            your only expected output is the requested outline and no other comments.\n\
+            Remember, the default number of paragraphs per chapter is 1, unless the\
+            \ user specifies the number of paragraphs per chapter. if the user requests\
+            \ [2 paragraphs], you will add one additional paragraph of details for\
+            \ each chapter.  if the user requests [3 paragraphs], you will add an\
+            \ additiona two paragraphs of details for each chapter. \n\nFor example,\
+            \ user requests contains the phrase \"2 paragraphs\", then write two paragraphs\
+            \ per chapter:\n\n[paragraph 1]: chapter # - In the distant future, humanity\
+            \ has ventured into the far reaches of space, colonizing planets with\
+            \ unimaginable landscapes and civilizations. The story begins on the......\
+            \  \n\n[paragraph 2]:(Continued) - the details of this paragraph will\
+            \ naturally continue and add to the outline in paragraph 1.....\n\nFor\
+            \ example, user requests contains the phrase \"3 paragraphs\", then write\
+            \ three paragraphs per chapter:\n\n[paragraph 1]: chapter # - In the bleak\
+            \ future where humanity has succumbed to the omnipresent grip of a dying\
+            \ Earth, a lone space vessel, the Eclipsed Solace, drifts.......\n\n[paragraph\
+            \ 2]:(Continued) - the details of this paragraph will naturally continue\
+            \ and add to the outline in paragraph 1......\n\n[paragraph 3]:(Continued)\
+            \ - the details of this paragraph will naturally continue and add to the\
+            \ outline in paragraph 2 ......."
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt with review capability.
+          label: Description
+          type: text
+        enable_review:
+          default: true
+          label: Enable Review
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: OutlineWriterNode
+          label: Custom Node Name
+          type: text
+      title: OutlineWriterNode
+      type: OutlineWriterNode
+      width: 150
+      x: 348
+      y: 46
+    ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec:
+      canvas_items:
+        description: 178
+        drag_bar: 176
+        input_input: 179
+        input_label_input: 180
+        output_label_prompt: 182
+        output_prompt: 181
+        rect: 175
+        resize_handle: 183
+        title: 177
+      connections: []
+      height: 80
+      id: ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: OpenAI GPT gpt-4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        chunk_size:
+          default: '10'
+          description: Number of items to process in each chunk
+          type: integer
+        description:
+          default: No description provided.
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        review_array:
+          default: true
+          description: Show review window for array output
+          type: boolean
+        use_array:
+          default: true
+          description: Output as array instead of string
+          type: boolean
+      title: LongOutputV2 Node 2
+      type: LongOutputV2Node
+      width: 150
+      x: 329
+      y: 232
+    c1a90235-9745-4c78-b6d0-0f30fb1330b7:
+      canvas_items:
+        description: 187
+        drag_bar: 185
+        input_input: 188
+        input_label_input: 189
+        output_label_prompt: 191
+        output_prompt: 190
+        rect: 184
+        resize_handle: 192
+        title: 186
+      connections: []
+      height: 100
+      id: c1a90235-9745-4c78-b6d0-0f30fb1330b7
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Processes the input for web search and scraping.
+          type: text
+        enable_url_selection:
+          default: true
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: SearchAndScrapeNode
+          type: text
+        num_results_to_skip:
+          default: '0'
+          type: number
+        num_search_results:
+          default: '5'
+          type: number
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          type: text
+      title: SearchAndScrapeNode
+      type: SearchAndScrapeNode
+      width: 212
+      x: 70
+      y: 45
+    facb0729-ac84-40a6-afc4-351e02f931ad:
+      canvas_items:
+        description: 196
+        drag_bar: 194
+        input_input: 197
+        input_label_input: 198
+        output_label_output: 200
+        output_label_output2: 202
+        output_output: 199
+        output_output2: 201
+        rect: 193
+        resize_handle: 203
+        title: 195
+      connections: []
+      height: 80
+      id: facb0729-ac84-40a6-afc4-351e02f931ad
+      inputs:
+      - input
+      outputs:
+      - output
+      - output2
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        accumulated_data:
+          default: ''
+          type: hidden
+        append_accumulated_data:
+          default: false
+          description: If checked, appends "But completely different from the following
+            prompts:" and the accumulated data to the initial input during iterations.
+          label: Append Accumulated Data
+          type: boolean
+        description:
+          default: Accumulates inputs over iterations with dual outputs.
+          label: Description
+          type: text
+        initial_input:
+          default: ''
+          type: hidden
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        iteration_count:
+          default: '0'
+          type: hidden
+        iterations:
+          default: '2'
+          description: Specify how many times to iterate.
+          label: Number of Iterations
+          min: 1
+          type: number
+        node_name:
+          default: AccumulateOutputNode
+          label: Custom Node Name
+          type: text
+      title: AccumulateOutputNode
+      type: AccumulateOutputNode
+      width: 150
+      x: 102
+      y: 232
+name: Research and write Guide

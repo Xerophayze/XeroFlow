@@ -1,42 +1,37 @@
 graph:
   connections: []
   nodes:
-    02a37996-1ccf-4924-9a31-317f30eaf7aa:
+    6089622f-6dc2-47ba-a901-1cc0e862f990:
       canvas_items:
+        description: 13
+        drag_bar: 11
         input_input: 14
-        output_output: 15
-        prop_description: 13
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
         rect: 10
-        resize_handle: 16
-        title: 11
+        resize_handle: 18
+        title: 12
       connections: []
       height: 80
-      id: 02a37996-1ccf-4924-9a31-317f30eaf7aa
+      id: 6089622f-6dc2-47ba-a901-1cc0e862f990
       inputs:
       - input
       outputs:
       - output
       properties:
         Prompt:
-          default: 'If the content is already an outline, you will only repeat the
-            outline exacltly as provided below in the user request.  If the user request
-            below is not an outline then your only goals is to write a very detailed
-            outline for the user request below.  each section/chapter description
-            will be very detailed and in a self contained paragraph that will include
-            the section/chapter number and title at the beginning of each paragraph.  you
-            will always put the title first before creating the rest of the detailed
-            outline.  each chapter/section paragraph will include intricate detailes
-            about that section.  The user request is as follows:'
+          default: ''
           label: Prompt
           type: textarea
         api_endpoint:
-          default: OpenAI GPT gpt-4o-mini
+          default: openai
           label: API Endpoint
           options:
           - Groq
-          - Ollama llama-3.2-3b
-          - Ollama llama3.1-8b
-          - OpenAI GPT gpt-4o-mini
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -57,6 +52,6 @@ graph:
       title: BasicNode
       type: BasicNode
       width: 150
-      x: 184
-      y: 113
+      x: 70
+      y: 70
 name: General Requests

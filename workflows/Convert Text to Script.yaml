@@ -1,0 +1,141 @@
+graph:
+  connections: []
+  nodes:
+    c7df7599-7a2b-44c0-b1b6-d4c54fe6cf7d:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      id: c7df7599-7a2b-44c0-b1b6-d4c54fe6cf7d
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "**Prompt Instructions:**\n\n1. **Analysis and Tag Assignment:**\
+            \  \n   - Analyze the provided chapter text to determine the distinct\
+            \ voices present.\n   - Create a table of tags assigning one tag per distinct\
+            \ voice, ensuring to always identify gender of the speaker as either male\
+            \ or female. \n\n2. **Output Format:**  \n   - First, output a \"Table\
+            \ of Tags\" listing the tag names with the associated voice. For example:\
+            \  \n     [narrator] \u2013 Narrative (reader)  \n     [speaker1] \u2013\
+            \ name of speaker 1  \n     [speaker2] \u2013 name of speaker 2  \n  \
+            \   [speaker3] \u2013 name of speaker 3\n\t [speaker4] \u2013 name of\
+            \ speaker 4\n     [speaker5] \u2013 name of speaker 6\n\t and so on....\n\
+            \n3. **Reprinting the Chapter with Granular Tagging:**  \n   - Reprint\
+            \ the chapter exactly as provided, inserting the corresponding tag immediately\
+            \ before and after each text segment.\n   - **Granularity Requirement:**\
+            \  \n     - Every narrative block is wrapped with appropriate tags for\
+            \ example: `[narrator] ... [/narrator]` or `[speaker2] ... [/speaker2],\
+            \ etc.     - Every dialogue block (i.e., text within quotation marks)\
+            \ is wrapped with the appropriate speaker tag.  \n     - For dialogue\
+            \ that spans multiple sentences or is interleaved with narrative descriptions,\
+            \ split the content into segments:\n       - Tag each dialogue line or\
+            \ sentence precisely where the speaker\u2019s voice begins or ends.\n\
+            \       - Ensure that any narrative text interjected between dialogue\
+            \ segments is separately wrapped with `[narrator] ... [/narrator]`.\n\n\
+            4. **Example of the Expected Output:**  \n\n\nTable of Tags  \n[narrator]\
+            \ \u2013 Narrative (reader)  \n[speaker1] \u2013 Jean\u2011Luc Picard\
+            \  \n[speaker2] \u2013 Seven of Nine  \n[speaker3] \u2013 Data\n\n[narrator]\
+            \ Chapter 1 - The Burning Light [/narrator]\n\n[narrator] The Enterprise\
+            \ sailed silently through the vast black of space, its once-medieval hull\
+            \ now a masterpiece of modern engineering\u2014sleek curves and radiant\
+            \ panels interwoven with the timeless technology of the past. Jean\u2011\
+            Luc Picard stood on the bridge, leaning slightly on the railing as he\
+            \ gazed into the void, each star a whisper of memory and possibility.\
+            \ His eyes, though softened by the passage of years, burned with the same\
+            \ intense curiosity that had driven him through decades of exploration.\
+            \ Today, his mission was as personal as it was historic.[/narrator]\n\n\
+            [narrator] The rejuvenated vessel carried with it not only the weight\
+            \ of history, but a promise for new discovery. Beneath its formidable\
+            \ exterior were transwarp engines that hummed with a quiet power, advanced\
+            \ defensive systems that could shut down cosmic threats in an instant,\
+            \ and layers of self\u2011sustaining automation ingeniously derived from\
+            \ Borg technology. This ship was a symbol: a bridge between the past and\
+            \ the future, between the relentless drive for discovery and the lessons\
+            \ learned from imitation.[/narrator]\n\n[narrator] Within the stellar\
+            \ corridors of the Enterprise, a selected crew prepared for an unprecedented\
+            \ endeavor. Seven of Nine, once a drone and a living testament to the\
+            \ beauty and danger of assimilation, now embodied defiant independence\
+            \ and intellectual curiosity. Her presence radiated a calm competence,\
+            \ every measured gesture resonating with the echoes of her former life\
+            \ among the Borg. Beside her, Data, the android whose every calculation\
+            \ balanced logic with a touch of the ineffable emotion he sought to understand,\
+            \ busied himself with fine\u2011tuning the intricate systems that underpinned\
+            \ the ship. He moved with deliberate precision, his wide, luminous eyes\
+            \ quietly cataloguing each operational nuance.[/narrator]\n\n[narrator]\
+            \ In the center of it all, Jean\u2011Luc Picard's steady voice emerged\
+            \ from the hum of computers and the ambient sounds of a ship at work.[/narrator]\n\
+            \n[speaker1] \"Today, we embark on a journey to reclaim lost fragments\
+            \ of memory,\"[/speaker1]  \n[narrator] he announced during the morning\
+            \ briefing.[/narrator]  \n[speaker1] \"We have a device\u2014a relic recovered\
+            \ from a Borg vessel\u2014that has the potential to unlock hidden chapters\
+            \ of our collective past. It offers us a window into the early days of\
+            \ a civilization we once feared, but now seek to understand.\"[/speaker1]\n\
+            \n[narrator] Picard\u2019s words resonated in the quiet of the briefing\
+            \ room. The device, an enigmatic artifact that pulsated with a subtle,\
+            \ otherworldly light, had been carefully secured aboard the Enterprise.\
+            \ Its design was alien yet oddly elegant, boasting an intricate lattice\
+            \ of crystalline circuits and organic materials fused by technology beyond\
+            \ conventional understanding. No one dared to speculate boldly about its\
+            \ origin, but it was clear that it held memories deeply intertwined with\
+            \ the evolution of the Borg.[/narrator]\n\n\n5. **Customization:**  \n\
+            \   - Adjust the granularity as needed so that every change in speaker\
+            \ or return to narrative description is clearly indicated with the corresponding\
+            \ opening and closing tags.\n   - **Important:** Do not change or alter\
+            \ the actual wording of the chapter text\u2014only add the tags to mark\
+            \ transitions.\n   - never use the name of the speaker as the tag, you\
+            \ will always use the generic tags and include the table of tag names\
+            \ to speaker names at the beginning.\n   - if there are already name tags\
+            \ designating who is speaking, remove these and replace with the appropriate\
+            \ speaker tag from the table.\n   - if the content below is of a more\
+            \ formal formatting or technical content with titles headings chapters\
+            \ sections etc, you are convert this into something that is dialogue driven,\
+            \ using natural speech as if it was a person speaking. there may be instructors\
+            \ at the beginning instruction you on the kind of dialogue or vocabulary\
+            \ to be used. for example they may request that you format it as a podcast\
+            \ with multiple speakers. please follow the user instructions if they\
+            \ are included.\nThe content to process is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Convert to Script
+          label: Custom Node Name
+          type: text
+      title: Convert to Script
+      type: BasicNode
+      width: 200
+      x: 100
+      y: 100
+name: Convert Text to Script

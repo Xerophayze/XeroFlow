@@ -1,29 +1,34 @@
 graph:
   connections:
-  - canvas_item: 63
+  - canvas_item: 123
     from_node: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
     from_output: output
     to_input: input
     to_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
-  - canvas_item: 64
+  - canvas_item: 124
     from_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
     from_output: prompt
     to_input: input
-    to_node: 1c697778-23e8-405f-9539-bd40e4eae1a7
+    to_node: 50e0acb7-309f-4379-85c8-622048f47a7b
   nodes:
-    1c697778-23e8-405f-9539-bd40e4eae1a7:
+    50e0acb7-309f-4379-85c8-622048f47a7b:
       canvas_items:
-        input_input: 38
-        output_chat_history: 39
-        prop_description: 37
-        rect: 34
-        resize_handle: 40
-        title: 35
-      connections: []
-      height: 80
-      id: 1c697778-23e8-405f-9539-bd40e4eae1a7
+        description: 97
+        drag_bar: 95
+        input_gui_queue: 100
+        input_input: 98
+        input_label_gui_queue: 101
+        input_label_input: 99
+        output_chat_history: 102
+        output_label_chat_history: 103
+        rect: 94
+        resize_handle: 104
+        title: 96
+      height: 150
+      id: 50e0acb7-309f-4379-85c8-622048f47a7b
       inputs:
       - input
+      - gui_queue
       outputs:
       - chat_history
       properties:
@@ -31,16 +36,17 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: OpenAI GPT gpt-4o-mini
+          default: openai
           options:
           - Groq
-          - Ollama llama-3.2-3b
+          - Ollama DeepSeek r1
           - Ollama llama3.1-8b
           - OpenAI GPT gpt-4o-mini
           type: dropdown
         database:
-          default: Sci-fi Novels
+          default: test
           options:
+          - Novels by Eric
           - Sci-fi Novels
           - TEK Utah
           - test
@@ -59,17 +65,20 @@ graph:
           type: text
       title: ChatNode
       type: ChatNode
-      width: 150
-      x: 580
-      y: 251
+      width: 200
+      x: 548
+      y: 204
     6e15a2ae-fae9-414d-a6c3-73dbae8931a3:
       canvas_items:
-        input_input: 48
-        output_output: 49
-        prop_description: 47
-        rect: 44
-        resize_handle: 50
-        title: 45
+        description: 108
+        drag_bar: 106
+        input_input: 109
+        input_label_input: 110
+        output_label_output: 112
+        output_output: 111
+        rect: 105
+        resize_handle: 113
+        title: 107
       connections: []
       height: 80
       id: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
@@ -86,11 +95,11 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Ollama llama3.1-8b
+          default: openai
           label: API Endpoint
           options:
           - Groq
-          - Ollama llama-3.2-3b
+          - Ollama DeepSeek r1
           - Ollama llama3.1-8b
           - OpenAI GPT gpt-4o-mini
           type: dropdown
@@ -117,12 +126,15 @@ graph:
       y: 102
     7ee360a1-2a70-41dc-a1f2-f61a439acb86:
       canvas_items:
-        input_input: 58
-        output_prompt: 59
-        prop_description: 57
-        rect: 54
-        resize_handle: 60
-        title: 55
+        description: 117
+        drag_bar: 115
+        input_input: 118
+        input_label_input: 119
+        output_label_prompt: 121
+        output_prompt: 120
+        rect: 114
+        resize_handle: 122
+        title: 116
       connections: []
       height: 80
       id: 7ee360a1-2a70-41dc-a1f2-f61a439acb86

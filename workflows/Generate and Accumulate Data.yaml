@@ -1,0 +1,117 @@
+graph:
+  connections:
+  - canvas_item: 65
+    from_node: 8b53135e-97d5-4023-b3c1-67ec309192e6
+    from_output: output
+    to_input: input
+    to_node: 5114c858-699c-427f-8831-7ee58861088b
+  - canvas_item: 66
+    from_node: 5114c858-699c-427f-8831-7ee58861088b
+    from_output: output
+    to_input: input
+    to_node: 8b53135e-97d5-4023-b3c1-67ec309192e6
+  nodes:
+    5114c858-699c-427f-8831-7ee58861088b:
+      canvas_items:
+        description: 48
+        drag_bar: 46
+        input_input: 49
+        input_label_input: 50
+        output_label_output: 52
+        output_output: 51
+        rect: 45
+        resize_handle: 53
+        title: 47
+      height: 150
+      id: 5114c858-699c-427f-8831-7ee58861088b
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 200
+      x: 411
+      y: 90
+    8b53135e-97d5-4023-b3c1-67ec309192e6:
+      canvas_items:
+        description: 57
+        drag_bar: 55
+        input_input: 58
+        input_label_input: 59
+        output_label_output: 61
+        output_label_output2: 63
+        output_output: 60
+        output_output2: 62
+        rect: 54
+        resize_handle: 64
+        title: 56
+      height: 150
+      id: 8b53135e-97d5-4023-b3c1-67ec309192e6
+      inputs:
+      - input
+      outputs:
+      - output
+      - output2
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Accumulates inputs over iterations with dual outputs.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        iterations:
+          default: '3'
+          description: Specify how many times to iterate.
+          label: Number of Iterations
+          min: 1
+          type: number
+        node_name:
+          default: AccumulateOutputV2Node
+          label: Custom Node Name
+          type: text
+      title: AccumulateOutputV2Node
+      type: AccumulateOutputV2Node
+      width: 200
+      x: 97
+      y: 290
+name: Generate and Accumulate Data

@@ -1,0 +1,48 @@
+graph:
+  connections: []
+  nodes:
+    ac5fa116-15a3-48f9-9b02-ab4dad747b1c:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_label_youtube_url: 15
+        input_youtube_url: 14
+        output_label_transcript: 17
+        output_transcript: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      id: ac5fa116-15a3-48f9-9b02-ab4dad747b1c
+      inputs:
+      - youtube_url
+      outputs:
+      - transcript
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Extracts transcript from a YouTube video URL
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        language:
+          default: en
+          label: Preferred Language
+          type: text
+        node_name:
+          default: YouTube Transcript Node
+          label: Custom Node Name
+          type: text
+      title: YouTube Transcript Node
+      type: YoutubeTranscriptNode
+      width: 200
+      x: 100
+      y: 100
+name: Get Youtube Transcript
