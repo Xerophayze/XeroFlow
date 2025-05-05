@@ -1,6 +1,8 @@
 # main.py
 
 import sys
+print(f"Python executable: {sys.executable}")
+print(f"Python path: {sys.path}")
 import subprocess
 import os
 from pathlib import Path
@@ -16,6 +18,7 @@ import queue  # Add this import at the top
 from node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
 from db_tools import DatabaseManager  # Import from db_tools.py
 from config_utils import load_config, save_config  # Importing from config_utils.py
+from workflow_manager import workflow_manager, create_workflow_management_tab  # Import from workflow_manager.py
 
 # Import separated functions
 from manage_apis_window import manage_apis_window
@@ -23,7 +26,6 @@ from manage_databases_window import manage_databases_window
 from manage_documents_window import manage_documents_window
 from manage_settings import manage_settings_window
 from process_node_graph import process_node_graph
-
 
 import tkinter as tk
 import _tkinter
@@ -44,6 +46,9 @@ from nodes.base_node import BaseNode
 
 # Import formatting utilities
 from formatting_utils import append_formatted_text, set_formatting_enabled  # Import set_formatting_enabled
+
+# Import the Word export function
+from ExportWord import convert_markdown_to_docx  # Ensure ExportWord.py is in the same directory
 
 # Setup logging for main.py
 LOG_DIR = "logs"
@@ -98,7 +103,7 @@ def load_workflows(workflow_dir='workflows'):
             print(f"Error loading workflow from {workflow_file}: {e}")
     
     return workflows
-    
+        
 def save_workflow(workflow, workflow_dir='workflows'):
     """Save a single workflow to a YAML file in the workflow directory."""
     workflow_path = Path(workflow_dir)
@@ -118,7 +123,7 @@ def save_workflow(workflow, workflow_dir='workflows'):
 open_editors = {}
 
 def add_instruction_prompt(config, chat_instruction_listbox):
-    """Add a new instruction prompt using NodeEditor."""
+    """Add a new Workflow using NodeEditor."""
     def on_save(editor):
         graph_data = editor.configured_graph
         name = editor.configured_name
@@ -138,10 +143,10 @@ def add_instruction_prompt(config, chat_instruction_listbox):
     editor = NodeEditor(root, config, config['interfaces'], save_callback=on_save, close_callback=on_close)
 
 def edit_instruction_prompt(config, chat_instruction_listbox):
-    """Edit an existing instruction prompt using NodeEditor."""
+    """Edit an existing Workflow using NodeEditor."""
     selected_indices = chat_instruction_listbox.curselection()
     if not selected_indices:
-        messagebox.showwarning("Selection Required", "Please select an instruction prompt to edit.")
+        messagebox.showwarning("Selection Required", "Please select an Workflow to edit.")
         return
     index = selected_indices[0]
     selected_name = chat_instruction_listbox.get(index)
@@ -180,28 +185,21 @@ def edit_instruction_prompt(config, chat_instruction_listbox):
     open_editors[selected_name] = editor
 
 def delete_instruction_prompt(config, chat_instruction_listbox):
-    """Delete an existing instruction prompt."""
+    """Delete an existing Workflow."""
     selected_indices = chat_instruction_listbox.curselection()
     if not selected_indices:
-        messagebox.showwarning("Selection Required", "Please select an instruction prompt to delete.")
         return
     index = selected_indices[0]
     selected_name = chat_instruction_listbox.get(index)
-    confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the workflow '{selected_name}'?")
-    if confirm:
-        workflow_file = Path('workflows') / f"{selected_name}.yaml"
-        if workflow_file.exists():
-            try:
-                workflow_file.unlink()
-                chat_instruction_listbox.delete(index)
-                # Optionally refresh the list
-                # update_workflow_list(chat_instruction_listbox)
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to delete workflow '{selected_name}': {e}")
-        else:
-            messagebox.showerror("Error", f"Workflow file '{selected_name}.yaml' not found.")
+    workflow_file = Path('workflows') / f"{selected_name}.yaml"
+    if workflow_file.exists():
+        try:
+            workflow_file.unlink()
+            chat_instruction_listbox.delete(index)
+        except Exception as e:
+            logging.error(f"Error deleting workflow '{selected_name}': {e}")
 
-def on_mouse_wheel(self, event):
+def on_mouse_wheel(event):
     try:
         event.widget.yview_scroll(int(-1 * (event.delta / 120)), "units")
     except tk.TclError:
@@ -209,7 +207,7 @@ def on_mouse_wheel(self, event):
         pass
 
 def update_workflow_list(chat_instruction_listbox):
-    """Dynamically update the instruction prompt list based on available workflows."""
+    """Dynamically update the Workflow list based on available workflows."""
     chat_instruction_listbox.delete(0, END)
     workflows = load_workflows()
     for workflow in workflows:
@@ -261,7 +259,7 @@ def perform_search(config, db_name, query, output_box, top_k_str="10"):
     threading.Thread(target=search_thread).start()
 
 def refresh_instruction_list(chat_instruction_listbox):
-    """Refresh the instruction prompt list based on available workflows."""
+    """Refresh the Workflow list based on available workflows."""
     update_workflow_list(chat_instruction_listbox)
 
 def create_gui(config):
@@ -297,6 +295,9 @@ def create_gui(config):
 
     chat_tab = ttk.Frame(notebook)
     notebook.add(chat_tab, text='Chat')
+    
+    # Create the Workflow Management tab
+    workflow_tab = create_workflow_management_tab(notebook, config, gui_queue)
 
     chat_tab.stop_event = threading.Event()
 
@@ -317,12 +318,12 @@ def create_gui(config):
     top_container.columnconfigure(1, weight=1)
     top_container.rowconfigure(0, weight=1)
 
-    instruction_selection_frame = ttk.LabelFrame(top_container, text="Instruction Prompt")
+    instruction_selection_frame = ttk.LabelFrame(top_container, text="Workflow")
     instruction_selection_frame.grid(row=0, column=0, padx=(0, 10), pady=5, sticky="nsew")
     instruction_selection_frame.columnconfigure(0, weight=1)
     instruction_selection_frame.rowconfigure(1, weight=1)
 
-    instruction_label = ttk.Label(instruction_selection_frame, text="Select Instruction Prompt:")
+    instruction_label = ttk.Label(instruction_selection_frame, text="Select Workflow:")
     instruction_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
 
     chat_instruction_frame = ttk.Frame(instruction_selection_frame)
@@ -524,18 +525,63 @@ def create_gui(config):
 
     output_box.bind("<Button-3>", show_output_context_menu)
 
-    # Add formatting checkbox
-    formatting_enabled = BooleanVar(value=True)
+    # Add formatting checkbox and Export Docx button
+    export_frame = ttk.Frame(chat_tab)
+    export_frame.grid(row=6, column=0, padx=5, pady=5, sticky='w')
+
+    formatting_var = BooleanVar(value=True)  # Renamed to avoid confusion with imported variable
     formatting_checkbox = ttk.Checkbutton(
-        chat_tab,
+        export_frame,
         text="Enable Formatting",
-        variable=formatting_enabled
+        variable=formatting_var
     )
-    formatting_checkbox.grid(row=6, column=0, padx=5, pady=5, sticky='w')
+    formatting_checkbox.pack(side=tk.LEFT)
+
+    def export_to_docx(chat_tab, formatting_enabled):
+        """
+        Retrieves the raw content from chat_tab.response_content and exports it to a Word document.
+        Args:
+            chat_tab: The chat tab containing the response content
+            formatting_enabled: Boolean indicating whether to apply markdown formatting
+        """
+        content = chat_tab.response_content
+        if not content or not isinstance(content, str):
+            return
+        try:
+            convert_markdown_to_docx(content, formatting_enabled=formatting_enabled)
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred while exporting to Word: {e}")
+
+    def open_admin_console():
+        """
+        Launch the admin console as a separate application.
+        Uses the same Python executable as the main application to ensure compatibility.
+        """
+        try:
+            python_executable = sys.executable
+            subprocess.Popen([python_executable, "adminconsole.py"], 
+                            shell=True, 
+                            cwd=os.path.dirname(os.path.abspath(__file__)))
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to open Admin Console: {e}")
+
+    export_button = ttk.Button(
+        export_frame,
+        text="Export Docx",
+        command=lambda: export_to_docx(chat_tab, formatting_var.get())  # Pass the formatting state
+    )
+    export_button.pack(side=tk.LEFT, padx=(10, 0))
+
+    admin_console_button = ttk.Button(
+        export_frame,
+        text="Admin Console",
+        command=open_admin_console
+    )
+    admin_console_button.pack(side=tk.LEFT, padx=(10, 0))
 
     # Update formatting state when checkbox is toggled
     def on_formatting_toggle():
-        set_formatting_enabled(formatting_enabled.get())
+        set_formatting_enabled(formatting_var.get())
         # Get original content
         content = chat_tab.response_content
         if content:
@@ -549,7 +595,7 @@ def create_gui(config):
     formatting_checkbox.config(command=on_formatting_toggle)
 
     # Set initial formatting state
-    set_formatting_enabled(formatting_enabled.get())
+    set_formatting_enabled(formatting_var.get())
 
     submit_button = ttk.Button(
         buttons_frame,
@@ -564,7 +610,7 @@ def create_gui(config):
             chat_tab,
             chat_instruction_listbox,
             gui_queue,
-            formatting_enabled  # Pass the formatting flag
+            formatting_var  # Pass the formatting flag as a BooleanVar
         )
     )
     submit_button.grid(row=0, column=0, padx=5, sticky='ew')
@@ -584,7 +630,6 @@ def create_gui(config):
             db_manager_list.current(0)
         else:
             db_manager_list.set('')
-
         for widget in root.winfo_children():
             if isinstance(widget, tk.Toplevel):
                 for child in widget.winfo_children():
@@ -603,19 +648,49 @@ def create_gui(config):
         label="Manage Settings",
         command=lambda: manage_settings_window(config, root, refresh_database_dropdown)
     )
+    filemenu.add_command(
+        label="Manage Auto-Startup Workflows",
+        command=lambda: open_auto_startup_manager(root, config)
+    )
     filemenu.add_separator()
     filemenu.add_command(label="Exit", command=root.quit)
 
+    def open_auto_startup_manager(parent, config):
+        """Open the auto-startup manager window."""
+        # Import here to avoid circular imports
+        from auto_startup_manager import create_auto_startup_manager_window
+        create_auto_startup_manager_window(parent, config, load_workflows)
+
+    def start_auto_startup_workflows(config, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox, gui_queue, formatting_enabled_var):
+        """Start all workflows configured for auto-startup."""
+        # Import here to avoid circular imports
+        from auto_startup_manager import auto_startup_manager
+        
+        # Use a small delay to ensure the GUI is fully loaded before starting workflows
+        root.after(1000, lambda: auto_startup_manager.start_auto_startup_workflows(
+            submit_request,  # Pass the submit_request function
+            config, 
+            output_box, 
+            submit_button, 
+            stop_button, 
+            chat_tab, 
+            chat_instruction_listbox, 
+            gui_queue, 
+            formatting_enabled_var
+        ))
+
+    start_auto_startup_workflows(config, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox, gui_queue, formatting_var)
+
     root.mainloop()
     
-def submit_request(config, selected_prompt_index, user_input, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox, gui_queue, formatting_enabled):
+def submit_request(config, selected_prompt_index, user_input, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox, gui_queue, formatting_enabled_var):
     """Handle submitting the request."""
     if not user_input.strip():
         messagebox.showwarning("Input Required", "Please enter some text in the input box.")
         return
 
     if selected_prompt_index is None:
-        messagebox.showerror("Error", "Please select an instruction prompt from the list.")
+        messagebox.showerror("Error", "Please select an Workflow from the list.")
         return
 
     workflows = load_workflows()
@@ -642,23 +717,51 @@ def submit_request(config, selected_prompt_index, user_input, output_box, submit
 
     selected_prompt_name = selected_prompt['name']
 
-    if not hasattr(chat_tab, 'stop_event') or not isinstance(chat_tab.stop_event, threading.Event):
-        chat_tab.stop_event = threading.Event()
-    chat_tab.stop_event.clear()
-
-    submit_button.config(state=tk.DISABLED)
+    # Create a new stop event for this workflow
+    stop_event = threading.Event()
+    
+    # Create a workflow instance in the workflow manager
+    workflow = workflow_manager.create_workflow(selected_prompt_name, user_input)
+    
+    # No need to disable the submit button anymore
+    # submit_button.config(state=tk.DISABLED)
     stop_button.config(state=tk.NORMAL)
 
+    # Define a callback function to handle workflow completion
+    def on_workflow_complete(output_content):
+        workflow_manager.complete_workflow(workflow.id, output_content)
+        # No need to re-enable the submit button here
+        stop_button.config(state=tk.DISABLED)
+    
+    # Define a callback function to handle workflow errors
+    def on_workflow_error(error_msg):
+        workflow_manager.set_workflow_error(workflow.id, error_msg)
+        # No need to re-enable the submit button here
+        stop_button.config(state=tk.DISABLED)
+
     thread = threading.Thread(target=process_node_graph, args=(
-        config, api_endpoint, user_input, output_box, submit_button, stop_button, chat_tab.stop_event,
-        node_graph, selected_prompt_name, root, open_editors, gui_queue, formatting_enabled.get(), chat_tab))  # Pass chat_tab
+        config, api_endpoint, user_input, output_box, submit_button, stop_button, workflow.stop_event,
+        node_graph, selected_prompt_name, root, open_editors, gui_queue, formatting_enabled_var.get(), chat_tab,
+        workflow.id, on_workflow_complete, on_workflow_error))  # Pass workflow ID and callbacks
+    
+    # Store the thread in the workflow instance
+    workflow.thread = thread
+    
     thread.start()
 
 def stop_process(chat_tab):
     """Stop the ongoing process."""
-    if hasattr(chat_tab, 'stop_event'):
+    if hasattr(chat_tab, 'stop_event') and isinstance(chat_tab.stop_event, threading.Event):
         chat_tab.stop_event.set()
-        chat_tab.stop_button.config(state=tk.DISABLED)
+        print("Stop event has been set.")
+        
+    # Get the active workflows from the workflow manager and stop the most recent one
+    active_workflows = workflow_manager.get_active_workflows()
+    if active_workflows:
+        # Get the most recent workflow (assuming the most recent is the one we want to stop)
+        workflow_id = list(active_workflows.keys())[0]
+        workflow_manager.stop_workflow(workflow_id)
+        print(f"Stopped workflow: {workflow_id}")
 
 def main():
     load_nodes()

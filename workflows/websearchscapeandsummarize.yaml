@@ -1,0 +1,71 @@
+graph:
+  connections: []
+  nodes:
+    8d10075b-9d29-41e3-92cc-8305cf597b66:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_prompt: 17
+        output_prompt: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      id: 8d10075b-9d29-41e3-92cc-8305cf597b66
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: please take the following information below and provide me with
+            a succinct and informative summary of the information bellow based on
+            the user context or request provided.
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input for web search, scraping, and summarization
+            via API.
+          type: text
+        enable_url_selection:
+          default: false
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: SearchScrapeSummarizeNode
+          type: text
+        num_results_to_skip:
+          default: '5'
+          type: number
+        num_search_results:
+          default: '10'
+          type: number
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          type: text
+      title: SearchScrapeSummarizeNode
+      type: SearchScrapeSummarizeNode
+      width: 200
+      x: 100
+      y: 100
+name: websearchscapeandsummarize

@@ -6,14 +6,47 @@
 
 set -e
 
+# Function to check Python version
+check_python_version() {
+    if command -v python3 &> /dev/null; then
+        version=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+        if [[ "$version" == "3.10" ]]; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+# Function to wait for user input
+wait_for_input() {
+    echo
+    read -n 1 -s -r -p "Press any key to continue..."
+    echo
+}
+
+# Function to open a URL in the default browser
+open_url() {
+    url="$1"
+    echo "Opening $url in your default browser..."
+    
+    if command -v xdg-open &> /dev/null; then
+        xdg-open "$url" &> /dev/null &
+    elif command -v open &> /dev/null; then
+        open "$url" &> /dev/null &
+    else
+        echo "Could not open the URL automatically. Please visit:"
+        echo "$url"
+    fi
+}
+
 # Function to install Python and necessary packages
 install_python() {
     echo "Installing Python and necessary packages..."
     if command -v apt-get &> /dev/null; then
         sudo apt-get update
-        sudo apt-get install -y python3 python3-venv python3-pip
+        sudo apt-get install -y python3.10 python3.10-venv python3-pip
     elif command -v yum &> /dev/null; then
-        sudo yum install -y python3 python3-venv python3-pip
+        sudo yum install -y python310 python310-venv python3-pip
     elif command -v pacman &> /dev/null; then
         sudo pacman -Syu --noconfirm python python-pip
     else
@@ -37,19 +70,57 @@ install_tkinter() {
     fi
 }
 
-# Function to install pip3 via the system package manager
+# Function to install pip3
 install_pip3() {
-    echo "Installing pip3 via package manager..."
-    if command -v apt-get &> /dev/null; then
-        sudo apt-get update
-        sudo apt-get install -y python3-pip
-    elif command -v yum &> /dev/null; then
-        sudo yum install -y python3-pip
-    elif command -v pacman &> /dev/null; then
-        sudo pacman -Syu --noconfirm python-pip
+    echo "Installing pip3..."
+    
+    # Detect OS type
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        echo "Detected macOS system"
+        if command -v brew &> /dev/null; then
+            echo "Using Homebrew to install pip..."
+            brew install python3  # This also installs pip3
+        else
+            echo "Homebrew not found. Using ensurepip module..."
+            python3 -m ensurepip --upgrade
+            python3 -m pip install --upgrade pip
+        fi
     else
-        echo "Unsupported package manager. Please install pip3 manually."
-        exit 1
+        # Linux
+        echo "Detected Linux system"
+        if command -v apt-get &> /dev/null; then
+            echo "Using apt to install pip..."
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
+        elif command -v yum &> /dev/null; then
+            echo "Using yum to install pip..."
+            sudo yum install -y python3-pip
+        elif command -v dnf &> /dev/null; then
+            echo "Using dnf to install pip..."
+            sudo dnf install -y python3-pip
+        elif command -v pacman &> /dev/null; then
+            echo "Using pacman to install pip..."
+            sudo pacman -Syu --noconfirm python-pip
+        elif command -v zypper &> /dev/null; then
+            echo "Using zypper to install pip..."
+            sudo zypper install -y python3-pip
+        else
+            echo "No package manager found. Using get-pip.py method..."
+            # Use get-pip.py as a fallback method
+            curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+            python3 get-pip.py
+            rm get-pip.py
+        fi
+    fi
+    
+    # Verify pip installation
+    if command -v pip3 &> /dev/null; then
+        echo "pip3 has been successfully installed."
+        return 0
+    else
+        echo "Failed to install pip3. Please install it manually."
+        return 1
     fi
 }
 
@@ -80,22 +151,52 @@ check_cuda() {
     fi
 }
 
-# Check for Python3
-if ! command -v python3 &> /dev/null
-then
-    echo "Python3 not found."
-    install_python
+# Check for Python 3.10
+echo "Checking for Python 3.10..."
+if ! check_python_version; then
+    echo "Python 3.10 is required but not found."
+    echo "Would you like to be directed to the Python download page? (y/n)"
+    read -r response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        PYTHON_DOWNLOAD_URL="https://www.python.org/downloads/"
+        open_url "$PYTHON_DOWNLOAD_URL"
+        echo "Please download and install Python 3.10 from the website."
+        echo "Be sure to check 'Add Python to PATH' during installation."
+        echo
+    fi
+    
+    echo "For Ubuntu/Debian:"
+    echo "  sudo add-apt-repository ppa:deadsnakes/ppa"
+    echo "  sudo apt update"
+    echo "  sudo apt install python3.10 python3.10-venv python3-pip"
+    echo
+    echo "For other systems, please refer to your package manager's documentation"
+    echo "or visit https://www.python.org/downloads/"
+    wait_for_input
+    exit 1
 else
-    echo "Python3 is already installed."
+    echo "Python 3.10 is available."
 fi
 
 # Check for pip3
-if ! command -v pip3 &> /dev/null
-then
-    echo "pip3 not found."
-    install_pip3
+echo "Checking for pip3..."
+if ! command -v pip3 &> /dev/null; then
+    echo "pip3 is not installed. Attempting to install it automatically..."
+    if install_pip3; then
+        echo "pip3 has been successfully installed."
+    else
+        echo "Automatic installation failed. Would you like to be directed to the pip installation guide? (y/n)"
+        read -r response
+        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            PIP_GUIDE_URL="https://pip.pypa.io/en/stable/installation/"
+            open_url "$PIP_GUIDE_URL"
+            echo "Please follow the instructions on the website to install pip."
+        fi
+        wait_for_input
+        exit 1
+    fi
 else
-    echo "pip3 is already installed."
+    echo "pip3 is available."
 fi
 
 # Check for git
@@ -137,9 +238,9 @@ VENV_DIR="venv"
 if ! python3 -m venv "$VENV_DIR" &> /dev/null; then
     echo "Installing python3-venv..."
     if command -v apt-get &> /dev/null; then
-        sudo apt-get install -y python3-venv
+        sudo apt-get install -y python3.10-venv
     elif command -v yum &> /dev/null; then
-        sudo yum install -y python3-venv
+        sudo yum install -y python310-venv
     elif command -v pacman &> /dev/null; then
         sudo pacman -Syu --noconfirm python-virtualenv
     else

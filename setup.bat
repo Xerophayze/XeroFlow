@@ -6,21 +6,37 @@ REM Define variables
 SET VENV_DIR=venv
 SET SWIG_DIR=C:\swigwin  REM Define SWIG directory if not in PATH
 
-REM Check if Python is available
-echo Checking if Python is available...
-python --version >nul 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    echo Python is not installed or not found in PATH. Please install or adjust the PATH variable.
-    exit /b 1
+REM Check if Python 3.10 or higher is available
+echo Checking if Python 3.10 or higher is available...
+python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" > version.tmp
+SET /p PYTHON_VERSION=<version.tmp
+DEL version.tmp
+
+FOR /F "tokens=1,2 delims=." %%a IN ("%PYTHON_VERSION%") DO (
+    SET PYTHON_MAJOR=%%a
+    SET PYTHON_MINOR=%%b
+)
+
+IF "%PYTHON_MAJOR%"=="3" IF %PYTHON_MINOR% GEQ 10 (
+    echo Python %PYTHON_VERSION% is available and compatible.
 ) ELSE (
-    echo Python is available.
+    echo Python 3.10 or higher is required but found version %PYTHON_VERSION%.
+    echo Please install Python 3.10 or higher from https://www.python.org/downloads/
+    echo Make sure to check "Add Python to PATH" during installation.
+    echo.
+    echo Press any key to exit...
+    pause >nul
+    exit /b 1
 )
 
 REM Check if pip is available
 echo Checking if pip is available...
 python -m pip --version >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
-    echo Pip is not installed. Please ensure pip is available and try again.
+    echo Pip is not installed. Please ensure pip is available with Python.
+    echo.
+    echo Press any key to exit...
+    pause >nul
     exit /b 1
 ) ELSE (
     echo Pip is available.

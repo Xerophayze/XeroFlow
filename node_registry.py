@@ -12,7 +12,9 @@ def register_node(node_type):
     """
     def decorator(cls):
         if node_type in NODE_REGISTRY:
-            raise ValueError(f"Node type '{node_type}' is already registered.")
+            # Instead of raising an error, just return the existing registration
+            print(f"Node type '{node_type}' is already registered, skipping duplicate registration.")
+            return NODE_REGISTRY[node_type]
         NODE_REGISTRY[node_type] = cls
         print(f"Registered node type: {node_type}")  # Debug statement
         return cls
@@ -28,16 +30,13 @@ def reload_nodes():
 
     nodes_dir = Path(__file__).parent / 'nodes'
     for filename in os.listdir(nodes_dir):
-        if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py'):
+        if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py', 'missing_node.py'):
             module_name = filename[:-3]
             module_path = f'nodes.{module_name}'
             try:
-                importlib.reload(importlib.import_module(module_path))
+                module = importlib.import_module(module_path)
+                importlib.reload(module)  # Always reload to get fresh registrations
                 print(f"Reloaded node module: {module_path}")
-            except ModuleNotFoundError:
-                # If the module isn't already loaded, import it
-                importlib.import_module(module_path)
-                print(f"Imported node module: {module_path}")
             except Exception as e:
                 print(f"Failed to reload/import node module '{module_path}': {e}")
 
@@ -45,14 +44,14 @@ def reload_nodes():
 def initial_load_nodes():
     nodes_dir = Path(__file__).parent / 'nodes'
     for filename in os.listdir(nodes_dir):
-        if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py'):
+        if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py', 'missing_node.py'):
             module_name = filename[:-3]
             module_path = f'nodes.{module_name}'
             try:
                 importlib.import_module(module_path)
-                print(f"Initially loaded node module: {module_path}")
+                print(f"Imported node module: {module_path}")
             except Exception as e:
-                print(f"Failed to load node module '{module_path}': {e}")
+                print(f"Failed to import node module '{module_path}': {e}")
 
 # Perform the initial loading of nodes
 initial_load_nodes()

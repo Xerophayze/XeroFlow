@@ -1,19 +1,24 @@
 graph:
   connections: []
   nodes:
-    46717c9e-9375-46bb-9056-8fbcecae0c08:
+    add862e1-0ed5-4d9a-96e7-827fa6737ff8:
       canvas_items:
-        input_input: 14
-        output_chat_history: 15
-        prop_description: 13
-        rect: 10
-        resize_handle: 16
-        title: 11
-      connections: []
-      height: 80
-      id: 46717c9e-9375-46bb-9056-8fbcecae0c08
+        description: 15
+        drag_bar: 13
+        input_gui_queue: 18
+        input_input: 16
+        input_label_gui_queue: 19
+        input_label_input: 17
+        output_chat_history: 20
+        output_label_chat_history: 21
+        rect: 12
+        resize_handle: 22
+        title: 14
+      height: 150
+      id: add862e1-0ed5-4d9a-96e7-827fa6737ff8
       inputs:
       - input
+      - gui_queue
       outputs:
       - chat_history
       properties:
@@ -21,16 +26,22 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Ollama llama3.1-8b
+          default: openai
+          label: API Endpoint
           options:
-          - Ollama llama-3.2-3b
-          - Ollama llama3.1-8b
-          - OpenAI GPT gpt-4o-mini
           - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
           type: dropdown
         database:
-          default: TEK Utah
+          default: test
+          label: Database
           options:
+          - Colonial Flag
+          - Genesis Dental
+          - Log Haven
+          - Novels by Eric
           - Sci-fi Novels
           - TEK Utah
           - test
@@ -38,6 +49,16 @@ graph:
         description:
           default: Handles a chat conversation with the user.
           type: text
+        enable_url_selection:
+          default: false
+          description: Allow manual selection of URLs from search results
+          label: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable web search functionality
+          label: Enable Web Search
+          type: boolean
         is_end_node:
           default: true
           type: boolean
@@ -47,9 +68,24 @@ graph:
         node_name:
           default: ChatNode
           type: text
+        num_results_to_skip:
+          default: '0'
+          description: Number of search results to skip
+          label: Results to Skip
+          type: number
+        num_search_results:
+          default: '5'
+          description: Default number of search results to return
+          label: Default Search Results
+          type: number
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          description: URL for the SearxNG search engine API
+          label: SearxNG API URL
+          type: text
       title: ChatNode
       type: ChatNode
-      width: 150
-      x: 70
-      y: 70
+      width: 200
+      x: 100
+      y: 100
 name: Interactive Chat

@@ -1,0 +1,668 @@
+graph:
+  connections:
+  - canvas_item: 111
+    from_node: e6484456-0c61-429b-8dd8-155ec24f3762
+    from_output: output
+    to_input: input
+    to_node: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
+  - canvas_item: 112
+    from_node: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
+    from_output: prompt
+    to_input: input
+    to_node: d78bce97-697d-41e7-b54f-a0f36d6a8793
+  nodes:
+    8671f9ed-9831-4941-a2e6-93fc5b9c54d2:
+      canvas_items:
+        drag_bar: 86
+        input_input: 88
+        input_label_input: 89
+        output_label_prompt: 91
+        output_prompt: 90
+        rect: 85
+        resize_handle: 92
+        title: 87
+      height: 150
+      id: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Instructions for custom formatting:
+          default: 'if the section above starts with "Chapter #" then include that
+            chapter number as a heading when writing the content like this with nothing
+            else before it: "## Chapter # - Chapter heading....."
+
+            Never include "(Continue) - " at the beginning of the chapter heading.
+
+            if the section above starts with "(Continued)" then only include "(Continued)
+            - " at the beginning of your output like this:  "(Continued) - content......"'
+          description: Custom formatting instructions
+          type: text
+        Instructions for how the AI should use the next array element for context:
+          default: '
+
+            the next section to write about is as follows:
+
+            '
+          description: Template for introducing the current section
+          type: text
+        Instructions for how to process the Original user request and original content:
+          default: 'The outline and user request is as follows and only for reference,
+            do not use the same formatting as the outline:
+
+            '
+          description: Template for the context section
+          type: text
+        Instructions for how to processthe first element in the array:
+          default: 'Please just repeat the title content below exactly and nothing
+            else:
+
+
+            '
+          description: Prompt template for the first item
+          type: text
+        Main instructions for array element to focus on:
+          default: "As a technical writer, craft a comprehensive and informative guide\
+            \ for the section indicated below. Do not include any personal commentary\
+            \ or extraneous details\u2014focus solely on delivering precise, well-structured\
+            \ content tailored to the specified topic. Maintain a clear, instructional\
+            \ tone that is both engaging and authoritative.  ensure to elaborate on\
+            \ important let points providing depth and clarity that will help the\
+            \ transfer through examples and discussion.  when you  write the content\
+            \ it will be a minimum of 500 words.\n\nEnsure your writing incorporates\
+            \ burstiness by varying sentence length and complexity\u2014combine short,\
+            \ direct instructions with more elaborate explanations where necessary.\
+            \ Use a mix of simple, compound, and complex sentence structures to enhance\
+            \ readability and flow. \n\nWhen structuring the content, prioritize clarity\
+            \ and logical progression. Break down complex concepts into step-by-step\
+            \ instructions, using headings, subheadings, and bullet points where appropriate.\
+            \ Introduce key terms clearly and provide definitions or explanations\
+            \ as needed. Include practical examples, use cases, or troubleshooting\
+            \ tips to reinforce understanding and ensure the content is actionable.\
+            \ \n\nWhere applicable, format code snippets, technical terms, and key\
+            \ instructions distinctly to improve readability. For example, use bold\
+            \ text for important actions, italics for emphasis, and monospace font\
+            \ for code snippets or command-line instructions. Additionally, provide\
+            \ context for each step to help users understand why they are performing\
+            \ certain actions rather than just what to do. \n\nAbove all, maintain\
+            \ a logical and methodical approach to writing\u2014ensuring each section\
+            \ builds upon the previous one\u2014to guide the reader seamlessly through\
+            \ the learning process."
+          description: Main instruction template for content generation
+          type: text
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI
+          - OpenAI GPT gpt-4o-mini
+          - OpenAI Whisper
+          type: dropdown
+        chunk_size:
+          default: '10'
+          description: Number of items to process in each chunk
+          type: integer
+        enable_url_selection:
+          default: false
+          description: Enable manual URL selection from search results
+          type: boolean
+        num_results_to_skip:
+          default: '0'
+          description: Number of search results to skip
+          type: number
+        num_search_results:
+          default: '5'
+          description: Number of search results to process
+          type: number
+        review_array:
+          default: true
+          description: Show review window for array output
+          type: boolean
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          description: SearxNG API URL for web search
+          type: text
+        show_content_review:
+          default: true
+          description: Show content review window with web search capability
+          type: boolean
+        use_array:
+          default: true
+          description: Output as array instead of string
+          type: boolean
+      title: LongOutputV4
+      type: LongOutputV4Node
+      width: 200
+      x: 244
+      y: 201
+    d78bce97-697d-41e7-b54f-a0f36d6a8793:
+      canvas_items:
+        description: 96
+        drag_bar: 94
+        input_input: 97
+        input_label_input: 98
+        output_label_output: 100
+        output_output: 99
+        rect: 93
+        resize_handle: 101
+        title: 95
+      height: 137
+      id: d78bce97-697d-41e7-b54f-a0f36d6a8793
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI
+          - OpenAI GPT gpt-4o-mini
+          - OpenAI Whisper
+          type: dropdown
+        description:
+          default: Processes array elements through multiple API calls until condition
+            is met.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        max_iterations:
+          default: '10'
+          description: Maximum number of iterations per array element
+          label: Max Iterations
+          type: text
+        minimum_rating:
+          default: '8.2'
+          description: Minimum overall rating required (e.g., 7.5)
+          label: Minimum Rating
+          type: text
+        node_name:
+          default: ArrayProcessTestProcessNode
+          label: Custom Node Name
+          type: text
+        refinement_prompt:
+          default: "You are a highly skilled technical writer and subject matter expert.\
+            \ Please implement the revisions and improvements provided below for the\
+            \ technical content specified. Your only expected output is the updated\
+            \ content\u2014do not include any personal commentary, explanations, or\
+            \ additional suggestions beyond the given revisions. \n\nTo enhance readability\
+            \ and engagement, consciously vary sentence structures and lengths. Mix\
+            \ concise, directive sentences with longer, more detailed explanations\
+            \ to create a natural, informative rhythm. Use a combination of simple,\
+            \ compound, and complex sentence constructions to avoid monotony and ensure\
+            \ clarity. \n\nAdopt a clear, instructional writing style that prioritizes\
+            \ precision and accessibility. Ensure all technical details are well-organized\
+            \ and easy to follow. Utilize bullet points, numbered lists, or section\
+            \ headings where appropriate to improve navigation. Definitions, key terms,\
+            \ and crucial instructions should be formatted for emphasis\u2014use bold\
+            \ for important actions, italics for clarification, and monospace font\
+            \ for code snippets, command-line inputs, or technical commands. Tables,\
+            \ charts and diagrams can be added for clarity utilizing the mermaid or\
+            \ code examples below.\n\nIf the provided content includes a heading or\
+            \ section title, ensure it remains intact. If no heading is present, do\
+            \ not add one. \n\nFocus on delivering concise, practical, and logically\
+            \ structured content that enhances the reader\u2019s understanding and\
+            \ usability of the material.\nif a chart or diagram is required to represent\
+            \ some of that information you will include the data needing to be presented\
+            \ in a code block labeled either chart or mermaid depending on the type\
+            \ of information needing to be displayed, utlizing the proper formatting\
+            \ and type from the listed examples below:\n```mermaid\n```\n\n\nSimple\
+            \ Flowchart: *Explanation:*  \nThis diagram starts at **A**, checks a\
+            \ condition at **B**, and branches to either **C** or **D**. The loop\
+            \ from **D** back to **B** shows a retry mechanism.\n```mermaid\nflowchart\
+            \ TD\n    A[Start] --> B{Is it working?}\n    B -- Yes --> C[Proceed]\n\
+            \    B -- No --> D[Fix it]\n    D --> B\n```\n\n\nSimple Sequence Diagram:\
+            \ *Explanation:*  \nThis sequence diagram shows a simple interaction between\
+            \ a User and a System, with a request and response.\n\n```mermaid\nsequenceDiagram\n\
+            \    participant User\n    participant System\n    User->>System: Request\
+            \ data\n    System-->>User: Return data\n```\n\nComplex Sequence Diagram:\
+            \ *Explanation:*  \nHere, we have a more detailed sequence diagram with\
+            \ auto-numbering and three participants, illustrating the flow from client\
+            \ request to database query and back.\n\n```mermaid\nsequenceDiagram\n\
+            \    autonumber\n    participant Client\n    participant Server\n    participant\
+            \ Database\n    Client->>Server: HTTP Request (GET /api/data)\n    Server->>Database:\
+            \ Query Data\n    Database-->>Server: Query Result\n    Server-->>Client:\
+            \ HTTP Response (200 OK)\n    Note right of Client: Data processing or\
+            \ visualization\n```\n\nGantt Chart: *Explanation:*  \nThis Gantt chart\
+            \ represents a project timeline divided into sections (Planning, Development,\
+            \ Testing) with specific tasks and durations.\n\n\n```mermaid\ngantt\n\
+            \    title Project Timeline\n    dateFormat  YYYY-MM-DD\n    section Planning\n\
+            \    Requirements Gathering   :a1, 2025-03-01, 5d\n    Design        \
+            \           :after a1, 3d\n    section Development\n    Backend Development\
+            \      :2025-03-10, 10d\n    Frontend Development     :2025-03-15, 8d\n\
+            \    section Testing\n    QA Testing               :2025-03-25, 5d\n \
+            \   Deployment               :2025-03-31, 2d\n```\n\n\n\nClass Diagram:\
+            \ *Explanation:*  \nThis class diagram models an **Animal** class with\
+            \ two subclasses: **Dog** and **Cat**, each with their unique behaviors.\n\
+            \n```mermaid\nclassDiagram\n    class Animal {\n      +String name\n \
+            \     +int age\n      +eat()\n      +sleep()\n    }\n    \n    class Dog\
+            \ {\n      +bark()\n    }\n    \n    class Cat {\n      +meow()\n    }\n\
+            \    \n    Animal <|-- Dog\n    Animal <|-- Cat\n```\n\nState Diagram:\
+            \ *Explanation:*  \nThis state diagram shows a simple state transition\
+            \ system with states like **Idle**, **Processing**, and **Error**, along\
+            \ with transitions indicating events.\n\n```mermaid\nstateDiagram-v2\n\
+            \    [*] --> Idle\n    Idle --> Processing: Start Process\n    Processing\
+            \ --> Idle: Process Complete\n    Processing --> Error: Process Failed\n\
+            \    Error --> [*]\n```\n\nEntity Relationship Diagram (ER Diagram): *Explanation:*\
+            \  \nThis ER diagram demonstrates relationships among entities such as\
+            \ **CUSTOMER**, **ORDER**, **LINE_ITEM**, and **DELIVERY_ADDRESS**. The\
+            \ symbols illustrate one-to-many and many-to-many relationships.\n\n```mermaid\n\
+            erDiagram\n    CUSTOMER ||--o{ ORDER : places\n    ORDER ||--|{ LINE_ITEM\
+            \ : contains\n    CUSTOMER }|..|{ DELIVERY_ADDRESS : uses\n```\n\n\n```chart\n\
+            chart code\n```\nHere are some examples of the type of code that goes\
+            \ in this code block:\n```chart\n{\n    \"width\": 500,\n    \"height\"\
+            : 300,\n    \"config\": {\n        \"type\": \"bar\",\n        \"data\"\
+            : {\n            \"labels\": [\"January\", \"February\", \"March\", \"\
+            April\", \"May\"],\n            \"datasets\": [{\n                \"label\"\
+            : \"Monthly Sales\",\n                \"data\": [50, 60, 70, 180, 190],\n\
+            \                \"backgroundColor\": \"rgb(75, 192, 192)\"\n        \
+            \    }]\n        },\n        \"options\": {\n            \"title\": {\n\
+            \                \"display\": true,\n                \"text\": \"Monthly\
+            \ Sales Report\"\n            }\n        }\n    }\n}\n```\n```chart\n\
+            {\n    \"width\": 600,\n    \"height\": 400,\n    \"config\": {\n    \
+            \    \"type\": \"line\",\n        \"data\": {\n            \"labels\"\
+            : [\"January\", \"February\", \"March\", \"April\", \"May\"],\n      \
+            \      \"datasets\": [\n                {\n                    \"label\"\
+            : \"Dogs\",\n                    \"data\": [50, 60, 70, 180, 190],\n \
+            \                   \"fill\": false,\n                    \"borderColor\"\
+            : \"blue\"\n                },\n                {\n                  \
+            \  \"label\": \"Cats\",\n                    \"data\": [100, 200, 300,\
+            \ 400, 500],\n                    \"fill\": false,\n                 \
+            \   \"borderColor\": \"green\"\n                }\n            ]\n   \
+            \     }\n    }\n}\n```\n\n```chart\n{\n    \"width\": 400,\n    \"height\"\
+            : 400,\n    \"config\": {\n        \"type\": \"pie\",\n        \"data\"\
+            : {\n            \"labels\": [\"Red\", \"Blue\", \"Yellow\", \"Green\"\
+            , \"Purple\"],\n            \"datasets\": [{\n                \"data\"\
+            : [300, 50, 100, 80, 150],\n                \"backgroundColor\": [\n \
+            \                   \"#FF6384\",\n                    \"#36A2EB\",\n \
+            \                   \"#FFCE56\",\n                    \"#4BC0C0\",\n \
+            \                   \"#9966FF\"\n                ]\n            }]\n \
+            \       },\n        \"options\": {\n            \"plugins\": {\n     \
+            \           \"datalabels\": {\n                    \"color\": \"#fff\"\
+            ,\n                    \"font\": {\n                        \"weight\"\
+            : \"bold\"\n                    }\n                }\n            }\n\
+            \        }\n    }\n}\n```\n\n```chart\n{\n    \"width\": 500,\n    \"\
+            height\": 500,\n    \"config\": {\n        \"type\": \"radar\",\n    \
+            \    \"data\": {\n            \"labels\": [\"Eating\", \"Drinking\", \"\
+            Sleeping\", \"Designing\", \"Coding\", \"Cycling\", \"Running\"],\n  \
+            \          \"datasets\": [\n                {\n                    \"\
+            label\": \"My First Dataset\",\n                    \"data\": [65, 59,\
+            \ 90, 81, 56, 55, 40],\n                    \"fill\": true,\n        \
+            \            \"backgroundColor\": \"rgba(255, 99, 132, 0.2)\",\n     \
+            \               \"borderColor\": \"rgb(255, 99, 132)\",\n            \
+            \        \"pointBackgroundColor\": \"rgb(255, 99, 132)\",\n          \
+            \          \"pointBorderColor\": \"#fff\",\n                    \"pointHoverBackgroundColor\"\
+            : \"#fff\",\n                    \"pointHoverBorderColor\": \"rgb(255,\
+            \ 99, 132)\"\n                }\n            ]\n        }\n    }\n}\n\
+            ```\n\n```chart\n{\n    \"width\": 500,\n    \"height\": 300,\n    \"\
+            config\": {\n        \"type\": \"bubble\",\n        \"data\": {\n    \
+            \        \"datasets\": [{\n                \"label\": \"Population vs\
+            \ GDP\",\n                \"data\": [\n                    {\"x\": 20,\
+            \ \"y\": 30, \"r\": 15},\n                    {\"x\": 40, \"y\": 10, \"\
+            r\": 10},\n                    {\"x\": 30, \"y\": 20, \"r\": 25},\n  \
+            \                  {\"x\": 10, \"y\": 40, \"r\": 20}\n               \
+            \ ],\n                \"backgroundColor\": \"rgb(255, 99, 132)\"\n   \
+            \         }]\n        },\n        \"options\": {\n            \"title\"\
+            : {\n                \"display\": true,\n                \"text\": \"\
+            Population vs GDP Correlation\"\n            },\n            \"scales\"\
+            : {\n                \"xAxes\": [{\n                    \"scaleLabel\"\
+            : {\n                        \"display\": true,\n                    \
+            \    \"labelString\": \"GDP per Capita\"\n                    }\n    \
+            \            }],\n                \"yAxes\": [{\n                    \"\
+            scaleLabel\": {\n                        \"display\": true,\n        \
+            \                \"labelString\": \"Population (M)\"\n               \
+            \     }\n                }]\n            }\n        }\n    }\n}\n```\n\
+            Stacked Bar Chart\nDescription: A stacked bar chart displays multiple\
+            \ datasets stacked on top of each other in bars, making it useful for\
+            \ comparing the cumulative and individual contributions of categories\
+            \ over time or across different groups.\n```chart\n{\n    \"width\": 600,\n\
+            \    \"height\": 400,\n    \"config\": {\n        \"type\": \"bar\",\n\
+            \        \"data\": {\n            \"labels\": [\"Q1\", \"Q2\", \"Q3\"\
+            , \"Q4\"],\n            \"datasets\": [\n                {\n         \
+            \           \"label\": \"Product A\",\n                    \"data\": [30,\
+            \ 50, 70, 90],\n                    \"backgroundColor\": \"rgba(255, 99,\
+            \ 132, 0.8)\"\n                },\n                {\n               \
+            \     \"label\": \"Product B\",\n                    \"data\": [40, 60,\
+            \ 80, 100],\n                    \"backgroundColor\": \"rgba(54, 162,\
+            \ 235, 0.8)\"\n                },\n                {\n               \
+            \     \"label\": \"Product C\",\n                    \"data\": [20, 40,\
+            \ 60, 80],\n                    \"backgroundColor\": \"rgba(75, 192, 192,\
+            \ 0.8)\"\n                }\n            ]\n        },\n        \"options\"\
+            : {\n            \"title\": {\n                \"display\": true,\n  \
+            \              \"text\": \"Quarterly Sales Comparison\"\n            },\n\
+            \            \"scales\": {\n                \"xAxes\": [{\n          \
+            \          \"stacked\": true\n                }],\n                \"\
+            yAxes\": [{\n                    \"stacked\": true\n                }]\n\
+            \            }\n        }\n    }\n}\n```\n\nMixed Bar and Line Chart\n\
+            Description: Combining bar and line charts allows for the visualization\
+            \ of different datasets with distinct measurement scales, such as displaying\
+            \ sales volume as bars and profit margin as a line over the same time\
+            \ period.\n```chart\n{\n    \"width\": 600,\n    \"height\": 400,\n  \
+            \  \"config\": {\n        \"type\": \"bar\",\n        \"data\": {\n  \
+            \          \"labels\": [\"January\", \"February\", \"March\", \"April\"\
+            , \"May\"],\n            \"datasets\": [\n                {\n        \
+            \            \"type\": \"bar\",\n                    \"label\": \"Sales\
+            \ Volume\",\n                    \"data\": [200, 300, 400, 500, 600],\n\
+            \                    \"backgroundColor\": \"rgba(75, 192, 192, 0.8)\"\n\
+            \                },\n                {\n                    \"type\":\
+            \ \"line\",\n                    \"label\": \"Profit Margin\",\n     \
+            \               \"data\": [20, 25, 30, 35, 40],\n                    \"\
+            fill\": false,\n                    \"borderColor\": \"rgba(255, 99, 132,\
+            \ 0.8)\",\n                    \"yAxisID\": \"y-axis-2\"\n           \
+            \     }\n            ]\n        },\n        \"options\": {\n         \
+            \   \"title\": {\n                \"display\": true,\n               \
+            \ \"text\": \"Sales Volume and Profit Margin Over Time\"\n           \
+            \ },\n            \"scales\": {\n                \"yAxes\": [\n      \
+            \              {\n                        \"type\": \"linear\",\n    \
+            \                    \"display\": true,\n                        \"position\"\
+            : \"left\",\n                        \"id\": \"y-axis-1\",\n         \
+            \               \"labels\": {\n                            \"show\": true\n\
+            \                        }\n                    },\n                 \
+            \   {\n                        \"type\": \"linear\",\n               \
+            \         \"display\": true,\n                        \"position\": \"\
+            right\",\n                        \"id\": \"y-axis-2\",\n            \
+            \            \"labels\": {\n                            \"show\": true\n\
+            \                        },\n                        \"gridLines\": {\n\
+            \                            \"drawOnChartArea\": false\n            \
+            \            }\n                    }\n                ]\n           \
+            \ }\n        }\n    }\n}\n```\n\nPolar Area Chart\nDescription: A polar\
+            \ area chart is useful for displaying data with cyclic patterns, such\
+            \ as seasonal trends or survey results, where each segment's angle is\
+            \ equal, and the radius represents the value.\n```chart\n{\n    \"width\"\
+            : 500,\n    \"height\": 500,\n    \"config\": {\n        \"type\": \"\
+            polarArea\",\n        \"data\": {\n            \"labels\": [\"North\"\
+            , \"East\", \"South\", \"West\"],\n            \"datasets\": [{\n    \
+            \            \"data\": [120, 150, 180, 90],\n                \"backgroundColor\"\
+            : [\n                    \"rgba(255, 99, 132, 0.8)\",\n              \
+            \      \"rgba(54, 162, 235, 0.8)\",\n                    \"rgba(255, 206,\
+            \ 86, 0.8)\",\n                    \"rgba(75, 192, 192, 0.8)\"\n     \
+            \           ]\n            }]\n        },\n        \"options\": {\n  \
+            \          \"title\": {\n                \"display\": true,\n        \
+            \        \"text\": \"Sales Distribution by Region\"\n            }\n \
+            \       }\n    }\n}\n```\n\nScatter Plot with Regression Line\nDescription:\
+            \ A scatter plot displays the relationship between two variables, and\
+            \ adding a regression line helps in understanding the trend and correlation\
+            \ between them, which is valuable in statistical analyses.\n\n```chart\n\
+            {\n    \"width\": 600,\n    \"height\": 400,\n    \"config\": {\n    \
+            \    \"type\": \"scatter\",\n        \"data\": {\n            \"datasets\"\
+            : [{\n                \"label\": \"Height vs. Weight\",\n            \
+            \    \"data\": [\n                    {\"x\": 150, \"y\": 45},\n     \
+            \               {\"x\": 160, \"y\": 50},\n                    {\"x\":\
+            \ 170, \"y\": 65},\n                    {\"x\": 180, \"y\": 70},\n   \
+            \                 {\"x\": 190, \"y\": 85}\n                ],\n      \
+            \          \"backgroundColor\": \"rgba(75, 192, 192, 0.8)\"\n        \
+            \    },\n            {\n                \"type\": \"line\",\n        \
+            \        \"label\": \"Regression Line\",\n                \"data\": [\n\
+            \                    {\"x\": 150, \"y\": 40},\n                    {\"\
+            x\": 190, \"y\": 90}\n                ],\n                \"fill\": false,\n\
+            \                \"borderColor\": \"rgba(255, 99, 132, 0.8)\",\n     \
+            \           \"borderDash\": [5, 5],\n                \"pointRadius\":\
+            \ 0\n            }]\n        },\n        \"options\": {\n            \"\
+            title\": {\n                \"display\": true,\n                \"text\"\
+            : \"Height vs. Weight with Regression Line\"\n            },\n       \
+            \     \"scales\": {\n                \"xAxes\": [{\n                 \
+            \   \"type\": \"linear\",\n                    \"position\": \"bottom\"\
+            ,\n                    \"scaleLabel\": {\n                        \"display\"\
+            : true,\n                        \"labelString\": \"Height (cm)\"\n  \
+            \                  }\n                }],\n                \"yAxes\":\
+            \ [{\n                    \"scaleLabel\": {\n                        \"\
+            display\": true,\n                        \"labelString\": \"Weight (kg)\"\
+            \n                    }\n                }]\n            }\n        }\n\
+            \    }\n}\n```\n\nDoughnut Chart with Percentage Labels**\n*Description:*\
+            \ Doughnut charts are similar to pie charts but with a hole in the middle.\
+            \ This chart type is useful for representing proportions in a dataset\
+            \ while keeping the center clear for additional information or labels.\n\
+            \n```chart\n{\n    \"width\": 400,\n    \"height\": 400,\n    \"config\"\
+            : {\n        \"type\": \"doughnut\",\n        \"data\": {\n          \
+            \  \"labels\": [\"Online\", \"Retail\", \"Wholesale\"],\n            \"\
+            datasets\": [{\n                \"data\": [300, 500, 200],\n         \
+            \       \"backgroundColor\": [\"#FF6384\", \"#36A2EB\", \"#FFCE56\"]\n\
+            \            }]\n        },\n        \"options\": {\n            \"title\"\
+            : {\n                \"display\": true,\n                \"text\": \"\
+            Sales Channel Distribution\"\n            },\n            \"plugins\"\
+            : {\n                \"datalabels\": {\n                    \"formatter\"\
+            : (value, ctx) => {\n                        let sum = ctx.dataset.data.reduce((a,\
+            \ b) => a + b, 0);\n                        let percentage = (value /\
+            \ sum * 100).toFixed(2) + \"%\";\n                        return percentage;\n\
+            \                    },\n                    \"color\": \"#fff\",\n  \
+            \                  \"font\": {\n                        \"weight\": \"\
+            bold\"\n                    }\n                }\n            }\n    \
+            \    }\n    }\n}\n```\n\nPolar Area Chart for Category Comparison**\n\
+            *Description:* Polar area charts are great for visualizing category-based\
+            \ data with different magnitude levels. They are useful when comparing\
+            \ datasets with varying levels of importance.\n\n```chart\n{\n    \"width\"\
+            : 500,\n    \"height\": 500,\n    \"config\": {\n        \"type\": \"\
+            polarArea\",\n        \"data\": {\n            \"labels\": [\"Marketing\"\
+            , \"Development\", \"Operations\", \"HR\", \"Sales\"],\n            \"\
+            datasets\": [{\n                \"data\": [300, 450, 200, 150, 500],\n\
+            \                \"backgroundColor\": [\n                    \"rgba(255,\
+            \ 99, 132, 0.8)\",\n                    \"rgba(54, 162, 235, 0.8)\",\n\
+            \                    \"rgba(255, 206, 86, 0.8)\",\n                  \
+            \  \"rgba(75, 192, 192, 0.8)\",\n                    \"rgba(153, 102,\
+            \ 255, 0.8)\"\n                ]\n            }]\n        },\n       \
+            \ \"options\": {\n            \"title\": {\n                \"display\"\
+            : true,\n                \"text\": \"Departmental Budget Allocation\"\n\
+            \            }\n        }\n    }\n}\n```\n\nScatter Plot for Correlation\
+            \ Analysis**\n*Description:* Scatter plots are useful for identifying\
+            \ correlations between two numerical variables, such as age vs. income\
+            \ or advertising spend vs. sales.\n\n```chart\n{\n    \"width\": 600,\n\
+            \    \"height\": 400,\n    \"config\": {\n        \"type\": \"scatter\"\
+            ,\n        \"data\": {\n            \"datasets\": [{\n               \
+            \ \"label\": \"Advertising Spend vs Sales\",\n                \"data\"\
+            : [\n                    { \"x\": 10, \"y\": 200 },\n                \
+            \    { \"x\": 20, \"y\": 400 },\n                    { \"x\": 30, \"y\"\
+            : 600 },\n                    { \"x\": 40, \"y\": 800 },\n           \
+            \         { \"x\": 50, \"y\": 1000 }\n                ],\n           \
+            \     \"backgroundColor\": \"rgba(255, 99, 132, 0.8)\"\n            }]\n\
+            \        },\n        \"options\": {\n            \"title\": {\n      \
+            \          \"display\": true,\n                \"text\": \"Advertising\
+            \ Spend vs. Sales\"\n            },\n            \"scales\": {\n     \
+            \           \"xAxes\": [{\n                    \"scaleLabel\": {\n   \
+            \                     \"display\": true,\n                        \"labelString\"\
+            : \"Advertising Spend ($1000s)\"\n                    }\n            \
+            \    }],\n                \"yAxes\": [{\n                    \"scaleLabel\"\
+            : {\n                        \"display\": true,\n                    \
+            \    \"labelString\": \"Sales Revenue ($1000s)\"\n                   \
+            \ }\n                }]\n            }\n        }\n    }\n}\n```\n\nMulti-Series\
+            \ Line Chart with Different Styles**\n*Description:* This chart is useful\
+            \ for visualizing multiple trends over time, such as website traffic from\
+            \ different sources or stock market performance of multiple companies.\n\
+            \n```chart\n{\n    \"width\": 700,\n    \"height\": 400,\n    \"config\"\
+            : {\n        \"type\": \"line\",\n        \"data\": {\n            \"\
+            labels\": [\"January\", \"February\", \"March\", \"April\", \"May\", \"\
+            June\"],\n            \"datasets\": [\n                {\n           \
+            \         \"label\": \"Website Traffic - Organic\",\n                \
+            \    \"data\": [500, 700, 1000, 1500, 1800, 2000],\n                 \
+            \   \"fill\": false,\n                    \"borderColor\": \"rgba(54,\
+            \ 162, 235, 0.8)\",\n                    \"borderDash\": [5, 5]\n    \
+            \            },\n                {\n                    \"label\": \"\
+            Website Traffic - Paid\",\n                    \"data\": [200, 300, 500,\
+            \ 700, 1000, 1500],\n                    \"fill\": false,\n          \
+            \          \"borderColor\": \"rgba(255, 99, 132, 0.8)\"\n            \
+            \    }\n            ]\n        },\n        \"options\": {\n          \
+            \  \"title\": {\n                \"display\": true,\n                \"\
+            text\": \"Website Traffic Trends\"\n            }\n        }\n    }\n\
+            }\n```\n\nThese examples showcase different types of charts and configurations\
+            \ that can be used for various data visualization needs, such as trend\
+            \ analysis, correlation studies, and categorical comparisons.\nUser provided\
+            \ data is as follows:"
+          label: Refinement Prompt
+          type: textarea
+        search_string:
+          default: REVIEWPASS
+          description: String to search for in validation results
+          label: Search String
+          type: text
+        validation_prompt:
+          default: "You are an expert technical content evaluator. Please provide\
+            \ a concise, non-critical assessment of the content below, provide both\
+            \ strengths and areas for improvement. Your response should maintain a\
+            \ constructive and objective tone, focusing on clarity, accuracy, and\
+            \ effectiveness.\n\nyou only expected output is: \nyour review, which\
+            \ includes what you like and what you dont like, then 8 different categorized\
+            \ ratings between 1.0 and 10.0, then the \"OVERALL RATING\" between 1.0\
+            \ and 10.0, then 8 detailed and very specific suggestions for improvement.\
+            \ do not include suggestions for any kind content that would require pictures.\
+            \ \n\nThe overal rating should be formatted as follows:\nOVERALL RATING:\
+            \ and then the rating with no other formatting.\n\nif the following content\
+            \ is just a title or starts with the word \"Title\", then do not do the\
+            \ review, just print the word \"REVIEWPASS\"\n\nThe content is as follows:"
+          label: Validation Prompt
+          type: textarea
+      title: ArrayProcessTestProcessNode
+      type: ArrayProcessTestProcessNode
+      width: 245
+      x: 532
+      y: 94
+    e6484456-0c61-429b-8dd8-155ec24f3762:
+      canvas_items:
+        description: 105
+        drag_bar: 103
+        input_input: 106
+        input_label_input: 107
+        output_label_output: 109
+        output_output: 108
+        rect: 102
+        resize_handle: 110
+        title: 104
+      height: 100
+      id: e6484456-0c61-429b-8dd8-155ec24f3762
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are to take the user request below and write an outline. \
+            \ The outline will consist of a self contained paragraphs representing\
+            \ the chapter, section, or paragraph containing the details of that chapter.\n\
+            \nYou are responsible for the following duties:\n\n1. Crafting content\
+            \ that aligns with the intended tone, purpose, and audience.\n\n2. Structuring\
+            \ ideas logically to enhance readability and flow.\n\n3. Your expected\
+            \ output will always be a title followed by the exact original user request\
+            \ shown bellow, then a detailed outline for whatever the user request\
+            \ is.  this outline will consist of the title, then the exact original\
+            \ user request shown below, and then a self contained paragraph for each\
+            \ chapter and/or section or sub section that makes up the outline with\
+            \ only the key points, notable items, and major points of what is in that\
+            \ chapter or section for the content being requested.  the chapter or\
+            \ section number and title or heading for each chapter or section will\
+            \ always be included at the very beginning of that chapter or section\
+            \ making it part of the paragraph. For chapters or sections that require\
+            \ additional length, an addtional one or two paragraphs of details for\
+            \ a chapter can be included right after the paragraph for that chapter.\
+            \  \nHere is what the formatting structure would look like:\nTitle: [content\
+            \ title] - [the exact original user request listed below repeated here]\n\
+            \nchapter # - [chronologically structured key points, people, actions,\
+            \ events, places and important items and noteable characteristics of the\
+            \ chapter that structure the chapter.] \n\n(continued) - a continuations\
+            \ of the chapter above.\n\n(continued) - a furthur continuation of the\
+            \ chapter above.\n\n[if the user requests [2 paragraphs], then the outline\
+            \ for the chapter should be spread out using two distinct paragraphs to\
+            \ cover the details of that chapter for a total of 2 paragraphs per chapter,\
+            \ these details should be well organized and logically ordered based on\
+            \ the content of the chapter.]\n\n[if the user requests [3 paragraphs],\
+            \ then the outline for the chapter should be spread out using three distinct\
+            \ paragraphs to cover the details of that chapter for a total of 3 paragraphs\
+            \ per chapter, these details should be well organized and logically ordered\
+            \ based on the content of the chapter.]\n\n[if the user requests [# paragraphs],\
+            \ where # represents the number of paragraphs being requested, then the\
+            \ outline for the chapter should be spread out using the exact number\
+            \ of paragraphs requested to cover the details of that chapter, these\
+            \ details should be well organized and logically ordered based on the\
+            \ content of the chapter.]\n\ndo not use any special formatting , i.e.\
+            \ bold, line separators, etc.\n\n6. each paragraph will have a single\
+            \ blank line after it.\n\n7. the details in each paragraph should contain\
+            \ information or special instructions for including special structures\
+            \ in the chapter regarding place holders for images if necessary, tables,\
+            \ graphs, images relevant to the chapter.\n\n8. if the content requested\
+            \ in more technical or educational in nature, the information in the outline\
+            \ will be structured intuitively to provide the information in the most\
+            \ educational way possible.\n\nyour only expected output is the requested\
+            \ outline and no other comments.\n\nExample 1: The user requests contains\
+            \ the phrase \"2 paragraphs\", then write exactly two paragraphs per chapter\
+            \ that evenly spreads out and contains the information to be covered in\
+            \ that chapter in exactly 2 paragraphs:\n\n[paragraph 1]: chapter/section\
+            \ # - Introduction, information, details and content structured and layed\
+            \ out in an informational design.\n\n[paragraph 2]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\nExample\
+            \ 2: The user requests contains the phrase \"3 paragraphs\", then write\
+            \ exactly three paragraphs per chapter that evenly spreads out and contains\
+            \ the information to be covered in that chapter in exactly 3 paragraphs:\n\
+            \n[paragraph 1]: chapter/section # - Introduction, information, details\
+            \ and content structured and layed out in an informational design.\n\n\
+            [paragraph 2]:(Continued) - a continuation of the information and details\
+            \ for the assocaited chapter.....\n\n[paragraph 3]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\nExample\
+            \ 3: The user requests contains the phrase \"5 paragraphs\", then write\
+            \ exactly 5 paragraphs per chapter that evenly spreads out and contains\
+            \ the information to be covered in that chapter in exactly 5 paragraphs:\n\
+            \n[paragraph 1]: chapter/section # - Introduction, information, details\
+            \ and content structured and layed out in an informational design.\n\n\
+            [paragraph 2]:(Continued) - a continuation of the information and details\
+            \ for the assocaited chapter.....\n\n[paragraph 3]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\n[paragraph\
+            \ 4]:(Continued) - a continuation of the information and details for the\
+            \ assocaited chapter.....\n\n[paragraph 5]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\nThe\
+            \ user request may contain a request for any number of paragraphs in the\
+            \ format [# paragraphs].  you will always generate exactly the number\
+            \ of self contained paragraphs the user requests for each chapter.\n\n\
+            The user request is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI
+          - OpenAI GPT gpt-4o-mini
+          - OpenAI Whisper
+          type: dropdown
+        description:
+          default: Processes the input prompt with review capability.
+          label: Description
+          type: text
+        enable_review:
+          default: true
+          label: Enable Review
+          type: boolean
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: OutlineWriterV2Node
+          label: Custom Node Name
+          type: text
+      title: OutlineWriterV2Node
+      type: OutlineWriterV2Node
+      width: 137
+      x: 42
+      y: 180
+name: Write long form technical content

@@ -1,0 +1,447 @@
+graph:
+  connections:
+  - canvas_item: 188
+    from_node: 81c48351-a3e8-4f7d-8657-65d72005c30c
+    from_output: output
+    to_input: input
+    to_node: d407e984-dd52-4549-ae40-821e2646d5ae
+  - canvas_item: 189
+    from_node: d407e984-dd52-4549-ae40-821e2646d5ae
+    from_output: prompt
+    to_input: input
+    to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
+  - canvas_item: 190
+    from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
+    from_output: output
+    to_input: input
+    to_node: 81c48351-a3e8-4f7d-8657-65d72005c30c
+  nodes:
+    81c48351-a3e8-4f7d-8657-65d72005c30c:
+      canvas_items:
+        description: 156
+        drag_bar: 154
+        input_input: 157
+        input_label_input: 158
+        output_label_output: 160
+        output_output: 159
+        rect: 153
+        resize_handle: 161
+        title: 155
+      connections: []
+      height: 100
+      id: 81c48351-a3e8-4f7d-8657-65d72005c30c
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are to take the user request below and write an outline. \
+            \ The outline will consist of a self contained paragraph representing\
+            \ the chapter, or paragraph extending the details of a chapter.\n\nYou\
+            \ are responsible for the following duties:\n\n1. Crafting content that\
+            \ aligns with the intended tone, purpose, and audience.\n\n2. Structuring\
+            \ ideas logically to enhance readability and flow.\n\n3. Your expected\
+            \ output will always be a title followed by the exact original user request\
+            \ shown bellow, then a detailed outline for whatever the user request\
+            \ is.  this outline will consist of the title, then the exact original\
+            \ user request shown below, and then a self contained paragraph for each\
+            \ chapter and/or section or sub section that makes up the outline with\
+            \ as many details and key points, notable items, and major points of what\
+            \ is in that chapter or section for the content being requested.  the\
+            \ chapter or section number and title or heading for each chapter or section\
+            \ will always be included at the very beginning of that chapter or section\
+            \ making it part of the paragraph. \n\nHere is what the formatting structure\
+            \ would look like:\nTitle: [content title] - [the exact original user\
+            \ request listed below will be repeated here verbatum]\n\nchapter # -\
+            \ [chronologically structured key points, people, actions, events, places\
+            \ and important items and noteable characteristics of the chapter that\
+            \ structure the chapter.] \n\n[if the user requests [2 paragraphs], then\
+            \ an aditional paragraph of details naturally continuing the outline from\
+            \ chapter # can be added here to add to the details of chapter # for a\
+            \ total of 2 paragraphs per chapter, these details should be a chronological\
+            \ continuation of the first paragraph naturally continuing the story outline\
+            \ from the first paragraph.]\n\n[if the user requests [3 paragraphs],\
+            \ an additional paragraph of details naturally continuing the outline\
+            \ from chapter # can be added here to add to the details of chapter #\
+            \ for a total of 3 paragraphs per chapter, these details should be a chronological\
+            \ continuation of the second paragraph naturally continuing the story\
+            \ outline from the second paragraph.] \n\ndo not use any special formatting\
+            \ , i.e. bold, line separators, etc.  just one, two or three self contained\
+            \ paragraphs that contains the detailed description of chronologically\
+            \ structured key points, people, actions, places and important items and\
+            \ notable characteristics of the chapter that structure the chapter for\
+            \ each chapter or section. \n\n6. each paragraph will have a single blank\
+            \ line after it.\n\n7. if the content is a story, the outline  details\
+            \ will be written in the order in which events and actions take place,\
+            \ but ensuring story continuity and consistency. each section in the outline\
+            \ should contain specific details important to that section of the story\
+            \ as those details could be referenced later on in the outline.\n\nyour\
+            \ only expected output is the requested outline and no other comments.\n\
+            Remember, the default number of paragraphs per chapter is 1, unless the\
+            \ user specifies the number of paragraphs per chapter. if the user requests\
+            \ [2 paragraphs], you will add one additional paragraph of details for\
+            \ each chapter.  if the user requests [3 paragraphs], you will add an\
+            \ additional two paragraphs of details for each chapter.  \n\nFor example,\
+            \ user requests contains the phrase \"2 paragraphs\", then write two paragraphs\
+            \ per chapter:\n\n[paragraph 1]: chapter # - In the distant future, humanity\
+            \ has ventured into the far reaches of space, colonizing planets with\
+            \ unimaginable landscapes and civilizations. The story begins on the......\
+            \  \n\n[paragraph 2]:(Continued) - the details of this paragraph will\
+            \ naturally continue and add to the outline in paragraph 1.....\n\nFor\
+            \ example, user requests contains the phrase \"3 paragraphs\", then write\
+            \ three paragraphs per chapter:\n\n[paragraph 1]: chapter # - In the bleak\
+            \ future where humanity has succumbed to the omnipresent grip of a dying\
+            \ Earth, a lone space vessel, the Eclipsed Solace, drifts.......\n\n[paragraph\
+            \ 2]:(Continued) - the details of this paragraph will naturally continue\
+            \ and add to the outline in paragraph 1......\n\n[paragraph 3]:(Continued)\
+            \ - the details of this paragraph will naturally continue and add to the\
+            \ outline in paragraph 2 .......\n\ndo not include the paragraph numbers\
+            \ in brackets in your output. ensure that all paragraphs are separated\
+            \ by a single blank line.\nwhen creating the title and chapter titles,\
+            \ be creative, dont make it obvious and use paraphrasing when creating\
+            \ the book or chapter titles.\n\nThe user request is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt with review capability.
+          label: Description
+          type: text
+        enable_review:
+          default: true
+          label: Enable Review
+          type: boolean
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Outline Writer
+          label: Custom Node Name
+          type: text
+      title: Outline Writer
+      type: OutlineWriterV2Node
+      width: 142
+      x: 186
+      y: 164
+    b02230a3-53b8-49d1-b90a-d06a1cb59c73:
+      canvas_items:
+        description: 165
+        drag_bar: 163
+        input_input: 166
+        input_label_input: 167
+        output_label_output: 169
+        output_output: 168
+        rect: 162
+        resize_handle: 170
+        title: 164
+      connections: []
+      height: 112
+      id: b02230a3-53b8-49d1-b90a-d06a1cb59c73
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes array elements through multiple API calls until condition
+            is met.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        max_iterations:
+          default: '20'
+          description: Maximum number of iterations per array element
+          label: Max Iterations
+          type: text
+        minimum_rating:
+          default: '8.3'
+          description: Minimum rating threshold to consider content satisfactory
+          label: Minimum Rating
+          type: float
+        node_name:
+          default: Reviewer and Editor
+          label: Custom Node Name
+          type: text
+        refinement_prompt:
+          default: "You are a world-renowned writer and literary content creator tasked\
+            \ with revising the provided content strictly according to the review\
+            \ and suggestions below, with your output containing only the improved\
+            \ content and no additional commentary. As you revise, incorporate burstiness\
+            \ by consciously varying sentence lengths and structures\u2014mixing short,\
+            \ impactful sentences with longer, more complex ones\u2014to create a\
+            \ dynamic, engaging rhythm. Use diverse grammatical constructions to prevent\
+            \ monotonous patterns and to mirror natural speech, and include poetic\
+            \ elements only when they enhance the narrative or descriptive qualities.\
+            \ Ensure your prose remains clear, accessible, and immersive throughout.\n\
+            If the content below contains a chapter or heading of some kind, please\
+            \ ensure that it is included. If the content below does not contain a\
+            \ heading or chapter number, do not include one.\nIf the content below\
+            \ contains the chapter number and title at the beginning, it should always\
+            \ be formatted as a heading. if the content below has a \"(Continued)\
+            \ - \" at the beginning, it will not be formatted as a heading.\nThe content\
+            \ to improve, and suggestions are as follows:"
+          label: Refinement Prompt
+          type: textarea
+        search_string:
+          default: REVIEWPASS
+          description: String to search for in validation results
+          label: Search String
+          type: text
+        validation_prompt:
+          default: "You are a world renowned content and literature reviewer, please\
+            \ provide a critical but constructive review of the content below, to\
+            \ include what you like and dont like about it, and then rate the following\
+            \ content below on a scale of 1.0 to 10.0 in 6 different categories related\
+            \ to the content and then provide an OVERALL RATING between 1.0 and 10.0,\
+            \ and then provide 8 detailed and very specific suggestions that would\
+            \ help improve the overall rating, which could include but is not limited\
+            \ to incporating burstiness and varying sentence lengths and structurers,\
+            \ or if it should incorporate mixing short, impactful sentences with longer,\
+            \ more complex ones to create a dynamic rhythm.  should it include different\
+            \ grammatical constructions to avoid monotonous patterns.  these are just\
+            \ a few things that could be suggested to help improve the content below.\
+            \ \n\nyou only expected output is: \nyour review, which includes what\
+            \ you like and what you dont like, then 8 different categorized ratings\
+            \ between 1.0 and 10.0, then the \"OVERALL RATING\" between 1.0 and 10.0,\
+            \ then 8 detailed and very specific suggestions for improvement. \n\n\
+            The overal rating should be formatted as follows:\nOVERALL RATING: and\
+            \ then the rating with no other formatting.\n\nif the following content\
+            \ starts with the word \"Title\", then do not do the review, just print\
+            \ the word \"REVIEWPASS\"\n\nThe content is as follows:"
+          label: Validation Prompt
+          type: textarea
+      title: Reviewer and Editor
+      type: ArrayProcessTestProcessNode
+      width: 153
+      x: 580
+      y: 158
+    b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
+      canvas_items:
+        description: 174
+        drag_bar: 172
+        input_input: 175
+        input_label_input: 176
+        output_label_output: 178
+        output_output: 177
+        rect: 171
+        resize_handle: 179
+        title: 173
+      height: 100
+      id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "Using the user request and details below, you will create a pre-draft\
+            \ outline for the following items: \nTitle and synopsis\nIf the user request\
+            \ does not provide the title or synopsis of the story, then you will creatively\
+            \ provide a uniqe title and short synopsis of the story.\n\nWorld/Univers\n\
+            start by constructing a detailed blueprint of your novel\u2019s universe.\
+            \ Begin with world building: clearly define the geography, culture, and\
+            \ any unique rules that govern the reality you\u2019re creating. This\
+            \ should include descriptions of the environment, societal structures,\
+            \ historical context, and the underlying principles (whether magical,\
+            \ scientific, or otherwise) that give your world its distinctive character.\n\
+            \nMain/side characters\nNext, focus on character development. Create comprehensive\
+            \ profiles for your main characters, outlining their backstories, personality\
+            \ traits, and motivations. Map out their growth arcs throughout the narrative.\
+            \ Don\u2019t neglect your supporting cast\u2014detail their roles, relationships\
+            \ with the protagonists, and unique attributes that make them memorable.\
+            \ Also, consider the antagonists and central conflicts, ensuring they\
+            \ are nuanced and provide meaningful challenges.\n\nPlot/Story Structure\n\
+            Then, turn your attention to the plot and structure of your story. Identify\
+            \ the core conflict that drives your narrative and sketch a rough outline\
+            \ of key events, turning points, and the climax. Plan any subplots that\
+            \ will enrich the main storyline and reinforce character development.\
+            \ Additionally, set the tone and themes early on by determining the mood,\
+            \ voice, and recurring symbols that will carry your message throughout\
+            \ the narrative.\n\nAdditional instructions:\nYour final output will be\
+            \ a single self contained paragraph containing all details needed.\n\n\
+            User request is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: PreWritting Draft
+          label: Custom Node Name
+          type: text
+      title: PreWritting Draft
+      type: BasicNode
+      width: 108
+      x: 19
+      y: 40
+    d407e984-dd52-4549-ae40-821e2646d5ae:
+      canvas_items:
+        drag_bar: 181
+        input_input: 183
+        input_label_input: 184
+        output_label_prompt: 186
+        output_prompt: 185
+        rect: 180
+        resize_handle: 187
+        title: 182
+      height: 100
+      id: d407e984-dd52-4549-ae40-821e2646d5ae
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Instructions for custom formatting:
+          default: 'if the section above starts with "Chapter #" then include that
+            chapter number as a heading when writing the content like this with nothing
+            else before it: "## Chapter # - Chapter heading....."
+
+            Never include "(Continue) - " at the beginning of the chapter heading.
+
+            if the section above starts with "(Continued)" then only include "(Continued)
+            - " at the beginning of your output like this:  "(Continued) - content......"'
+          description: Custom formatting instructions
+          type: text
+        Instructions for how the AI should use the next array element for context:
+          default: '
+
+            the next section to write about is as follows:
+
+            '
+          description: Template for introducing the current section
+          type: text
+        Instructions for how to process the Original user request and original content:
+          default: 'The outline and user request is as follows and only for reference,
+            do not use the same formatting as the outline:
+
+            '
+          description: Template for the context section
+          type: text
+        Instructions for how to processthe first element in the array:
+          default: 'Please just repeat the title content below exactly and nothing
+            else:
+
+
+            '
+          description: Prompt template for the first item
+          type: text
+        Main instructions for array element to focus on:
+          default: As a professional writer, please write the detailed content for
+            the section shown below. Do not include any of your own commentary, just
+            write the content based on the section listed below. Be detailed, creative,
+            giving depth and meaning and remember To incorporate burstiness into your
+            writing, consciously vary sentence lengths and structures as you generate
+            text - mix short, impactful sentences with longer, more complex ones to
+            create a dynamic rhythm; use different grammatical constructions, monitor
+            your output for monotonous patterns in real time, and adjust accordingly
+            to enhance engagement and mirror natural speech patterns. Write in a natural
+            storytelling format by separating dialogue, descriptions, and internal
+            thoughts into distinct paragraphs. Begin a new paragraph for each new
+            speaker in dialogue, and keep spoken dialogue separate from narrative
+            descriptions or internal reflections. This structure ensures clarity,
+            readability, and a traditional storytelling flow. The content should be
+            at least 500 words long.
+          description: Main instruction template for content generation
+          type: text
+        api_endpoint:
+          default: openai
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        chunk_size:
+          default: '10'
+          description: Number of items to process in each chunk
+          type: integer
+        enable_url_selection:
+          default: false
+          description: Enable manual URL selection from search results
+          type: boolean
+        num_results_to_skip:
+          default: '0'
+          description: Number of search results to skip
+          type: number
+        num_search_results:
+          default: '5'
+          description: Number of search results to process
+          type: number
+        review_array:
+          default: true
+          description: Show review window for array output
+          type: boolean
+        searxng_api_url:
+          default: http://localhost:8888/search
+          description: SearxNG API URL for web search
+          type: text
+        show_content_review:
+          default: true
+          description: Show content review window with web search capability
+          type: boolean
+        use_array:
+          default: true
+          description: Output as array instead of string
+          type: boolean
+      title: LongOutputV4
+      type: LongOutputV4Node
+      width: 125
+      x: 383
+      y: 36
+name: Write long form story content

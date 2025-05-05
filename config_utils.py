@@ -3,6 +3,7 @@
 import yaml
 import os
 from tkinter import messagebox, Text
+import tkinter as tk
 
 def load_config(config_file='config.yaml'):
     """Load configuration from a YAML file."""
@@ -11,7 +12,7 @@ def load_config(config_file='config.yaml'):
             config = yaml.safe_load(file)
             print(f"Loaded configuration from '{config_file}'.")
     except FileNotFoundError:
-        config = {'interfaces': {}, 'seed_prompts': []}
+        config = {'interfaces': {}, 'seed_prompts': [], 'auto_startup_workflows': []}
         print(f"Configuration file '{config_file}' not found. Using default configuration.")
 
     # Ensure seed_prompts is a list
@@ -23,6 +24,11 @@ def load_config(config_file='config.yaml'):
     if 'interfaces' not in config or not isinstance(config['interfaces'], dict):
         config['interfaces'] = {}
         print("Initialized 'interfaces' as an empty dictionary.")
+        
+    # Ensure auto_startup_workflows is a list
+    if 'auto_startup_workflows' not in config or not isinstance(config['auto_startup_workflows'], list):
+        config['auto_startup_workflows'] = []
+        print("Initialized 'auto_startup_workflows' as an empty list.")
 
     # Print loaded interfaces for debugging
     print(f"Available API Interfaces: {list(config['interfaces'].keys())}")

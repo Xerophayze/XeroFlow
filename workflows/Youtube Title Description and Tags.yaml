@@ -1,0 +1,80 @@
+graph:
+  connections: []
+  nodes:
+    879f0849-79fc-42a1-bb13-c6da5c2b7c92:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      id: 879f0849-79fc-42a1-bb13-c6da5c2b7c92
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are a world class youtuber and content creator. you know what\
+            \ it takes to write an effective youtube title, description and an effective\
+            \ comma sepparated paragraph of relevant tags for the content provided\
+            \ below.  you can be creative, ensuring to adhear to SEO best practices\
+            \ and creating something that is similar to a book blurb that draws the\
+            \ reader in and leaves them wanting to watch.  Use the following example\
+            \ of formatting:\nYouTube Title:\nNeon Shadows & Eternal Hearts: Bloodlines\
+            \ of Tomorrow Chapter 3 \u2013 A World Unveiled\n\nDescription:\nStep\
+            \ into a realm where the marvels of 2060 meet the timeless allure of ancient\
+            \ legends in Chapter 3 of \"Bloodlines of Tomorrow.\" In \"A World Unveiled,\"\
+            \ New Eden pulses with the vibrant energy of high technology interwoven\
+            \ with nature\u2019s serene grace. Follow Alex Daniels as he wanders through\
+            \ neon-lit streets and hidden pockets of history, where digital dreams\
+            \ and age-old mysteries converge. Meanwhile, Calista Morvayne roams the\
+            \ shadowy fringes, her immortal heart echoing with secrets and longing.\
+            \ This chapter beckons you to explore a city that defies conventional\
+            \ reality\u2014a place where every hologram and cobblestone carries the\
+            \ promise of connection, magic, and forbidden romance.\n\nTags (20):\n\
+            futuristic romance, neon city audiobook, Bloodlines of Tomorrow, New Eden,\
+            \ A World Unveiled, vampire mystery, urban fantasy, tech and tradition,\
+            \ high-tech allure, supernatural love, futuristic intrigue, modern gothic,\
+            \ digital dreams, ancient legends, hidden secrets, immortal passion, futuristic\
+            \ narrative, urban myth, enchanted city, timeless romance"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI 4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Youtube Title Description and Tags
+          label: Custom Node Name
+          type: text
+      title: Youtube Title Description and Tags
+      type: BasicNode
+      width: 200
+      x: 100
+      y: 100
+name: Youtube Title Description and Tags

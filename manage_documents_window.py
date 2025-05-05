@@ -37,7 +37,13 @@ def manage_documents_window(parent, config, refresh_callback):
             return
         files = filedialog.askopenfilenames(
             title="Select Documents",
-            filetypes=[("PDF files", "*.pdf"), ("CSV files", "*.csv"), ("Text files", "*.txt")]
+            filetypes=[
+                ("All Supported Files", "*.pdf;*.csv;*.txt;*.doc;*.docx"),
+                ("PDF files", "*.pdf"),
+                ("CSV files", "*.csv"),
+                ("Text files", "*.txt"),
+                ("Word Documents", "*.doc;*.docx")
+            ]
         )
         if not files:
             return
