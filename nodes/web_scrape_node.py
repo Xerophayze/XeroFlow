@@ -85,9 +85,30 @@ class WebScrapingNode(BaseNode):
         # Validate URLs and add 'https://' if missing
         formatted_urls = []
         for url in urls:
-            if not re.match(r'^(?:http|https)://', url):
-                url = f'https://{url}'
-            formatted_urls.append(url)
+            try:
+                # Clean the URL first
+                url = url.strip()
+                url = url.strip('"\'')  # Remove quotes
+                url = url.rstrip(',]}\'')  # Remove JSON list/dict endings
+                url = url.split('#')[0]  # Remove fragment identifier
+                
+                # Remove any URL-encoded characters at the end
+                if '%' in url:
+                    url = url.split('%')[0]
+                
+                if not re.match(r'^(?:http|https)://', url):
+                    url = f'https://{url}'
+                
+                # Parse and validate URL
+                parsed = urlparse(url)
+                if not parsed.netloc:
+                    print(f"[WebScrapingNode] Invalid URL format: {url}")
+                    continue
+                    
+                formatted_urls.append(url.strip())
+            except Exception as e:
+                print(f"[WebScrapingNode] Error processing URL {url}: {str(e)}")
+                continue
 
         scraped_text = ""
         retry_attempts = 2  # Set the number of retry attempts
@@ -107,30 +128,49 @@ class WebScrapingNode(BaseNode):
             for attempt in range(retry_attempts):
                 try:
                     print(f"[WebScrapingNode] Scraping {url} (Depth {current_depth}, Attempt {attempt + 1})")
-                    response = requests.get(url, timeout=5)
+                    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+                    response = requests.get(url, headers=headers, timeout=10)
                     response.raise_for_status()
                     soup = BeautifulSoup(response.content, 'html.parser')
+                    
+                    # Remove script and style elements
+                    for script in soup(["script", "style"]):
+                        script.decompose()
+                        
                     text = soup.get_text(separator=' ', strip=True)
-                    scraped_text += f"URL: {url}\nContent:\n{text}\n\n"
+                    scraped_text += f"\nURL: {url}\nContent:\n{text}\n{'='*80}\n"
                     success = True
 
                     if current_depth < depth:
                         # Find all links on the page
                         for link_tag in soup.find_all('a', href=True):
-                            link = link_tag['href']
-                            # Resolve relative URLs
-                            full_link = urljoin(url, link)
-                            # Only follow HTTP and HTTPS links
-                            if urlparse(full_link).scheme in ['http', 'https']:
-                                scrape(full_link, current_depth + 1)
+                            try:
+                                link = link_tag['href']
+                                # Resolve relative URLs
+                                full_link = urljoin(url, link)
+                                # Only follow HTTP and HTTPS links
+                                parsed = urlparse(full_link)
+                                if parsed.scheme in ['http', 'https'] and parsed.netloc:
+                                    scrape(full_link, current_depth + 1)
+                            except Exception as e:
+                                print(f"[WebScrapingNode] Error processing link {link}: {str(e)}")
+                                continue
                     break  # Exit retry loop on success
+                except requests.exceptions.HTTPError as e:
+                    print(f"[WebScrapingNode] HTTP Error for {url} on attempt {attempt + 1}: {e}")
+                except requests.exceptions.ConnectionError as e:
+                    print(f"[WebScrapingNode] Connection Error for {url} on attempt {attempt + 1}: {e}")
+                except requests.exceptions.Timeout as e:
+                    print(f"[WebScrapingNode] Timeout Error for {url} on attempt {attempt + 1}: {e}")
                 except Exception as e:
                     print(f"[WebScrapingNode] Error scraping {url} on attempt {attempt + 1}: {e}")
+                
+                if attempt < retry_attempts - 1:  # Don't sleep on the last attempt
                     time.sleep(2)  # Wait before retrying
 
             if not success:
                 print(f"[WebScrapingNode] Failed to scrape {url} after {retry_attempts} attempts.")
-                scraped_text += f"URL: {url}\nContent: Failed to retrieve content.\n\n"
+                scraped_text += f"\nURL: {url}\nContent: Failed to retrieve content.\n{'='*80}\n"
 
         for url in formatted_urls:
             scrape(url, 1)

@@ -1,5 +1,6 @@
 # nodes/base_node.py
 from abc import ABC, abstractmethod
+from services.api_service import APIService, APIRequest, APIResponse
 
 class BaseNode(ABC):
     """
@@ -9,6 +10,7 @@ class BaseNode(ABC):
     def __init__(self, node_id, config):
         self.id = node_id
         self.config = config
+        self._api_service = APIService(config)
         self.properties = self.define_properties()
         self.inputs = self.define_inputs()      # Initialize inputs
         self.outputs = self.define_outputs()    # Initialize outputs
@@ -37,13 +39,67 @@ class BaseNode(ABC):
         """
         pass
 
+    def get_api_service(self) -> APIService:
+        """Get the API service instance"""
+        return self._api_service
+
+    def get_api_endpoints(self):
+        """Get available API endpoints"""
+        return self._api_service.get_available_endpoints()
+
+    def send_api_request(self, content: str, api_name: str, **kwargs) -> APIResponse:
+        """
+        Send a request to the API service.
+        
+        Args:
+            content: Content to send to the API
+            api_name: Name of the API endpoint to use
+            **kwargs: Additional API parameters
+            
+        Returns:
+            APIResponse object containing the response
+        """
+        request = APIRequest(
+            content=content,
+            api_name=api_name,
+            model=kwargs.get('model'),
+            max_tokens=kwargs.get('max_tokens'),
+            temperature=kwargs.get('temperature'),
+            additional_params=kwargs.get('additional_params')
+        )
+        return self._api_service.send_request(request)
+
     @abstractmethod
     def process(self, inputs):
         """
-        Process the node's logic.
-        Should return a dictionary with outputs.
+        Process the inputs and return outputs.
+        
+        Args:
+            inputs (dict): Dictionary of input values. Each input can be either a single value or a list of values
+                         if multiple connections are made to the same input.
+                        
+        Returns:
+            dict: Dictionary of output values
         """
-        pass
+        # Default implementation just passes through the input
+        # Derived classes should override this method
+        if not inputs:
+            return {}
+            
+        # Handle the case where an input might be a list from multiple connections
+        processed_inputs = {}
+        for input_name, input_value in inputs.items():
+            if isinstance(input_value, list):
+                # If the input is a list, join the values with newlines
+                if all(isinstance(x, str) for x in input_value):
+                    processed_inputs[input_name] = "\n\n".join(input_value)
+                else:
+                    # For non-string values, keep as list
+                    processed_inputs[input_name] = input_value
+            else:
+                processed_inputs[input_name] = input_value
+        
+        return processed_inputs
 
     def set_properties(self, node_data):
         """
