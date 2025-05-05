@@ -113,7 +113,7 @@ class LongOutputNode(BaseNode):
                 prompt = f"{previous_input}\n\n The section below should be the final section from the outline above, please finish writting the contend for this last outline item:\n{item}"
             else:
                 # Intermediate items
-                prompt = f"The outline is as follows:\n{previous_input}\n\nThe last section or chapter written is as follows:\n{last_response}\n\nAs a professional writter, Continue writing the detailed content for the next chapter/section shown below. do not include any of your own commentary, just write the content based on the next section listed below. Always include the chapter/section number and title in bold:\n{item}"
+                prompt = f"The outline is as follows:\n{previous_input}\n\nThe last section or chapter written is as follows:\n{last_response}\n\nAs a professional writter, Continue writing the detailed content for the next chapter/section shown below. do not include any of your own commentary, just write the content based on the next section listed below. Always include the chapter/section number and title in bold.  Be detailed, creative, giving depth and meaning:\n{item}"
 
             print(f"[LongOutputNode] Sending to API: {prompt}")
 
