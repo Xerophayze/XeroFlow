@@ -1,6 +1,7 @@
 # nodes/base_node.py
 from abc import ABC, abstractmethod
 from services.api_service import APIService, APIRequest, APIResponse
+from services.token_logger import TokenLogger
 
 class BaseNode(ABC):
     """
@@ -65,9 +66,28 @@ class BaseNode(ABC):
             model=kwargs.get('model'),
             max_tokens=kwargs.get('max_tokens'),
             temperature=kwargs.get('temperature'),
-            additional_params=kwargs.get('additional_params')
+            # Pass all other kwargs as additional_params
+            additional_params=kwargs
         )
-        return self._api_service.send_request(request)
+        response = self._api_service.send_request(request)
+        
+        # Log token usage for all API calls
+        if response.success and hasattr(response, 'total_tokens') and response.total_tokens > 0:
+            # Get node name from properties
+            node_name = self.properties.get('node_name', {}).get('default', self.__class__.__name__)
+            
+            # Prepare token usage data
+            token_usage = {
+                'prompt_tokens': response.prompt_tokens,
+                'completion_tokens': response.completion_tokens,
+                'total_tokens': response.total_tokens,
+                'audio_duration': 0  # Default for text-based APIs
+            }
+            
+            # Log token usage
+            TokenLogger.log_token_usage(node_name, api_name, kwargs.get('model', 'default'), token_usage)
+        
+        return response
 
     @abstractmethod
     def process(self, inputs):

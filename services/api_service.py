@@ -102,7 +102,19 @@ class APIService:
                 from groq import Groq
                 client = Groq(api_key=api_key)
                 self._clients[api_name] = {"client": client, "type": api_type}
-                logger.info("Initialized Groq client")
+                logger.info(f"Initialized Groq client for {api_name}")
+
+            elif api_type == "google":
+                import google.generativeai as genai
+                genai.configure(api_key=api_key)
+                self._clients[api_name] = {"client": genai, "type": api_type}
+                logger.info(f"Initialized Google Gemini client for {api_name}")
+
+            elif api_type == "claude":
+                from anthropic import Anthropic
+                client = Anthropic(api_key=api_key)
+                self._clients[api_name] = {"client": client, "type": api_type}
+                logger.info(f"Initialized Claude client for {api_name}")
 
             else:
                 logger.warning(f"Unsupported API type: {api_type}")
@@ -188,39 +200,57 @@ class APIService:
             total_tokens = 0
 
             if api_type == "openai":
-                # For OpenAI, build parameters based on what's supported
-                params = {
-                    "model": request.model,
-                    "messages": [{"role": "user", "content": request.content}]
-                }
-                
-                # Only add optional parameters if they're provided and supported
-                if request.max_tokens:
-                    params["max_completion_tokens"] = request.max_tokens
+                # Differentiate between chat and audio transcription models
+                if 'whisper' in request.model.lower():
+                    # This is an audio transcription request
+                    file_path = request.additional_params.get('file')
+                    if not file_path:
+                        raise ValueError("File path is required for Whisper transcription.")
                     
-                # Some models like o3-mini don't support temperature
-                if request.temperature and not request.model.startswith('o3-'):
-                    params["temperature"] = request.temperature
-                
-                response = client.chat.completions.create(**params)
-                content = response.choices[0].message.content
-                
-                # Ensure markdown formatting is preserved for all models
-                # No need to strip or modify the content
-                
-                # Capture token usage from OpenAI response
-                if hasattr(response, 'usage') and response.usage:
-                    prompt_tokens = getattr(response.usage, 'prompt_tokens', 0)
-                    completion_tokens = getattr(response.usage, 'completion_tokens', 0)
-                    total_tokens = getattr(response.usage, 'total_tokens', 0)
-                    logger.info(f"OpenAI token usage - Prompt: {prompt_tokens}, Completion: {completion_tokens}, Total: {total_tokens}")
+                    with open(file_path, "rb") as audio_file:
+                        response = client.audio.transcriptions.create(
+                            model=request.model,
+                            file=audio_file
+                        )
+                    content = response.text
+                    # Token usage for Whisper is based on audio duration, not standard tokens.
+                    # This is handled by the token logger based on pricing per minute.
+                else:
+                    # This is a chat completion request
+                    params = {
+                        "model": request.model,
+                        "messages": [{"role": "user", "content": request.content}]
+                    }
+                    
+                    if request.max_tokens:
+                        params["max_tokens"] = request.max_tokens
+                    
+                    if request.temperature and not request.model.startswith('o3-'):
+                        params["temperature"] = request.temperature
+                    
+                    response = client.chat.completions.create(**params)
+                    content = response.choices[0].message.content
+                    
+                    if hasattr(response, 'usage') and response.usage:
+                        prompt_tokens = getattr(response.usage, 'prompt_tokens', 0)
+                        completion_tokens = getattr(response.usage, 'completion_tokens', 0)
+                        total_tokens = getattr(response.usage, 'total_tokens', 0)
+                        logger.info(f"OpenAI token usage - Prompt: {prompt_tokens}, Completion: {completion_tokens}, Total: {total_tokens}")
+
+            elif api_type == "google":
+                model = client.GenerativeModel(request.model)
+                response = model.generate_content(request.content)
+                content = response.text
+                # Placeholder for token count - Gemini API v1 doesn't directly expose it
+                prompt_tokens = 0
+                completion_tokens = 0
+                total_tokens = 0
 
             elif api_type == "ollama":
                 response = client.chat(
                     model=request.model,
                     messages=[{"role": "user", "content": request.content}]
                 )
-                # Ollama response is a dictionary with 'message' key containing another dict with 'content'
                 content = response['message']['content']
 
             elif api_type == "groq":
@@ -232,58 +262,66 @@ class APIService:
                 )
                 content = response.choices[0].message.content
                 
-                # Capture token usage from Groq response
                 if hasattr(response, 'usage') and response.usage:
                     prompt_tokens = getattr(response.usage, 'prompt_tokens', 0)
                     completion_tokens = getattr(response.usage, 'completion_tokens', 0)
                     total_tokens = getattr(response.usage, 'total_tokens', 0)
                     logger.info(f"Groq token usage - Prompt: {prompt_tokens}, Completion: {completion_tokens}, Total: {total_tokens}")
 
+            elif api_type == "claude":
+                response = client.messages.create(
+                    model=request.model,
+                    max_tokens=request.max_tokens or 1024,
+                    messages=[{"role": "user", "content": request.content}]
+                )
+                content = response.content[0].text
+
+                if hasattr(response, 'usage') and response.usage:
+                    prompt_tokens = getattr(response.usage, 'input_tokens', 0)
+                    completion_tokens = getattr(response.usage, 'output_tokens', 0)
+                    total_tokens = prompt_tokens + completion_tokens
+                    logger.info(f"Claude token usage - Prompt: {prompt_tokens}, Completion: {completion_tokens}, Total: {total_tokens}")
+
             elif api_type == "searchengine":
                 import requests
                 
-                # Get API configuration
                 client_info = self._clients.get(request.api_name, {})
                 api_url = client_info.get('api_url', '')
                 if not api_url:
                     raise ValueError(f"No API URL configured for {request.api_name}")
-                
-                # Get number of results from parameters
-                num_results = request.additional_params.get('num_results', 3) if request.additional_params else 3
-                
-                # Extract parameters from additional_params
+
                 params = {
-                    'q': request.content,  # Search query
-                    'format': 'json',
-                    'n': num_results * 2  # Pass through the number of results, doubled for filtering
+                    'q': request.content,
+                    'format': 'json'
                 }
-                
+
                 if request.additional_params:
-                    params.update({
-                        'skip': request.additional_params.get('skip', 0),
-                        'language': 'en'
-                    })
-                
-                # Make the search request
-                logger.info(f"Making search request to {api_url}")
+                    num_results = request.additional_params.get('num_results')
+                    if num_results is not None:
+                        params['n'] = num_results
+
+                    skip = request.additional_params.get('skip')
+                    if skip is not None:
+                        # SearxNG pageno is 1-based.
+                        params['pageno'] = skip + 1
+
+                logger.info(f"Making search request to {api_url} with params: {params}")
                 logger.debug(f"Search params: {params}")
                 response = requests.get(f"{api_url.rstrip('/')}/search", params=params)
                 
                 if response.status_code != 200:
                     raise ValueError(f"Search request failed with status {response.status_code}")
                 
-                # Parse results and clean URLs
                 results = response.json()
                 search_results = []
-                clean_urls = []  # Store clean URLs as we process them
+                clean_urls = []
                 
-                # Only process up to num_results
                 required_count = num_results
                 for result in results.get('results', []):
                     title = result.get('title', '')
                     url = APIService.clean_url(result.get('url', ''))
-                    if url:  # Only add if we have a valid URL
-                        clean_urls.append(url)  # Store the clean URL
+                    if url:
+                        clean_urls.append(url)
                         snippet = result.get('content', '')
                         search_results.append(f"Title: {title}\nURL: {url}\nSummary: {snippet}\n")
                     if len(clean_urls) >= required_count:

@@ -126,27 +126,19 @@ class ChatNode(BaseNode):
                 self.chat_history.append({'role': 'assistant', 'content': response.content})
 
         print("[ChatNode] Checking if running in GUI mode")
-        # Check if we're running in a GUI environment
-        try:
-            import tkinter as tk
-            print("[ChatNode] Tkinter imported successfully")
-            # Try to create a test window to see if display is available
-            test_window = tk.Tk()
-            test_window.withdraw()
-            print("[ChatNode] Test window created successfully")
-            test_window.destroy()
-            print("[ChatNode] Test window destroyed successfully")
-            has_display = True
-        except Exception as e:
-            print(f"[ChatNode] Error creating test window: {str(e)}")
-            has_display = False
-            self.chat_history_output = "Error: Could not create GUI window. Check if X server is running and DISPLAY is set."
-            self.processing_complete.set()
-            return {'error': f"GUI initialization failed: {str(e)}"}
+        # The presence of a gui_queue is our check for a GUI environment.
 
         print("[ChatNode] Putting create_chat_window in GUI queue")
         # Use the GUI queue to create the chat window
-        gui_queue.put(self.create_chat_window_wrapper)
+        if gui_queue:
+            parent_window = inputs.get('parent_window')
+            if not parent_window:
+                # Handle case where parent_window is not provided
+                self.chat_history_output = "Error: Parent window not found for ChatNode."
+                self.processing_complete.set()
+                return {'chat_history': self.chat_history_output}
+            
+            gui_queue.put(lambda: self.create_chat_window_wrapper(parent_window))
         
         print("[ChatNode] Waiting for chat window to be created")
         # Wait for the chat window to be created or for processing to complete
@@ -201,54 +193,41 @@ class ChatNode(BaseNode):
         print(f"[ChatNode] Process method completed. Output length: {len(self.chat_history_output)}")
         return {'chat_history': self.chat_history_output}
         
-    def create_chat_window_wrapper(self):
+    def create_chat_window_wrapper(self, parent_window):
         """Wrapper function to be put in the GUI queue"""
-        print("[ChatNode] Starting create_chat_window_wrapper")
+        print("[ChatNode] create_chat_window_wrapper called")
         try:
-            database_property = self.properties.get('database', {})
-            selected_database = database_property.get('value') or database_property.get('default', '')
             api_endpoint_property = self.properties.get('api_endpoint', {})
             api_endpoint_name = api_endpoint_property.get('value') or api_endpoint_property.get('default', '')
-            db_manager = DatabaseManager()
             
-            print("[ChatNode] Calling create_chat_window")
-            self.create_chat_window(api_endpoint_name, selected_database, db_manager)
-            print("[ChatNode] create_chat_window completed")
+            database_property = self.properties.get('database', {})
+            selected_database = database_property.get('value') or database_property.get('default', '')
+
+            db_manager = DatabaseManager()
+
+            self.create_chat_window(parent_window, api_endpoint_name, selected_database, db_manager)
         except Exception as e:
             print(f"[ChatNode] Error in create_chat_window_wrapper: {str(e)}")
-            print(traceback.format_exc())
-            self.chat_history_output = f"Error in chat window: {str(e)}"
+            self.chat_history_output = f"Error creating chat window: {str(e)}"
             self.processing_complete.set()
-        
-    def create_chat_window(self, api_endpoint_name, selected_database, db_manager):
+        finally:
+            # Ensure the event is set even if window creation fails
+            self.chat_window_created.set()
+            print("[ChatNode] chat_window_created event set from wrapper")
+
+    def create_chat_window(self, parent, api_endpoint_name, selected_database, db_manager):
         print("[ChatNode] Starting create_chat_window")
-        # Create a new Tk instance for Linux compatibility
         try:
             import tkinter as tk
             from tkinter import ttk, END
-            print("[ChatNode] Imported tkinter modules")
             
-            # Try to use an existing Tk instance if available
-            print("[ChatNode] Creating Toplevel window")
-            root = tk.Toplevel()
-            print("[ChatNode] Toplevel window created")
+            root = tk.Toplevel(parent)
+            
         except Exception as e:
             print(f"[ChatNode] Error creating Toplevel: {str(e)}")
-            try:
-                # If that fails, create a new Tk instance
-                print("[ChatNode] Trying to create new Tk instance")
-                root = tk.Tk()
-                print("[ChatNode] Created new Tk instance")
-                print("[ChatNode] Withdrawing main window")
-                root.withdraw()  # Hide the main window
-                print("[ChatNode] Creating Toplevel window from Tk instance")
-                root = tk.Toplevel(root)  # Create a toplevel window
-                print("[ChatNode] Toplevel window created from Tk instance")
-            except Exception as e:
-                print(f"[ChatNode] Error creating Tk instance: {str(e)}")
-                self.chat_history_output = f"Error creating chat window: {str(e)}"
-                self.processing_complete.set()
-                return
+            self.chat_history_output = f"Error creating chat window: {str(e)}"
+            self.processing_complete.set()
+            return
             
         print("[ChatNode] Setting window title and geometry")
         root.title("Interactive Chat")
@@ -312,13 +291,8 @@ class ChatNode(BaseNode):
         api_var = tk.StringVar(value=api_endpoint_name)
 
         def on_api_change(event):
-            nonlocal api_endpoint_name
-            new_api_name = api_var.get()
-            if new_api_name in api_options:
-                api_endpoint_name = new_api_name
-                print(f"[ChatNode] Switched to API endpoint: {new_api_name}")
-            else:
-                print(f"[ChatNode] Invalid API endpoint selected: {new_api_name}")
+            self.selected_api_endpoint = api_var.get()
+            print(f"[ChatNode] Switched to API endpoint: {self.selected_api_endpoint}")
 
         api_dropdown = ttk.Combobox(root, textvariable=api_var, values=api_options, state="readonly")
         api_dropdown.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
@@ -451,6 +425,9 @@ class ChatNode(BaseNode):
                 
                 # Update chat display
                 update_chat_display()
+
+                # Prioritize GUI-selected API endpoint, else use the initial one
+                final_api_name = self.selected_api_endpoint if hasattr(self, 'selected_api_endpoint') and self.selected_api_endpoint else api_endpoint_name
                 
                 # Check if this is a web search
                 is_web_search = '/web' in user_input
@@ -463,10 +440,10 @@ class ChatNode(BaseNode):
                     api_chat_history.insert(-1, {'role': 'system', 'content': f"Use the following information from web search results to answer the user's query: {modified_input}"})
                     
                     # Send API request with the modified chat history
-                    response = self.send_api_request_with_history(api_chat_history, api_endpoint_name)
+                    response = self.send_api_request_with_history(api_chat_history, final_api_name)
                 else:
                     # Send API request with entire chat history
-                    response = self.send_api_request(modified_input, api_endpoint_name)
+                    response = self.send_api_request(modified_input, final_api_name)
                 
                 if response.success:
                     return response.content
@@ -635,165 +612,94 @@ class ChatNode(BaseNode):
         )
 
     def prepare_input_with_search(self, user_input, db_manager, selected_database):
-        # First check for /web command
-        web_pattern = r'/web(?:\.(\d+))?\s+(.+)'  # Matches /web or /web.N where N is a number
+        # Check for /web command
+        web_pattern = r'/web(?:\.(\d+))?\s*(.*)'
         web_match = re.search(web_pattern, user_input, re.IGNORECASE)
         if web_match:
-            result_count = int(web_match.group(1)) if web_match.group(1) else 3  # Default to 3 if no number specified
+            num_results = int(web_match.group(1)) if web_match.group(1) else 3
             search_query = web_match.group(2).strip()
-            if search_query:
-                # Create an instance of SearchScrapeSummarizeNode
+
+            if not search_query:
+                if len(self.chat_history) > 1:
+                    search_query = self.chat_history[-2]['content']
+                else:
+                    return "Please provide a query for the web search."
+
+            # Instantiate the SearchScrapeSummarizeNode
+            try:
                 from .SearchScrapeSummarize import SearchScrapeSummarizeNode
                 search_node = SearchScrapeSummarizeNode('web_search_node', self.config)
+            except ImportError:
+                return "Error: Could not import SearchScrapeSummarizeNode. Make sure it exists."
+
+            # Prioritize the GUI-selected API endpoint, falling back to the property default
+            api_endpoint_name = self.selected_api_endpoint if hasattr(self, 'selected_api_endpoint') and self.selected_api_endpoint else \
+                                self.properties.get('api_endpoint', {}).get('value') or self.properties.get('api_endpoint', {}).get('default', '')
+            search_node.properties['num_search_results']['default'] = num_results
+            search_node.properties['api_endpoint']['default'] = api_endpoint_name
+            search_node.properties['api_endpoint']['value'] = api_endpoint_name
+
+            # Also set the model for the selected endpoint
+            api_details = self.config['interfaces'].get(api_endpoint_name, {})
+            model = api_details.get('selected_model')
+            if model:
+                search_node.properties['model'] = {'type': 'text', 'default': model, 'value': model}
+
+            # Create the input dictionary for the search node
+            search_inputs = {'input': search_query}
+
+            # Execute the search, scrape, and summarize process
+            result = search_node.process(search_inputs)
+
+            if result and 'prompt' in result:
+                # The 'prompt' output from SearchScrapeSummarizeNode contains the summarized content
+                summarized_content = result['prompt']
                 
-                # Get the current API endpoint
-                api_endpoint_name = self.properties.get('api_endpoint', {}).get('value') or self.properties.get('api_endpoint', {}).get('default', '')
-                
-                # Configure the node properties
-                search_node.properties['num_search_results'] = {'default': result_count}
-                search_node.properties['enable_web_search'] = self.properties.get('enable_web_search', {'default': True})
-                search_node.properties['enable_url_selection'] = self.properties.get('enable_url_selection', {'default': False})
-                search_node.properties['api_endpoint'] = {'default': api_endpoint_name, 'value': api_endpoint_name}
-                search_node.properties['searxng_api_url'] = self.properties.get('searxng_api_url', {'default': 'http://localhost:8888/search'})
-                search_node.properties['num_results_to_skip'] = self.properties.get('num_results_to_skip', {'default': 0})
-                
-                # First, send request to API to optimize the search query
-                optimize_prompt = "Please take the user request below and reformat it into an effective web search query designed to maximize the return of effective search results. The user request is as follows:\n" + search_query
-                api_details = self.config['interfaces'].get(api_endpoint_name)
-                
-                if not api_endpoint_name or not api_details:
-                    print(f"[ChatNode] No valid API endpoint selected. Using search query as is.")
-                    result = search_node.process({'input': search_query.strip()})
-                    if result and 'prompt' in result:
-                        # Return only the search results without the system message
-                        return f"<web_search_results>{result['prompt']}</web_search_results>"
-                    return f"Failed to process web search for query: {search_query}"
-                
-                # Create a temporary chat history for the optimization request
-                temp_chat_history = [{'role': 'user', 'content': optimize_prompt}]
-                optimized_query = self.send_to_api(temp_chat_history, optimize_prompt, api_details)
-                
-                if optimized_query:
-                    print(f"[ChatNode] Optimized query: {optimized_query}")
-                    # Process the search with optimized query
-                    result = search_node.process({'input': optimized_query.strip()})
-                    if result and 'prompt' in result:
-                        # Return only the search results without the system message
-                        return f"<web_search_results>{result['prompt']}</web_search_results>"
-                
-                return f"Failed to process web search for query: {search_query}"
+                # Combine the user's original, unmodified input with the summarized web content
+                original_user_input = re.sub(web_pattern, '', user_input).strip()
+                if not original_user_input:
+                    original_user_input = search_query
+
+                header = f"The following is a summary of web search results for the query '{search_query}':\n"
+                combined_input = f"{header}//DataStart\n{summarized_content}\nDataEnd//\n\nBased on the above information, please respond to the following user request: {original_user_input}"
+                return combined_input
+            else:
+                return f"Failed to get web search results for query: {search_query}"
+
 
         # Then check for /doc command
-        pattern = r'/doc(?:\.(\d+))?\s+(.+)'  # Matches /doc or /doc.N where N is a number
-        match = re.search(pattern, user_input, re.IGNORECASE)
-        if match:
-            result_count = int(match.group(1)) if match.group(1) else 5  # Default to 5 if no number specified
-            search_query = match.group(2).strip()
+        doc_pattern = r'/doc(?:\.(\d+))?\s+(.+)'
+        doc_match = re.search(doc_pattern, user_input, re.IGNORECASE)
+        if doc_match:
+            result_count = int(doc_match.group(1)) if doc_match.group(1) else 5
+            search_query = doc_match.group(2).strip()
             if search_query:
-                # Get the selected document display name
                 selected_doc_name = self.doc_var.get()
-                # Get the full path if it's not "All Documents"
                 selected_doc = self.doc_paths.get(selected_doc_name, "All Documents")
                 
-                # If searching in a specific document, request more results since we'll filter some out
                 search_count = result_count * 3 if selected_doc != "All Documents" else result_count
                 
-                # Perform the search with dynamic result count
                 results = db_manager.search(selected_database, search_query, top_k=search_count)
                 
-                # Filter results if a specific document is selected
                 if selected_doc != "All Documents":
                     results = [res for res in results if res['source'] == selected_doc]
-                    # Trim to requested count after filtering
                     results = results[:result_count]
                 
                 if results:
-                    search_results = "\n".join([
+                    search_results_str = "\n".join([
                         f"Document: {os.path.basename(res['source'])}\nSimilarity Score: {res['similarity']:.4f}\nContent: {res['content']}\n"
                         for res in results
                     ])
-                    modified_input = re.sub(pattern, '', user_input).strip()
                     header = f"Search Results for '{search_query}' in {selected_doc_name} (showing {len(results)} of {result_count} requested results):\n"
-                    combined_input = f"{header}//DataStart\n{search_results}DataEnd//"
+                    combined_input = f"{header}//DataStart\n{search_results_str}\nDataEnd//"
                     return combined_input
                 else:
                     if selected_doc != "All Documents":
                         return f"No results found for '{search_query}' in document '{selected_doc_name}'"
                     else:
                         return f"No results found for '{search_query}' in any document"
+
         return user_input
-
-    def send_to_api(self, chat_history, combined_input, api_details):
-        prompt = "\n".join([f"{msg['role']}: {msg['content']}" for msg in chat_history])
-        
-        # Create request data dictionary
-        request_data = {
-            "prompt": prompt,
-            "messages": chat_history
-        }
-        
-        # Get the API name from the details
-        api_name = api_details.get('name', '')
-        
-        # If api_name is empty, try to find it from the config
-        if not api_name:
-            # Try to find the API name by comparing the api_details with entries in the config
-            for name, details in self.config.get('interfaces', {}).items():
-                if details == api_details:
-                    api_name = name
-                    break
-        
-        if not api_name:
-            print(f"[ChatNode] Warning: Could not determine API name from details. Using first available API.")
-            interfaces = self.config.get('interfaces', {})
-            if interfaces:
-                api_name = next(iter(interfaces.keys()))
-            else:
-                print(f"[ChatNode] Error: No interfaces available in config.")
-                return None
-        
-        # Call the imported process_api_request function with correct parameters
-        api_response_content = process_api_request(api_name, self.config, request_data)
-        
-        if not api_response_content:
-            print(f"[ChatNode] Error: Empty API response")
-            return None
-            
-        if isinstance(api_response_content, dict) and 'error' in api_response_content:
-            print(f"[ChatNode] API Error: {api_response_content.get('error')}")
-            return None
-
-        # First check if the response has the 'content' key (new format)
-        if isinstance(api_response_content, dict) and 'content' in api_response_content:
-            return api_response_content.get('content')
-            
-        # Fall back to the old format handling
-        api_type = api_details.get('type') or api_details.get('api_type')
-        if api_type == "OpenAI":
-            if isinstance(api_response_content, dict):
-                return api_response_content.get('choices', [{}])[0].get('message', {}).get('content', 'No response available')
-            else:
-                return str(api_response_content)
-        elif api_type == "Ollama":
-            if isinstance(api_response_content, dict):
-                message = api_response_content.get('message', {})
-                return message.get('content', 'No response available')
-            elif isinstance(api_response_content, str):
-                return api_response_content
-            else:
-                return 'No response available'
-        elif api_type == "Groq":
-            if isinstance(api_response_content, dict):
-                return api_response_content.get('choices', [{}])[0].get('message', {}).get('content', 'No response available')
-            else:
-                return 'Invalid Groq response format'
-        elif api_type == "Claude":
-            if isinstance(api_response_content, dict):
-                return api_response_content.get('choices', [{}])[0].get('message', {}).get('content', 'No response available')
-            else:
-                return 'Invalid Claude response format'
-        else:
-            return f'Unsupported API type: {api_type}'
 
     def requires_api_call(self):
         """Indicates whether this node requires an API call."""

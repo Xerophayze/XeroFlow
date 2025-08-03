@@ -65,10 +65,11 @@ def process_node_graph(
         # Use a stack to handle nodes and their corresponding input data
         node_stack = [(current_node_id, {
             'input': input_data,
-            'gui_queue': gui_queue,  # Add gui_queue to initial input
-            'stop_event': stop_event,  # Pass the workflow's stop_event
-            'workflow_id': workflow_id,  # Pass the workflow_id
-            'workflow_name': selected_prompt_name  # Pass the workflow name
+            'gui_queue': gui_queue,
+            'parent_window': root,  # Pass the main root window
+            'stop_event': stop_event,
+            'workflow_id': workflow_id,
+            'workflow_name': selected_prompt_name
         })]
 
         while node_stack:
@@ -214,7 +215,13 @@ def process_node_graph(
                         
                         # Initialize the node's input dictionary if not already done
                         if to_node_id not in node_inputs:
-                            node_inputs[to_node_id] = {'gui_queue': gui_queue, 'stop_event': stop_event, 'workflow_id': workflow_id, 'workflow_name': selected_prompt_name}  # Add gui_queue, stop_event, workflow_id, and workflow_name to each node's input
+                            node_inputs[to_node_id] = {
+                                'gui_queue': gui_queue, 
+                                'parent_window': root, # Pass the main root window
+                                'stop_event': stop_event, 
+                                'workflow_id': workflow_id, 
+                                'workflow_name': selected_prompt_name
+                            }
                         # If this input already has a value, convert it to a list
                         if to_input in node_inputs[to_node_id]:
                             if isinstance(node_inputs[to_node_id][to_input], list):

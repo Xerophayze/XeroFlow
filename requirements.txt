@@ -24,6 +24,7 @@ soundfile>=0.12.1  # Alternative for audio file processing
 openai>=1.0.0  # For OpenAI API
 anthropic>=0.8.0  # For Claude API
 groq>=0.3.0  # For Groq API
+google-generativeai>=0.4.0 # For Google Gemini API
 
 # Core langchain dependencies
 langchain
@@ -62,9 +63,9 @@ pytz>=2020.1
 tzdata>=2022.7
 
 # Newly observed dependencies
-torch>=1.11.0
-torchvision>=0.12.0
-torchaudio>=0.11.0
+torch==2.5.0
+torchvision==0.20.0
+torchaudio==2.5.0
 
 # YouTube transcript dependencies
 youtube-transcript-api>=0.6.2

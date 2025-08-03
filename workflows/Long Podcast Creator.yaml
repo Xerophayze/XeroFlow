@@ -1,0 +1,543 @@
+graph:
+  connections:
+  - canvas_item: 135
+    from_node: 7e42e44f-da40-425c-867d-c27bdef57904
+    from_output: output
+    to_input: input
+    to_node: 356491f4-4180-4df5-a632-d0683f8161dc
+  - canvas_item: 136
+    from_node: 356491f4-4180-4df5-a632-d0683f8161dc
+    from_output: prompt
+    to_input: input
+    to_node: 64821b6d-df07-452a-8978-c4b308d13a66
+  nodes:
+    356491f4-4180-4df5-a632-d0683f8161dc:
+      canvas_items:
+        drag_bar: 110
+        input_input: 112
+        input_label_input: 113
+        output_label_prompt: 115
+        output_prompt: 114
+        rect: 109
+        resize_handle: 116
+        title: 111
+      height: 150
+      id: 356491f4-4180-4df5-a632-d0683f8161dc
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Instructions for custom formatting:
+          default: 'if the section above does not start with "(Continued - " then
+            do not include anything at the beginning, just start writting the content.
+
+            if the section above starts with "(Continued)" then only include "(Continued)
+            - " at the beginning of your output like this:  (Continued) - content......'
+          description: Custom formatting instructions
+          type: text
+        Instructions for how the AI should use the next array element for context:
+          default: '
+
+            the next section to write about is as follows:
+
+            '
+          description: Template for introducing the current section
+          type: text
+        Instructions for how to process the Original user request and original content:
+          default: 'The outline and user request is as follows and only for reference,
+            do not use the same formatting as the outline:
+
+            '
+          description: Template for the context section
+          type: text
+        Instructions for how to processthe first element in the array:
+          default: 'Please just repeat the title content below exactly and nothing
+            else:
+
+
+            '
+          description: Prompt template for the first item
+          type: text
+        Main instructions for array element to focus on:
+          default: "the following are instructions on creating a podcast script for\
+            \ my youtube channel \"Red Pill Revolution\".  the podcast coveres a wide\
+            \ range of plitical news topics.  the speakers should have fun talking\
+            \ about the the news items presented. there could be friendly banter and\
+            \ interruptions and short one word responses.  there should be an introduction\
+            \ done by the first speaker welcoming people along with some joking around\
+            \ to help ease any tension.  the content written will always be from a\
+            \ conservative point of view. never use actual names for speaker tags,\
+            \ just follow the instructions below for speaker tags.\n\n1. **Analysis\
+            \ and Tag Assignment:**  \n   - Analyze the provided chapter text to determine\
+            \ the distinct voices present.\n   - Create a table of tags assigning\
+            \ one tag per distinct voice, ensuring to always identify gender of the\
+            \ speaker as either male or female. \n\n2. **Output Format:**  \n   -\
+            \ First, output a \"Table of Tags\" listing the tag names with the associated\
+            \ voice. For example:  \n     [narrator] \u2013 Narrative (reader)  \n\
+            \     [speaker1] \u2013 name of speaker 1  \n     [speaker2] \u2013 name\
+            \ of speaker 2  \n     [speaker3] \u2013 name of speaker 3\n\t [speaker4]\
+            \ \u2013 name of speaker 4\n     [speaker5] \u2013 name of speaker 6\n\
+            \t and so on....\n\n3. **Reprinting the Chapter with Granular Tagging:**\
+            \  \n   - Reprint the chapter exactly as provided, inserting the corresponding\
+            \ tag immediately before and after each text segment.\n   - **Granularity\
+            \ Requirement:**  \n     - Every narrative block is wrapped with appropriate\
+            \ tags for example: `[narrator] ... [/narrator]` or `[speaker2] ... [/speaker2],\
+            \ etc.     - Every dialogue block (i.e., text within quotation marks)\
+            \ is wrapped with the appropriate speaker tag.  \n     - For dialogue\
+            \ that spans multiple sentences or is interleaved with narrative descriptions,\
+            \ split the content into segments:\n       - Tag each dialogue line or\
+            \ sentence precisely where the speaker\u2019s voice begins or ends.\n\
+            \       - Ensure that any narrative text interjected between dialogue\
+            \ segments is separately wrapped with `[narrator] ... [/narrator]`.\n\n\
+            4. **Example of the Expected Output:**  \n\n\nTable of Tags  \n[speaker1]\
+            \ \u2013 Male Speaker  \n[speaker2] \u2013 Female Speaker\n\n[speaker1]\
+            \ \"Welcome to Red Pill Revolution, the podcast that rips away the spin\
+            \ and serves straight\u2011shot facts. It\u2019s May 2, 2025, and today\
+            \ we\u2019re unpacking the first hundred days of President Trump 2.0\u2014\
+            especially the energy tsunami and the tariff hammer he just dropped.\"\
+            [/speaker1]\n\n[speaker2] \"Buckle up, patriots! If you thought 2017 was\
+            \ wild, 2025 is already rewriting the playbook. We\u2019ve got record\u2011\
+            setting oil output, a universal 10 percent import tariff, and China stuck\
+            \ behind a 125 percent wall. Let\u2019s hit the Overview.\"\n\n[speaker1]\
+            \ \"First headline: the Unleashing American Energy executive order. Every\
+            \ federal acre is back on the table for drilling and LNG terminals are\
+            \ getting rubber\u2011stamped in weeks, not years. The Energy Information\
+            \ Administration now projects fifteen million barrels a day by Christmas\u2014\
+            an American first.\"[/speaker1]\n\n[speaker2] \"Translation? Cheap gas\
+            \ at home and Europe finally telling Putin and OPEC, \u2018Thanks, but\
+            \ we\u2019ve got a new best friend.\u2019 And let\u2019s not forget those\
+            \ Gulf Coast LNG jobs\u2014blue\u2011collar paychecks, red\u2011state\
+            \ pride.\"\n\n[speaker1] \"Second headline: tariffs. A baseline 10 percent\
+            \ on everything that crosses the border, plus a \u2018reciprocal\u2019\
+            \ escalator that rockets to 50 percent\u2014or 125 percent if you\u2019\
+            re Beijing. Chinese exports to the U.S. have already plunged thirty\u2011\
+            one percent year\u2011on\u2011year.\"[/speaker1]\n\n[speaker2] \"That\u2019\
+            s right. Factories are sprinting to Vietnam, Mexico, Indiana\u2014all\
+            \ because the playing field just tilted back toward the good guys. Yes,\
+            \ you\u2019ll notice higher sticker prices this summer, but the trade\u2011\
+            off is strategic independence and middle\u2011class manufacturing jobs.\"\
+            \n\n[speaker1] \"Let\u2019s hit the numbers. Short\u2011term GDP dipped\
+            \ 0.3 percent as companies panic\u2011stocked inventory before the tariff\
+            \ deadline. But analysts\u2014yours truly included\u2014see a big rebound\
+            \ by Q4 once all that on\u2011shoring capital starts landing.\"[/speaker1]\n\
+            \n\n5. **Customization:**  \n   - Adjust the granularity as needed so\
+            \ that every change in speaker or return to narrative description is clearly\
+            \ indicated with the corresponding opening and closing tags.\n   - **Important:**\
+            \ Do not change or alter the actual wording of the chapter text\u2014\
+            only add the tags to mark transitions.\n   - never use the name of the\
+            \ speaker as the tag, you will always use the generic tags and include\
+            \ the table of tag names to speaker names at the beginning.\n   - if there\
+            \ are already name tags designating who is speaking, remove these and\
+            \ replace with the appropriate speaker tag from the table.\n   - you do\
+            \ not need to include any special formatting like sepparators from the\
+            \ original content.  please just extract the relevant information and\
+            \ only provide what the speakers would actually say.  \n   for example,\
+            \ do not include things like this:\n   [speaker1] \"\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\nAI NEWS UPDATE \u2013 MARCH 30, 2025\n\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+            \u2500\u2500\u2500\u2500\" [/speaker1]  \nas this is not what the speaker\
+            \ would actually say.  it should be nature language.\n\nfurther instructions\
+            \ on how to format the script:\nYou are to take the user request below\
+            \ and write an outline for a 2 person podcast.  The outline will consist\
+            \ of a self contained paragraphs representing the content to be talked\
+            \ about in that section.\n\nYou are responsible for the following duties:\n\
+            \n1. Crafting content that aligns with the intended tone, purpose, and\
+            \ audience.\n\n2. Structuring ideas logically to enhance the flow and\
+            \ entertainment of the podcast..\n\n3. Your expected output will always\
+            \ be a title followed by the exact original user request shown bellow,\
+            \ then a detailed outline for whatever the user request is.  this outline\
+            \ will consist of the title, then the exact original user request shown\
+            \ below, and then a self contained paragraph for each section or sub section\
+            \ that makes up the outline with only the key points, notable items, and\
+            \ major points of what is in that section for the content being requested.\
+            \ For sections that require additional length, an addtional one or two\
+            \ paragraphs of details for a section can be included right after the\
+            \ paragraph for that section.  \nHere is what the formatting structure\
+            \ would look like:\nTitle: [content title] - [the exact original user\
+            \ request listed below repeated here]\n\n[chronologically structured key\
+            \ points, people, actions, events, places and important items and noteable\
+            \ characteristics of the section that structure the section.] \n\n(continued)\
+            \ - a continuations of the section above.\n\n(continued) - a furthur continuation\
+            \ of the section above.\n\n[if the user requests [2 paragraphs], then\
+            \ the outline for the section should be spread out using two distinct\
+            \ paragraphs to cover the details of that section for a total of 2 paragraphs\
+            \ per section these details should be well organized and logically ordered\
+            \ based on the content of the section.]\n\n[if the user requests [3 paragraphs],\
+            \ then the outline for the section should be spread out using three distinct\
+            \ paragraphs to cover the details of that section for a total of 3 paragraphs\
+            \ per section. these details should be well organized and logically ordered\
+            \ based on the content of the section.]\n\n[if the user requests [# paragraphs],\
+            \ where # represents the number of paragraphs being requested, then the\
+            \ outline for the section should be spread out using the exact number\
+            \ of paragraphs requested to cover the details of that section. these\
+            \ details should be well organized and logically ordered based on the\
+            \ content of the section.]\n\ndo not use any special formatting , i.e.\
+            \ bold, line separators, etc.\n\n6. each paragraph will have a single\
+            \ blank line after it.\n\nyour only expected output is the requested outline\
+            \ and no other comments.\n\nExample 1: The user requests contains the\
+            \ phrase \"2 paragraphs\", then write exactly two paragraphs per section\
+            \ that evenly spreads out and contains the information to be covered in\
+            \ that section in exactly 2 paragraphs:\n\n[paragraph 1]; Introduction,\
+            \ information, details and content structured and layed out in an informational\
+            \ design.\n\n[paragraph 2]:(Continued) - a continuation of the information\
+            \ and details for the assocaited section.....\n\nExample 2: The user requests\
+            \ contains the phrase \"3 paragraphs\", then write exactly three paragraphs\
+            \ per section that evenly spreads out and contains the information to\
+            \ be covered in that section in exactly 3 paragraphs:\n\n[paragraph 1]:\
+            \ Introduction, information, details and content structured and layed\
+            \ out in an informational design.\n\n[paragraph 2]:(Continued) - a continuation\
+            \ of the information and details for the assocaited secion.....\n\n[paragraph\
+            \ 3]:(Continued) - a continuation of the information and details for the\
+            \ assocaited section.....\n\nExample 3: The user requests contains the\
+            \ phrase \"5 paragraphs\", then write exactly 5 paragraphs per section\
+            \ that evenly spreads out and contains the information to be covered in\
+            \ that section in exactly 5 paragraphs:\n\n[paragraph 1]: section/section\
+            \ # - Introduction, information, details and content structured and layed\
+            \ out in an informational design.\n\n[paragraph 2]:(Continued) - a continuation\
+            \ of the information and details for the assocaited section.....\n\n[paragraph\
+            \ 3]:(Continued) - a continuation of the information and details for the\
+            \ assocaited section.....\n\n[paragraph 4]:(Continued) - a continuation\
+            \ of the information and details for the assocaited section.....\n\n[paragraph\
+            \ 5]:(Continued) - a continuation of the information and details for the\
+            \ assocaited section.....\n\nThe user request may contain a request for\
+            \ any number of paragraphs in the format [# paragraphs].  you will always\
+            \ generate exactly the number of self contained paragraphs the user requests\
+            \ for each section.\n\nFinally, your expected output format will be in\
+            \ distinct individual self contained paragraphs representing and ordered\
+            \ and detailed representation of the information below designed to be\
+            \ an outline for a podcast.\n\nThe content to use to produce the podcast\
+            \ script is as follows:\n"
+          description: Main instruction template for content generation
+          type: text
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4.1
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        chunk_size:
+          default: '10'
+          description: Number of items to process in each chunk
+          type: integer
+        enable_url_selection:
+          default: false
+          description: Enable manual URL selection from search results
+          type: boolean
+        num_results_to_skip:
+          default: '0'
+          description: Number of search results to skip
+          type: number
+        num_search_results:
+          default: '5'
+          description: Number of search results to process
+          type: number
+        review_array:
+          default: true
+          description: Show review window for array output
+          type: boolean
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          description: SearxNG API URL for web search
+          type: text
+        show_content_review:
+          default: true
+          description: Show content review window with web search capability
+          type: boolean
+        use_array:
+          default: true
+          description: Output as array instead of string
+          type: boolean
+      title: LongOutputV4
+      type: LongOutputV4Node
+      width: 200
+      x: 310
+      y: 70
+    64821b6d-df07-452a-8978-c4b308d13a66:
+      canvas_items:
+        description: 120
+        drag_bar: 118
+        input_input: 121
+        input_label_input: 122
+        output_label_output: 124
+        output_output: 123
+        rect: 117
+        resize_handle: 125
+        title: 119
+      height: 150
+      id: 64821b6d-df07-452a-8978-c4b308d13a66
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4.1
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes array elements through multiple API calls until condition
+            is met.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        max_iterations:
+          default: '10'
+          description: Maximum number of iterations per array element
+          label: Max Iterations
+          type: text
+        minimum_rating:
+          default: '8.2'
+          description: Minimum overall rating required (e.g., 7.5)
+          label: Minimum Rating
+          type: text
+        node_name:
+          default: PodcastScriptEditandReview
+          label: Custom Node Name
+          type: text
+        refinement_prompt:
+          default: "You are a highly skilled podcast scriptwriter and editor, tasked\
+            \ with faithfully implementing the creative vision, improvements, and\
+            \ revisions that will be provided. Your primary responsibility is to transform\
+            \ the podcast spoken dialogue according to these evolving directives,\
+            \ ensuring that every update aligns with the intended tone, messaging,\
+            \ and conversational style. Your role is to focus entirely on enhancing\
+            \ the dialogue\u2014executing the revisions with precision\u2014without\
+            \ offering unsolicited commentary, explanations, or additional suggestions\
+            \ beyond the instructions given.\n\nAs you apply each revision, prioritize\
+            \ natural, engaging conversation that feels authentic, relatable, and\
+            \ dynamic. Vary sentence structures and lengths intentionally to mimic\
+            \ real, organic speech patterns, blending concise remarks with longer,\
+            \ more thoughtful explanations where appropriate. Use a mix of simple,\
+            \ compound, and complex sentences to avoid monotony while maintaining\
+            \ clarity and flow between speakers.\n\nYour writing style should focus\
+            \ solely on the spoken word, eliminating unnecessary narration, descriptions,\
+            \ or stage directions unless explicitly included in the provided material.\
+            \ Every line should be crafted to sound natural when read aloud, maintaining\
+            \ distinct voices for each speaker while advancing the conversation in\
+            \ an engaging, easy-to-follow manner.\n\nIf the provided content includes\
+            \ speaker names or dialogue formatting, preserve it exactly as given.\
+            \ Do not add, remove, or alter speaker identifiers or structural elements\
+            \ unless specifically instructed.\n\nYour sole output should be the updated\
+            \ podcast script content, incorporating the provided revisions and improvements\
+            \ with precision. Focus on crafting dialogue that is clear, engaging,\
+            \ conversational, and fully aligned with the creative vision that will\
+            \ continue to be shaped through ongoing feedback and instruction."
+          label: Refinement Prompt
+          type: textarea
+        search_string:
+          default: REVIEWPASS
+          description: String to search for in validation results
+          label: Search String
+          type: text
+        use_single_string:
+          default: false
+          description: If enabled, treats input as a single string instead of an array
+          label: Use Single String Input
+          type: boolean
+        validation_prompt:
+          default: "You are an expert podcast script evaluator. Please provide a concise,\
+            \ non-critical assessment of the content below, provide both strengths\
+            \ and areas for improvement. Your response should maintain a constructive\
+            \ and objective tone, focusing on clarity, accuracy, and effectiveness.\n\
+            \nyou only expected output is: \nyour review, which includes what you\
+            \ like and what you dont like, then 8 different categorized ratings between\
+            \ 1.0 and 10.0, then the \"OVERALL RATING\" between 1.0 and 10.0, then\
+            \ 8 detailed and very specific suggestions for improvement.\n\nThe overal\
+            \ rating should be formatted as follows:\nOVERALL RATING: and then the\
+            \ rating with no other formatting.\n\nif the following content is just\
+            \ a title or starts with the word \"Title\", then do not do the review,\
+            \ just print the word \"REVIEWPASS\"\n\nThe content is as follows:"
+          label: Validation Prompt
+          type: textarea
+      title: PodcastScriptEditandReview
+      type: ArrayProcessTestProcessNode
+      width: 200
+      x: 589
+      y: 176
+    7e42e44f-da40-425c-867d-c27bdef57904:
+      canvas_items:
+        description: 129
+        drag_bar: 127
+        input_input: 130
+        input_label_input: 131
+        output_label_output: 133
+        output_output: 132
+        rect: 126
+        resize_handle: 134
+        title: 128
+      height: 150
+      id: 7e42e44f-da40-425c-867d-c27bdef57904
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are to take the user request below and write an outline for\
+            \ a 2 person podcast.  The outline will consist of the title and exact\
+            \ original user request unmodified, and then self contained paragraphs\
+            \ representing the content to be talked about in that section.  you do\
+            \ not need to include a chapter number anywhere.  \n\nYou are responsible\
+            \ for the following duties:\n\n1. Crafting content that aligns with the\
+            \ intended tone, purpose, and audience.\n\n2. Structuring ideas logically\
+            \ to enhance the flow and entertainment of the podcast..\n\n3. Your expected\
+            \ output will always be a title followed by the exact original user request\
+            \ shown bellow, then a detailed outline for whatever the user request\
+            \ is.  this outline will consist of the title, then the exact original\
+            \ user request shown below, and then a self contained paragraph for each\
+            \ section or sub section that makes up the outline with only the key points,\
+            \ notable items, and major points of what is in that section for the content\
+            \ being requested. For sections that require additional length, an addtional\
+            \ one or two paragraphs of details for a section can be included right\
+            \ after the paragraph for that section.  \nHere is what the formatting\
+            \ structure would look like:\nTitle: [content title] - [the exact original\
+            \ user request listed below repeated here]\n\n[chronologically structured\
+            \ key points, people, actions, events, places and important items and\
+            \ noteable characteristics of the section that structure the section.]\
+            \ \n\n(continued) - a continuations of the section above.\n\n(continued)\
+            \ - a furthur continuation of the section above.\n\n[if the user requests\
+            \ [2 paragraphs], then the outline for the section should be spread out\
+            \ using two distinct paragraphs to cover the details of that section for\
+            \ a total of 2 paragraphs per section these details should be well organized\
+            \ and logically ordered based on the content of the section.]\n\n[if the\
+            \ user requests [3 paragraphs], then the outline for the section should\
+            \ be spread out using three distinct paragraphs to cover the details of\
+            \ that section for a total of 3 paragraphs per section. these details\
+            \ should be well organized and logically ordered based on the content\
+            \ of the section.]\n\n[if the user requests [# paragraphs], where # represents\
+            \ the number of paragraphs being requested, then the outline for the section\
+            \ should be spread out using the exact number of paragraphs requested\
+            \ to cover the details of that section. these details should be well organized\
+            \ and logically ordered based on the content of the section.]\n\ndo not\
+            \ use any special formatting , i.e. bold, line separators, etc.\n\n6.\
+            \ each paragraph will have a single blank line after it.\n\nyour only\
+            \ expected output is the requested outline and no other comments.\n\n\
+            Example 1: The user requests contains the phrase \"2 paragraphs\", then\
+            \ write exactly two paragraphs per section that evenly spreads out and\
+            \ contains the information to be covered in that section in exactly 2\
+            \ paragraphs:\n\n[paragraph 1]; Introduction, information, details and\
+            \ content structured and layed out in an informational design.\n\n[paragraph\
+            \ 2]:(Continued) - a continuation of the information and details for the\
+            \ assocaited section above.....\n\nExample 2: The user requests contains\
+            \ the phrase \"3 paragraphs\", then write exactly three paragraphs per\
+            \ section that evenly spreads out and contains the information to be covered\
+            \ in that section in exactly 3 paragraphs:\n\n[paragraph 1]: Introduction,\
+            \ information, details and content structured and layed out in an informational\
+            \ design.\n\n[paragraph 2]:(Continued) - a continuation of the information\
+            \ and details for the assocaited section above.....\n\n[paragraph 3]:(Continued)\
+            \ - a continuation of the information and details for the assocaited section\
+            \ above.....\n\nExample 3: The user requests contains the phrase \"5 paragraphs\"\
+            , then write exactly 5 paragraphs per section that evenly spreads out\
+            \ and contains the information to be covered in that section in exactly\
+            \ 5 paragraphs:\n\n[paragraph 1]: Introduction, information, details and\
+            \ content structured and layed out in an informational design.\n\n[paragraph\
+            \ 2]:(Continued) - a continuation of the information and details for the\
+            \ assocaited section above.....\n\n[paragraph 3]:(Continued) - a continuation\
+            \ of the information and details for the assocaited section above.....\n\
+            \n[paragraph 4]:(Continued) - a continuation of the information and details\
+            \ for the assocaited section above.....\n\n[paragraph 5]:(Continued) -\
+            \ a continuation of the information and details for the assocaited section\
+            \ above.....\n\nThe user request may contain a request for any number\
+            \ of paragraphs in the format [# paragraphs].  you will always generate\
+            \ exactly the number of self contained paragraphs the user requests for\
+            \ each section.\n\nFinally, your expected output format will be in distinct\
+            \ individual self contained paragraphs representing and ordered and detailed\
+            \ representation of the information below designed to be an outline for\
+            \ a podcast. you do not need to label the initial paragraphs with the\
+            \ word \"Chapter\".  i dont want to see anything like this \"Chapter 1\
+            \ - Introduction & Overview\".  no chapter numbers.  just include the\
+            \ section heading at the beginning of the first paragraph like below.\n\
+            \nfull output example:\nIntroduction & Overview - In this opening section,\
+            \ the podcast will introduce the nationwide snapshot of approval and disapproval\
+            \ ratings, set against the backdrop of Trump\u2019s evolving political\
+            \ and policy narrative. The hosts will break down the key figures from\
+            \ various polls and analyze their significance, emphasizing the resilience\
+            \ of Trump\u2019s mid\u201140s approval despite negative net numbers and\
+            \ outlining the broader political context that has readers and viewers\
+            \ deeply invested.\n\n(continued) - This section will also contextualize\
+            \ why these numbers matter to a conservative audience, highlighting the\
+            \ stability within Trump\u2019s base and the competitive edge against\
+            \ Democratic counterparts. Attention will be given to trends in Republican\
+            \ favorability and the noted divergence between overall approval ratings\
+            \ and head\u2011to\u2011head comparisons with congressional Democrats\
+            \ on critical issues.\n\nApproval & Favorability Numbers Unpacked - This\
+            \ section delves into the granular details of approval and disapproval\
+            \ ratings from multiple sources, collating data from RealClearPolitics,\
+            \ Gallup, Pew Research, and other key aggregators. The discussion will\
+            \ focus on the dynamics of favorability curves, explaining the significance\
+            \ of percentage shifts and point differentials, and what these indicators\
+            \ reveal about the political climate in the run-up to the mid\u2011term\
+            \ elections.\n\n(continued) - The hosts will also explore the conservative\
+            \ interpretation of these numbers, arguing that the persistent mid\u2011\
+            40s approval reflects a solid base that remains committed even amidst\
+            \ broader negativity. They will compare polling data to historical trends\
+            \ and discuss how this mix of positive and negative feedback shapes voter\
+            \ sentiment and media narratives.\n\nThe user request is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4.1
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt with review capability.
+          label: Description
+          type: text
+        enable_review:
+          default: true
+          label: Enable Review
+          type: boolean
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: PodcastOutlineWritter
+          label: Custom Node Name
+          type: text
+      title: PodcastOutlineWritter
+      type: OutlineWriterV2Node
+      width: 200
+      x: 44
+      y: 85
+name: Long Podcast Creator

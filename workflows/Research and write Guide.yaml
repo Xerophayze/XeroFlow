@@ -1,26 +1,26 @@
 graph:
   connections:
-  - canvas_item: 204
+  - canvas_item: 3043
     from_node: c1a90235-9745-4c78-b6d0-0f30fb1330b7
     from_output: prompt
     to_input: input
     to_node: facb0729-ac84-40a6-afc4-351e02f931ad
-  - canvas_item: 205
+  - canvas_item: 3044
     from_node: facb0729-ac84-40a6-afc4-351e02f931ad
     from_output: output
     to_input: input
     to_node: c1a90235-9745-4c78-b6d0-0f30fb1330b7
-  - canvas_item: 206
+  - canvas_item: 3045
     from_node: facb0729-ac84-40a6-afc4-351e02f931ad
     from_output: output2
     to_input: input
     to_node: 86235f6d-bbdf-4cb9-9537-e564e20438af
-  - canvas_item: 207
+  - canvas_item: 3046
     from_node: 86235f6d-bbdf-4cb9-9537-e564e20438af
     from_output: output
     to_input: input
     to_node: ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec
-  - canvas_item: 208
+  - canvas_item: 3047
     from_node: ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec
     from_output: prompt
     to_input: input
@@ -28,15 +28,15 @@ graph:
   nodes:
     6c907a6b-d27b-4247-9810-9319c06684c2:
       canvas_items:
-        description: 160
-        drag_bar: 158
-        input_input: 161
-        input_label_input: 162
-        output_label_output: 164
-        output_output: 163
-        rect: 157
-        resize_handle: 165
-        title: 159
+        description: 4
+        drag_bar: 2
+        input_input: 5
+        input_label_input: 6
+        output_label_output: 8
+        output_output: 7
+        rect: 1
+        resize_handle: 9
+        title: 3
       connections: []
       height: 100
       id: 6c907a6b-d27b-4247-9810-9319c06684c2
@@ -49,7 +49,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: openai
+          default: Groq
           label: API Endpoint
           options:
           - Groq
@@ -131,15 +131,15 @@ graph:
       y: 34
     86235f6d-bbdf-4cb9-9537-e564e20438af:
       canvas_items:
-        description: 169
-        drag_bar: 167
-        input_input: 170
-        input_label_input: 171
-        output_label_output: 173
-        output_output: 172
-        rect: 166
-        resize_handle: 174
-        title: 168
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
       connections: []
       height: 80
       id: 86235f6d-bbdf-4cb9-9537-e564e20438af
@@ -217,7 +217,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq
@@ -252,15 +252,15 @@ graph:
       y: 46
     ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec:
       canvas_items:
-        description: 178
-        drag_bar: 176
-        input_input: 179
-        input_label_input: 180
-        output_label_prompt: 182
-        output_prompt: 181
-        rect: 175
-        resize_handle: 183
-        title: 177
+        description: 22
+        drag_bar: 20
+        input_input: 23
+        input_label_input: 24
+        output_label_prompt: 26
+        output_prompt: 25
+        rect: 19
+        resize_handle: 27
+        title: 21
       connections: []
       height: 80
       id: ac9886c8-3c72-4d6d-b9bb-5d145e7f55ec
@@ -309,15 +309,15 @@ graph:
       y: 232
     c1a90235-9745-4c78-b6d0-0f30fb1330b7:
       canvas_items:
-        description: 187
-        drag_bar: 185
-        input_input: 188
-        input_label_input: 189
-        output_label_prompt: 191
-        output_prompt: 190
-        rect: 184
-        resize_handle: 192
-        title: 186
+        description: 31
+        drag_bar: 29
+        input_input: 32
+        input_label_input: 33
+        output_label_prompt: 35
+        output_prompt: 34
+        rect: 28
+        resize_handle: 36
+        title: 30
       connections: []
       height: 100
       id: c1a90235-9745-4c78-b6d0-0f30fb1330b7
@@ -365,17 +365,17 @@ graph:
       y: 45
     facb0729-ac84-40a6-afc4-351e02f931ad:
       canvas_items:
-        description: 196
-        drag_bar: 194
-        input_input: 197
-        input_label_input: 198
-        output_label_output: 200
-        output_label_output2: 202
-        output_output: 199
-        output_output2: 201
-        rect: 193
-        resize_handle: 203
-        title: 195
+        description: 40
+        drag_bar: 38
+        input_input: 41
+        input_label_input: 42
+        output_label_output: 44
+        output_label_output2: 46
+        output_output: 43
+        output_output2: 45
+        rect: 37
+        resize_handle: 47
+        title: 39
       connections: []
       height: 80
       id: facb0729-ac84-40a6-afc4-351e02f931ad

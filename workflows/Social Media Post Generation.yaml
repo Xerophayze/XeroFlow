@@ -1,0 +1,218 @@
+graph:
+  connections:
+  - canvas_item: 94
+    from_node: 033e4be1-7720-49fb-88b4-460e25e04691
+    from_output: output
+    to_input: input
+    to_node: 96cb0f33-5bf5-4c83-8126-da3c835edf1e
+  - canvas_item: 95
+    from_node: 96cb0f33-5bf5-4c83-8126-da3c835edf1e
+    from_output: output
+    to_input: input
+    to_node: 033e4be1-7720-49fb-88b4-460e25e04691
+  - canvas_item: 96
+    from_node: 42be24c6-ec15-4618-bbdc-58d00fedb457
+    from_output: prompt
+    to_input: input
+    to_node: 033e4be1-7720-49fb-88b4-460e25e04691
+  nodes:
+    033e4be1-7720-49fb-88b4-460e25e04691:
+      canvas_items:
+        description: 68
+        drag_bar: 66
+        input_input: 69
+        input_label_input: 70
+        output_label_output: 72
+        output_label_output2: 74
+        output_output: 71
+        output_output2: 73
+        rect: 65
+        resize_handle: 75
+        title: 67
+      connections: []
+      height: 125
+      id: 033e4be1-7720-49fb-88b4-460e25e04691
+      inputs:
+      - input
+      outputs:
+      - output
+      - output2
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        accumulated_data:
+          default: ''
+          type: hidden
+        append_accumulated_data:
+          default: true
+          type: boolean
+        description:
+          default: Accumulates inputs over iterations with dual outputs.
+          label: Description
+          type: text
+        initial_input:
+          default: ''
+          type: hidden
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        iteration_count:
+          default: '0'
+          type: hidden
+        iterations:
+          default: '10'
+          description: Specify how many times to iterate.
+          label: Number of Iterations
+          min: 1
+          type: number
+        node_name:
+          default: AccumulateOutputNode
+          label: Custom Node Name
+          type: text
+      title: AccumulateOutputNode
+      type: AccumulateOutputNode
+      width: 184
+      x: 398
+      y: 70
+    42be24c6-ec15-4618-bbdc-58d00fedb457:
+      canvas_items:
+        description: 79
+        drag_bar: 77
+        input_input: 80
+        input_label_input: 81
+        output_label_prompt: 83
+        output_prompt: 82
+        rect: 76
+        resize_handle: 84
+        title: 78
+      height: 150
+      id: 42be24c6-ec15-4618-bbdc-58d00fedb457
+      inputs:
+      - input
+      outputs:
+      - prompt
+      properties:
+        Prompt:
+          default: please take the following information below and provide me with
+            a succinct and informative summary outline of the information bellow based
+            on the user context or request provided.  always keep important details,
+            names, places, etc and important information.
+          type: textarea
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input for web search, scraping, and summarization
+            via API.
+          type: text
+        enable_url_selection:
+          default: false
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: SearchScrapeSummarizeNode
+          type: text
+        num_results_to_skip:
+          default: '5'
+          type: number
+        num_search_results:
+          default: '10'
+          type: number
+        searxng_api_url:
+          default: http://xeroserv:8888/search
+          type: text
+      title: SearchScrapeSummarizeNode
+      type: SearchScrapeSummarizeNode
+      width: 200
+      x: 100
+      y: 100
+    96cb0f33-5bf5-4c83-8126-da3c835edf1e:
+      canvas_items:
+        description: 88
+        drag_bar: 86
+        input_input: 89
+        input_label_input: 90
+        output_label_output: 92
+        output_output: 91
+        rect: 85
+        resize_handle: 93
+        title: 87
+      connections: []
+      height: 80
+      id: 96cb0f33-5bf5-4c83-8126-da3c835edf1e
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "As a professional social media content writer, please write a\
+            \ short LinkedIn post about a single subject using the content shown below.\
+            \ Do not include any of your own commentary, just write the post utilizing\
+            \ a single subject derived from the content. Be creative\u2014provide\
+            \ value, make it fun to read, and give the reader an actionable item.\
+            \ \n\n**Formatting & Style Instructions:**\n1. Start with a compelling\
+            \ hook to capture attention.\n2. Structure content clearly with short\
+            \ paragraphs and bullet points for key ideas.\n3. Use effective formatting:\
+            \ include whitespace, sparing bold/italics, and mix short and long sentences\
+            \ for dynamic rhythm.\n4. Maintain a professional yet personable tone.\n\
+            5. Ensure every sentence adds value with insights or clear takeaways.\n\
+            6. Include 1-3 relevant hashtags at the end.\n7. Please End with a call\
+            \ to action or question to encourage engagement.\n\nThe post should be\
+            \ no more than 200 words long and tailored for twitter to include well\
+            \ known @tags related to the information."
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama DeepSeek r1
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 416
+      y: 273
+name: Social Media Post Generation

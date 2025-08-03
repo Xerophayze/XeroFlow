@@ -615,9 +615,24 @@ def process_chart_code(code_text):
         logging.info("\n[DEBUG Chart] Processing chart code:")
         logging.info(f"Raw code text: {code_text}")
         
-        # Pre-process the JSON string to handle escaped characters
-        # Replace \$ with $ since $ doesn't need escaping in JSON
-        code_text = re.sub(r'\\(\$)', r'\1', code_text)
+        # Pre-process the JSON to handle complex cases like multi-line strings and embedded functions.
+        
+        # 1. Handle Mermaid diagrams embedded in JSON with multi-line strings.
+        mermaid_match = re.search(r'("mermaid"\s*:\s*")([\s\S]*?)("\s*\n*\s*})', code_text)
+        if mermaid_match:
+            mermaid_content = mermaid_match.group(2).strip()
+            # The diagram is mermaid, so we process it with the dedicated function
+            return process_mermaid_diagram(mermaid_content)
+
+        # 2. Remove multi-line JavaScript arrow functions (e.g., for 'formatter').
+        code_text = re.sub(r'"formatter":\s*\(.*?\)\s*=>\s*{[^}]*},?', '', code_text, flags=re.DOTALL)
+        # Remove trailing commas that might be left after removing a key-value pair.
+        code_text = re.sub(r',(\s*})', r'\1', code_text)
+        
+        # 3. Handle duplicated keys, like the nested 'xAxes' that causes JSON errors.
+        # This regex finds a duplicated key inside a structure and removes the erroneous inner block.
+        code_text = re.sub(r'("xAxes": \[[\s\S]*?"scaleLabel": {[\s\S]*?})\s*"xAxes":', r'\1,', code_text, flags=re.DOTALL)
+
         logging.info(f"Preprocessed code text: {code_text}")
         
         # Parse the chart configuration
@@ -633,10 +648,26 @@ def process_chart_code(code_text):
         logging.info(f"QuickChart config - Width: {qc.width}, Height: {qc.height}")
         logging.info(f"Chart config: {json.dumps(qc.config, indent=2)}")
         
-        # Get the chart image bytes
-        image_bytes = qc.get_bytes()
-        logging.info(f"Successfully generated chart image of size: {len(image_bytes)} bytes")
-        return image_bytes
+        # Manually make the request to get detailed error information
+        post_data = {
+            'chart': qc.config,
+            'width': qc.width,
+            'height': qc.height,
+            'backgroundColor': qc.background_color,
+            'devicePixelRatio': qc.device_pixel_ratio,
+            'format': qc.format,
+            'version': qc.version,
+        }
+        
+        response = requests.post('https://quickchart.io/chart', json=post_data)
+        
+        if response.status_code == 200:
+            logging.info(f"Successfully generated chart image of size: {len(response.content)} bytes")
+            return response.content
+        else:
+            logging.error(f"Failed to generate chart. Status code: {response.status_code}")
+            logging.error(f"Response body: {response.text}")
+            raise RuntimeError(f"QuickChart API failed with status {response.status_code}: {response.text}")
     except json.JSONDecodeError as je:
         logging.error(f"JSON parsing error: {je}")
         logging.error(f"Invalid JSON: {code_text}")
@@ -661,62 +692,88 @@ def process_mermaid_diagram(mermaid_code):
     try:
         logging.info("\n[DEBUG Mermaid] Processing Mermaid diagram:")
         logging.info(f"Raw code text: {mermaid_code}")
-        
-        # Try using the online Mermaid service as a fallback if local rendering fails
+
+        # Pre-process to quote subgraph titles and node labels that are not already quoted.
+        # This prevents parse errors for titles/labels with special characters like (), /, etc.
+        import re
+
+        # Robust Mermaid Pre-processing Pipeline
+
+        # 1. Fix misplaced <br> tags. e.g., `Node(text)<br>more` becomes `Node(text\nmore)`
+        # This regex finds a node definition, captures the part inside brackets, and any trailing <br> tags.
+        # mermaid_code = re.sub(r'([(\[{][^)\]}]*[\])}])(<br\s*/?>)+(.*)', lambda m: f"{m.group(1)[:-1]}\n{m.group(3)}{m.group(1)[-1]}", mermaid_code, flags=re.IGNORECASE)
+
+        # 2. Define the main processing function for node labels.
+        # def process_node_label(match):
+        #     node_id, opener, label, closer = match.groups()
+
+        #     # 2a. Convert all <br> tags to newline characters.
+        #     label = re.sub(r'<br\s*/?>', '\n', label, flags=re.IGNORECASE)
+
+        #     # 2b. Escape any existing quotes inside the label.
+        #     label = label.replace('"', '\\"')
+
+        #     # 2c. Return the node with the label now safely quoted.
+        #     return f'{node_id}{opener}"{label}"{closer}'
+
+        # # 3. Apply the label processing to all nodes.
+        # mermaid_code = re.sub(r'([a-zA-Z0-9_]+)([(\[{])(.*?)([\])}])', process_node_label, mermaid_code)
+
+        # # 4. Define a processing function for subgraph titles.
+        # def process_subgraph_title(match):
+        #     keyword, title = match.groups()
+        #     title = title.strip()
+        #     # Quote if not already quoted
+        #     if not (title.startswith('"') and title.endswith('"')):
+        #         title = title.replace('"', '\\"') # Escape internal quotes
+        #         return f'{keyword}"{title}"'
+        #     return match.group(0) # Return original if already quoted
+
+        # --- Start of Mermaid Pre-processing ---
+
+        def preprocess_mermaid(code):
+            # This simplified function trusts the AI to generate mostly correct syntax based on
+            # the improved examples. It only performs the most critical and safe corrections.
+
+            # 1. Fix subgraph styles defined by title instead of ID.
+            # This is a common AI error and is safe to fix programmatically.
+            subgraph_titles = re.findall(r'subgraph "(.*?)"', code)
+            for title in subgraph_titles:
+                subgraph_id = re.sub(r'[^\w]+', '_', title)
+                # Update subgraph declaration to use an ID, e.g., subgraph My_ID ["My Title"]
+                code = code.replace(f'subgraph "{title}"', f'subgraph {subgraph_id} ["{title}"]')
+                # Update the corresponding style definition to use the new ID
+                code = code.replace(f'style "{title}"', f'style {subgraph_id}')
+
+            # 2. Standardize link syntax: Replace --- with -- for labels.
+            code = re.sub(r'--- "(.*?)" ---', r'-- "\1" --', code)
+
+            return code
+
+        mermaid_code = preprocess_mermaid(mermaid_code)
+
+        # --- End of Mermaid Pre-processing ---
+
+        # The local mermaid-py rendering is unreliable. We will exclusively use the online mermaid.ink service.
         try:
-            # Create a Graph object with the Mermaid code
-            diagram = Graph('mermaid-diagram', mermaid_code)
+            # The mermaid.ink API requires the diagram to be URL-safe Base64 encoded.
+            import base64
+            graphbytes = mermaid_code.encode("utf8")
+            base64_bytes = base64.urlsafe_b64encode(graphbytes)
+            base64_string = base64_bytes.decode("ascii")
+            url = f"https://mermaid.ink/img/{base64_string}"
             
-            # Create a Mermaid renderer
-            renderer = md.Mermaid(diagram)
-            
-            # Get the image bytes - use to_png() with a temporary file
-            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
-                temp_path = tmp_file.name
-            
-            try:
-                # Generate the PNG file
-                renderer.to_png(temp_path)
-                
-                # Read the file content
-                with open(temp_path, 'rb') as f:
-                    image_bytes = f.read()
-                    
-                # Clean up the temporary file
-                os.unlink(temp_path)
-                
-                if image_bytes and len(image_bytes) > 1000:  # Ensure we have a valid image (not just a few bytes)
-                    logging.info(f"Successfully generated Mermaid diagram image of size: {len(image_bytes)} bytes")
-                    return image_bytes
-                else:
-                    logging.warning("Local Mermaid rendering produced a small or empty image, trying online service...")
-                    raise Exception("Invalid image size")
-            except Exception as e:
-                logging.error(f"Error generating Mermaid PNG locally: {e}")
-                os.unlink(temp_path)  # Clean up even if there's an error
-                raise  # Re-raise to try the online service
-        except Exception as local_error:
-            logging.warning(f"Local Mermaid rendering failed: {local_error}. Trying online service...")
-            
-            # Try using the online Mermaid service as a fallback
-            try:
-                # Encode the Mermaid code for the URL
-                import urllib.parse
-                encoded_diagram = urllib.parse.quote(mermaid_code)
-                
-                # Use the Mermaid Live Editor API to generate the image
-                url = f"https://mermaid.ink/img/png/{encoded_diagram}"
-                
-                response = requests.get(url, timeout=10)
-                if response.status_code == 200 and len(response.content) > 1000:
-                    logging.info(f"Successfully generated Mermaid diagram using online service. Image size: {len(response.content)} bytes")
-                    return response.content
-                else:
-                    logging.error(f"Failed to generate Mermaid diagram using online service. Status code: {response.status_code}")
-                    return None
-            except Exception as online_error:
-                logging.error(f"Error using online Mermaid service: {online_error}")
+            response = requests.get(url, timeout=15) # Increased timeout for larger diagrams
+            if response.status_code == 200 and len(response.content) > 100: # Lowered size check for simpler diagrams
+                logging.info(f"Successfully generated Mermaid diagram using online service. Image size: {len(response.content)} bytes")
+                return response.content
+            else:
+                logging.error(f"Failed to generate Mermaid diagram using online service. Status code: {response.status_code}")
+                logging.error(f"Response body: {response.text}")
                 return None
+        except Exception as online_error:
+            logging.error(f"Error using online Mermaid service: {online_error}")
+            return None
     except Exception as e:
         logging.error(f"Error processing Mermaid diagram: {e}")
         logging.error(f"Stack trace:", exc_info=True)
@@ -912,7 +969,6 @@ def convert_markdown_to_docx(markdown_text, output_path=None, formatting_enabled
                         logging.info(f"[DEBUG ExportWord] Processing code block with language: '{code_block_language}'")
                         if code_block_language == 'chart':
                             logging.info("[DEBUG ExportWord] Processing chart code block")
-                            logging.info(f"Chart code content:\n{code_text}")
                             image_bytes = process_chart_code(code_text)
                             if image_bytes:
                                 logging.info("[DEBUG ExportWord] Successfully generated chart image")
@@ -922,7 +978,6 @@ def convert_markdown_to_docx(markdown_text, output_path=None, formatting_enabled
                                 add_code_block(document, code_text, code_block_language)
                         elif code_block_language == 'mermaid':
                             logging.info("[DEBUG ExportWord] Processing mermaid code block")
-                            logging.info(f"Mermaid code content:\n{code_text}")
                             image_bytes = process_mermaid_diagram(code_text)
                             if image_bytes:
                                 logging.info("[DEBUG ExportWord] Successfully generated mermaid diagram image")

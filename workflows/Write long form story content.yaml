@@ -1,16 +1,16 @@
 graph:
   connections:
-  - canvas_item: 188
+  - canvas_item: 365
     from_node: 81c48351-a3e8-4f7d-8657-65d72005c30c
     from_output: output
     to_input: input
     to_node: d407e984-dd52-4549-ae40-821e2646d5ae
-  - canvas_item: 189
+  - canvas_item: 366
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
     from_output: prompt
     to_input: input
     to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 190
+  - canvas_item: 367
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
     from_output: output
     to_input: input
@@ -18,17 +18,18 @@ graph:
   nodes:
     81c48351-a3e8-4f7d-8657-65d72005c30c:
       canvas_items:
-        description: 156
-        drag_bar: 154
-        input_input: 157
-        input_label_input: 158
-        output_label_output: 160
-        output_output: 159
-        rect: 153
-        resize_handle: 161
-        title: 155
+        description: 4
+        drag_bar: 2
+        input_input: 5
+        input_label_input: 6
+        output_label_output: 8
+        output_output: 7
+        rect: 1
+        resize_handle: 9
+        title: 3
       connections: []
       height: 100
+      highlight_state: false
       id: 81c48351-a3e8-4f7d-8657-65d72005c30c
       inputs:
       - input
@@ -104,7 +105,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI 03-mini
           label: API Endpoint
           options:
           - Groq
@@ -139,17 +140,18 @@ graph:
       y: 164
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        description: 165
-        drag_bar: 163
-        input_input: 166
-        input_label_input: 167
-        output_label_output: 169
-        output_output: 168
-        rect: 162
-        resize_handle: 170
-        title: 164
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
       connections: []
       height: 112
+      highlight_state: false
       id: b02230a3-53b8-49d1-b90a-d06a1cb59c73
       inputs:
       - input
@@ -160,7 +162,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI 03-mini
           label: API Endpoint
           options:
           - Groq
@@ -250,16 +252,17 @@ graph:
       y: 158
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        description: 174
-        drag_bar: 172
-        input_input: 175
-        input_label_input: 176
-        output_label_output: 178
-        output_output: 177
-        rect: 171
-        resize_handle: 179
-        title: 173
-      height: 100
+        description: 22
+        drag_bar: 328
+        input_input: 330
+        input_label_input: 24
+        output_label_output: 26
+        output_output: 331
+        rect: 327
+        resize_handle: 27
+        title: 329
+      height: 132
+      highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
       inputs:
       - input
@@ -296,7 +299,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI 03-mini
           label: API Endpoint
           options:
           - Groq
@@ -324,20 +327,21 @@ graph:
           type: text
       title: PreWritting Draft
       type: BasicNode
-      width: 108
-      x: 19
-      y: 40
+      width: 129
+      x: 12
+      y: 26
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        drag_bar: 181
-        input_input: 183
-        input_label_input: 184
-        output_label_prompt: 186
-        output_prompt: 185
-        rect: 180
-        resize_handle: 187
-        title: 182
+        drag_bar: 29
+        input_input: 31
+        input_label_input: 32
+        output_label_prompt: 34
+        output_prompt: 33
+        rect: 28
+        resize_handle: 35
+        title: 30
       height: 100
+      highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
       inputs:
       - input
@@ -397,7 +401,7 @@ graph:
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: openai
+          default: OpenAI 03-mini
           label: API Endpoint
           options:
           - Groq

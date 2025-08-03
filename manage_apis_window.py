@@ -24,6 +24,8 @@ class APIConfigManager:
                 return self._fetch_groq_models(api_key, base_url)
             elif api_type.lower() == "claude":
                 return self._fetch_claude_models(api_key, base_url)
+            elif api_type.lower() == "google":
+                return self._fetch_google_models(api_key)
             elif api_type.lower() == "searchengine":
                 return self._fetch_searchengine_models(base_url)
             return []
@@ -163,6 +165,20 @@ class APIConfigManager:
             print(f"Error fetching Claude models: {str(e)}")
             return []
             
+    def _fetch_google_models(self, api_key: str) -> list:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            models = []
+            for model in genai.list_models():
+                if 'generateContent' in model.supported_generation_methods:
+                    models.append(model.name)
+            return models
+        except ImportError:
+            return ["google-generativeai not installed"]
+        except Exception as e:
+            return [f"Error: {e}"]
+
     def _fetch_searchengine_models(self, base_url: str) -> list:
         """Fetch available models from SearchEngine."""
         try:
@@ -187,6 +203,8 @@ class APIConfigManager:
                 return self._fetch_groq_max_tokens(api_key, model, base_url)
             elif api_type.lower() == "claude":
                 return self._fetch_claude_max_tokens(model)
+            elif api_type.lower() == "google":
+                return self._fetch_google_max_tokens(api_key, model)
             elif api_type.lower() == "searchengine":
                 return self._fetch_searchengine_max_tokens(model, base_url)
             return None
@@ -276,6 +294,17 @@ class APIConfigManager:
             print(f"Error fetching Claude max tokens: {str(e)}")
             return None
             
+    def _fetch_google_max_tokens(self, api_key: str, model: str) -> Optional[int]:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            model_info = genai.get_model(model)
+            return model_info.max_tokens
+        except ImportError:
+            return None
+        except Exception as e:
+            return None
+            
     def _fetch_searchengine_max_tokens(self, model: str, base_url: Optional[str] = None) -> Optional[int]:
         """Fetch max tokens for SearchEngine models."""
         try:
@@ -344,6 +373,7 @@ def manage_apis_window(parent, config, refresh_callback):
                 'Ollama': '/api/tags',
                 'Groq': '/v1/chat/completions',
                 'Claude': '/v1/messages',
+                'Google': '/v1/generate',
                 'SearchEngine': '/search'  # Default search endpoint, can be overridden by URL
             }.get(api_type, '/v1/chat/completions')
             
@@ -496,6 +526,9 @@ def manage_apis_window(parent, config, refresh_callback):
         elif api_type == "Claude":
             url_entry.delete(0, tk.END)
             url_entry.insert(0, "https://api.anthropic.com")
+        elif api_type == "Google":
+            url_entry.delete(0, tk.END)
+            url_entry.insert(0, "https://api.google.com")
         # Don't auto-fill for Llama/Ollama as it's typically local and varies
     
     # Create main frame
@@ -542,7 +575,7 @@ def manage_apis_window(parent, config, refresh_callback):
     ttk.Label(form_frame, text="API Type:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
     api_type_var = tk.StringVar()
     api_type_dropdown = ttk.Combobox(form_frame, textvariable=api_type_var, 
-                                   values=['OpenAI', 'Ollama', 'Groq', 'Claude', 'SearchEngine'], 
+                                   values=["OpenAI", "Ollama", "Groq", "Claude", "Google", "SearchEngine"], 
                                    state="readonly")
     api_type_dropdown.grid(row=3, column=1, padx=5, pady=5, sticky="ew")
     api_type_dropdown.bind("<<ComboboxSelected>>", on_api_type_change)

@@ -245,8 +245,13 @@ class NodeEditor:
 
         # Add event bindings for the background rectangle (except dragging)
         self.canvas.tag_bind(node_bg, "<Button-3>", self.on_right_click)
-        self.canvas.tag_bind(node_bg, "<Enter>", lambda e, nid=node['id']: self.highlight_node(nid))
-        self.canvas.tag_bind(node_bg, "<Leave>", lambda e, nid=node['id']: self.remove_highlight(nid))
+        
+        # Store the current highlight state in the node data
+        node['highlight_state'] = False
+        
+        # Modified event bindings for highlighting
+        self.canvas.tag_bind(node_bg, "<Enter>", lambda e, nid=node['id']: self.on_node_enter(nid))
+        self.canvas.tag_bind(node_bg, "<Leave>", lambda e, nid=node['id']: self.on_node_leave(nid))
 
         # Draw title (now on the drag bar)
         title = node.get('title', str(node_type))
@@ -1001,16 +1006,40 @@ class NodeEditor:
         for node_id, node_data in self.nodes.items():
             rect = node_data['canvas_items']['rect']
             self.canvas.itemconfig(rect, outline='black', width=2)
+            node_data['highlight_state'] = False
 
-    def highlight_node(self, node_id):
+    def highlight_node(self, node_id, is_workflow=True):
         """Highlight the specified node."""
+        if node_id not in self.nodes:
+            return
+            
         rect = self.nodes[node_id]['canvas_items']['rect']
         self.canvas.itemconfig(rect, outline='red', width=2)
+        
+        # Set the highlight state if this is from workflow execution
+        if is_workflow:
+            self.nodes[node_id]['highlight_state'] = True
 
     def remove_highlight(self, node_id):
         """Remove highlight from the specified node."""
+        if node_id not in self.nodes:
+            return
+            
         rect = self.nodes[node_id]['canvas_items']['rect']
         self.canvas.itemconfig(rect, outline='black', width=2)
+        self.nodes[node_id]['highlight_state'] = False
+
+    def on_node_enter(self, node_id):
+        """Handle mouse enter event on a node."""
+        # Only highlight if the node is not already highlighted by workflow execution
+        if node_id in self.nodes and not self.nodes[node_id].get('highlight_state', False):
+            self.highlight_node(node_id, is_workflow=False)
+    
+    def on_node_leave(self, node_id):
+        """Handle mouse leave event on a node."""
+        # Only remove highlight if it was set by mouse hover, not by workflow execution
+        if node_id in self.nodes and not self.nodes[node_id].get('highlight_state', False):
+            self.remove_highlight(node_id)
 
     def start_connection(self, event):
         """Start drawing a connection from an output connector."""

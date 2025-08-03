@@ -39,7 +39,6 @@ class SearchScrapeSummarizeNode(BaseNode):
             'node_name': {'type': 'text', 'default': 'SearchScrapeSummarizeNode'},
             'description': {'type': 'text', 'default': 'Processes the input for web search, scraping, and summarization via API.'},
             'Prompt': {'type': 'textarea', 'default': ''},  # User-defined prompt
-            'searxng_api_url': {'type': 'text', 'default': 'http://localhost:8888/search'},
             'api_endpoint': {
                 'type': 'dropdown',
                 'label': 'API Endpoint',
@@ -86,26 +85,20 @@ class SearchScrapeSummarizeNode(BaseNode):
             "messages": [{"role": "user", "content": prompt}]
         }
 
+        api_details = self.config['interfaces'].get(selected_api, {})
+        model = api_details.get('selected_model')
+
         try:
-            # Send the prompt to the API
-            print(f"[SearchScrapeSummarizeNode] Sending summarization request to {selected_api}")
-            api_response_content = process_api_request(selected_api, self.config, request_data)
-            
-            if api_response_content is None:
-                print("[SearchScrapeSummarizeNode] API response is None.")
-                return "API response is None."
-                
-            # Check if api_response_content is a dictionary with a 'content' key
-            if isinstance(api_response_content, dict) and 'content' in api_response_content:
-                return api_response_content['content']
-            
-            # If it's a string, return it directly
-            if isinstance(api_response_content, str):
-                return api_response_content
-                
-            # If we got here, we don't know how to handle the response
-            print(f"[SearchScrapeSummarizeNode] Unexpected API response format: {type(api_response_content)}")
-            return f"Unexpected API response format: {type(api_response_content)}"
+            # Send the prompt to the API using the standard method
+            print(f"[SearchScrapeSummarizeNode] Sending summarization request to {selected_api} with model {model}")
+            api_response = self.send_api_request(prompt, selected_api, model=model)
+
+            if api_response.success:
+                summary = api_response.content
+            else:
+                print(f"[SearchScrapeSummarizeNode] API request failed: {api_response.error}")
+                summary = f"Error during summarization: {api_response.error}"
+
             
         except Exception as e:
             print(f"[SearchScrapeSummarizeNode] Error sending prompt to API: {str(e)}")
@@ -272,8 +265,17 @@ class SearchScrapeSummarizeNode(BaseNode):
             print("[SearchScrapeSummarizeNode] Invalid num_results_to_skip, using default of 0")
             num_results_to_skip = 0
         
-        # Get the SearxNG API URL
-        searxng_api_url = self.properties.get('searxng_api_url', {}).get('default', 'http://localhost:8888/search')
+        # Find the configured SearxNG endpoint URL
+        searxng_api_url = None
+        for name, config in self.config.get('interfaces', {}).items():
+            if config.get('type', '').lower() == 'searchengine':
+                searxng_api_url = config.get('api_url')
+                if searxng_api_url:
+                    break
+
+        if not searxng_api_url:
+            print("[SearchScrapeSummarizeNode] Error: No SearchEngine (SearxNG) API endpoint configured or URL is missing.")
+            return {"prompt": "Error: No SearchEngine (SearxNG) API endpoint configured or URL is missing."}
         
         # Perform the search
         print(f"[SearchScrapeSummarizeNode] Sending search request to SearxNG API at {searxng_api_url} with {num_search_results} results")
