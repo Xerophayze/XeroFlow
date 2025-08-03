@@ -13,6 +13,7 @@ graph:
         resize_handle: 18
         title: 12
       height: 150
+      highlight_state: false
       id: dc796591-1b9d-444e-8523-d260c66aade7
       inputs:
       - input

@@ -107,7 +107,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI 03-mini
           label: API Endpoint
           options:
           - Groq

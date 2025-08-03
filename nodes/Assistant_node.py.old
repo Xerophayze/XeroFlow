@@ -744,11 +744,10 @@ class AssistantNode(BaseNode):
                 
         return False
 
-    def process_audio_file(self, file_path, transcription_output_path):
+    def process_audio_file(self, file_path, transcription_output_path, project_folder):
         """Process an audio file using Whisper API and save it to the specified output path."""
         try:
             file_path = Path(file_path)
-            project_folder = file_path.parent
             transcription_file = Path(transcription_output_path)
             self.update_log(f"Creating transcription file: {transcription_file.name}")
             print(f"[DEBUG] Transcription file will be: {transcription_file}")
@@ -1351,7 +1350,7 @@ class AssistantNode(BaseNode):
                 self.process_instructions_file(instructions_file)
                 return
 
-            files_to_process = [f for f in project_folder.glob('*') if f.is_file()]
+            files_to_process = [f for f in project_folder.glob('*') if f.is_file() and not f.name.endswith('_transcription.txt')]
             total_files = len(files_to_process)
             if total_files == 0:
                 return
@@ -1382,8 +1381,10 @@ class AssistantNode(BaseNode):
                     if self.is_audio_file(file_path) or self.is_video_file(file_path):
                         self.update_log(f"Transcribing audio/video file: {file_path.name}")
                         transcription_output_path = output_folder / f"{file_path.stem}_transcription.txt"
-                        self.process_audio_file(str(file_path), str(transcription_output_path))
-                        self.update_log(f"Processing transcription for: {file_path.name}")
+                        self.process_audio_file(str(file_path), str(transcription_output_path), project_folder)
+                        
+                        # After transcription, we process the resulting text file from its output location.
+                        self.update_log(f"Processing generated transcription for: {file_path.name}")
                         self.process_text_file(str(transcription_output_path))
                     elif self.is_csv_file(file_path):
                         self.update_log(f"Processing CSV file: {file_path.name}")
@@ -1922,15 +1923,6 @@ class AssistantNode(BaseNode):
                                 self.node.process_audio_file(file_path, transcription_output_path)
                                 # Now process the transcription to generate the final output
                                 self.node.process_text_file(str(transcription_output_path))
-                                # Move or delete the original audio file to prevent reprocessing
-                                try:
-                                    file_path_obj = Path(file_path)
-                                    # Delete the original file since we already copied it to the output folder
-                                    if file_path_obj.exists():
-                                        file_path_obj.unlink()
-                                        self.node.update_log(f"Deleted original audio file after processing: {file_path_obj.name}")
-                                except Exception as e:
-                                    self.node.update_log(f"Warning: Could not delete original audio file: {str(e)}")
                             elif self.node.is_video_file(file_path):
                                 self.node.update_log(f"Processing video file: {file_path}")
                                 self.node.process_video_file(file_path)

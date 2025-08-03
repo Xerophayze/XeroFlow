@@ -61,6 +61,13 @@ try:
 except ImportError:
     print("[API Handler] Groq API support not available. Run 'pip install groq' to enable.")
 
+GOOGLE_GENAI_AVAILABLE = False
+try:
+    import google.generativeai as genai
+    GOOGLE_GENAI_AVAILABLE = True
+except ImportError:
+    print("[API Handler] Google Gemini API support not available. Run 'pip install google-generativeai' to enable.")
+
 def process_api_request(api_name: str, config: Dict[str, Any], request_data: Dict[str, Any], is_whisper: bool = False) -> Optional[Dict[str, Any]]:
     """
     Process an API request using the specified endpoint.
@@ -853,6 +860,50 @@ def process_api_request_v2(api_name: str, config: Dict[str, Any], request_data: 
             except Exception as e:
                 print(f"[DEBUG] Error in Groq chat completion: {str(e)}")
                 return None
+
+        elif api_type == "Google":
+            if not GOOGLE_GENAI_AVAILABLE:
+                return {"error": "Google Gemini API support not available. Run 'pip install google-generativeai' to enable."}
+            try:
+                genai.configure(api_key=api_key)
+                model_name = api_config.get('selected_model', 'gemini-pro')
+                model = genai.GenerativeModel(model_name)
+
+                messages = request_data.get("messages", [])
+                if not messages:
+                    prompt = request_data.get("prompt") or request_data.get("content")
+                    if prompt:
+                        messages = [{'role': 'user', 'content': prompt}]
+
+                # Convert messages to Google's format
+                gemini_messages = []
+                for msg in messages:
+                    role = msg.get('role')
+                    if role == 'assistant':
+                        role = 'model'
+                    
+                    content = msg.get('content') or msg.get('parts')
+                    if content:
+                        gemini_messages.append({'role': role, 'parts': [content] if isinstance(content, str) else content})
+
+                response = model.generate_content(gemini_messages)
+
+                # Token counting
+                prompt_tokens = model.count_tokens(gemini_messages).total_tokens
+                completion_tokens = model.count_tokens(response.text).total_tokens
+                total_tokens = prompt_tokens + completion_tokens
+
+                return {
+                    "content": response.text,
+                    "token_usage": {
+                        "prompt_tokens": prompt_tokens,
+                        "completion_tokens": completion_tokens,
+                        "total_tokens": total_tokens
+                    }
+                }
+            except Exception as e:
+                print(f"[DEBUG] Error in Google Gemini API call: {str(e)}")
+                return {"error": str(e)}
 
         elif api_type == "Ollama":
             try:

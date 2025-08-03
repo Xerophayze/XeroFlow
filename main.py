@@ -281,11 +281,20 @@ def create_gui(config):
     def process_gui_queue():
         try:
             while True:
-                func = gui_queue.get_nowait()
-                func()
-        except queue.Empty:
-            pass
-        root.after(100, process_gui_queue)
+                try:
+                    func = gui_queue.get_nowait()
+                    func()
+                except queue.Empty:
+                    break  # Exit the while loop if queue is empty
+                except Exception as e:
+                    # Log the exception and continue processing other tasks
+                    print(f"Error executing GUI task: {e}")
+                    traceback.print_exc() # Print traceback to console
+                    logging.error(f"Error executing GUI task: {e}\n{traceback.format_exc()}")
+        finally:
+            # Always reschedule the next check, even if an error occurred in the try block
+            # (though specific task errors are caught inside the loop now)
+            root.after(100, process_gui_queue)
 
     # Start processing the GUI queue
     root.after(100, process_gui_queue)
@@ -680,6 +689,9 @@ def create_gui(config):
         ))
 
     start_auto_startup_workflows(config, output_box, submit_button, stop_button, chat_tab, chat_instruction_listbox, gui_queue, formatting_var)
+
+    # Start processing the GUI queue
+    process_gui_queue()
 
     root.mainloop()
     

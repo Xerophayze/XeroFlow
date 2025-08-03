@@ -53,7 +53,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq

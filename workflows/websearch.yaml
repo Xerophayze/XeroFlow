@@ -3,15 +3,12 @@ graph:
   nodes:
     8e1328be-d8bb-4579-96df-46d9a292e168:
       canvas_items:
-        description: 13
-        drag_bar: 11
         input_input: 14
-        input_label_input: 15
-        output_label_urls: 17
-        output_urls: 16
+        output_urls: 15
+        prop_description: 13
         rect: 10
-        resize_handle: 18
-        title: 12
+        resize_handle: 16
+        title: 11
       connections: []
       height: 80
       id: 8e1328be-d8bb-4579-96df-46d9a292e168

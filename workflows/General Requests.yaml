@@ -14,6 +14,7 @@ graph:
         title: 12
       connections: []
       height: 80
+      highlight_state: false
       id: 6089622f-6dc2-47ba-a901-1cc0e862f990
       inputs:
       - input
@@ -25,7 +26,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq

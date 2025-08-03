@@ -1,103 +1,84 @@
 @echo off
-REM setup.bat
-REM This script sets up the virtual environment, checks for dependencies, and installs requirements.
+setlocal
 
-REM Define variables
-SET VENV_DIR=venv
-SET SWIG_DIR=C:\swigwin  REM Define SWIG directory if not in PATH
+REM Set the name of the virtual environment directory
+set VENV_DIR=venv
 
-REM Check if Python 3.10 or higher is available
+REM Check for Python 3.10 or higher
 echo Checking if Python 3.10 or higher is available...
-python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" > version.tmp
-SET /p PYTHON_VERSION=<version.tmp
-DEL version.tmp
-
-FOR /F "tokens=1,2 delims=." %%a IN ("%PYTHON_VERSION%") DO (
-    SET PYTHON_MAJOR=%%a
-    SET PYTHON_MINOR=%%b
+python --version >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Python is not installed or not in PATH.
+    echo Please install Python 3.10 or higher and try again.
+    exit /b 1
 )
 
-IF "%PYTHON_MAJOR%"=="3" IF %PYTHON_MINOR% GEQ 10 (
+for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
+for /f "tokens=1,2 delims=." %%a in ("%PYTHON_VERSION%") do (
+    set PYTHON_MAJOR=%%a
+    set PYTHON_MINOR=%%b
+)
+
+if "%PYTHON_MAJOR%" neq "3" (
+    set COMPATIBLE=0
+) else if %PYTHON_MINOR% lss 10 (
+    set COMPATIBLE=0
+) else (
+    set COMPATIBLE=1
+)
+
+if "%COMPATIBLE%" == "1" (
     echo Python %PYTHON_VERSION% is available and compatible.
-) ELSE (
-    echo Python 3.10 or higher is required but found version %PYTHON_VERSION%.
-    echo Please install Python 3.10 or higher from https://www.python.org/downloads/
-    echo Make sure to check "Add Python to PATH" during installation.
-    echo.
-    echo Press any key to exit...
-    pause >nul
+) else (
+    echo Python 3.10 or higher is required, but found version %PYTHON_VERSION%.
+    echo Please install a compatible version of Python and try again.
     exit /b 1
 )
 
-REM Check if pip is available
+REM Check for pip
 echo Checking if pip is available...
-python -m pip --version >nul 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    echo Pip is not installed. Please ensure pip is available with Python.
-    echo.
-    echo Press any key to exit...
-    pause >nul
+where pip >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Pip is not available. Please ensure Python is installed correctly with pip.
     exit /b 1
-) ELSE (
-    echo Pip is available.
 )
+echo Pip is available.
 
 REM Create virtual environment if it doesn't exist
-IF NOT EXIST %VENV_DIR%\Scripts\activate (
+if not exist "%VENV_DIR%" (
     echo Creating virtual environment...
     python -m venv %VENV_DIR%
-    IF %ERRORLEVEL% NEQ 0 (
+    if %errorlevel% neq 0 (
         echo Failed to create virtual environment.
-        exit /b %ERRORLEVEL%
+        exit /b 1
     )
-) ELSE (
+) else (
     echo Virtual environment already exists.
 )
 
-REM Activate the virtual environment
+REM Activate virtual environment
 echo Activating virtual environment...
-CALL %VENV_DIR%\Scripts\activate
-IF %ERRORLEVEL% NEQ 0 (
-    echo Failed to activate virtual environment.
-    exit /b %ERRORLEVEL%
-)
+call "%VENV_DIR%\Scripts\activate.bat"
 
-REM Upgrade pip and install wheel separately to avoid conflicts
-echo Upgrading pip and installing wheel...
-python -m pip install --upgrade pip wheel
-IF %ERRORLEVEL% NEQ 0 (
-    echo Failed to upgrade pip or install wheel.
-    exit /b %ERRORLEVEL%
-)
+REM Upgrade pip, wheel, and setuptools
+echo Upgrading pip, wheel, and setuptools...
+python -m pip install --upgrade pip wheel setuptools
 
-REM Install dependencies from requirements.txt
-echo Installing dependencies from requirements.txt...
+REM Install all dependencies from requirements.txt
+echo Installing all dependencies from requirements.txt...
 pip install -r requirements.txt
-IF %ERRORLEVEL% NEQ 0 (
-    echo Failed to install dependencies.
-    exit /b %ERRORLEVEL%
+
+if %errorlevel% neq 0 (
+    echo Failed to install dependencies from requirements.txt.
+    exit /b 1
 )
 
-REM Ensure langchain_community is installed (if not already in requirements.txt)
-pip show langchain_community >nul 2>&1
-IF %ERRORLEVEL% NEQ 0 (
-    echo langchain_community module not found. Attempting to install it separately...
-    pip install langchain-community
-    IF %ERRORLEVEL% NEQ 0 (
-        echo Failed to install langchain_community.
-        exit /b %ERRORLEVEL%
-    )
-)
+echo Installation of all dependencies completed successfully.
 
-REM Inform user of successful setup
-echo.
-echo Setup completed successfully!
-echo You can now run the application by executing run.bat.
-echo.
+REM Deactivate and clean up
+call "%VENV_DIR%\Scripts\deactivate.bat"
 
-REM Optional: Deactivate the virtual environment
-echo Deactivating virtual environment...
-CALL deactivate
+endlocal
 
-echo Done.
-PAUSE
+echo Setup complete. You can now run the application.
+pause

@@ -1,11 +1,11 @@
 graph:
   connections:
-  - canvas_item: 123
+  - canvas_item: 61
     from_node: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
     from_output: output
     to_input: input
     to_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
-  - canvas_item: 124
+  - canvas_item: 62
     from_node: 7ee360a1-2a70-41dc-a1f2-f61a439acb86
     from_output: prompt
     to_input: input
@@ -13,17 +13,17 @@ graph:
   nodes:
     50e0acb7-309f-4379-85c8-622048f47a7b:
       canvas_items:
-        description: 97
-        drag_bar: 95
-        input_gui_queue: 100
-        input_input: 98
-        input_label_gui_queue: 101
-        input_label_input: 99
-        output_chat_history: 102
-        output_label_chat_history: 103
-        rect: 94
-        resize_handle: 104
-        title: 96
+        description: 35
+        drag_bar: 33
+        input_gui_queue: 38
+        input_input: 36
+        input_label_gui_queue: 39
+        input_label_input: 37
+        output_chat_history: 40
+        output_label_chat_history: 41
+        rect: 32
+        resize_handle: 42
+        title: 34
       height: 150
       id: 50e0acb7-309f-4379-85c8-622048f47a7b
       inputs:
@@ -36,7 +36,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI GPT gpt-4o-mini
           options:
           - Groq
           - Ollama DeepSeek r1
@@ -44,7 +44,7 @@ graph:
           - OpenAI GPT gpt-4o-mini
           type: dropdown
         database:
-          default: test
+          default: Novels by Eric
           options:
           - Novels by Eric
           - Sci-fi Novels
@@ -70,15 +70,15 @@ graph:
       y: 204
     6e15a2ae-fae9-414d-a6c3-73dbae8931a3:
       canvas_items:
-        description: 108
-        drag_bar: 106
-        input_input: 109
-        input_label_input: 110
-        output_label_output: 112
-        output_output: 111
-        rect: 105
-        resize_handle: 113
-        title: 107
+        description: 46
+        drag_bar: 44
+        input_input: 47
+        input_label_input: 48
+        output_label_output: 50
+        output_output: 49
+        rect: 43
+        resize_handle: 51
+        title: 45
       connections: []
       height: 80
       id: 6e15a2ae-fae9-414d-a6c3-73dbae8931a3
@@ -95,7 +95,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: openai
+          default: OpenAI GPT gpt-4o-mini
           label: API Endpoint
           options:
           - Groq
@@ -126,15 +126,15 @@ graph:
       y: 102
     7ee360a1-2a70-41dc-a1f2-f61a439acb86:
       canvas_items:
-        description: 117
-        drag_bar: 115
-        input_input: 118
-        input_label_input: 119
-        output_label_prompt: 121
-        output_prompt: 120
-        rect: 114
-        resize_handle: 122
-        title: 116
+        description: 55
+        drag_bar: 53
+        input_input: 56
+        input_label_input: 57
+        output_label_prompt: 59
+        output_prompt: 58
+        rect: 52
+        resize_handle: 60
+        title: 54
       connections: []
       height: 80
       id: 7ee360a1-2a70-41dc-a1f2-f61a439acb86

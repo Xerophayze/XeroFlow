@@ -200,55 +200,73 @@ class WorkflowManager:
             return True
         return False
     
-    def save_workflow_history(self):
-        """Save completed workflows to a log file and their content to text files."""
+    def _save_history_threaded(self):
+        """Internal method to save history in a separate thread."""
         try:
-            completed_workflows = self.get_completed_workflows()
+            # Ensure directories exist
+            os.makedirs(self.data_dir, exist_ok=True)
+            os.makedirs(self.history_dir, exist_ok=True)
+
             history_data = []
+            # Load existing history to append
+            if os.path.exists(self.log_file):
+                try:
+                    with open(self.log_file, 'r', encoding='utf-8') as f:
+                        history_data = json.load(f)
+                except json.JSONDecodeError:
+                    print(f"Warning: Could not decode existing history log: {self.log_file}")
+                    history_data = [] # Start fresh if corrupted
+                except Exception as e:
+                    print(f"Error reading history log {self.log_file}: {e}")
+                    history_data = []
+
+            # Create a set of existing IDs in the log to avoid duplicates
+            existing_ids_in_log = {item.get('id') for item in history_data}
+
+            new_entries_added = False
+            for wf_id, wf in list(self.workflows.items()): # Iterate over a copy in case self.workflows changes
+                if wf.status in ["completed", "error", "stopped"] and wf_id not in existing_ids_in_log:
+                    content_filename = os.path.join(self.history_dir, f"{wf_id}.txt")
+                    content_to_save = wf.output if wf.status == "completed" else wf.error if wf.status == "error" else "Workflow stopped by user."
+                    
+                    try:
+                        with open(content_filename, 'w', encoding='utf-8') as f_content:
+                            f_content.write(str(content_to_save))
+                    except Exception as e:
+                        print(f"Error saving content for workflow {wf_id} to {content_filename}: {e}")
+                        # Continue, don't let one file error stop all history saving
+
+                    history_entry = {
+                        'id': wf.id,
+                        'workflow_name': wf.workflow_name,
+                        'user_input': wf.user_input,
+                        'start_time': wf.start_time.isoformat() if wf.start_time else None,
+                        'end_time': wf.end_time.isoformat() if wf.end_time else None,
+                        'status': wf.status,
+                        'duration': wf.get_formatted_duration(),
+                        'content_file': content_filename
+                    }
+                    history_data.append(history_entry)
+                    existing_ids_in_log.add(wf_id) # Add to set to prevent re-adding if called multiple times quickly
+                    new_entries_added = True
             
-            for wf_id, workflow in completed_workflows.items():
-                # Save input and output to separate files
-                input_file = os.path.join(self.history_dir, f"{wf_id}_input.txt")
-                output_file = os.path.join(self.history_dir, f"{wf_id}_output.txt")
-                error_file = os.path.join(self.history_dir, f"{wf_id}_error.txt")
-                
-                # Save input to file
-                with open(input_file, 'w', encoding='utf-8') as f:
-                    f.write(workflow.user_input or "")
-                
-                # Save output to file if it exists
-                if workflow.output:
-                    with open(output_file, 'w', encoding='utf-8') as f:
-                        f.write(workflow.output)
-                
-                # Save error to file if it exists
-                if workflow.error:
-                    with open(error_file, 'w', encoding='utf-8') as f:
-                        f.write(workflow.error)
-                
-                # Convert workflow instance to serializable dict with file references
-                workflow_data = {
-                    "id": workflow.id,
-                    "workflow_name": workflow.workflow_name,
-                    "input_file": os.path.basename(input_file),
-                    "output_file": os.path.basename(output_file) if workflow.output else None,
-                    "error_file": os.path.basename(error_file) if workflow.error else None,
-                    "start_time": workflow.start_time.isoformat(),
-                    "end_time": workflow.end_time.isoformat() if workflow.end_time else None,
-                    "status": workflow.status,
-                    # Include a preview of input for display purposes
-                    "input_preview": (workflow.user_input[:100] + "...") if workflow.user_input and len(workflow.user_input) > 100 else workflow.user_input
-                }
-                history_data.append(workflow_data)
-            
-            # Save to file
-            with open(self.log_file, 'w') as f:
-                json.dump(history_data, f, indent=2)
-                
-            print(f"Saved {len(history_data)} workflows to history log: {self.log_file}")
+            if new_entries_added:
+                try:
+                    with open(self.log_file, 'w', encoding='utf-8') as f:
+                        json.dump(history_data, f, indent=4)
+                except Exception as e:
+                    print(f"Error writing workflow history log {self.log_file}: {e}")
+
         except Exception as e:
-            print(f"Error saving workflow history: {e}")
-    
+            print(f"Error in _save_history_threaded: {e}")
+            # Consider more formal logging here
+
+    def save_workflow_history(self):
+        """Save completed workflows to a log file and their content to text files asynchronously."""
+        save_thread = threading.Thread(target=self._save_history_threaded)
+        save_thread.daemon = True # Allow main program to exit even if this thread is running
+        save_thread.start()
+
     def load_workflow_history(self):
         """Load completed workflows from log file and their content from text files."""
         try:
