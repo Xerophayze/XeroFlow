@@ -610,29 +610,34 @@ def process_chart_code(code_text):
     from quickchart import QuickChart
     import json
     import re
-
     try:
         logging.info("\n[DEBUG Chart] Processing chart code:")
         logging.info(f"Raw code text: {code_text}")
         
-        # Pre-process the JSON to handle complex cases like multi-line strings and embedded functions.
+        # Pre-process the JSON to handle complex cases
         
-        # 1. Handle Mermaid diagrams embedded in JSON with multi-line strings.
+        # 1. Handle Mermaid diagrams embedded in JSON
         mermaid_match = re.search(r'("mermaid"\s*:\s*")([\s\S]*?)("\s*\n*\s*})', code_text)
         if mermaid_match:
             mermaid_content = mermaid_match.group(2).strip()
-            # The diagram is mermaid, so we process it with the dedicated function
             return process_mermaid_diagram(mermaid_content)
-
-        # 2. Remove multi-line JavaScript arrow functions (e.g., for 'formatter').
+        
+        # 2. Remove all JavaScript functions (callbacks, formatters, etc.)
+        # Remove callback functions
+        code_text = re.sub(r'"callback":\s*"function\(.*?\)\s*{[^}]*}"', '', code_text, flags=re.DOTALL)
+        # Remove formatter functions
         code_text = re.sub(r'"formatter":\s*\(.*?\)\s*=>\s*{[^}]*},?', '', code_text, flags=re.DOTALL)
-        # Remove trailing commas that might be left after removing a key-value pair.
+        # Remove tooltip callbacks
+        code_text = re.sub(r'"tooltips":\s*{[^}]*"callbacks":\s*{[^}]*}}', '', code_text, flags=re.DOTALL)
+        # Remove annotation callbacks
+        code_text = re.sub(r'"annotation":\s*{[^}]*"annotations":\s*\[[^]]*\]}', '', code_text, flags=re.DOTALL)
+        
+        # 3. Remove trailing commas
         code_text = re.sub(r',(\s*})', r'\1', code_text)
         
-        # 3. Handle duplicated keys, like the nested 'xAxes' that causes JSON errors.
-        # This regex finds a duplicated key inside a structure and removes the erroneous inner block.
+        # 4. Handle duplicated keys
         code_text = re.sub(r'("xAxes": \[[\s\S]*?"scaleLabel": {[\s\S]*?})\s*"xAxes":', r'\1,', code_text, flags=re.DOTALL)
-
+        
         logging.info(f"Preprocessed code text: {code_text}")
         
         # Parse the chart configuration
@@ -648,26 +653,37 @@ def process_chart_code(code_text):
         logging.info(f"QuickChart config - Width: {qc.width}, Height: {qc.height}")
         logging.info(f"Chart config: {json.dumps(qc.config, indent=2)}")
         
-        # Manually make the request to get detailed error information
+        # Prepare the request data
         post_data = {
             'chart': qc.config,
             'width': qc.width,
             'height': qc.height,
-            'backgroundColor': qc.background_color,
-            'devicePixelRatio': qc.device_pixel_ratio,
-            'format': qc.format,
-            'version': qc.version,
+            'format': 'png'
         }
         
-        response = requests.post('https://quickchart.io/chart', json=post_data)
+        # Make the request with proper headers
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'image/png'
+        }
         
-        if response.status_code == 200:
+        response = requests.post(
+            'https://quickchart.io/chart', 
+            json=post_data, 
+            headers=headers,
+            timeout=30
+        )
+        
+        # Check if response is an image (even with error status code)
+        content_type = response.headers.get('Content-Type', '')
+        if content_type.startswith('image/'):
             logging.info(f"Successfully generated chart image of size: {len(response.content)} bytes")
             return response.content
         else:
-            logging.error(f"Failed to generate chart. Status code: {response.status_code}")
+            logging.error(f"Unexpected response type: {content_type}")
             logging.error(f"Response body: {response.text}")
-            raise RuntimeError(f"QuickChart API failed with status {response.status_code}: {response.text}")
+            return None
+            
     except json.JSONDecodeError as je:
         logging.error(f"JSON parsing error: {je}")
         logging.error(f"Invalid JSON: {code_text}")
@@ -761,12 +777,59 @@ def process_mermaid_diagram(mermaid_code):
             graphbytes = mermaid_code.encode("utf8")
             base64_bytes = base64.urlsafe_b64encode(graphbytes)
             base64_string = base64_bytes.decode("ascii")
-            url = f"https://mermaid.ink/img/{base64_string}"
+            
+            # Enhanced URL with higher resolution parameters for better readability
+            # scale=2 doubles the resolution, width=1200 ensures minimum width for wide diagrams
+            url = f"https://mermaid.ink/img/{base64_string}?scale=2&width=1200"
             
             response = requests.get(url, timeout=15) # Increased timeout for larger diagrams
             if response.status_code == 200 and len(response.content) > 100: # Lowered size check for simpler diagrams
-                logging.info(f"Successfully generated Mermaid diagram using online service. Image size: {len(response.content)} bytes")
-                return response.content
+                logging.info(f"Successfully generated Mermaid diagram using online service. Original PNG size: {len(response.content)} bytes")
+                
+                # Convert PNG to JPG for smaller file size
+                try:
+                    from PIL import Image
+                    import io
+                    
+                    # Open the PNG image from bytes
+                    png_image = Image.open(BytesIO(response.content))
+                    
+                    # Convert to RGB (JPG doesn't support transparency)
+                    if png_image.mode in ('RGBA', 'LA', 'P'):
+                        # Create white background for transparent areas
+                        rgb_image = Image.new('RGB', png_image.size, (255, 255, 255))
+                        if png_image.mode == 'P':
+                            png_image = png_image.convert('RGBA')
+                        rgb_image.paste(png_image, mask=png_image.split()[-1] if png_image.mode in ('RGBA', 'LA') else None)
+                        png_image = rgb_image
+                    elif png_image.mode != 'RGB':
+                        png_image = png_image.convert('RGB')
+                    
+                    # Save as JPG with more aggressive compression for better size reduction
+                    jpg_buffer = io.BytesIO()
+                    png_image.save(jpg_buffer, format='JPEG', quality=70, optimize=True, progressive=True)
+                    jpg_bytes = jpg_buffer.getvalue()
+                    
+                    original_size = len(response.content)
+                    new_size = len(jpg_bytes)
+                    reduction_percent = ((original_size - new_size) / original_size * 100)
+                    
+                    logging.info(f"PNG to JPG conversion: {original_size} bytes -> {new_size} bytes (reduction: {reduction_percent:.1f}%)")
+                    
+                    # Only return JPG if it's actually smaller, otherwise keep PNG
+                    if new_size < original_size:
+                        logging.info("Using JPG version (smaller)")
+                        return jpg_bytes
+                    else:
+                        logging.info("Using original PNG (JPG conversion didn't reduce size)")
+                        return response.content
+                    
+                except ImportError:
+                    logging.warning("PIL (Pillow) not available for image conversion. Returning original PNG.")
+                    return response.content
+                except Exception as conv_error:
+                    logging.error(f"Error converting PNG to JPG: {conv_error}. Returning original PNG.")
+                    return response.content
             else:
                 logging.error(f"Failed to generate Mermaid diagram using online service. Status code: {response.status_code}")
                 logging.error(f"Response body: {response.text}")
@@ -809,6 +872,46 @@ def insert_chart_image(document, image_bytes):
     except Exception as e:
         logging.error(f"Error inserting chart image: {e}")
         return document.add_paragraph("[Error: Failed to insert chart]")
+
+def save_image_to_subdirectory(image_bytes, output_path, image_type, image_index):
+    """
+    Save an image to the ChartsAndDiagrams subdirectory.
+    Args:
+        image_bytes: The image bytes to save
+        output_path: The path where the main document will be saved
+        image_type: Type of image ('chart' or 'mermaid')
+        image_index: Index number for the image
+    Returns:
+        str: The path where the image was saved, or None if failed
+    """
+    try:
+        if not image_bytes or not output_path:
+            return None
+            
+        # Get the directory where the document will be saved
+        doc_dir = os.path.dirname(output_path)
+        
+        # Create ChartsAndDiagrams subdirectory
+        charts_dir = os.path.join(doc_dir, "ChartsAndDiagrams")
+        os.makedirs(charts_dir, exist_ok=True)
+        
+        # Generate filename based on document name and image index
+        doc_name = os.path.splitext(os.path.basename(output_path))[0]
+        # Use JPG extension for mermaid diagrams (they're converted), PNG for charts
+        file_ext = 'jpg' if image_type == 'mermaid' else 'png'
+        image_filename = f"{doc_name}_{image_type}_{image_index:03d}.{file_ext}"
+        image_path = os.path.join(charts_dir, image_filename)
+        
+        # Save the image
+        with open(image_path, 'wb') as f:
+            f.write(image_bytes)
+            
+        logging.info(f"[DEBUG ExportWord] Saved {image_type} image to: {image_path}")
+        return image_path
+        
+    except Exception as e:
+        logging.error(f"[DEBUG ExportWord] Failed to save {image_type} image: {e}")
+        return None
 
 ### END CHART FUNCTIONS
 
@@ -949,6 +1052,10 @@ def convert_markdown_to_docx(markdown_text, output_path=None, formatting_enabled
         
         # Dictionary to track list numbering for each level
         list_counters = {}
+        
+        # Counters for chart and diagram images
+        chart_counter = 0
+        mermaid_counter = 0
 
         if not formatting_enabled:
             logging.info("[DEBUG ExportWord] Formatting disabled, adding text as-is")
@@ -972,6 +1079,10 @@ def convert_markdown_to_docx(markdown_text, output_path=None, formatting_enabled
                             image_bytes = process_chart_code(code_text)
                             if image_bytes:
                                 logging.info("[DEBUG ExportWord] Successfully generated chart image")
+                                chart_counter += 1
+                                # Save image to subdirectory
+                                save_image_to_subdirectory(image_bytes, file_path, 'chart', chart_counter)
+                                # Insert image into document
                                 insert_chart_image(document, image_bytes)
                             else:
                                 logging.error("[DEBUG ExportWord] Failed to generate chart image, falling back to code block")
@@ -981,6 +1092,10 @@ def convert_markdown_to_docx(markdown_text, output_path=None, formatting_enabled
                             image_bytes = process_mermaid_diagram(code_text)
                             if image_bytes:
                                 logging.info("[DEBUG ExportWord] Successfully generated mermaid diagram image")
+                                mermaid_counter += 1
+                                # Save image to subdirectory
+                                save_image_to_subdirectory(image_bytes, file_path, 'mermaid', mermaid_counter)
+                                # Insert image into document
                                 insert_chart_image(document, image_bytes)
                             else:
                                 logging.error("[DEBUG ExportWord] Failed to generate mermaid diagram, falling back to code block")
