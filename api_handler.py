@@ -9,6 +9,33 @@ from typing import Dict, Any, Optional, List
 from services.api_service import APIService, APIRequest
 import re
 import math
+
+# --- Parameter Sanitization Helpers ---
+def _sanitize_openai_params(model: Optional[str], params: Dict[str, Any]) -> Dict[str, Any]:
+    """Apply OpenAI model-specific parameter rules.
+
+    - o3-* reasoning models: ensure temperature is not sent.
+    - gpt-5* models: only default temperature=1 is supported; omit any provided value.
+    """
+    try:
+        model_norm = (model or "").lower()
+        # Remove temperature for o3 models (plain or with suffix)
+        if model_norm.startswith('o3'):
+            if 'temperature' in params:
+                print("[DEBUG] Sanitization: removing temperature for o3 model")
+                params.pop('temperature', None)
+            return params
+
+        # GPT-5: omit temperature entirely to use default=1
+        if model_norm.startswith('gpt-5'):
+            if 'temperature' in params and params.get('temperature') != 1:
+                print("[DEBUG] Sanitization: removing non-default temperature for GPT-5 (must be 1)")
+            params.pop('temperature', None)
+            return params
+    except Exception as e:
+        # Do not let sanitization errors block request
+        print(f"[DEBUG] Sanitization error (OpenAI): {e}")
+    return params
 try:
     import mutagen
     from mutagen.wave import WAVE
@@ -354,11 +381,14 @@ def process_api_request(api_name: str, config: Dict[str, Any], request_data: Dic
                     }
                     
                     # Add model-specific parameters
-                    if selected_model.startswith('o3-'):
+                    if selected_model and selected_model.lower().startswith('o3'):
                         completion_params['max_completion_tokens'] = max_tokens
                     else:
                         completion_params['max_tokens'] = max_tokens
                         completion_params['temperature'] = request_data.get('temperature', 0.7)
+
+                    # Sanitize params for model-specific constraints (e.g., GPT-5 temperature)
+                    completion_params = _sanitize_openai_params(selected_model, completion_params)
                     
                     print(f"[DEBUG] Sending OpenAI request with messages: {messages}")
                     response = client.chat.completions.create(**completion_params)
@@ -778,12 +808,16 @@ def process_api_request_v2(api_name: str, config: Dict[str, Any], request_data: 
                     }
                     
                     # Add model-specific parameters
-                    if api_config.get('selected_model', 'gpt-3.5-turbo').startswith('o3-'):
+                    selected_model_v2 = api_config.get('selected_model', 'gpt-3.5-turbo')
+                    if selected_model_v2 and selected_model_v2.lower().startswith('o3'):
                         completion_params['max_completion_tokens'] = max_tokens
                     else:
                         completion_params['max_tokens'] = max_tokens
                         completion_params['temperature'] = request_data.get('temperature', 0.7)
-                    
+
+                    # Sanitize params for model-specific constraints (o3/gpt-5)
+                    completion_params = _sanitize_openai_params(selected_model_v2, completion_params)
+
                     print(f"[DEBUG] Sending OpenAI request with messages: {messages}")
                     response = client.chat.completions.create(**completion_params)
                     print("[DEBUG] Got chat completion response")
