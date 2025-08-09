@@ -169,6 +169,51 @@ class APIService:
         # Return empty string if it's not a valid URL
         return url if APIService.is_valid_url(url) else ""
 
+    def _sanitize_params(self, api_type: str, model: Optional[str], params: Dict[str, Any]) -> Dict[str, Any]:
+        """Sanitize/normalize request params based on provider and model constraints.
+
+        This helps prevent invalid API requests when certain models restrict or ignore
+        parameters like temperature.
+        """
+        try:
+            if not model:
+                return params
+
+            if api_type == "openai":
+                return self._sanitize_openai_params(model, params)
+        except Exception as e:
+            # Never let sanitization break the request path
+            logger.warning(f"Param sanitization failed: {e}")
+        return params
+
+    def _sanitize_openai_params(self, model: str, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply OpenAI model-specific parameter rules.
+
+        - GPT-5 currently only supports default temperature=1. Remove/override any
+          non-default temperature to avoid 400 errors.
+        - o3 reasoning models ("o3" and "o3-*"): temperature is ignored; ensure it is not sent.
+        """
+        # Normalize model name for checks
+        model_norm = (model or "").lower()
+
+        # o3 models (plain or with suffix): ensure temperature is not sent
+        if model_norm.startswith("o3"):
+            if "temperature" in params:
+                logger.info("Removing temperature for OpenAI o3-* model (ignored by API)")
+                params.pop("temperature", None)
+            return params
+
+        # gpt-5 models: only default temperature=1 is supported; best to omit parameter
+        if model_norm.startswith("gpt-5"):
+            temp = params.get("temperature")
+            if temp is not None and temp != 1:
+                logger.warning("OpenAI GPT-5 only supports default temperature=1; removing provided temperature")
+            # Omit temperature entirely to use provider default (1)
+            params.pop("temperature", None)
+            return params
+
+        return params
+
     def send_request(self, request: APIRequest) -> APIResponse:
         """
         Send a request to the specified API endpoint.
@@ -223,10 +268,16 @@ class APIService:
                     }
                     
                     if request.max_tokens:
-                        params["max_tokens"] = request.max_tokens
+                        if request.model and request.model.lower().startswith('o3'):
+                            params["max_completion_tokens"] = request.max_tokens
+                        else:
+                            params["max_tokens"] = request.max_tokens
                     
-                    if request.temperature and not request.model.startswith('o3-'):
+                    if request.temperature and not (request.model and request.model.lower().startswith('o3')):
                         params["temperature"] = request.temperature
+
+                    # Sanitize params based on provider/model constraints before dispatch
+                    params = self._sanitize_params(api_type, request.model, params)
                     
                     response = client.chat.completions.create(**params)
                     content = response.choices[0].message.content
