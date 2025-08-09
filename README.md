@@ -44,12 +44,13 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
    - The node editor has been expanded with several advanced nodes, including:
      - **Interactive Chat Node**: Incorporates database search functionality through the `/doc` command, allowing users to query documents directly within the chat.
      - **Long-Form Content Creation Mode**: Designed to generate long-form content such as stories, manuals, blog posts, etc. An example in the database includes a 90,000-word sci-fi story with 30 chapters and multiple subsections.
+   - **Mermaid Diagram Support**: The AI assistant can generate and handle Mermaid diagrams within responses, making it easier to include sequence charts, flowcharts, and more in your workflows.
    - A refined management panel consolidates various management tasks (like API endpoints, databases, document management, and node management) into a single interface with multiple tabs.
 
 ### 4. **API Integration**
    - The system supports integrating multiple LLM APIs by allowing users to connect and configure API endpoints. The interface manages multiple API keys and credentials for smooth integration with various LLM providers.
    - By using the editor, users can create workflows that leverage multiple APIs in sequence or in parallel, generating complex interactions that combine the strengths of each connected service.
-   - Common API integrations can include OpenAI, Ollama, and others that support LLM-based content generation.
+   - Common API integrations include OpenAI, Google Gemini, Ollama, Groq, and other OpenAI-compatible providers.
 
 ### 5. **Graphical Interface for Node Management**
    - A GUI-based node editor (built with Tkinter) is the core component of XeroFlow. The interface allows users to:
@@ -67,6 +68,8 @@ XeroFlow is a node-based interface for managing and interacting with various Lar
    - For components that cannot be installed via `pip` (e.g., `Tkinter`), users will be notified to install them manually.
 
 ## How to Use
+
+Note: Installation is streamlined and cross-platform. Use `setup.bat`/`run.bat` on Windows and `setup.sh`/`run.sh` on macOS and Linux.
 
 ### Windows Installation
 
@@ -142,6 +145,7 @@ Once you have completed the initial installation and started XeroFlow, you will 
 3. For OpenAI-style endpoints, enter the API URL (e.g., `https://api.openai.com/`) and provide your API key.
 4. For Ollama-style endpoints, you can enter the URL of your Ollama system, such as `http://192.168.76.130:11434`.
 5. You can also configure other OpenAI-conformant endpoints, such as Groq with the URL `https://api.groq.com/openai/`.
+6. For Google Gemini, select the Gemini endpoint, provide your Gemini API key, and choose the desired model (e.g., `gemini-1.5-pro`, `gemini-1.5-flash`).
 
 Once your API endpoints are configured, you can start building workflows that integrate these endpoints to power your nodes and processes.
 
