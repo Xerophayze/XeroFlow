@@ -1,0 +1,1 @@
+{            "name": "xeroflow-mermaid-support",            "version": "1.0.0",            "description": "Mermaid diagram support for XeroFlow",            "dependencies": {                "jsdom": "^22.1.0",                "@mermaid-js/mermaid-cli": "^10.6.1"            }        } 

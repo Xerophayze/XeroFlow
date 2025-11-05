@@ -394,7 +394,7 @@ class OutlineWriterV2Node(BaseNode):
                      f"below and finishing the outline\n\n{cleaned_for_prompt}")
         else:
             # Middle batch
-            prompt = (f"{base_prompt} {user_input}~ {total_chapters} chapters long, "
+            prompt = (f"{base_prompt} {user_input} ~ {total_chapters} chapters long, "
                      f"{paragraphs_per_chapter} paragraphs per chapter, please generate "
                      f"chapters {start_chapter} to {end_chapter} following the last chapter "
                      f"below\n\n{cleaned_for_prompt}")
@@ -404,7 +404,24 @@ class OutlineWriterV2Node(BaseNode):
 
         # Get response and clean it
         response = self.process_with_api(prompt)
+        
+        # If the model echoed our provided context, strip it before cleaning (non-first batches)
+        if not is_first_batch and cleaned_for_prompt:
+            if cleaned_for_prompt in response:
+                response = response.replace(cleaned_for_prompt, "", 1)
         cleaned_response = self.clean_response(response, is_first_batch)
+
+        # For non-first batches, ensure we only keep chapters starting from the intended start_chapter
+        if not is_first_batch:
+            lines = cleaned_response.split('\n')
+            keep_idx = None
+            target_prefix = f"Chapter {start_chapter}"
+            for i, line in enumerate(lines):
+                if line.strip().startswith(target_prefix):
+                    keep_idx = i
+                    break
+            if keep_idx is not None:
+                cleaned_response = '\n'.join(lines[keep_idx:])
         
         # Log the cleaned response
         print(f"\n{'='*80}\nCleaned response for chapters {start_chapter}-{end_chapter}:\n{'-'*80}\n{cleaned_response}\n{'='*80}\n")
@@ -457,11 +474,16 @@ class OutlineWriterV2Node(BaseNode):
 
                     # For first batch, clean but keep title
                     # For other batches, remove title section before appending
-                    cleaned_batch = self.clean_response(batch_result, is_first_batch)
+                    cleaned_batch = batch_result
                     
                     if is_first_batch:
                         accumulated_result = cleaned_batch
                     else:
+                        # Strip any echoed prior chapters that may still remain after cleaning
+                        prev_for_prompt = self.clean_for_prompt(accumulated_result)
+                        if prev_for_prompt and prev_for_prompt in cleaned_batch:
+                            cleaned_batch = cleaned_batch.replace(prev_for_prompt, "", 1)
+
                         # Extract only the new chapters from this batch
                         new_chapters = self.extract_chapters(cleaned_batch)
                         accumulated_result += "\n\n" + new_chapters

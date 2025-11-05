@@ -1,0 +1,105 @@
+graph:
+  connections: []
+  nodes:
+    8022e6e0-0ff7-4a3e-a6f7-321e6bfab71e:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      id: 8022e6e0-0ff7-4a3e-a6f7-321e6bfab71e
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: OpenAI 03-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes array elements through multiple API calls until condition
+            is met.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        max_iterations:
+          default: '3'
+          description: Maximum number of iterations per array element
+          label: Max Iterations
+          type: text
+        minimum_rating:
+          default: '8.2'
+          description: Minimum overall rating required (e.g., 7.5)
+          label: Minimum Rating
+          type: text
+        node_name:
+          default: ArrayProcessTestProcessNode
+          label: Custom Node Name
+          type: text
+        refinement_prompt:
+          default: 'You are a world renowned coder.  Your goal is to implement the
+            review and suggestions listed below, to improve the the code provided.  your
+            only expected output is only the revised code block with the improvements
+            with no other commentary, comments, instructions or extra formatting.  you
+            will only produce the code and nothing else.
+
+
+            The code and suggestions are as follows:'
+          label: Refinement Prompt
+          type: textarea
+        search_string:
+          default: REVIEWPASS
+          description: String to search for in validation results
+          label: Search String
+          type: text
+        use_single_string:
+          default: true
+          description: If enabled, treats input as a single string instead of an array
+          label: Use Single String Input
+          type: boolean
+        validation_prompt:
+          default: 'You are a world renound code reviewer and are well versed in all
+            type of programming. I want you to take the following code module and
+            rate it on 5 different metrics from 1 to 10.  then i want you to give
+            it an over all rating of 1 to 10.  then i want you to give me 6 things
+            that could be improved about the code. including ways to make it more
+            efficient, or if there is a new feature that could improve its functionality
+
+
+            The overal rating should be formatted as follows:
+
+            OVERALL RATING: and then the rating with no other formatting.
+
+            The content to review is as follows:'
+          label: Validation Prompt
+          type: textarea
+      title: ArrayProcessTestProcessNode
+      type: ArrayProcessTestProcessNode
+      width: 200
+      x: 100
+      y: 100
+name: Code Improvement

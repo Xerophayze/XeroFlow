@@ -200,75 +200,57 @@ else
 fi
 
 # Check for git
-if ! command -v git &> /dev/null
-then
-    echo "git not found."
-    install_git
-else
-    echo "git is already installed."
+
+if ! command -v python3 &> /dev/null; then
+    echo "Python 3 is not installed or not in the system's PATH."
+    echo "Please install Python 3."
+    read -p "Press enter to continue"
+    exit 1
 fi
 
-# Check for tkinter
-if ! python3 -c "import tkinter" &> /dev/null
-then
-    echo "tkinter not found."
-    install_tkinter
-else
-    echo "tkinter is already installed."
-fi
+echo "Python 3 found. Checking dependencies..."
 
-# Clone or update the repository
-REPO_URL="https://github.com/Xerophayze/XeroFlow.git"
-REPO_DIR="XeroFlow"
+# --- Helper function to check if venv is truly functional ---
+check_venv_functional() {
+    local temp_venv_dir=".temp_venv_check"
+    # Attempt to create a minimal venv to test full functionality
+    python3 -m venv "$temp_venv_dir" &> /dev/null
+    local venv_result=$?
+    # Clean up the test venv, if it was (partially) created
+    if [ -d "$temp_venv_dir" ]; then
+        rm -rf "$temp_venv_dir"
+    fi
+    return $venv_result
+}
 
-if [ -d "$REPO_DIR/.git" ]; then
-    echo "Repository already exists. Pulling latest changes..."
-    cd "$REPO_DIR"
-    git pull
-else
-    echo "Cloning the repository..."
-    git clone "$REPO_URL"
-    cd "$REPO_DIR"
-fi
+# Check for and install python3-venv, python3-pip, and python3-tk if missing
+install_package "python3-venv" "check_venv_functional" "Python's virtual environment module (venv)"
+install_package "python3-pip" "python3 -m pip --version" "Python's package installer (pip)"
+install_package "python3-tk" "python3 -c 'import tkinter'" "Python's GUI module (tkinter)"
 
-# Set up the virtual environment
-VENV_DIR="venv"
-
-# Install python3-venv if necessary
-if ! python3 -m venv "$VENV_DIR" &> /dev/null; then
-    echo "Installing python3-venv..."
-    if command -v apt-get &> /dev/null; then
-        sudo apt-get install -y python3.10-venv
-    elif command -v yum &> /dev/null; then
-        sudo yum install -y python310-venv
-    elif command -v pacman &> /dev/null; then
-        sudo pacman -Syu --noconfirm python-virtualenv
-    else
-        echo "Unsupported package manager. Please install python3-venv manually."
+# Check if the virtual environment directory exists
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Creating virtual environment..."
+    python3 -m venv "$VENV_DIR"
+    if [ $? -ne 0 ]; then
+        echo "Failed to create virtual environment."
+        read -p "Press enter to continue"
         exit 1
     fi
 fi
 
-if [ ! -d "$VENV_DIR" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv "$VENV_DIR"
-else
-    echo "Virtual environment already exists."
-fi
-
-# Activate the virtual environment
-echo "Activating the virtual environment..."
+echo "Activating virtual environment..."
 source "$VENV_DIR/bin/activate"
 
-# Upgrade pip and install wheel
 echo "Upgrading pip and installing wheel..."
 pip install --upgrade pip wheel
 
-# Install numpy without strict version constraint
 echo "Installing numpy..."
 pip install numpy
 
-# Check for CUDA and install the correct version of PyTorch
+echo "Checking for CUDA..."
+if command -v nvidia-smi &> /dev/null; then
+    echo "CUDA-capable GPU detected."
 if check_cuda; then
     echo "Installing PyTorch with CUDA support..."
     pip install --upgrade pip
@@ -286,7 +268,7 @@ pip install faiss-cpu || echo "Warning: faiss-cpu installation failed. Skipping 
 # Install additional dependencies from requirements.txt
 if [ -f "requirements.txt" ]; then
     echo "Installing additional dependencies from requirements.txt..."
-    pip install -r requirements.txt --no-deps
+    pip install -r requirements.txt
 else
     echo "requirements.txt not found. Skipping additional dependencies installation."
 fi
@@ -300,6 +282,14 @@ then
 else
     echo "langchain_community is already installed."
 fi
+
+# Ensure ffmpeg is available (auto-installs via package manager if missing)
+echo "Ensuring ffmpeg is available..."
+python3 - <<'PY'
+from utils.ffmpeg_installer import ensure_ffmpeg_available
+p = ensure_ffmpeg_available(True)
+print('FFmpeg path:', p)
+PY
 
 # Inform user of successful setup
 echo

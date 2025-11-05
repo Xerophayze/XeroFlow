@@ -13,6 +13,7 @@ graph:
         resize_handle: 18
         title: 12
       height: 150
+      highlight_state: false
       id: c7df7599-7a2b-44c0-b1b6-d4c54fe6cf7d
       inputs:
       - input
@@ -107,7 +108,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq

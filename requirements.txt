@@ -8,6 +8,8 @@ soupsieve  # To avoid warning with BeautifulSoup
 httpx
 python-docx>=1.1.2  # For processing Word documents
 Pillow  # For image handling in formatting utils
+openpyxl>=3.1.5  # For Excel workbook generation
+et-xmlfile>=1.1.0  # openpyxl dependency
 pytube>=15.0.0  # For YouTube video metadata and transcripts
 yt-dlp>=2023.12.30
 mutagen==1.47.0  # Audio file metadata handling, fixed version to avoid import issues
@@ -95,4 +97,6 @@ pydub
 watchdog  # For file system monitoring
 pydub  # For audio processing
 PyPDF2  # For PDF processing
-quickchart.io  # For chart generation
+quickchart-io  # For chart generation in ExportWord module
+# Note: Mermaid diagrams are limited to ~784px width due to mermaid.ink API constraints
+# SVG conversion libraries (cairosvg, svglib) have compatibility issues with Mermaid SVG output

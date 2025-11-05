@@ -1,0 +1,169 @@
+# nodes/accumulator_node.py
+from .base_node import BaseNode
+from node_registry import register_node
+
+@register_node('AccumulatorNode')
+class AccumulatorNode(BaseNode):
+    def __init__(self, node_id, config):
+        super().__init__(node_id=node_id, config=config)
+        # No need for instance variables; state will be stored in properties
+
+    def define_inputs(self):
+        return ['input']  # Single input named 'input'
+
+    def define_outputs(self):
+        return ['output']  # Single output named 'output'
+
+    def set_properties(self, node_data):
+        """
+        Ensures that self.properties is properly initialized with default values
+        and linked to node_data['properties'] to maintain state across invocations.
+        """
+        # Initialize properties with defaults
+        default_properties = self.define_properties()
+        existing_properties = node_data.get('properties', {})
+        # Merge existing properties with defaults
+        for key, value in default_properties.items():
+            if key not in existing_properties:
+                existing_properties[key] = value
+        self.properties = existing_properties
+        node_data['properties'] = self.properties
+
+    def define_properties(self):
+        props = self.get_default_properties()
+        props.update({
+            'node_name': {
+                'type': 'text',
+                'label': 'Custom Node Name',
+                'default': 'AccumulatorNode'
+            },
+            'description': {
+                'type': 'text',
+                'label': 'Description',
+                'default': 'Accumulates inputs over a specified number of iterations.'
+            },
+            'iterations': {
+                'type': 'number',
+                'label': 'Number of Iterations',
+                'default': 3,
+                'min': 1,
+                'description': 'Specify how many times to iterate.'
+            },
+            'append_accumulated_data': {
+                'type': 'boolean',
+                'label': 'Append Accumulated Data',
+                'default': False,
+                'description': 'If checked, appends "But completely different from the following prompts:" and the accumulated data to the initial input during iterations.'
+            },
+            'is_start_node': {
+                'type': 'boolean',
+                'label': 'Start Node',
+                'default': False
+            },
+            'is_end_node': {
+                'type': 'boolean',
+                'label': 'End Node',
+                'default': False
+            },
+            # Hidden properties for internal state
+            'initial_input': {
+                'type': 'hidden',
+                'default': ''
+            },
+            'accumulated_data': {
+                'type': 'hidden',
+                'default': ''
+            },
+            'iteration_count': {
+                'type': 'hidden',
+                'default': 0
+            }
+        })
+        return props
+
+    def process(self, inputs):
+        output = {}
+
+        # Check if we're already done
+        if self.properties.get('is_end_node', {}).get('default', False):
+            print("[AccumulatorNode] Node is already marked as end node. No further processing.")
+            return output
+
+        # Ensure internal state properties exist
+        for key in ['initial_input', 'accumulated_data', 'iteration_count', 'is_end_node', 'append_accumulated_data']:
+            if key not in self.properties:
+                default_value = False if key == 'append_accumulated_data' else ('' if key != 'iteration_count' else 0)
+                self.properties[key] = {'type': 'hidden', 'default': default_value}
+
+        # Retrieve the iterations property
+        iterations = self.properties.get('iterations', {}).get('default', 3)
+        try:
+            iterations = int(iterations)
+        except ValueError:
+            iterations = 3  # Fallback to default if conversion fails
+
+        # Get input text
+        input_text = inputs.get('input', '').strip()
+        if not input_text:
+            # No input to process
+            print("[AccumulatorNode] No input received.")
+            return output
+
+        # Retrieve internal state from properties
+        initial_input = self.properties['initial_input']['default']
+        accumulated_data = self.properties['accumulated_data']['default']
+        iteration_count = self.properties['iteration_count']['default']
+        append_accumulated_data = self.properties['append_accumulated_data']['default']
+        
+        try:
+            iteration_count = int(iteration_count)
+        except ValueError:
+            iteration_count = 0
+
+        # First input handling
+        if not initial_input:
+            # Store the first input and send it to output
+            self.properties['initial_input']['default'] = input_text
+            output['output'] = input_text
+            print(f"[AccumulatorNode] Stored initial input: '{input_text}'")
+            return output
+
+        # Increment iteration count
+        iteration_count += 1
+        self.properties['iteration_count']['default'] = iteration_count
+        print(f"[AccumulatorNode] Processing iteration {iteration_count}/{iterations}")
+        
+        # Store the current input in accumulated data
+        if accumulated_data:
+            accumulated_data += '\n\n' + input_text
+        else:
+            accumulated_data = input_text
+        self.properties['accumulated_data']['default'] = accumulated_data
+
+        # Check if we've reached the iteration limit
+        if iteration_count >= iterations:
+            # We've reached the limit, output accumulated data and mark as end
+            self.properties['is_end_node']['default'] = True
+            output['output'] = accumulated_data
+            print(f"[AccumulatorNode] Reached {iterations} iterations. Outputting accumulated data and ending.")
+            return output
+        
+        # Still accumulating - output the initial input
+        if append_accumulated_data:
+            output['output'] = initial_input + "\n\nBut completely different from the following prompts:\n" + accumulated_data
+        else:
+            output['output'] = initial_input
+            
+        print(f"[AccumulatorNode] Iteration {iteration_count}/{iterations} in progress.")
+        return output
+
+    def reset_state(self):
+        # Reset internal state in properties
+        self.properties['initial_input']['default'] = ''
+        self.properties['accumulated_data']['default'] = ''
+        self.properties['iteration_count']['default'] = 0
+        self.properties['is_end_node']['default'] = False
+        print(f"[AccumulatorNode] State has been reset.")
+
+    def requires_api_call(self):
+        return False  # This node does not make any API calls

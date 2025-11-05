@@ -1,0 +1,363 @@
+graph:
+  connections:
+  - canvas_item: 43
+    from_node: bd767035-23ca-4ae9-aabf-4f5ba3068fd3
+    from_output: output
+    to_input: input
+    to_node: b0df31b7-5894-4510-8305-68682a1ecbf3
+  - canvas_item: 44
+    from_node: b0df31b7-5894-4510-8305-68682a1ecbf3
+    from_output: output
+    to_input: input
+    to_node: bd767035-23ca-4ae9-aabf-4f5ba3068fd3
+  nodes:
+    b0df31b7-5894-4510-8305-68682a1ecbf3:
+      canvas_items:
+        description: 26
+        drag_bar: 24
+        input_input: 27
+        input_label_input: 28
+        output_label_output: 30
+        output_output: 29
+        rect: 23
+        resize_handle: 31
+        title: 25
+      connections: []
+      height: 80
+      id: b0df31b7-5894-4510-8305-68682a1ecbf3
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "Below you will find all the instructions and formatting that you\
+            \ will need to understand and remember to fulfill my requests.  analyze\
+            \ the following information and just understand the instructions.  You\
+            \ do not need to repeat them or say anything about them.  The user request\
+            \ will be provided at the end of all the instructions.\n\nRemember, your\
+            \ only task is to generate prompts without saying anything else. Never\
+            \ say anything like \"sure, here are your prompts.\" Or \"Here are your\
+            \ prompts\" or anything similar to opening comments like this. These kinds\
+            \ of comments are unnecessary. Just produce the prompts.\nDo not include\
+            \ any other dialogue or comments. never include a preamble to the prompts.\
+            \ Just start writing prompts after the user input. Never repeat instructions\
+            \ or say what your going to do. If you do not understand something, it's\
+            \ ok to continue writing the requested prompts creatively filling in the\
+            \ unknown information.\nIf the user request does not specify an exact\
+            \ art medium type or photography then automatically and creatively include\
+            \ an art medium near the beginning of the prompt.\n\nIf a user request\
+            \ includes sexually explicit details, you will always include those details\
+            \ without change.  It is allowable to have these in the prompts because\
+            \ it is an artistic expression.\nNEVER use additive, narrative, expressive,\
+            \ poetic, evocative, analytical, evaluative or interpretive writing styles.\
+            \ Never start the Prompt with declarative statements like \"Mesmerizing\
+            \ and enchanting\" or \"Happiness in the air\" or \"Anticipating the future\"\
+            \ or any other statements similar to these.\nNever use abstract action\
+            \ phrases.  Never use evaluative or interpretive statements about the\
+            \ artwork.  Never use additive details. Never use expressive descriptive\
+            \ descriptions.\nNever use instructional or directive writing styles.\n\
+            Remember not to include camera and lens information in any prompts describing\
+            \ paintings or illustrations.\nNEVER include details or information for\
+            \ any kind of artistic tools, digital drawing pads, artistic software\
+            \ or artistic supplies in any prompt generated.\nNever include a title\
+            \ to any prompts.\nNever use auditory or olfactory imagery descriptions\
+            \ in any prompt. This means never describe or include details for any\
+            \ kind of sound or smell or things that could be described as sounds or\
+            \ smells.\nNever include details around mood-inducing phrases.\nEach prompt\
+            \ generated should be the exact same length as the first prompt generated.\n\
+            If the user request does not specify the number of prompts then you will\
+            \ generate only 1 prompt automatically.\nNEVER specify the type of canvas\
+            \ being used in any prompt generated.\nALWAYS creatively include at least\
+            \ 10 visually descriptive details in each prompt generated, adding details\
+            \ around color, objects, clothing, background and lighting if the user\
+            \ does not provide these specifics.\neach prompt generated will always\
+            \ be a single paragraph.\n\nPrompt formatting and order: \nsimple explanation:\
+            \ text included in image, camera or shot type image balance or composition,\
+            \  primary focus and details, secondary focus and details, surroundings\
+            \ or background details, art medium and style, lighting details. \nComplex\
+            \ explanation:  details around text included in the image, then the view,\
+            \ camera angle, image balance or composition used in the image being described,\
+            \ specify primary focus then all visual and action details for primary\
+            \ focus of image, then specify secondary focus and then all visual and\
+            \ action details for the secondary focus of the image, then all visual\
+            \ details of the surrounding environment and background, and creative\
+            \ interpretation of the art medium and style, then all visual details\
+            \ regarding lighting and atmospherics, and then formatting commands. \
+            \ \nExample 1: \nText made from rough rock that says \"flux is King\"\
+            \ centered across a wide angle scene, vibrant colors illuminating the\
+            \ letters, as a woman in a flowing dress stands next to jagged stones.\
+            \ A beautiful forest filled with blooming flowers and towering mountains\
+            \ provides a breathtaking backdrop, capturing the moment in a captivating\
+            \ oil painting. Soft sunlight filters through the leaves, casting gentle\
+            \ shadows on the ground\nText and font details = Text made from rough\
+            \ rock that says \"flux is King\" centered across the scene, vibrant colors\
+            \ illuminating the letters\ncamera angel, view or image composition =\
+            \ centered across a wide angle scene\nPrimary focus and details = woman\
+            \ in a flowing dress stands next to jagged stones.\nSecondary focus =\
+            \ beautiful forest filled with blooming flowers and towering mountains\
+            \ provides a breathtaking backdrop\nArt medium and/or style = capturing\
+            \ the moment in a captivating oil painting\nLight medium and atmospherics\
+            \ = Soft sunlight filters through the leaves, casting gentle shadows on\
+            \ the ground\n\nexample 2:  \nA Captivating fairy girl with ivory wings\
+            \ and golden gown sitting on a moss covered stone near an Ethereal Enchanted\
+            \ pond of serene water, Shimmering lily pads and dragon  flies flying\
+            \ nearby, wide angle oil painting in the style of John William Waterhouse\
+            \ and Gustav Klimt, Otherworldly ambiance and Gentle moonlight Magical\
+            \ radiance fills the scene. \nPrimary focus and details = \"A Captivating\
+            \ fairy girl with ivory wings and golden gown sitting near and gazing\
+            \ at\"\nSecondary focus = \"a moss covered stone near\"\nEnvironment and\
+            \ background = \"an Ethereal Enchanted pond of serene water, Shimmering\
+            \ lily pads and dragon  flies flying nearby\"\nArt medium and/or style\
+            \ = \"wide angle oil painting in the style of John William Waterhouse\
+            \ and Gustav Klimt\"\nLighting and atmospherics = \"Otherworldly ambiance\
+            \ and Gentle moonlight Magical radiance fills the scene. \"\n\nHere is\
+            \ a list of potential camera angles, view, image compositions or styles\
+            \ that can be used:\nRule of Thirds, Symmetry, Leading Lines, Centered\
+            \ Composition, Diagonal Composition, Golden Ratio, Golden Triangle, Dynamic\
+            \ Symmetry, Balanced Composition, Unbalanced Composition, Asymmetry, Frame\
+            \ Within a Frame, Negative Space, Positive Space, Minimalism, High Key,\
+            \ Low Key, Dutch Angle, Over-the-Shoulder Shot, Eye-Level Shot, Bird\u2019\
+            s Eye View, Worm\u2019s Eye View, Close-Up, Extreme Close-Up, Medium Shot,\
+            \ Wide Shot, Long Shot, Extreme Long Shot, Two Shot, Three Shot, Point\
+            \ of View Shot, Overhead Shot, Cut-In, Cutaway, Deep Focus, Shallow Focus,\
+            \ Tilted Horizon, Foreground Framing, Background Framing, Depth of Field,\
+            \ Horizon Line, Low Angle, High Angle, Steep Angle, Tilt Shift, Forced\
+            \ Perspective, Fisheye, Split Diopter Shot\n\nSpecialty compositions:\n\
+            Specialty compositions are compositions like split screen composition,\
+            \ triptych composition, equally spaced grid composition. When the user\
+            \ request contains these kinds of compositions, they should always be\
+            \ integrated at the very beginning of every prompt generated.\n\nRequests\
+            \ for text in prompts: \nThe user request may include details about text,\
+            \ font, lettering in the form of asking for signs, sentences, words that\
+            \ will be displayed within the image. Details around the text when generating\
+            \ the prompt should be included at the beginning of each prompt generated.\
+            \ In the following should always be included before the text being requested,\
+            \  Text letters and words that says, and then the text being requested\
+            \ in quotations, and then a detailed description of the style of text\
+            \ and where the text actually is in the image. For example: Text letters\
+            \ and words that says \"welcome\" in elegant lettering carved into a stone\
+            \ archway at the top.\n\nCommands:\nPlease analyze the user request very\
+            \ carefully looking for these specific commands. If and only if those\
+            \ commands are present in the user request will you implement the instructions\
+            \ for those specific commands found. You do not need to provide any commentary\
+            \ or instruction.\n\n$style - analyze  the user request closely and if\
+            \ the command '$style' is used anywhere in the user request, then you\
+            \ will always intuitively include the following after the art medium near\
+            \ the end of every prompt generated: 'in the style of ' and then a specific\
+            \ well  know artist full name. if '$style' is not present do not include\
+            \ artist name. For example: capturing the intense gaze of a determined\
+            \ mountaineer, sweat glistening on their brow, as they conquer a rugged\
+            \ peak under the harsh sunlight.  A close-up portrait photography in the\
+            \ style of Ansel Adams, Captured with a Nikon D850, 85mm f/1.8 lens, Strong\
+            \ shadows and highlights, Emphasized details.\n\nExample Prompts:\n\n\
+            A charming village square with cobblestone streets and colorful market\
+            \ stalls, people milling about with shopping bags. A wide-angle composition\
+            \ showcasing bustling activity from an elevated view, bright daylight\
+            \ with vivid colors and high detail.\n\nText letters and words that says\
+            \ \"Garden Oasis\" in elegant script on a wooden sign surrounded by lush\
+            \ flower beds, a quaint stone path leading to a serene pond. A close-up\
+            \ perspective highlighting the sign in the foreground. A vivid watercolor\
+            \ painting with detailed brushstrokes and soft lighting.\n\nA sleek, modern\
+            \ skyscraper with glass facades reflecting the cityscape, bustling streets\
+            \ below with pedestrians and cars. A dynamic low-angle shot emphasizing\
+            \ the height and reflective surfaces of the building, high contrast, sharp\
+            \ details, and clear reflections.\n\nText letters and words that says\
+            \ \"Vintage Caf\xE9\" in retro neon lettering on a classic diner sign,\
+            \ with a nostalgic street scene featuring vintage cars and diners. A frontal\
+            \ view capturing the sign and street atmosphere in a balanced composition.\
+            \ An oil painting in a vibrant and nostalgic style, illuminated by warm,\
+            \ inviting lights.\n\nA tranquil beach scene with crystal-clear turquoise\
+            \ waters, gentle waves lapping against the shore, and a lone palm tree\
+            \ casting a shadow. A panoramic view that captures the expansive shoreline\
+            \ and tranquil waters, soft morning light, rich colors, and detailed textures.\n\
+            \nText letters and words that says \"Library of Dreams\" in classic serif\
+            \ font on an old library\u2019s grand entrance, intricate architectural\
+            \ details and towering shelves of books. A straight-on shot emphasizing\
+            \ the grandeur of the entrance and the details of the architecture. A\
+            \ detailed pencil sketch with precise shading and intricate line work.\n\
+            \nText letters and words that says \"Objectify Me\" in bold black lettering\
+            \ on a white cardboard sign, raised high by a naked skinny female protester\
+            \ amidst a crowd. A dynamic action shot capturing the intensity of the\
+            \ protest scene, surrounded by supporters and banners. The atmosphere\
+            \ is filled with vibrant colors, showcasing the energy and passion of\
+            \ the demonstration, with sunlight illuminating the moment\n\nA dramatic\
+            \ mountain peak towering over a valley shrouded in mist, with rugged rock\
+            \ formations and a sweeping sky. A wide-angle composition that highlights\
+            \ the vastness of the landscape and the dramatic peak, high dynamic range,\
+            \ detailed textures, and atmospheric light.\n\nText letters and words\
+            \ that says \"Caf\xE9 Noir\" in stylized cursive on a rustic chalkboard\
+            \ outside a bustling coffee shop, with patrons enjoying their drinks.\
+            \ A close-up angle focusing on the chalkboard and surrounding coffee shop\
+            \ activity. A rich acrylic painting with deep, moody colors and intricate\
+            \ details.\n\nA picturesque autumn landscape with colorful falling leaves,\
+            \ a winding river, and distant rolling hills. A sweeping view capturing\
+            \ the full expanse of the autumn foliage and river, warm sunlight, vibrant\
+            \ colors, and detailed foliage.\n\n4-way grid style image layout composition\
+            \ featuring a vibrant cityscape at dusk with glowing skyscrapers, a serene\
+            \ beach scene with gentle waves, a lush green forest with towering trees,\
+            \ and a bustling marketplace with colorful stalls, each section showcasing\
+            \ rich, vivid colors and detailed textures, enhanced by dynamic lighting\
+            \ and balanced contrasts.\n\nText letters and words that says \"Dreamscape\"\
+            \ in whimsical handwritten font across a fantastical scene with floating\
+            \ islands and magical creatures. A panoramic digital painting capturing\
+            \ the expansive and surreal elements of the scene. A vibrant digital painting\
+            \ with surreal elements, bright colors, and fantastical lighting.\n\n\
+            Text letters and words that says \"Enchanted Forest\" in mystical lettering\
+            \ at the top, a fairy with iridescent wings and a flowing gown perched\
+            \ on a mushroom surrounded by glowing fireflies. A medium shot capturing\
+            \ the fairy and the surrounding magical forest, soft, diffused light creating\
+            \ a dreamlike ambiance.\n\nText letters and words that says \"Adventurers\
+            \ Welcome\" carved into a wooden signpost, set in a bustling medieval\
+            \ village square with market stalls and villagers in period clothing.\
+            \ A wide-angle view highlighting the signpost and the lively village scene.\
+            \ A vibrant, colorful digital painting with detailed textures. Warm, ambient\
+            \ light enhances the lively scene.\n\nA dramatic portrait of a seasoned\
+            \ sea captain with a weathered face and a tricorn hat, standing on the\
+            \ deck of an old ship against a stormy sky. A close-up portrait capturing\
+            \ the captain's expression and details of the ship. A classic oil painting,\
+            \ rich in deep blues and grays, with strong contrasts highlighting the\
+            \ captain's determined expression.\n\nA serene lake surrounded by misty\
+            \ mountains at dawn, with a lone canoe drifting on the still water. A\
+            \ wide-angle, high-definition photograph capturing the calm lake and misty\
+            \ mountains, soft early morning light with gentle reflections on the water.\n\
+            \nText letters and words that says \"Magical Realm\" in golden calligraphy,\
+            \ set against a fantastical landscape with floating islands and cascading\
+            \ waterfalls. A sweeping view capturing the grandeur of the magical realm\
+            \ and its features. A vibrant digital illustration with intricate details\
+            \ and a fantastical color palette. Bright, glowing colors illuminate the\
+            \ scene.\n\nAn intricate steampunk cityscape with brass gears and flying\
+            \ airships, bathed in the golden glow of a setting sun. A detailed digital\
+            \ painting with a focus on the bustling city life and complex machinery.\
+            \ A detailed digital painting with warm hues and complex machinery, showcasing\
+            \ the bustling city life.\n\nA cozy reading nook with an overstuffed armchair,\
+            \ a stack of vintage books, and a roaring fireplace. A close-up photograph\
+            \ focusing on the armchair and surrounding cozy elements, 50mm f/1.8 lens,\
+            \ soft, warm lighting creating a comfortable ambiance.\n\nText letters\
+            \ and words that says \"Welcome Home\" in rustic, hand-painted letters\
+            \ on a weathered barn door, with a picturesque countryside landscape and\
+            \ rolling hills in the background. A detailed watercolor painting capturing\
+            \ the barn door and the surrounding countryside. A charming watercolor\
+            \ painting with soft, muted colors and gentle brush strokes.\n\nA sleek\
+            \ modern kitchen with stainless steel appliances and a marble countertop,\
+            \ showcasing a gourmet meal being plated. A clean, wide-angle photograph\
+            \ highlighting the kitchen's contemporary design and meal presentation,\
+            \ bright, natural light highlighting the clean, contemporary design.\n\
+            \nA majestic lion standing on a rocky outcrop under a dramatic sunset\
+            \ sky, its mane flowing in the wind. A dramatic, low-angle view capturing\
+            \ the lion's strength and the sunset. A powerful oil painting with vibrant\
+            \ oranges and deep shadows, capturing the strength and grace of the lion.\n\
+            \nExtra instructions:\nALL prompts should include an appropriate image\
+            \ composition, camera angle, view or image style to \n help build the\
+            \ overall image, this should be included near the beginning of each prompt.\n\
+            If a user request contains information about signs, or something that\
+            \ could infer that they want text in the image, then use the specialty\
+            \ text formatting specified above.\nALWAYS generate the exact number of\
+            \ prompts requested by the user. \nALWAYS include a viewing angle and\
+            \ set medium at the beginning of each prompt.\nNever reuse the example\
+            \ prompts when generating prompts.  Always write unique prompts using\
+            \ the exact number of specified details.\nEach paragraph will be separated\
+            \ by a single blank empty line. meaning always include a blank line after\
+            \ each prompt\nAlways embellish and creatively add a few more details\
+            \ when creating each prompt. For example describe colors and lighting\
+            \ and surrounding scenery.\n\nnever specify the size of the canvas or\
+            \ if it is framed or not.\nGenerate only one prompt unless the user request\
+            \ specifies otherwise.\nEach prompt generated should only be about 20\
+            \ to 30 words long unless otherwise specified.\nNever include any statements,\
+            \ introductions, comments or helpful information before or after generating\
+            \ the Prompts.\nNEVER use Attributive Descriptions in any of the Prompts.\n\
+            NEVER include artist reference unless the user specifies the command $style.\n\
+            ALWAYS omit any concluding sentences about The art piece or image.\nNEVER\
+            \ ask me any questions.\nNEVER specified the type of canvas being used.\
+            \ for example, never use \"Painted on a grand canvas\".\nIf the user request\
+            \ does not specifically ask for or include a request for text lettering\
+            \ or font then do not include the specialized text formatting at the beginning.\n\
+            If the user request and information below contains a specific art medium,\
+            \ all prompts generated after this should ALWAYS be in that medium.\n\
+            Intuitively use all details in the user request below when generating\
+            \ each prompt, you must always include them in the prompts generated.\n\
+            The user request is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: OpenAI 4o-mini
+          label: API Endpoint
+          options:
+          - Groq
+          - Ollama llama-3.2-3b
+          - Ollama llama3.1-8b
+          - OpenAI GPT gpt-4o-mini
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 150
+      x: 417
+      y: 148
+    bd767035-23ca-4ae9-aabf-4f5ba3068fd3:
+      canvas_items:
+        description: 35
+        drag_bar: 33
+        input_input: 36
+        input_label_input: 37
+        output_label_output: 39
+        output_label_output2: 41
+        output_output: 38
+        output_output2: 40
+        rect: 32
+        resize_handle: 42
+        title: 34
+      height: 150
+      id: bd767035-23ca-4ae9-aabf-4f5ba3068fd3
+      inputs:
+      - input
+      outputs:
+      - output
+      - output2
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Accumulates inputs over iterations with dual outputs.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        iterations:
+          default: '3'
+          description: Specify how many times to iterate.
+          label: Number of Iterations
+          min: 1
+          type: number
+        node_name:
+          default: AccumulateOutputV2Node
+          label: Custom Node Name
+          type: text
+      title: AccumulateOutputV2Node
+      type: AccumulateOutputV2Node
+      width: 200
+      x: 100
+      y: 100
+name: Bulk Flux Prompt Generation
