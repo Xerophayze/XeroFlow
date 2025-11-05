@@ -3,17 +3,17 @@ graph:
   nodes:
     add862e1-0ed5-4d9a-96e7-827fa6737ff8:
       canvas_items:
-        description: 4
-        drag_bar: 2
-        input_gui_queue: 7
-        input_input: 5
-        input_label_gui_queue: 8
-        input_label_input: 6
-        output_chat_history: 9
-        output_label_chat_history: 10
-        rect: 1
-        resize_handle: 11
-        title: 3
+        description: 15
+        drag_bar: 13
+        input_gui_queue: 18
+        input_input: 16
+        input_label_gui_queue: 19
+        input_label_input: 17
+        output_chat_history: 20
+        output_label_chat_history: 21
+        rect: 12
+        resize_handle: 22
+        title: 14
       height: 150
       highlight_state: false
       id: add862e1-0ed5-4d9a-96e7-827fa6737ff8
@@ -27,7 +27,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq

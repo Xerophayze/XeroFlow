@@ -1,0 +1,72 @@
+graph:
+  connections: []
+  nodes:
+    07d1a95d-7c28-47d6-9d9c-5c4acd202695:
+      canvas_items:
+        description: 11
+        drag_bar: 9
+        output_label_output: 13
+        output_output: 12
+        rect: 8
+        resize_handle: 14
+        title: 10
+      height: 150
+      id: 07d1a95d-7c28-47d6-9d9c-5c4acd202695
+      inputs: []
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: 'use the information below to provide me with a well formatted
+            technical document containing all relevant information and facts provided
+            below:
+
+            '
+          label: Prompt Template
+          type: text
+        description:
+          default: Monitors a folder for text and audio files, processes them through
+            respective APIs.
+          label: Description
+          type: text
+        inbox_folder:
+          default: G:\Shared drives\Eric Thorup\Inbox
+          label: Inbox Folder Path
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: AssistantNode
+          label: Custom Node Name
+          type: text
+        outbox_folder:
+          default: G:\Shared drives\Eric Thorup\Outbox
+          label: Outbox Folder Path
+          type: text
+        text_api_endpoint:
+          default: OpenAI 03-mini
+          label: Text Processing API
+          options: &id001
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          refresh_trigger: true
+          type: dropdown
+        whisper_api_endpoint:
+          default: OpenAI Whisper
+          label: Audio Transcription API
+          options: *id001
+          refresh_trigger: true
+          type: dropdown
+      title: AssistantNode
+      type: AssistantNode
+      width: 200
+      x: 100
+      y: 100
+name: assistant

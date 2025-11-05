@@ -3,14 +3,18 @@ graph:
   nodes:
     8e1328be-d8bb-4579-96df-46d9a292e168:
       canvas_items:
+        description: 13
+        drag_bar: 11
         input_input: 14
-        output_urls: 15
-        prop_description: 13
+        input_label_input: 15
+        output_label_urls: 17
+        output_urls: 16
         rect: 10
-        resize_handle: 16
-        title: 11
+        resize_handle: 18
+        title: 12
       connections: []
       height: 80
+      highlight_state: false
       id: 8e1328be-d8bb-4579-96df-46d9a292e168
       inputs:
       - input
@@ -42,7 +46,7 @@ graph:
           default: ''
           type: textarea
         searxng_api_url:
-          default: http://xeroserv:8888/search
+          default: http://searxng.local:8888/search
           type: text
       title: WebSearchNode
       type: WebSearchNode

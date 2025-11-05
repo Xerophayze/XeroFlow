@@ -1,0 +1,2171 @@
+Loaded configuration from 'config.yaml'.
+Available API Interfaces: ['Groq', 'Ollama llama-3.2-3b', 'Ollama llama3.1-8b', 'OpenAI GPT gpt-4o-mini']
+Starting to process the node graph with start node ID: 0841bdbd-6bda-4239-b2f5-1d835f03c6f0
+[TTSNode] Using API URL: http://192.168.76.115:7864
+[TTSNode] Reference Audio URL: http://192.168.76.115:8080/EricVoice1.wav
+[TTSNode] Output Directory: H:\Personal\hobbies\AI-Writing\Raw output\
+[TTSNode] Input text: aergewrgwergwe
+Loaded as API: http://192.168.76.115:7864/ ✔
+[TTSNode] Created Gradio client
+Client.predict() Usage Info
+---------------------------
+Named API endpoints: 219
+
+ - predict(new_choice, api_name="/switch_tts_model") -> (model_local_path__hfuser_idrepo_idmodel_ckpt, vocab_local_path__hfuser_idrepo_idvocab_file, config_in_a_dictionary_form)
+    Parameters:
+     - [Radio] new_choice: Literal['F5-TTS', 'E2-TTS', 'Custom'] (not required, defaults to:   F5-TTS)
+    Returns:
+     - [Dropdown] model_local_path__hfuser_idrepo_idmodel_ckpt: Literal['hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors']
+     - [Dropdown] vocab_local_path__hfuser_idrepo_idvocab_file: Literal['hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt']
+     - [Dropdown] config_in_a_dictionary_form: Literal['{"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}', '{"dim": 768, "depth": 18, "heads": 12, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}']
+
+ - predict(custom_ckpt_path, custom_vocab_path, custom_model_cfg, api_name="/set_custom_model") ->
+    Parameters:
+     - [Dropdown] custom_ckpt_path: Literal['hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors'] (not required, defaults to:   hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors)
+     - [Dropdown] custom_vocab_path: Literal['hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt'] (not required, defaults to:   hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt)
+     - [Dropdown] custom_model_cfg: Literal['{"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}', '{"dim": 768, "depth": 18, "heads": 12, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}'] (not required, defaults to:   {"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4})
+    Returns:
+     - None
+
+ - predict(custom_ckpt_path, custom_vocab_path, custom_model_cfg, api_name="/set_custom_model_1") ->
+    Parameters:
+     - [Dropdown] custom_ckpt_path: Literal['hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors'] (not required, defaults to:   hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors)
+     - [Dropdown] custom_vocab_path: Literal['hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt'] (not required, defaults to:   hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt)
+     - [Dropdown] custom_model_cfg: Literal['{"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}', '{"dim": 768, "depth": 18, "heads": 12, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}'] (not required, defaults to:   {"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4})
+    Returns:
+     - None
+
+ - predict(custom_ckpt_path, custom_vocab_path, custom_model_cfg, api_name="/set_custom_model_2") ->
+    Parameters:
+     - [Dropdown] custom_ckpt_path: Literal['hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors'] (not required, defaults to:   hf://SWivid/F5-TTS/F5TTS_Base/model_1200000.safetensors)
+     - [Dropdown] custom_vocab_path: Literal['hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt'] (not required, defaults to:   hf://SWivid/F5-TTS/F5TTS_Base/vocab.txt)
+     - [Dropdown] custom_model_cfg: Literal['{"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}', '{"dim": 768, "depth": 18, "heads": 12, "ff_mult": 2, "text_dim": 512, "conv_layers": 4}'] (not required, defaults to:   {"dim": 1024, "depth": 22, "heads": 16, "ff_mult": 2, "text_dim": 512, "conv_layers": 4})
+    Returns:
+     - None
+
+ - predict(ref_audio_input, ref_text_input, gen_text_input, remove_silence, cross_fade_duration_slider, nfe_slider, speed_slider, api_name="/basic_tts") -> (synthesized_audio, spectrogram, reference_text)
+    Parameters:
+     - [Audio] ref_audio_input: filepath (required)
+     - [Textbox] ref_text_input: str (required)
+     - [Textbox] gen_text_input: str (required)
+     - [Checkbox] remove_silence: bool (not required, defaults to:   False)
+     - [Slider] cross_fade_duration_slider: float (not required, defaults to:   0.15)  (numeric value between 0.0 and 1.0)
+     - [Slider] nfe_slider: float (not required, defaults to:   32)  (numeric value between 4 and 64)
+     - [Slider] speed_slider: float (not required, defaults to:   1.0)  (numeric value between 0.3 and 2.0)
+    Returns:
+     - [Audio] synthesized_audio: filepath
+     - [Image] spectrogram: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/add_speech_type_fn") ->
+    Parameters:
+     - None
+    Returns:
+     - None
+
+ - predict(api_name="/delete_speech_type_fn") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_1") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_2") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_3") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_4") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_5") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_6") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_7") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_8") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_9") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_10") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_11") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_12") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_13") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_14") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_15") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_16") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_17") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_18") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_19") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_20") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_21") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_22") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_23") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_24") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_25") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_26") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_27") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_28") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_29") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_30") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_31") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_32") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_33") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_34") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_35") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_36") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_37") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_38") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_39") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_40") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_41") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_42") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_43") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_44") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_45") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_46") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_47") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_48") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_49") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_50") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_51") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_52") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_53") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_54") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_55") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_56") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_57") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_58") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_59") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_60") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_61") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_62") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_63") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_64") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_65") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_66") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_67") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_68") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_69") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_70") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_71") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_72") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_73") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_74") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_75") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_76") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_77") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_78") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_79") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_80") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_81") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_82") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_83") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_84") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_85") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_86") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_87") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_88") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_89") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_90") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_91") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_92") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_93") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_94") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_95") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_96") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_97") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/delete_speech_type_fn_98") -> (speech_type_name, reference_audio, reference_text)
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] speech_type_name: str
+     - [Audio] reference_audio: filepath
+     - [Textbox] reference_text: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (not required, defaults to:   Regular)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_1") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_2") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_3") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_4") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_5") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_6") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_7") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_8") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_9") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_10") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_11") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_12") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_13") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_14") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_15") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_16") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_17") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_18") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_19") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_20") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_21") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_22") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_23") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_24") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_25") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_26") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_27") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_28") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_29") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_30") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_31") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_32") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_33") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_34") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_35") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_36") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_37") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_38") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_39") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_40") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_41") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_42") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_43") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_44") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_45") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_46") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_47") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_48") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_49") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_50") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_51") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_52") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_53") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_54") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_55") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_56") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_57") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_58") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_59") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_60") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_61") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_62") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_63") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_64") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_65") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_66") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_67") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_68") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_69") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_70") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_71") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_72") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_73") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_74") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_75") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_76") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_77") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_78") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_79") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_80") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_81") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_82") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_83") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_84") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_85") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_86") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_87") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_88") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_89") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_90") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_91") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_92") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_93") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_94") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_95") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_96") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_97") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_98") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(current_text, speech_type_name, api_name="/insert_speech_type_fn_99") -> text_to_generate
+    Parameters:
+     - [Textbox] current_text: str (required)
+     - [Textbox] speech_type_name: str (required)
+    Returns:
+     - [Textbox] text_to_generate: str
+
+ - predict(gen_text, param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10, param_11, param_12, param_13, param_14, param_15, param_16, param_17, param_18, param_19, param_20, param_21, param_22, param_23, param_24, param_25, param_26, param_27, param_28, param_29, param_30, param_31, param_32, param_33, param_34, param_35, param_36, param_37, param_38, param_39, param_40, param_41, param_42, param_43, param_44, param_45, param_46, param_47, param_48, param_49, param_50, param_51, param_52, param_53, param_54, param_55, param_56, param_57, param_58, param_59, param_60, param_61, param_62, param_63, param_64, param_65, param_66, param_67, param_68, param_69, param_70, param_71, param_72, param_73, param_74, param_75, param_76, param_77, param_78, param_79, param_80, param_81, param_82, param_83, param_84, param_85, param_86, param_87, param_88, param_89, param_90, param_91, param_92, param_93, param_94, param_95, param_96, param_97, param_98, param_99, param_100, param_101, param_102, param_103, param_104, param_105, param_106, param_107, param_108, param_109, param_110, param_111, param_112, param_113, param_114, param_115, param_116, param_117, param_118, param_119, param_120, param_121, param_122, param_123, param_124, param_125, param_126, param_127, param_128, param_129, param_130, param_131, param_132, param_133, param_134, param_135, param_136, param_137, param_138, param_139, param_140, param_141, param_142, param_143, param_144, param_145, param_146, param_147, param_148, param_149, param_150, param_151, param_152, param_153, param_154, param_155, param_156, param_157, param_158, param_159, param_160, param_161, param_162, param_163, param_164, param_165, param_166, param_167, param_168, param_169, param_170, param_171, param_172, param_173, param_174, param_175, param_176, param_177, param_178, param_179, param_180, param_181, param_182, param_183, param_184, param_185, param_186, param_187, param_188, param_189, param_190, param_191, param_192, param_193, param_194, param_195, param_196, param_197, param_198, param_199, param_200, param_201, param_202, param_203, param_204, param_205, param_206, param_207, param_208, param_209, param_210, param_211, param_212, param_213, param_214, param_215, param_216, param_217, param_218, param_219, param_220, param_221, param_222, param_223, param_224, param_225, param_226, param_227, param_228, param_229, param_230, param_231, param_232, param_233, param_234, param_235, param_236, param_237, param_238, param_239, param_240, param_241, param_242, param_243, param_244, param_245, param_246, param_247, param_248, param_249, param_250, param_251, param_252, param_253, param_254, param_255, param_256, param_257, param_258, param_259, param_260, param_261, param_262, param_263, param_264, param_265, param_266, param_267, param_268, param_269, param_270, param_271, param_272, param_273, param_274, param_275, param_276, param_277, param_278, param_279, param_280, param_281, param_282, param_283, param_284, param_285, param_286, param_287, param_288, param_289, param_290, param_291, param_292, param_293, param_294, param_295, param_296, param_297, param_298, param_299, param_300, param_301, api_name="/generate_multistyle_speech") -> (synthesized_audio, reference_text_regular, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text, reference_text)
+    Parameters:
+     - [Textbox] gen_text: str (required)
+     - [Textbox] param_1: str (not required, defaults to:   Regular)
+     - [Textbox] param_2: str (required)
+     - [Textbox] param_3: str (required)
+     - [Textbox] param_4: str (required)
+     - [Textbox] param_5: str (required)
+     - [Textbox] param_6: str (required)
+     - [Textbox] param_7: str (required)
+     - [Textbox] param_8: str (required)
+     - [Textbox] param_9: str (required)
+     - [Textbox] param_10: str (required)
+     - [Textbox] param_11: str (required)
+     - [Textbox] param_12: str (required)
+     - [Textbox] param_13: str (required)
+     - [Textbox] param_14: str (required)
+     - [Textbox] param_15: str (required)
+     - [Textbox] param_16: str (required)
+     - [Textbox] param_17: str (required)
+     - [Textbox] param_18: str (required)
+     - [Textbox] param_19: str (required)
+     - [Textbox] param_20: str (required)
+     - [Textbox] param_21: str (required)
+     - [Textbox] param_22: str (required)
+     - [Textbox] param_23: str (required)
+     - [Textbox] param_24: str (required)
+     - [Textbox] param_25: str (required)
+     - [Textbox] param_26: str (required)
+     - [Textbox] param_27: str (required)
+     - [Textbox] param_28: str (required)
+     - [Textbox] param_29: str (required)
+     - [Textbox] param_30: str (required)
+     - [Textbox] param_31: str (required)
+     - [Textbox] param_32: str (required)
+     - [Textbox] param_33: str (required)
+     - [Textbox] param_34: str (required)
+     - [Textbox] param_35: str (required)
+     - [Textbox] param_36: str (required)
+     - [Textbox] param_37: str (required)
+     - [Textbox] param_38: str (required)
+     - [Textbox] param_39: str (required)
+     - [Textbox] param_40: str (required)
+     - [Textbox] param_41: str (required)
+     - [Textbox] param_42: str (required)
+     - [Textbox] param_43: str (required)
+     - [Textbox] param_44: str (required)
+     - [Textbox] param_45: str (required)
+     - [Textbox] param_46: str (required)
+     - [Textbox] param_47: str (required)
+     - [Textbox] param_48: str (required)
+     - [Textbox] param_49: str (required)
+     - [Textbox] param_50: str (required)
+     - [Textbox] param_51: str (required)
+     - [Textbox] param_52: str (required)
+     - [Textbox] param_53: str (required)
+     - [Textbox] param_54: str (required)
+     - [Textbox] param_55: str (required)
+     - [Textbox] param_56: str (required)
+     - [Textbox] param_57: str (required)
+     - [Textbox] param_58: str (required)
+     - [Textbox] param_59: str (required)
+     - [Textbox] param_60: str (required)
+     - [Textbox] param_61: str (required)
+     - [Textbox] param_62: str (required)
+     - [Textbox] param_63: str (required)
+     - [Textbox] param_64: str (required)
+     - [Textbox] param_65: str (required)
+     - [Textbox] param_66: str (required)
+     - [Textbox] param_67: str (required)
+     - [Textbox] param_68: str (required)
+     - [Textbox] param_69: str (required)
+     - [Textbox] param_70: str (required)
+     - [Textbox] param_71: str (required)
+     - [Textbox] param_72: str (required)
+     - [Textbox] param_73: str (required)
+     - [Textbox] param_74: str (required)
+     - [Textbox] param_75: str (required)
+     - [Textbox] param_76: str (required)
+     - [Textbox] param_77: str (required)
+     - [Textbox] param_78: str (required)
+     - [Textbox] param_79: str (required)
+     - [Textbox] param_80: str (required)
+     - [Textbox] param_81: str (required)
+     - [Textbox] param_82: str (required)
+     - [Textbox] param_83: str (required)
+     - [Textbox] param_84: str (required)
+     - [Textbox] param_85: str (required)
+     - [Textbox] param_86: str (required)
+     - [Textbox] param_87: str (required)
+     - [Textbox] param_88: str (required)
+     - [Textbox] param_89: str (required)
+     - [Textbox] param_90: str (required)
+     - [Textbox] param_91: str (required)
+     - [Textbox] param_92: str (required)
+     - [Textbox] param_93: str (required)
+     - [Textbox] param_94: str (required)
+     - [Textbox] param_95: str (required)
+     - [Textbox] param_96: str (required)
+     - [Textbox] param_97: str (required)
+     - [Textbox] param_98: str (required)
+     - [Textbox] param_99: str (required)
+     - [Textbox] param_100: str (required)
+     - [Audio] param_101: filepath (required)
+     - [Audio] param_102: filepath (required)
+     - [Audio] param_103: filepath (required)
+     - [Audio] param_104: filepath (required)
+     - [Audio] param_105: filepath (required)
+     - [Audio] param_106: filepath (required)
+     - [Audio] param_107: filepath (required)
+     - [Audio] param_108: filepath (required)
+     - [Audio] param_109: filepath (required)
+     - [Audio] param_110: filepath (required)
+     - [Audio] param_111: filepath (required)
+     - [Audio] param_112: filepath (required)
+     - [Audio] param_113: filepath (required)
+     - [Audio] param_114: filepath (required)
+     - [Audio] param_115: filepath (required)
+     - [Audio] param_116: filepath (required)
+     - [Audio] param_117: filepath (required)
+     - [Audio] param_118: filepath (required)
+     - [Audio] param_119: filepath (required)
+     - [Audio] param_120: filepath (required)
+     - [Audio] param_121: filepath (required)
+     - [Audio] param_122: filepath (required)
+     - [Audio] param_123: filepath (required)
+     - [Audio] param_124: filepath (required)
+     - [Audio] param_125: filepath (required)
+     - [Audio] param_126: filepath (required)
+     - [Audio] param_127: filepath (required)
+     - [Audio] param_128: filepath (required)
+     - [Audio] param_129: filepath (required)
+     - [Audio] param_130: filepath (required)
+     - [Audio] param_131: filepath (required)
+     - [Audio] param_132: filepath (required)
+     - [Audio] param_133: filepath (required)
+     - [Audio] param_134: filepath (required)
+     - [Audio] param_135: filepath (required)
+     - [Audio] param_136: filepath (required)
+     - [Audio] param_137: filepath (required)
+     - [Audio] param_138: filepath (required)
+     - [Audio] param_139: filepath (required)
+     - [Audio] param_140: filepath (required)
+     - [Audio] param_141: filepath (required)
+     - [Audio] param_142: filepath (required)
+     - [Audio] param_143: filepath (required)
+     - [Audio] param_144: filepath (required)
+     - [Audio] param_145: filepath (required)
+     - [Audio] param_146: filepath (required)
+     - [Audio] param_147: filepath (required)
+     - [Audio] param_148: filepath (required)
+     - [Audio] param_149: filepath (required)
+     - [Audio] param_150: filepath (required)
+     - [Audio] param_151: filepath (required)
+     - [Audio] param_152: filepath (required)
+     - [Audio] param_153: filepath (required)
+     - [Audio] param_154: filepath (required)
+     - [Audio] param_155: filepath (required)
+     - [Audio] param_156: filepath (required)
+     - [Audio] param_157: filepath (required)
+     - [Audio] param_158: filepath (required)
+     - [Audio] param_159: filepath (required)
+     - [Audio] param_160: filepath (required)
+     - [Audio] param_161: filepath (required)
+     - [Audio] param_162: filepath (required)
+     - [Audio] param_163: filepath (required)
+     - [Audio] param_164: filepath (required)
+     - [Audio] param_165: filepath (required)
+     - [Audio] param_166: filepath (required)
+     - [Audio] param_167: filepath (required)
+     - [Audio] param_168: filepath (required)
+     - [Audio] param_169: filepath (required)
+     - [Audio] param_170: filepath (required)
+     - [Audio] param_171: filepath (required)
+     - [Audio] param_172: filepath (required)
+     - [Audio] param_173: filepath (required)
+     - [Audio] param_174: filepath (required)
+     - [Audio] param_175: filepath (required)
+     - [Audio] param_176: filepath (required)
+     - [Audio] param_177: filepath (required)
+     - [Audio] param_178: filepath (required)
+     - [Audio] param_179: filepath (required)
+     - [Audio] param_180: filepath (required)
+     - [Audio] param_181: filepath (required)
+     - [Audio] param_182: filepath (required)
+     - [Audio] param_183: filepath (required)
+     - [Audio] param_184: filepath (required)
+     - [Audio] param_185: filepath (required)
+     - [Audio] param_186: filepath (required)
+     - [Audio] param_187: filepath (required)
+     - [Audio] param_188: filepath (required)
+     - [Audio] param_189: filepath (required)
+     - [Audio] param_190: filepath (required)
+     - [Audio] param_191: filepath (required)
+     - [Audio] param_192: filepath (required)
+     - [Audio] param_193: filepath (required)
+     - [Audio] param_194: filepath (required)
+     - [Audio] param_195: filepath (required)
+     - [Audio] param_196: filepath (required)
+     - [Audio] param_197: filepath (required)
+     - [Audio] param_198: filepath (required)
+     - [Audio] param_199: filepath (required)
+     - [Audio] param_200: filepath (required)
+     - [Textbox] param_201: str (required)
+     - [Textbox] param_202: str (required)
+     - [Textbox] param_203: str (required)
+     - [Textbox] param_204: str (required)
+     - [Textbox] param_205: str (required)
+     - [Textbox] param_206: str (required)
+     - [Textbox] param_207: str (required)
+     - [Textbox] param_208: str (required)
+     - [Textbox] param_209: str (required)
+     - [Textbox] param_210: str (required)
+     - [Textbox] param_211: str (required)
+     - [Textbox] param_212: str (required)
+     - [Textbox] param_213: str (required)
+     - [Textbox] param_214: str (required)
+     - [Textbox] param_215: str (required)
+     - [Textbox] param_216: str (required)
+     - [Textbox] param_217: str (required)
+     - [Textbox] param_218: str (required)
+     - [Textbox] param_219: str (required)
+     - [Textbox] param_220: str (required)
+     - [Textbox] param_221: str (required)
+     - [Textbox] param_222: str (required)
+     - [Textbox] param_223: str (required)
+     - [Textbox] param_224: str (required)
+     - [Textbox] param_225: str (required)
+     - [Textbox] param_226: str (required)
+     - [Textbox] param_227: str (required)
+     - [Textbox] param_228: str (required)
+     - [Textbox] param_229: str (required)
+     - [Textbox] param_230: str (required)
+     - [Textbox] param_231: str (required)
+     - [Textbox] param_232: str (required)
+     - [Textbox] param_233: str (required)
+     - [Textbox] param_234: str (required)
+     - [Textbox] param_235: str (required)
+     - [Textbox] param_236: str (required)
+     - [Textbox] param_237: str (required)
+     - [Textbox] param_238: str (required)
+     - [Textbox] param_239: str (required)
+     - [Textbox] param_240: str (required)
+     - [Textbox] param_241: str (required)
+     - [Textbox] param_242: str (required)
+     - [Textbox] param_243: str (required)
+     - [Textbox] param_244: str (required)
+     - [Textbox] param_245: str (required)
+     - [Textbox] param_246: str (required)
+     - [Textbox] param_247: str (required)
+     - [Textbox] param_248: str (required)
+     - [Textbox] param_249: str (required)
+     - [Textbox] param_250: str (required)
+     - [Textbox] param_251: str (required)
+     - [Textbox] param_252: str (required)
+     - [Textbox] param_253: str (required)
+     - [Textbox] param_254: str (required)
+     - [Textbox] param_255: str (required)
+     - [Textbox] param_256: str (required)
+     - [Textbox] param_257: str (required)
+     - [Textbox] param_258: str (required)
+     - [Textbox] param_259: str (required)
+     - [Textbox] param_260: str (required)
+     - [Textbox] param_261: str (required)
+     - [Textbox] param_262: str (required)
+     - [Textbox] param_263: str (required)
+     - [Textbox] param_264: str (required)
+     - [Textbox] param_265: str (required)
+     - [Textbox] param_266: str (required)
+     - [Textbox] param_267: str (required)
+     - [Textbox] param_268: str (required)
+     - [Textbox] param_269: str (required)
+     - [Textbox] param_270: str (required)
+     - [Textbox] param_271: str (required)
+     - [Textbox] param_272: str (required)
+     - [Textbox] param_273: str (required)
+     - [Textbox] param_274: str (required)
+     - [Textbox] param_275: str (required)
+     - [Textbox] param_276: str (required)
+     - [Textbox] param_277: str (required)
+     - [Textbox] param_278: str (required)
+     - [Textbox] param_279: str (required)
+     - [Textbox] param_280: str (required)
+     - [Textbox] param_281: str (required)
+     - [Textbox] param_282: str (required)
+     - [Textbox] param_283: str (required)
+     - [Textbox] param_284: str (required)
+     - [Textbox] param_285: str (required)
+     - [Textbox] param_286: str (required)
+     - [Textbox] param_287: str (required)
+     - [Textbox] param_288: str (required)
+     - [Textbox] param_289: str (required)
+     - [Textbox] param_290: str (required)
+     - [Textbox] param_291: str (required)
+     - [Textbox] param_292: str (required)
+     - [Textbox] param_293: str (required)
+     - [Textbox] param_294: str (required)
+     - [Textbox] param_295: str (required)
+     - [Textbox] param_296: str (required)
+     - [Textbox] param_297: str (required)
+     - [Textbox] param_298: str (required)
+     - [Textbox] param_299: str (required)
+     - [Textbox] param_300: str (required)
+     - [Checkbox] param_301: bool (not required, defaults to:   True)
+    Returns:
+     - [Audio] synthesized_audio: filepath
+     - [Textbox] reference_text_regular: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+     - [Textbox] reference_text: str
+
+ - predict(gen_text, regular_name, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10, param_11, param_12, param_13, param_14, param_15, param_16, param_17, param_18, param_19, param_20, param_21, param_22, param_23, param_24, param_25, param_26, param_27, param_28, param_29, param_30, param_31, param_32, param_33, param_34, param_35, param_36, param_37, param_38, param_39, param_40, param_41, param_42, param_43, param_44, param_45, param_46, param_47, param_48, param_49, param_50, param_51, param_52, param_53, param_54, param_55, param_56, param_57, param_58, param_59, param_60, param_61, param_62, param_63, param_64, param_65, param_66, param_67, param_68, param_69, param_70, param_71, param_72, param_73, param_74, param_75, param_76, param_77, param_78, param_79, param_80, param_81, param_82, param_83, param_84, param_85, param_86, param_87, param_88, param_89, param_90, param_91, param_92, param_93, param_94, param_95, param_96, param_97, param_98, param_99, param_100, param_101, api_name="/validate_speech_types") ->
+    Parameters:
+     - [Textbox] gen_text: str (required)
+     - [Textbox] regular_name: str (not required, defaults to:   Regular)
+     - [Textbox] param_2: str (not required, defaults to:   Regular)
+     - [Textbox] param_3: str (required)
+     - [Textbox] param_4: str (required)
+     - [Textbox] param_5: str (required)
+     - [Textbox] param_6: str (required)
+     - [Textbox] param_7: str (required)
+     - [Textbox] param_8: str (required)
+     - [Textbox] param_9: str (required)
+     - [Textbox] param_10: str (required)
+     - [Textbox] param_11: str (required)
+     - [Textbox] param_12: str (required)
+     - [Textbox] param_13: str (required)
+     - [Textbox] param_14: str (required)
+     - [Textbox] param_15: str (required)
+     - [Textbox] param_16: str (required)
+     - [Textbox] param_17: str (required)
+     - [Textbox] param_18: str (required)
+     - [Textbox] param_19: str (required)
+     - [Textbox] param_20: str (required)
+     - [Textbox] param_21: str (required)
+     - [Textbox] param_22: str (required)
+     - [Textbox] param_23: str (required)
+     - [Textbox] param_24: str (required)
+     - [Textbox] param_25: str (required)
+     - [Textbox] param_26: str (required)
+     - [Textbox] param_27: str (required)
+     - [Textbox] param_28: str (required)
+     - [Textbox] param_29: str (required)
+     - [Textbox] param_30: str (required)
+     - [Textbox] param_31: str (required)
+     - [Textbox] param_32: str (required)
+     - [Textbox] param_33: str (required)
+     - [Textbox] param_34: str (required)
+     - [Textbox] param_35: str (required)
+     - [Textbox] param_36: str (required)
+     - [Textbox] param_37: str (required)
+     - [Textbox] param_38: str (required)
+     - [Textbox] param_39: str (required)
+     - [Textbox] param_40: str (required)
+     - [Textbox] param_41: str (required)
+     - [Textbox] param_42: str (required)
+     - [Textbox] param_43: str (required)
+     - [Textbox] param_44: str (required)
+     - [Textbox] param_45: str (required)
+     - [Textbox] param_46: str (required)
+     - [Textbox] param_47: str (required)
+     - [Textbox] param_48: str (required)
+     - [Textbox] param_49: str (required)
+     - [Textbox] param_50: str (required)
+     - [Textbox] param_51: str (required)
+     - [Textbox] param_52: str (required)
+     - [Textbox] param_53: str (required)
+     - [Textbox] param_54: str (required)
+     - [Textbox] param_55: str (required)
+     - [Textbox] param_56: str (required)
+     - [Textbox] param_57: str (required)
+     - [Textbox] param_58: str (required)
+     - [Textbox] param_59: str (required)
+     - [Textbox] param_60: str (required)
+     - [Textbox] param_61: str (required)
+     - [Textbox] param_62: str (required)
+     - [Textbox] param_63: str (required)
+     - [Textbox] param_64: str (required)
+     - [Textbox] param_65: str (required)
+     - [Textbox] param_66: str (required)
+     - [Textbox] param_67: str (required)
+     - [Textbox] param_68: str (required)
+     - [Textbox] param_69: str (required)
+     - [Textbox] param_70: str (required)
+     - [Textbox] param_71: str (required)
+     - [Textbox] param_72: str (required)
+     - [Textbox] param_73: str (required)
+     - [Textbox] param_74: str (required)
+     - [Textbox] param_75: str (required)
+     - [Textbox] param_76: str (required)
+     - [Textbox] param_77: str (required)
+     - [Textbox] param_78: str (required)
+     - [Textbox] param_79: str (required)
+     - [Textbox] param_80: str (required)
+     - [Textbox] param_81: str (required)
+     - [Textbox] param_82: str (required)
+     - [Textbox] param_83: str (required)
+     - [Textbox] param_84: str (required)
+     - [Textbox] param_85: str (required)
+     - [Textbox] param_86: str (required)
+     - [Textbox] param_87: str (required)
+     - [Textbox] param_88: str (required)
+     - [Textbox] param_89: str (required)
+     - [Textbox] param_90: str (required)
+     - [Textbox] param_91: str (required)
+     - [Textbox] param_92: str (required)
+     - [Textbox] param_93: str (required)
+     - [Textbox] param_94: str (required)
+     - [Textbox] param_95: str (required)
+     - [Textbox] param_96: str (required)
+     - [Textbox] param_97: str (required)
+     - [Textbox] param_98: str (required)
+     - [Textbox] param_99: str (required)
+     - [Textbox] param_100: str (required)
+     - [Textbox] param_101: str (required)
+    Returns:
+     - None
+
+ - predict(api_name="/load_chat_model") ->
+    Parameters:
+     - None
+    Returns:
+     - None
+
+ - predict(audio_path, text, history, api_name="/process_audio_input") -> conversation
+    Parameters:
+     - [Audio] audio_path: filepath (required)
+     - [Textbox] text: str (required)
+     - [Chatbot] history: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None] (not required, defaults to:   [])
+    Returns:
+     - [Chatbot] conversation: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None]
+
+ - predict(history, ref_audio, ref_text, remove_silence, api_name="/generate_audio_response") -> (value_947, reference_text)
+    Parameters:
+     - [Chatbot] history: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None] (not required, defaults to:   [])
+     - [Audio] ref_audio: filepath (required)
+     - [Textbox] ref_text: str (required)
+     - [Checkbox] remove_silence: bool (not required, defaults to:   True)
+    Returns:
+     - [Audio] value_947: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/lambda") -> speak_your_message
+    Parameters:
+     - None
+    Returns:
+     - [Audio] speak_your_message: filepath
+
+ - predict(audio_path, text, history, api_name="/process_audio_input_1") -> conversation
+    Parameters:
+     - [Audio] audio_path: filepath (required)
+     - [Textbox] text: str (required)
+     - [Chatbot] history: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None] (not required, defaults to:   [])
+    Returns:
+     - [Chatbot] conversation: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None]
+
+ - predict(history, ref_audio, ref_text, remove_silence, api_name="/generate_audio_response_1") -> (value_947, reference_text)
+    Parameters:
+     - [Chatbot] history: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None] (not required, defaults to:   [])
+     - [Audio] ref_audio: filepath (required)
+     - [Textbox] ref_text: str (required)
+     - [Checkbox] remove_silence: bool (not required, defaults to:   True)
+    Returns:
+     - [Audio] value_947: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/lambda_1") -> type_your_message
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] type_your_message: str
+
+ - predict(audio_path, text, history, api_name="/process_audio_input_2") -> conversation
+    Parameters:
+     - [Audio] audio_path: filepath (required)
+     - [Textbox] text: str (required)
+     - [Chatbot] history: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None] (not required, defaults to:   [])
+    Returns:
+     - [Chatbot] conversation: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None]
+
+ - predict(history, ref_audio, ref_text, remove_silence, api_name="/generate_audio_response_2") -> (value_947, reference_text)
+    Parameters:
+     - [Chatbot] history: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None] (not required, defaults to:   [])
+     - [Audio] ref_audio: filepath (required)
+     - [Textbox] ref_text: str (required)
+     - [Checkbox] remove_silence: bool (not required, defaults to:   True)
+    Returns:
+     - [Audio] value_947: filepath
+     - [Textbox] reference_text: str
+
+ - predict(api_name="/lambda_2") -> type_your_message
+    Parameters:
+     - None
+    Returns:
+     - [Textbox] type_your_message: str
+
+ - predict(api_name="/clear_conversation") -> conversation
+    Parameters:
+     - None
+    Returns:
+     - [Chatbot] conversation: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None]
+
+ - predict(new_prompt, api_name="/update_system_prompt") -> conversation
+    Parameters:
+     - [Textbox] new_prompt: str (not required, defaults to:   You are not an AI assistant, you are whoever the user says you are. You must stay in character. Keep your responses concise since they will be spoken out loud.)
+    Returns:
+     - [Chatbot] conversation: Tuple[str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None, str | Dict(file: filepath, alt_text: str | None) | Dict(component: str, value: Any, constructor_args: Dict(), props: Dict()) | None]
+
+[TTSNode] Available endpoints: None
+[TTSNode] Trying reference audio: http://192.168.76.115:8080/EricVoice1.wav
+[TTSNode] Making request with data: http://192.168.76.115:8080/EricVoice1.wav, aergewrgwergwe
+[TTSNode] Error with reference audio http://192.168.76.115:8080/EricVoice1.wav: This Gradio app might have multiple endpoints. Please specify an `api_name` or `fn_index`
+[TTSNode] Trying reference audio: H:\Personal\hobbies\AI-Writing\Raw output\Resources\EricVoice1.wav
+[TTSNode] Making request with data: H:\Personal\hobbies\AI-Writing\Raw output\Resources\EricVoice1.wav, aergewrgwergwe
+[TTSNode] Error with reference audio H:\Personal\hobbies\AI-Writing\Raw output\Resources\EricVoice1.wav: This Gradio app might have multiple endpoints. Please specify an `api_name` or `fn_index`
+Processed Node '0841bdbd-6bda-4239-b2f5-1d835f03c6f0'. Output: {'output': 'Failed to generate audio with any reference path'}
+Node '0841bdbd-6bda-4239-b2f5-1d835f03c6f0' is_end_node: True
+[EndNode] Final Output: Failed to generate audio with any reference path

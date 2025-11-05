@@ -770,33 +770,88 @@ def process_mermaid_diagram(mermaid_code):
 
         # --- End of Mermaid Pre-processing ---
 
-        # The local mermaid-py rendering is unreliable. We will exclusively use the online mermaid.ink service.
+        # Use Kroki SVG as primary method (no width limits), fall back to mermaid.ink if needed
         try:
-            # The mermaid.ink API requires the diagram to be URL-safe Base64 encoded.
+            # Try Kroki SVG first - it's vector-based with no width limitations
+            kroki_base = os.environ.get("KROKI_SERVER", "https://kroki.io").rstrip('/')
+            kroki_svg_url = f"{kroki_base}/mermaid/svg"
+            headers = {
+                'Accept': 'image/svg+xml',
+                'Content-Type': 'text/plain'
+            }
+            logging.info(f"Attempting Kroki SVG rendering at: {kroki_svg_url}")
+            response = requests.post(kroki_svg_url, data=mermaid_code.encode('utf-8'), headers=headers, timeout=30)
+            
+            if response.status_code == 200 and response.headers.get('Content-Type', '').startswith('image/svg'):
+                logging.info(f"Successfully generated Mermaid SVG via Kroki. SVG size: {len(response.content)} bytes")
+                
+                # Convert SVG to high-resolution PNG using Kroki's PNG endpoint
+                # This avoids SVG compatibility issues with python-docx and text rendering problems
+                try:
+                    # Request PNG version from Kroki at high resolution
+                    kroki_png_url = f"{kroki_base}/mermaid/png"
+                    png_headers = {
+                        'Accept': 'image/png',
+                        'Content-Type': 'text/plain'
+                    }
+                    logging.info("Converting to high-resolution PNG via Kroki...")
+                    png_response = requests.post(kroki_png_url, data=mermaid_code.encode('utf-8'), headers=png_headers, timeout=30)
+                    
+                    if png_response.status_code == 200 and png_response.headers.get('Content-Type', '').startswith('image/'):
+                        from PIL import Image
+                        import io
+                        
+                        # Open PNG and get dimensions
+                        png_image = Image.open(BytesIO(png_response.content))
+                        logging.info(f"Kroki PNG size: {png_image.size[0]}x{png_image.size[1]} pixels, {len(png_response.content):,} bytes")
+                        
+                        # Convert to RGB for JPEG
+                        if png_image.mode in ('RGBA', 'LA', 'P'):
+                            rgb_image = Image.new('RGB', png_image.size, (255, 255, 255))
+                            if png_image.mode == 'P':
+                                png_image = png_image.convert('RGBA')
+                            rgb_image.paste(png_image, mask=png_image.split()[-1] if png_image.mode in ('RGBA', 'LA') else None)
+                            png_image = rgb_image
+                        elif png_image.mode != 'RGB':
+                            png_image = png_image.convert('RGB')
+                        
+                        # Save as JPEG with 80% quality
+                        jpg_buffer = io.BytesIO()
+                        png_image.save(jpg_buffer, format='JPEG', quality=80, optimize=True, progressive=True)
+                        jpg_bytes = jpg_buffer.getvalue()
+                        
+                        logging.info(f"Converted to JPEG: {len(jpg_bytes):,} bytes (quality=80)")
+                        return jpg_bytes
+                    else:
+                        logging.warning(f"Kroki PNG conversion failed: {png_response.status_code}")
+                        # Fall through to mermaid.ink fallback
+                except Exception as e:
+                    logging.error(f"Error converting via Kroki PNG: {e}")
+                    # Fall through to mermaid.ink fallback
+            else:
+                logging.warning(f"Kroki SVG failed. Status: {response.status_code}. Falling back to mermaid.ink...")
+            
+            # Fallback to mermaid.ink (limited to ~784px width but more reliable)
             import base64
             graphbytes = mermaid_code.encode("utf8")
             base64_bytes = base64.urlsafe_b64encode(graphbytes)
             base64_string = base64_bytes.decode("ascii")
+            url = f"https://mermaid.ink/img/{base64_string}"
             
-            # Enhanced URL with higher resolution parameters for better readability
-            # scale=2 doubles the resolution, width=1200 ensures minimum width for wide diagrams
-            url = f"https://mermaid.ink/img/{base64_string}?scale=2&width=1200"
-            
-            response = requests.get(url, timeout=15) # Increased timeout for larger diagrams
-            if response.status_code == 200 and len(response.content) > 100: # Lowered size check for simpler diagrams
-                logging.info(f"Successfully generated Mermaid diagram using online service. Original PNG size: {len(response.content)} bytes")
+            logging.info("Attempting mermaid.ink fallback...")
+            response = requests.get(url, timeout=15)
+            if response.status_code == 200 and len(response.content) > 100:
+                logging.info(f"Successfully generated Mermaid diagram using mermaid.ink. PNG size: {len(response.content)} bytes")
                 
                 # Convert PNG to JPG for smaller file size
                 try:
                     from PIL import Image
                     import io
                     
-                    # Open the PNG image from bytes
                     png_image = Image.open(BytesIO(response.content))
                     
                     # Convert to RGB (JPG doesn't support transparency)
                     if png_image.mode in ('RGBA', 'LA', 'P'):
-                        # Create white background for transparent areas
                         rgb_image = Image.new('RGB', png_image.size, (255, 255, 255))
                         if png_image.mode == 'P':
                             png_image = png_image.convert('RGBA')
@@ -805,42 +860,51 @@ def process_mermaid_diagram(mermaid_code):
                     elif png_image.mode != 'RGB':
                         png_image = png_image.convert('RGB')
                     
-                    # Save as JPG with more aggressive compression for better size reduction
                     jpg_buffer = io.BytesIO()
                     png_image.save(jpg_buffer, format='JPEG', quality=70, optimize=True, progressive=True)
                     jpg_bytes = jpg_buffer.getvalue()
                     
-                    original_size = len(response.content)
-                    new_size = len(jpg_bytes)
-                    reduction_percent = ((original_size - new_size) / original_size * 100)
-                    
-                    logging.info(f"PNG to JPG conversion: {original_size} bytes -> {new_size} bytes (reduction: {reduction_percent:.1f}%)")
-                    
-                    # Only return JPG if it's actually smaller, otherwise keep PNG
-                    if new_size < original_size:
-                        logging.info("Using JPG version (smaller)")
+                    if len(jpg_bytes) < len(response.content):
+                        logging.info(f"Using JPG version: {len(jpg_bytes):,} bytes")
                         return jpg_bytes
                     else:
-                        logging.info("Using original PNG (JPG conversion didn't reduce size)")
+                        logging.info("Using original PNG")
                         return response.content
-                    
-                except ImportError:
-                    logging.warning("PIL (Pillow) not available for image conversion. Returning original PNG.")
-                    return response.content
+                        
                 except Exception as conv_error:
                     logging.error(f"Error converting PNG to JPG: {conv_error}. Returning original PNG.")
                     return response.content
             else:
-                logging.error(f"Failed to generate Mermaid diagram using online service. Status code: {response.status_code}")
-                logging.error(f"Response body: {response.text}")
+                logging.error(f"mermaid.ink also failed. Status: {response.status_code}")
                 return None
-        except Exception as online_error:
-            logging.error(f"Error using online Mermaid service: {online_error}")
+                
+        except Exception as e:
+            logging.error(f"Error processing Mermaid diagram: {e}")
             return None
     except Exception as e:
         logging.error(f"Error processing Mermaid diagram: {e}")
         logging.error(f"Stack trace:", exc_info=True)
         return None
+
+def add_code_block(document, code_text, language=None):
+    """
+    Add a code block to the Word document with syntax highlighting.
+    Args:
+        document: The Word document
+        code_text: The code content
+        language: The programming language (for reference)
+    """
+    paragraph = document.add_paragraph()
+    run = paragraph.add_run(code_text)
+    run.font.name = 'Courier New'
+    run.font.size = Pt(9)
+    paragraph.paragraph_format.left_indent = Inches(0.5)
+    paragraph.paragraph_format.space_before = Pt(6)
+    paragraph.paragraph_format.space_after = Pt(6)
+    # Add a light gray background
+    shading_elm = OxmlElement('w:shd')
+    shading_elm.set(qn('w:fill'), 'F0F0F0')
+    paragraph._element.get_or_add_pPr().append(shading_elm)
 
 def insert_chart_image(document, image_bytes):
     """
@@ -854,13 +918,23 @@ def insert_chart_image(document, image_bytes):
     try:
         paragraph = document.add_paragraph()
         if image_bytes:
-            # Save image bytes to a temporary file to ensure format is recognized
-            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
+            # Detect image format from bytes to use correct file extension
+            if image_bytes.startswith(b'<svg') or image_bytes.startswith(b'<?xml'):
+                suffix = '.svg'
+            elif image_bytes.startswith(b'\x89PNG'):
+                suffix = '.png'
+            elif image_bytes.startswith(b'\xff\xd8\xff'):
+                suffix = '.jpg'
+            else:
+                suffix = '.png'  # Default fallback
+            
+            # Save image bytes to a temporary file with correct extension
+            with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp_file:
                 tmp_file.write(image_bytes)
                 temp_path = tmp_file.name
             
             try:
-                # Add picture from the temporary file instead of BytesIO
+                # Add picture from the temporary file
                 paragraph.add_run().add_picture(temp_path, width=Inches(6))
                 # Clean up the temporary file
                 os.unlink(temp_path)
@@ -897,8 +971,18 @@ def save_image_to_subdirectory(image_bytes, output_path, image_type, image_index
         
         # Generate filename based on document name and image index
         doc_name = os.path.splitext(os.path.basename(output_path))[0]
-        # Use JPG extension for mermaid diagrams (they're converted), PNG for charts
-        file_ext = 'jpg' if image_type == 'mermaid' else 'png'
+        
+        # Detect file type from image bytes
+        if image_bytes.startswith(b'<svg') or image_bytes.startswith(b'<?xml'):
+            file_ext = 'svg'
+        elif image_bytes.startswith(b'\x89PNG'):
+            file_ext = 'png'
+        elif image_bytes.startswith(b'\xff\xd8\xff'):
+            file_ext = 'jpg'
+        else:
+            # Default based on image type
+            file_ext = 'svg' if image_type == 'mermaid' else 'png'
+            
         image_filename = f"{doc_name}_{image_type}_{image_index:03d}.{file_ext}"
         image_path = os.path.join(charts_dir, image_filename)
         

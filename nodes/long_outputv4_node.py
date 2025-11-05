@@ -1,10 +1,10 @@
 # nodes/long_outputv4_node.py
 """
 LongOutputV4Node: Enhanced version of LongOutputV3Node with additional features:
-- Initial content review window with web search capability
-- URL selection from search results
+- Automatic processing of input array from previous node
 - Rate limiting and retry logic for API calls
-- Progress tracking and array review
+- Progress tracking during processing
+- Final array review window after processing completes
 """
 from .base_node import BaseNode
 from node_registry import register_node
@@ -363,36 +363,6 @@ class LongOutputV4Node(BaseNode):
                 'default': True,
                 'description': 'Output as array instead of string'
             },
-            'review_array': {
-                'type': 'boolean',
-                'default': True,
-                'description': 'Show review window for array output'
-            },
-            'show_content_review': {
-                'type': 'boolean',
-                'default': True,
-                'description': 'Show content review window with web search capability'
-            },
-            'searxng_api_url': {
-                'type': 'text',
-                'default': 'http://localhost:8888/search',
-                'description': 'SearxNG API URL for web search'
-            },
-            'num_search_results': {
-                'type': 'number',
-                'default': 5,
-                'description': 'Number of search results to process'
-            },
-            'num_results_to_skip': {
-                'type': 'number',
-                'default': 0,
-                'description': 'Number of search results to skip'
-            },
-            'enable_url_selection': {
-                'type': 'boolean',
-                'default': False,
-                'description': 'Enable manual URL selection from search results'
-            },
             'chunk_size': {
                 'type': 'integer',
                 'default': 10,
@@ -574,15 +544,7 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
         input_text = inputs.get('input', '')
         use_array = self.get_property('use_array', False)
         chunk_size = int(self.get_property('chunk_size', 10))
-        review_array = self.get_property('review_array', True)
-        show_content_review = self.get_property('show_content_review', True)
         api_endpoint = self.get_property('api_endpoint', '')
-        
-        # Get web search configuration
-        searxng_api_url = self.get_property('searxng_api_url', 'http://localhost:8888/search')
-        num_search_results = int(self.get_property('num_search_results', 5))
-        num_results_to_skip = int(self.get_property('num_results_to_skip', 0))
-        enable_url_selection = self.get_property('enable_url_selection', False)
         
         # Get prompt templates from properties
         first_element_template = self.get_property('Instructions for how to processthe first element in the array', '')
@@ -607,32 +569,7 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
             print(f"[LongOutputNodeV4] Error: {error_msg}")
             return {'prompt': error_msg}
             
-        # Format API details for ContentReviewWindow
-        formatted_api_details = {
-            'endpoint_name': api_endpoint,
-            'config': api_details,
-            'api_type': api_details.get('api_type', 'OpenAI')
-        }
-            
-        # Show initial content review window if enabled
-        if show_content_review:
-            review_window = ContentReviewWindow(
-                api_details=formatted_api_details,
-                searxng_api_url=searxng_api_url,
-                num_search_results=num_search_results,
-                num_results_to_skip=num_results_to_skip,
-                enable_url_selection=enable_url_selection
-            )
-            review_window.populate_list(items)
-            reviewed_items = review_window.show()
-            
-            if reviewed_items is None:
-                print("[LongOutputNodeV4] User cancelled during initial review")
-                return {'prompt': [] if use_array else ''}
-                
-            # Update items with reviewed content
-            items = reviewed_items
-            
+        # Process items directly without initial review
         # Create progress window for API processing
         progress_window = ProgressWindow(len(items))
         
@@ -785,13 +722,14 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
             progress_window.update_progress(len(items), "Processing complete!")
             progress_window.close()
             
-            # If using array output and review is enabled, show final review window
-            if use_array and review_array:
+            # Show final review window for array output
+            if use_array:
                 # Read chapters from temp file
                 temp_file.seek(0)
                 chapters = temp_file.read().split('---CHAPTER_BREAK---')
                 chapters = [ch.strip() for ch in chapters if ch.strip()]
                 
+                # Show array review window for final review
                 review_window = ArrayReviewWindow(chapters)
                 reviewed_responses = review_window.show()
                 
@@ -801,13 +739,6 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
                     return {'prompt': []}
                     
                 return {'prompt': reviewed_responses}
-            
-            # Return the responses
-            if use_array:
-                # Read chapters from temp file
-                temp_file.seek(0)
-                chapters = temp_file.read().split('---CHAPTER_BREAK---')
-                return {'prompt': [ch.strip() for ch in chapters if ch.strip()]}
             else:
                 return {'prompt': responses}
                 

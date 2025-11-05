@@ -1,27 +1,276 @@
 graph:
   connections:
-  - canvas_item: 83
-    from_node: e6484456-0c61-429b-8dd8-155ec24f3762
-    from_output: output
-    to_input: input
-    to_node: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
-  - canvas_item: 84
+  - canvas_item: 9443
     from_node: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
     from_output: prompt
     to_input: input
     to_node: d78bce97-697d-41e7-b54f-a0f36d6a8793
+  - canvas_item: 9444
+    from_node: 2248feca-1afb-4345-9a26-d99502f303d7
+    from_output: output
+    to_input: input
+    to_node: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
+  - canvas_item: 9445
+    from_node: 839ffdc7-8e9a-4e1d-a037-9ca3baf1cca2
+    from_output: output
+    to_input: input
+    to_node: c47d8bd5-3e97-4319-b2dd-c0b7598709f9
+  - canvas_item: 9446
+    from_node: c47d8bd5-3e97-4319-b2dd-c0b7598709f9
+    from_output: output
+    to_input: input
+    to_node: 2248feca-1afb-4345-9a26-d99502f303d7
   nodes:
+    2248feca-1afb-4345-9a26-d99502f303d7:
+      canvas_items:
+        description: 1485
+        drag_bar: 5232
+        input_input: 5234
+        input_label_input: 1487
+        output_label_output: 1489
+        output_output: 5235
+        rect: 5231
+        resize_handle: 1490
+        title: 5233
+      height: 110
+      highlight_state: false
+      id: 2248feca-1afb-4345-9a26-d99502f303d7
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "You are to take the user request below and write an outline. \
+            \ The outline will consist of a self contained paragraphs representing\
+            \ the chapter, section, or paragraph containing the details of that chapter.\n\
+            \nYou are responsible for the following duties:\n\n1. Crafting content\
+            \ that aligns with the intended tone, purpose, and audience.\n\n2. Structuring\
+            \ ideas logically to enhance readability and flow.\n\n3. Your expected\
+            \ output will always be a title followed by the exact original user request\
+            \ shown bellow, then a detailed outline for whatever the user request\
+            \ is.  this outline will consist of the title, then the exact original\
+            \ user request shown below, and then a self contained paragraph for each\
+            \ chapter and/or section or sub section that makes up the outline with\
+            \ all the key points, notable items, and major points of what is in that\
+            \ chapter or section for the content being requested.  the chapter or\
+            \ section number and title or heading for each chapter or section will\
+            \ always be included at the very beginning of that chapter or section\
+            \ making it part of the paragraph. For chapters or sections that require\
+            \ additional length, an addtional one or two paragraphs of details for\
+            \ a chapter can be included right after the paragraph for that chapter.\
+            \  there is no limit to the size of each chapter section or outline section.\
+            \  it may be 200 words, it may be 2000 words, the point is that all details\
+            \ that are needed in that chapter are included in a single self contained\
+            \ paragraph.\nHere is what the formatting structure would look like:\n\
+            Title: [content title] - [the exact original user request listed below\
+            \ repeated here]\n\nchapter # - [chronologically structured key points,\
+            \ people, actions, events, places and important items and noteable characteristics\
+            \ of the chapter that structure the chapter. self contained paragraph\
+            \ that includes chapter number and heading.] \n\n(continued) - a continuation\
+            \ of the chapter above, in its own self contained paragraph.\n\n(continued)\
+            \ - a furthur continuation of the chapter above, in its own self contained\
+            \ paragraph.\n\n[if the user requests [2 paragraphs], then the outline\
+            \ for the chapter should be spread out using two distinct paragraphs to\
+            \ cover the details of that chapter for a total of 2 paragraphs per chapter,\
+            \ these details should be well organized and logically ordered based on\
+            \ the content of the chapter.]\n\n[if the user requests [3 paragraphs],\
+            \ then the outline for the chapter should be spread out using three distinct\
+            \ paragraphs to cover the details of that chapter for a total of 3 paragraphs\
+            \ per chapter, these details should be well organized and logically ordered\
+            \ based on the content of the chapter.]\n\n[if the user requests [# paragraphs],\
+            \ where # represents the number of paragraphs being requested, then the\
+            \ outline for the chapter should be spread out using the exact number\
+            \ of paragraphs requested to cover the details of that chapter, these\
+            \ details should be well organized and logically ordered based on the\
+            \ content of the chapter.]\n\ndo not use any special formatting , i.e.\
+            \ bold, line separators, etc.\n\n6. each paragraph will have a single\
+            \ blank line after it. the chapter or heading will always be part of the\
+            \ paragraph, it will never be on its own sepparate line.\n\n7. the details\
+            \ in each paragraph should contain information or special instructions\
+            \ for including special structures in the chapter regarding place holders\
+            \ for images if necessary, tables, graphs, images relevant to the chapter.\n\
+            \n8. if the content requested in more technical or educational in nature,\
+            \ the information in the outline will be structured intuitively to provide\
+            \ the information in the most educational way possible.\n\nyour only expected\
+            \ output is the requested outline and no other comments.\n\nExample 1:\
+            \ The user requests contains the phrase \"2 paragraphs\", then write exactly\
+            \ two paragraphs per chapter that evenly spreads out and contains the\
+            \ information to be covered in that chapter in exactly 2 paragraphs:\n\
+            \n[paragraph 1]: chapter/section # - Introduction, information, details\
+            \ and content structured and layed out in an informational design.\n\n\
+            [paragraph 2]:(Continued) - a continuation of the information and details\
+            \ for the assocaited chapter.....\n\nExample 2: The user requests contains\
+            \ the phrase \"3 paragraphs\", then write exactly three paragraphs per\
+            \ chapter that evenly spreads out and contains the information to be covered\
+            \ in that chapter in exactly 3 paragraphs:\n\n[paragraph 1]: chapter/section\
+            \ # - Introduction, information, details and content structured and layed\
+            \ out in an informational design.\n\n[paragraph 2]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\n[paragraph\
+            \ 3]:(Continued) - a continuation of the information and details for the\
+            \ assocaited chapter.....\n\nExample 3: The user requests contains the\
+            \ phrase \"5 paragraphs\", then write exactly 5 paragraphs per chapter\
+            \ that evenly spreads out and contains the information to be covered in\
+            \ that chapter in exactly 5 paragraphs:\n\n[paragraph 1]: chapter/section\
+            \ # - Introduction, information, details and content structured and layed\
+            \ out in an informational design.\n\n[paragraph 2]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\n[paragraph\
+            \ 3]:(Continued) - a continuation of the information and details for the\
+            \ assocaited chapter.....\n\n[paragraph 4]:(Continued) - a continuation\
+            \ of the information and details for the assocaited chapter.....\n\n[paragraph\
+            \ 5]:(Continued) - a continuation of the information and details for the\
+            \ assocaited chapter.....\n\nThe user request may contain a request for\
+            \ any number of paragraphs in the format [# paragraphs].  you will always\
+            \ generate exactly the number of self contained paragraphs the user requests\
+            \ for each chapter.\n\nThe user request is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt with review capability and content enhancement.
+          label: Description
+          type: text
+        enable_review:
+          default: true
+          label: Enable Review
+          type: boolean
+        enhancement_prompt:
+          default: 'I want you to take the content below and give me a single search
+            term i can use to do a web search to find content related to the content
+            below. your only expected output is the single sentence search term that
+            contains key words, names, or subject matter, that i can use in google
+            search to search for the related content.  you will no provide any helpful
+            pre or post comments.  the content i need you to create a search term
+            for is as follows:'
+          label: Content Enhancement Prompt
+          type: textarea
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: OutlineWriterV3Node
+          label: Custom Node Name
+          type: text
+        searxng_endpoint:
+          default: SearXing
+          label: SearxNG Endpoint
+          options:
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        web_search_prompt:
+          default: 'Based on the following paragraph and web search results, create
+            additional content that expands on the topic.  do not include any markdown
+            formatting.  the final content should be in a single self contained paragraph:
+
+
+            Original Paragraph:'
+          label: Web Search Summary Prompt
+          type: textarea
+      title: OutlineWriterV3Node
+      type: OutlineWriterV3Node
+      width: 141
+      x: 523
+      y: 233
+    839ffdc7-8e9a-4e1d-a037-9ca3baf1cca2:
+      canvas_items:
+        description: 1494
+        drag_bar: 1492
+        input_input: 1495
+        input_label_input: 1496
+        output_label_output: 1498
+        output_output: 1497
+        rect: 1491
+        resize_handle: 1499
+        title: 1493
+      height: 150
+      highlight_state: false
+      id: 839ffdc7-8e9a-4e1d-a037-9ca3baf1cca2
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Parses URLs from input, scrapes their content, and replaces URLs
+            with scraped text.
+          type: text
+        include_url_header:
+          default: true
+          description: Include URL as header before scraped content
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        max_content_length:
+          default: '5000'
+          description: Maximum characters to extract from each URL
+          type: number
+        node_name:
+          default: ParseAndScrapeNode
+          type: text
+        separator:
+          default: '
+
+
+            ---
+
+
+            '
+          description: Separator between scraped content sections
+          type: text
+        timeout:
+          default: '10'
+          description: Timeout in seconds for each URL request
+          type: number
+      title: ParseAndScrapeNode
+      type: ParseAndScrapeNode
+      width: 200
+      x: 48
+      y: 206
     8671f9ed-9831-4941-a2e6-93fc5b9c54d2:
       canvas_items:
-        drag_bar: 58
-        input_input: 60
-        input_label_input: 61
-        output_label_prompt: 63
-        output_prompt: 62
-        rect: 57
-        resize_handle: 64
-        title: 59
-      height: 150
+        drag_bar: 5619
+        input_input: 5621
+        input_label_input: 1504
+        output_label_prompt: 1506
+        output_prompt: 5622
+        rect: 5618
+        resize_handle: 1507
+        title: 5620
+      height: 102
+      highlight_state: false
       id: 8671f9ed-9831-4941-a2e6-93fc5b9c54d2
       inputs:
       - input
@@ -92,7 +341,7 @@ graph:
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq
@@ -136,21 +385,85 @@ graph:
           type: boolean
       title: LongOutputV4
       type: LongOutputV4Node
+      width: 126
+      x: 695
+      y: 86
+    c47d8bd5-3e97-4319-b2dd-c0b7598709f9:
+      canvas_items:
+        description: 1520
+        drag_bar: 1518
+        input_input: 1521
+        input_label_input: 1522
+        output_label_output: 1524
+        output_output: 1523
+        rect: 1517
+        resize_handle: 1525
+        title: 1519
+      height: 150
+      highlight_state: false
+      id: c47d8bd5-3e97-4319-b2dd-c0b7598709f9
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: You will produce a single, richly detailed narrative paragraph
+            of 1000-2000 words that serves as a pre-draft outline for a book. you
+            will create a draft of all the content below as a high level outline containing
+            all important and relevant information pertaining to the user request
+            which is included. removing all special formatting and giving a lengthy
+            single paragraph outline.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: PreWritting Draft
+          label: Custom Node Name
+          type: text
+      title: PreWritting Draft
+      type: BasicNode
       width: 200
-      x: 244
-      y: 201
+      x: 279
+      y: 50
     d78bce97-697d-41e7-b54f-a0f36d6a8793:
       canvas_items:
-        description: 68
-        drag_bar: 66
-        input_input: 69
-        input_label_input: 70
-        output_label_output: 72
-        output_output: 71
-        rect: 65
-        resize_handle: 73
-        title: 67
-      height: 137
+        description: 1511
+        drag_bar: 6447
+        input_input: 6449
+        input_label_input: 1513
+        output_label_output: 1515
+        output_output: 6450
+        rect: 6446
+        resize_handle: 1516
+        title: 6448
+      height: 105
+      highlight_state: false
       id: d78bce97-697d-41e7-b54f-a0f36d6a8793
       inputs:
       - input
@@ -161,7 +474,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq
@@ -529,140 +842,7 @@ graph:
           type: textarea
       title: ArrayProcessTestProcessNode
       type: ArrayProcessTestProcessNode
-      width: 245
-      x: 532
-      y: 94
-    e6484456-0c61-429b-8dd8-155ec24f3762:
-      canvas_items:
-        description: 77
-        drag_bar: 75
-        input_input: 78
-        input_label_input: 79
-        output_label_output: 81
-        output_output: 80
-        rect: 74
-        resize_handle: 82
-        title: 76
-      height: 100
-      id: e6484456-0c61-429b-8dd8-155ec24f3762
-      inputs:
-      - input
-      outputs:
-      - output
-      properties:
-        Prompt:
-          default: "You are to take the user request below and write an outline. \
-            \ The outline will consist of a self contained paragraphs representing\
-            \ the chapter, section, or paragraph containing the details of that chapter.\n\
-            \nYou are responsible for the following duties:\n\n1. Crafting content\
-            \ that aligns with the intended tone, purpose, and audience.\n\n2. Structuring\
-            \ ideas logically to enhance readability and flow.\n\n3. Your expected\
-            \ output will always be a title followed by the exact original user request\
-            \ shown bellow, then a detailed outline for whatever the user request\
-            \ is.  this outline will consist of the title, then the exact original\
-            \ user request shown below, and then a self contained paragraph for each\
-            \ chapter and/or section or sub section that makes up the outline with\
-            \ only the key points, notable items, and major points of what is in that\
-            \ chapter or section for the content being requested.  the chapter or\
-            \ section number and title or heading for each chapter or section will\
-            \ always be included at the very beginning of that chapter or section\
-            \ making it part of the paragraph. For chapters or sections that require\
-            \ additional length, an addtional one or two paragraphs of details for\
-            \ a chapter can be included right after the paragraph for that chapter.\
-            \  \nHere is what the formatting structure would look like:\nTitle: [content\
-            \ title] - [the exact original user request listed below repeated here]\n\
-            \nchapter # - [chronologically structured key points, people, actions,\
-            \ events, places and important items and noteable characteristics of the\
-            \ chapter that structure the chapter.] \n\n(continued) - a continuations\
-            \ of the chapter above.\n\n(continued) - a furthur continuation of the\
-            \ chapter above.\n\n[if the user requests [2 paragraphs], then the outline\
-            \ for the chapter should be spread out using two distinct paragraphs to\
-            \ cover the details of that chapter for a total of 2 paragraphs per chapter,\
-            \ these details should be well organized and logically ordered based on\
-            \ the content of the chapter.]\n\n[if the user requests [3 paragraphs],\
-            \ then the outline for the chapter should be spread out using three distinct\
-            \ paragraphs to cover the details of that chapter for a total of 3 paragraphs\
-            \ per chapter, these details should be well organized and logically ordered\
-            \ based on the content of the chapter.]\n\n[if the user requests [# paragraphs],\
-            \ where # represents the number of paragraphs being requested, then the\
-            \ outline for the chapter should be spread out using the exact number\
-            \ of paragraphs requested to cover the details of that chapter, these\
-            \ details should be well organized and logically ordered based on the\
-            \ content of the chapter.]\n\ndo not use any special formatting , i.e.\
-            \ bold, line separators, etc.\n\n6. each paragraph will have a single\
-            \ blank line after it.\n\n7. the details in each paragraph should contain\
-            \ information or special instructions for including special structures\
-            \ in the chapter regarding place holders for images if necessary, tables,\
-            \ graphs, images relevant to the chapter.\n\n8. if the content requested\
-            \ in more technical or educational in nature, the information in the outline\
-            \ will be structured intuitively to provide the information in the most\
-            \ educational way possible.\n\nyour only expected output is the requested\
-            \ outline and no other comments.\n\nExample 1: The user requests contains\
-            \ the phrase \"2 paragraphs\", then write exactly two paragraphs per chapter\
-            \ that evenly spreads out and contains the information to be covered in\
-            \ that chapter in exactly 2 paragraphs:\n\n[paragraph 1]: chapter/section\
-            \ # - Introduction, information, details and content structured and layed\
-            \ out in an informational design.\n\n[paragraph 2]:(Continued) - a continuation\
-            \ of the information and details for the assocaited chapter.....\n\nExample\
-            \ 2: The user requests contains the phrase \"3 paragraphs\", then write\
-            \ exactly three paragraphs per chapter that evenly spreads out and contains\
-            \ the information to be covered in that chapter in exactly 3 paragraphs:\n\
-            \n[paragraph 1]: chapter/section # - Introduction, information, details\
-            \ and content structured and layed out in an informational design.\n\n\
-            [paragraph 2]:(Continued) - a continuation of the information and details\
-            \ for the assocaited chapter.....\n\n[paragraph 3]:(Continued) - a continuation\
-            \ of the information and details for the assocaited chapter.....\n\nExample\
-            \ 3: The user requests contains the phrase \"5 paragraphs\", then write\
-            \ exactly 5 paragraphs per chapter that evenly spreads out and contains\
-            \ the information to be covered in that chapter in exactly 5 paragraphs:\n\
-            \n[paragraph 1]: chapter/section # - Introduction, information, details\
-            \ and content structured and layed out in an informational design.\n\n\
-            [paragraph 2]:(Continued) - a continuation of the information and details\
-            \ for the assocaited chapter.....\n\n[paragraph 3]:(Continued) - a continuation\
-            \ of the information and details for the assocaited chapter.....\n\n[paragraph\
-            \ 4]:(Continued) - a continuation of the information and details for the\
-            \ assocaited chapter.....\n\n[paragraph 5]:(Continued) - a continuation\
-            \ of the information and details for the assocaited chapter.....\n\nThe\
-            \ user request may contain a request for any number of paragraphs in the\
-            \ format [# paragraphs].  you will always generate exactly the number\
-            \ of self contained paragraphs the user requests for each chapter.\n\n\
-            The user request is as follows:"
-          label: Prompt
-          type: textarea
-        api_endpoint:
-          default: OpenAI 03-mini
-          label: API Endpoint
-          options:
-          - Groq
-          - Ollama DeepSeek r1
-          - Ollama llama3.1-8b
-          - OpenAI
-          - OpenAI GPT gpt-4o-mini
-          - OpenAI Whisper
-          type: dropdown
-        description:
-          default: Processes the input prompt with review capability.
-          label: Description
-          type: text
-        enable_review:
-          default: true
-          label: Enable Review
-          type: boolean
-        is_end_node:
-          default: false
-          label: End Node
-          type: boolean
-        is_start_node:
-          default: true
-          label: Start Node
-          type: boolean
-        node_name:
-          default: OutlineWriterV2Node
-          label: Custom Node Name
-          type: text
-      title: OutlineWriterV2Node
-      type: OutlineWriterV2Node
-      width: 137
-      x: 42
-      y: 180
+      width: 203
+      x: 851
+      y: 254
 name: Write long form technical content

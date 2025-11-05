@@ -1,65 +1,73 @@
 @echo off
 setlocal
 
-REM Set the name of the virtual environment directory
+REM Set the name of the virtual environment
 set VENV_DIR=venv
 
-REM Check for Python 3.10 or higher
-echo Checking if Python 3.10 or higher is available...
-python --version >nul 2>nul
-if %errorlevel% neq 0 (
-    echo Python is not installed or not in PATH.
-    echo Please install Python 3.10 or higher and try again.
-    exit /b 1
-)
-
-for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
-for /f "tokens=1,2 delims=." %%a in ("%PYTHON_VERSION%") do (
-    set PYTHON_MAJOR=%%a
-    set PYTHON_MINOR=%%b
-)
-
-if "%PYTHON_MAJOR%" neq "3" (
-    set COMPATIBLE=0
-) else if %PYTHON_MINOR% lss 10 (
-    set COMPATIBLE=0
+:CHECK_PYTHON
+echo Checking for Python...
+REM Use the 'py' launcher if available, otherwise check for 'python'
+where py >nul 2>&1
+if %errorlevel% equ 0 (
+    set PYTHON_CMD=py
 ) else (
-    set COMPATIBLE=1
+    where python >nul 2>&1
+    if %errorlevel% equ 0 (
+        set PYTHON_CMD=python
+    ) else (
+        goto INSTALL_PYTHON
+    )
 )
+echo Python found.
+goto SETUP_ENV
 
-if "%COMPATIBLE%" == "1" (
-    echo Python %PYTHON_VERSION% is available and compatible.
-) else (
-    echo Python 3.10 or higher is required, but found version %PYTHON_VERSION%.
-    echo Please install a compatible version of Python and try again.
+:INSTALL_PYTHON
+echo Python is not installed or not in the system's PATH.
+set /p "CHOICE=Would you like to download and install it automatically? (Y/N): "
+if /i not "%CHOICE%"=="Y" (
+    echo Installation declined. Please install Python 3 manually and re-run this script.
+    pause
     exit /b 1
 )
 
-REM Check for pip
-echo Checking if pip is available...
-where pip >nul 2>nul
+echo Downloading Python installer...
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.11.5/python-3.11.5-amd64.exe' -OutFile '%TEMP%\python_installer.exe'"
+
+echo Running Python installer silently. This may take a few minutes and require administrator permission...
+
+start /wait %TEMP%\python_installer.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
+
 if %errorlevel% neq 0 (
-    echo Pip is not available. Please ensure Python is installed correctly with pip.
+    echo Python installation failed. Please try installing it manually from python.org.
+    pause
     exit /b 1
 )
-echo Pip is available.
 
-REM Create virtual environment if it doesn't exist
-if not exist "%VENV_DIR%" (
+echo Python installation complete.
+
+REM Clean up the installer
+del %TEMP%\python_installer.exe
+
+REM Re-check for Python after installation
+goto CHECK_PYTHON
+
+:SETUP_ENV
+REM Check if the virtual environment exists
+if not exist "%VENV_DIR%\Scripts\activate.bat" (
     echo Creating virtual environment...
-    python -m venv %VENV_DIR%
+    %PYTHON_CMD% -m venv %VENV_DIR%
     if %errorlevel% neq 0 (
         echo Failed to create virtual environment.
+        pause
         exit /b 1
     )
-) else (
-    echo Virtual environment already exists.
 )
 
-REM Activate virtual environment
 echo Activating virtual environment...
 call "%VENV_DIR%\Scripts\activate.bat"
 
+echo Installing dependencies from requirements.txt...
 REM Upgrade pip, wheel, and setuptools
 echo Upgrading pip, wheel, and setuptools...
 python -m pip install --upgrade pip wheel setuptools
@@ -74,6 +82,10 @@ if %errorlevel% neq 0 (
 )
 
 echo Installation of all dependencies completed successfully.
+
+REM Ensure ffmpeg is available (auto-installs a local copy if needed)
+echo Ensuring ffmpeg is available...
+python -c "from utils.ffmpeg_installer import ensure_ffmpeg_available; p=ensure_ffmpeg_available(True); print('FFmpeg path:', p)"
 
 REM Deactivate and clean up
 call "%VENV_DIR%\Scripts\deactivate.bat"

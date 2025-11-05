@@ -27,6 +27,7 @@ from docx.oxml import OxmlElement
 from .youtube_transcript_node import YoutubeTranscriptNode
 from .web_scrape_node import WebScrapingNode
 from ExportWord import convert_markdown_to_docx
+from Process_output import process_api_output
 from pydub import AudioSegment
 import traceback
 from datetime import datetime
@@ -513,8 +514,9 @@ class AssistantNode(BaseNode):
     def submit_project(self):
         """Submit the project for processing."""
         try:
-            # Reset the current job folder to ensure a new one is created
+            # Reset the current job folder and custom project name to ensure a new one is created
             self.current_job_folder = None
+            self.custom_project_name = None
             
             # Get the instructions text
             instructions = self.instructions_text.get(1.0, tk.END).strip()
@@ -912,10 +914,34 @@ class AssistantNode(BaseNode):
             file_path = Path(file_path)
             additional_content = []  # Initialize the list here
             
-            # Read the file content
+            # Wait for file to be fully written and accessible
+            self.update_log(f"Waiting for file to be ready: {file_path.name}")
+            if not self.wait_for_file_access(file_path, max_retries=10, initial_delay=2):
+                raise Exception(f"File {file_path.name} is not accessible after waiting")
+            
+            # Read the file content with multiple encoding attempts
             self.update_log(f"Reading file: {file_path.name}")
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            content = None
+            encodings_to_try = ['utf-8', 'ascii', 'latin-1', 'cp1252']
+            
+            for encoding in encodings_to_try:
+                try:
+                    with open(file_path, 'r', encoding=encoding) as f:
+                        content = f.read()
+                    print(f"[DEBUG] Successfully read file with {encoding} encoding")
+                    break
+                except UnicodeDecodeError:
+                    print(f"[DEBUG] Failed to read with {encoding} encoding, trying next...")
+                    continue
+                except Exception as e:
+                    print(f"[DEBUG] Error reading with {encoding}: {str(e)}")
+                    continue
+            
+            if content is None:
+                raise Exception(f"Could not read file {file_path.name} with any supported encoding")
+            
+            # Preserve the raw user request exactly as provided in the input file
+            original_user_request = content
 
             # Get and append pre-process text if available
             pre_process_text = self.properties.get('PreProcess', {}).get('default', '').strip()
@@ -1063,19 +1089,38 @@ class AssistantNode(BaseNode):
             
             print(f"[DEBUG] Received API response of length: {len(api_response)}")
             
-            # Create Word document in project folder first
+            # Process API output to extract any Excel code blocks and generate .xlsx files
             if hasattr(self, 'custom_project_name') and self.custom_project_name:
-                # Use custom project name if provided
-                docx_filename = f"{self.custom_project_name}.docx"
+                base_name = self.custom_project_name
             else:
-                # Otherwise use the original file name
-                docx_filename = f"{file_path.stem}.docx"
-            temp_docx_path = Path(self.current_job_folder) / docx_filename
-            
-            # Use ExportWord.py to create formatted document
-            self.update_log("Creating formatted Word document using ExportWord")
-            print(f"[DEBUG] Output path: {temp_docx_path}")
-            convert_markdown_to_docx(api_response, str(temp_docx_path), formatting_enabled=True)
+                base_name = file_path.stem
+
+            filtered_md, excel_files = process_api_output(
+                api_response,
+                str(self.current_job_folder),
+                base_name,
+                insert_placeholders=False,
+            )
+
+            if excel_files:
+                self.update_log(f"Generated {len(excel_files)} Excel file(s):")
+                for p in excel_files:
+                    try:
+                        self.update_log(f"- {Path(p).name}")
+                    except Exception:
+                        pass
+
+            # Create Word document only if there is meaningful content after filtering
+            should_generate_docx = bool(filtered_md and filtered_md.strip())
+            docx_filename = f"{base_name}.docx" if should_generate_docx else None
+            temp_docx_path = (Path(self.current_job_folder) / docx_filename) if should_generate_docx else None
+            if should_generate_docx:
+                # Use ExportWord.py to create formatted document
+                self.update_log("Creating formatted Word document using ExportWord")
+                print(f"[DEBUG] Output path: {temp_docx_path}")
+                convert_markdown_to_docx(filtered_md, str(temp_docx_path), formatting_enabled=True)
+            else:
+                self.update_log("No Word content detected; skipping Word document generation")
             
             # Move files to output folder if needed
             if self.current_job_folder:
@@ -1083,12 +1128,24 @@ class AssistantNode(BaseNode):
                 
                 # Move original text file if it's not a transcription
                 if not file_path.name.endswith('_transcription.txt'):
+                    # Instead of copying the original input .txt, write a combined
+                    # log containing the exact API request and response so you can
+                    # inspect both before downstream processing.
                     new_text_location = output_folder / file_path.name
-                    shutil.copy2(str(file_path), str(new_text_location))
+                    try:
+                        with open(new_text_location, 'w', encoding='utf-8') as f:
+                            f.write("=== USER REQUEST ===\n")
+                            f.write(original_user_request)
+                            f.write("\n\n=== API OUTPUT ===\n")
+                            f.write(api_response)
+                    except Exception:
+                        # Fallback: if writing combined file fails, at least copy the original
+                        shutil.copy2(str(file_path), str(new_text_location))
                 
-                # Move Word document
-                new_docx_location = output_folder / docx_filename
-                shutil.move(str(temp_docx_path), str(new_docx_location))
+                # Move Word document only if it was generated
+                if should_generate_docx and temp_docx_path and temp_docx_path.exists():
+                    new_docx_location = output_folder / docx_filename
+                    shutil.move(str(temp_docx_path), str(new_docx_location))
                 
                 # Add this file to processed files list
                 self.processed_files.append(file_path)
@@ -1098,6 +1155,8 @@ class AssistantNode(BaseNode):
         except Exception as e:
             self.update_log(f"Error processing text file: {str(e)}")
             print(f"[DEBUG] Error processing text file: {str(e)}")
+            print(f"[DEBUG] Error details: {str(e)}")
+            traceback.print_exc()
             raise
 
     def extract_urls(self, text):
@@ -1410,6 +1469,7 @@ class AssistantNode(BaseNode):
                     print(f"[DEBUG] Error details: {e}")
                 finally:
                     self.current_job_folder = None
+                    self.custom_project_name = None  # Reset custom project name for next job
 
             if processed_count == total_files:
                 self.update_log(f"All {total_files} files processed, deleting project folder: {project_folder}")
@@ -1419,8 +1479,9 @@ class AssistantNode(BaseNode):
             self.update_log(f"Error in process_project_folder: {str(e)}")
             print(f"[DEBUG] Process error: {str(e)}")
         finally:
-            # Always reset the current_job_folder when done processing
+            # Always reset the current_job_folder and custom_project_name when done processing
             self.current_job_folder = None
+            self.custom_project_name = None
 
     def process_instructions_file(self, instructions_file):
         """Process an instructions file that contains references to other files.
@@ -1665,9 +1726,16 @@ class AssistantNode(BaseNode):
             self.process_text_file(str(combined_file))
             
             # Copy only the combined file to the output folder
-            combined_output_file = output_folder / f"{instructions_file.stem}_combined.txt"
-            shutil.copy2(str(combined_file), str(combined_output_file))
-            print(f"[DEBUG] Copied combined file to output folder: {combined_output_file}")
+            # Important: process_text_file() already wrote a combined API request+response
+            # file named "<stem>_combined.txt" into output_folder. To avoid overwriting it,
+            # store the pre-API combined source as a separate file.
+            combined_output_file = output_folder / f"{instructions_file.stem}_combined_source.txt"
+            try:
+                if not combined_output_file.exists():
+                    shutil.copy2(str(combined_file), str(combined_output_file))
+                    print(f"[DEBUG] Copied source combined file to output folder: {combined_output_file}")
+            except Exception as e:
+                print(f"[DEBUG] Error copying source combined file: {e}")
             
             # No longer copy the original instructions file to the output folder
             # Removed: shutil.copy2(str(instructions_file), str(output_folder / instructions_file.name))
@@ -1687,6 +1755,7 @@ class AssistantNode(BaseNode):
             traceback.print_exc()
         finally:
             self.current_job_folder = None
+            self.custom_project_name = None  # Reset custom project name for next job
 
     def parse_instructions_file(self, instructions_file):
         """Parse an instructions file to find referenced files.
@@ -2310,9 +2379,18 @@ class AssistantNode(BaseNode):
                 print(f"[DEBUG] File {file_path.name} is still being modified: Size changed from {current_size} to {new_size}, mtime from {current_mtime} to {new_mtime}")
                 return False
                 
-            # Check if the file was modified in the last 30 seconds
-            if time.time() - new_mtime < 30:
-                print(f"[DEBUG] File {file_path.name} was modified in the last 30 seconds, waiting for stability")
+            # Check if the file was modified in the last 45 seconds (increased for network drives)
+            if time.time() - new_mtime < 45:
+                print(f"[DEBUG] File {file_path.name} was modified in the last 45 seconds, waiting for stability")
+                return False
+                
+            # Additional check: try to open the file exclusively to ensure it's not locked
+            try:
+                with open(file_path, 'rb') as f:
+                    # Try to read a small amount to verify file is accessible
+                    f.read(1024)
+            except (PermissionError, IOError) as e:
+                print(f"[DEBUG] File {file_path.name} is still locked or inaccessible: {str(e)}")
                 return False
                 
             return True

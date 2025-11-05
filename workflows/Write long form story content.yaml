@@ -1,126 +1,153 @@
 graph:
   connections:
-  - canvas_item: 365
-    from_node: 81c48351-a3e8-4f7d-8657-65d72005c30c
-    from_output: output
-    to_input: input
-    to_node: d407e984-dd52-4549-ae40-821e2646d5ae
-  - canvas_item: 366
+  - canvas_item: 74
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
     from_output: prompt
     to_input: input
     to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 367
+  - canvas_item: 75
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
     from_output: output
     to_input: input
-    to_node: 81c48351-a3e8-4f7d-8657-65d72005c30c
+    to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
+  - canvas_item: 76
+    from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
+    from_output: output
+    to_input: input
+    to_node: d407e984-dd52-4549-ae40-821e2646d5ae
   nodes:
-    81c48351-a3e8-4f7d-8657-65d72005c30c:
+    3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        description: 4
-        drag_bar: 2
-        input_input: 5
-        input_label_input: 6
-        output_label_output: 8
-        output_output: 7
-        rect: 1
-        resize_handle: 9
-        title: 3
-      connections: []
-      height: 100
+        description: 42
+        drag_bar: 40
+        input_input: 43
+        input_label_input: 44
+        output_label_output: 46
+        output_output: 45
+        rect: 39
+        resize_handle: 47
+        title: 41
+      height: 150
       highlight_state: false
-      id: 81c48351-a3e8-4f7d-8657-65d72005c30c
+      id: 3b531ecb-da74-483a-93cf-11de692f0b68
       inputs:
       - input
       outputs:
       - output
       properties:
         Prompt:
-          default: "You are to take the user request below and write an outline. \
-            \ The outline will consist of a self contained paragraph representing\
-            \ the chapter, or paragraph extending the details of a chapter.\n\nYou\
-            \ are responsible for the following duties:\n\n1. Crafting content that\
-            \ aligns with the intended tone, purpose, and audience.\n\n2. Structuring\
-            \ ideas logically to enhance readability and flow.\n\n3. Your expected\
-            \ output will always be a title followed by the exact original user request\
-            \ shown bellow, then a detailed outline for whatever the user request\
-            \ is.  this outline will consist of the title, then the exact original\
-            \ user request shown below, and then a self contained paragraph for each\
-            \ chapter and/or section or sub section that makes up the outline with\
-            \ as many details and key points, notable items, and major points of what\
-            \ is in that chapter or section for the content being requested.  the\
-            \ chapter or section number and title or heading for each chapter or section\
-            \ will always be included at the very beginning of that chapter or section\
-            \ making it part of the paragraph. \n\nHere is what the formatting structure\
-            \ would look like:\nTitle: [content title] - [the exact original user\
-            \ request listed below will be repeated here verbatum]\n\nchapter # -\
-            \ [chronologically structured key points, people, actions, events, places\
-            \ and important items and noteable characteristics of the chapter that\
-            \ structure the chapter.] \n\n[if the user requests [2 paragraphs], then\
-            \ an aditional paragraph of details naturally continuing the outline from\
-            \ chapter # can be added here to add to the details of chapter # for a\
-            \ total of 2 paragraphs per chapter, these details should be a chronological\
-            \ continuation of the first paragraph naturally continuing the story outline\
-            \ from the first paragraph.]\n\n[if the user requests [3 paragraphs],\
+          default: "You are to take the user request below and write an outline. The\
+            \ outline will consist of a self contained paragraph representing the\
+            \ chapter, or paragraph extending the details of a chapter.\n\nYou are\
+            \ responsible for the following duties:\n\n1. Crafting content that aligns\
+            \ with the intended tone, purpose, and audience.\n\n\n2. Structuring ideas\
+            \ logically to enhance readability and flow.\n\n\n3. Your expected output\
+            \ will always be the provided title or new title followed by the exact\
+            \ original user request shown below in a single paragraph, then a detailed\
+            \ outline for whatever the user request is. This outline will consist\
+            \ of the provided title or if no title is provided then you will provide\
+            \ the title, then the exact original user request shown below, and then\
+            \ a self contained paragraph for each chapter and/or section that makes\
+            \ up the outline with as many details and key points, notable items, and\
+            \ major points of what is in that chapter or section for the content being\
+            \ requested. each section or paragraph has no limit on the number of words\
+            \ that it uses to convey they section of the story.  it just needs to\
+            \ be a self contained paragraph that includes the chapter or section heading.\n\
+            \nExample: \nThe dimensional series - Book 1 - Transcendent Doors - Eric\
+            \ Thorup - the rest of the exact user request all included in one single\
+            \ paragraph....\n\n\n4. Each chapter paragraph must begin with the chapter\
+            \ number and creative title, followed directly by the narrative outline\
+            \ for that chapter. Do not put the number and title on a separate line.\
+            \ Example:\nChapter 1 \u2013 Shadows on the Horizon \u2013 The caravan\
+            \ crosses the desert where\u2026\n\n\n5. Each chapter outline should escalate\
+            \ pacing and tension compared to previous chapters, include at least one\
+            \ turning point or revelation, and contain a mini-arc (setup, complication,\
+            \ shift). Every chapter should highlight at least one vivid, memorable\
+            \ \u201Cset-piece moment\u201D such as a confrontation, discovery, or\
+            \ revelation.\n\n\n6. Chapter details must integrate world mechanics (magic,\
+            \ politics, technology, culture) and use sensory detail where appropriate.\
+            \ Foreshadow important elements that will pay off in later chapters, and\
+            \ ensure subplots or secondary conflicts intersect meaningfully with the\
+            \ main plot.\n\n\n7. Each chapter must show at least some advancement\
+            \ of a character arc (protagonist, antagonist, or ally), whether through\
+            \ choices, conflicts, or emotional changes, keeping continuity consistent\
+            \ across the story.\n\n\n8. If the user requests [2 paragraphs], then\
             \ an additional paragraph of details naturally continuing the outline\
-            \ from chapter # can be added here to add to the details of chapter #\
-            \ for a total of 3 paragraphs per chapter, these details should be a chronological\
-            \ continuation of the second paragraph naturally continuing the story\
-            \ outline from the second paragraph.] \n\ndo not use any special formatting\
-            \ , i.e. bold, line separators, etc.  just one, two or three self contained\
-            \ paragraphs that contains the detailed description of chronologically\
-            \ structured key points, people, actions, places and important items and\
-            \ notable characteristics of the chapter that structure the chapter for\
-            \ each chapter or section. \n\n6. each paragraph will have a single blank\
-            \ line after it.\n\n7. if the content is a story, the outline  details\
-            \ will be written in the order in which events and actions take place,\
-            \ but ensuring story continuity and consistency. each section in the outline\
+            \ from the first paragraph can be added here for a total of 2 paragraphs\
+            \ per chapter, continuing the story naturally.\n\n\n9. If the user requests\
+            \ [3 paragraphs], an additional two paragraphs of details naturally continuing\
+            \ the outline from the first paragraph can be added here for a total of\
+            \ 3 paragraphs per chapter, continuing the story naturally.\n\n\n\nDo\
+            \ not use any special formatting, i.e. bold, line separators, etc. Just\
+            \ one, two, or three self contained paragraphs that contain the detailed\
+            \ description of chronologically structured key points, people, actions,\
+            \ places, important items, worldbuilding details, foreshadowed elements,\
+            \ and notable characteristics of the chapter that structure the chapter\
+            \ for each chapter or section.\n\nEach paragraph will have a single blank\
+            \ line after it.\n\nIf the content is a story, the outline details will\
+            \ be written in the order in which events and actions take place, but\
+            \ ensuring story continuity and consistency. Each section in the outline\
             \ should contain specific details important to that section of the story\
-            \ as those details could be referenced later on in the outline.\n\nyour\
-            \ only expected output is the requested outline and no other comments.\n\
-            Remember, the default number of paragraphs per chapter is 1, unless the\
-            \ user specifies the number of paragraphs per chapter. if the user requests\
-            \ [2 paragraphs], you will add one additional paragraph of details for\
-            \ each chapter.  if the user requests [3 paragraphs], you will add an\
-            \ additional two paragraphs of details for each chapter.  \n\nFor example,\
-            \ user requests contains the phrase \"2 paragraphs\", then write two paragraphs\
-            \ per chapter:\n\n[paragraph 1]: chapter # - In the distant future, humanity\
-            \ has ventured into the far reaches of space, colonizing planets with\
-            \ unimaginable landscapes and civilizations. The story begins on the......\
-            \  \n\n[paragraph 2]:(Continued) - the details of this paragraph will\
-            \ naturally continue and add to the outline in paragraph 1.....\n\nFor\
-            \ example, user requests contains the phrase \"3 paragraphs\", then write\
-            \ three paragraphs per chapter:\n\n[paragraph 1]: chapter # - In the bleak\
-            \ future where humanity has succumbed to the omnipresent grip of a dying\
-            \ Earth, a lone space vessel, the Eclipsed Solace, drifts.......\n\n[paragraph\
-            \ 2]:(Continued) - the details of this paragraph will naturally continue\
-            \ and add to the outline in paragraph 1......\n\n[paragraph 3]:(Continued)\
-            \ - the details of this paragraph will naturally continue and add to the\
-            \ outline in paragraph 2 .......\n\ndo not include the paragraph numbers\
-            \ in brackets in your output. ensure that all paragraphs are separated\
-            \ by a single blank line.\nwhen creating the title and chapter titles,\
-            \ be creative, dont make it obvious and use paraphrasing when creating\
-            \ the book or chapter titles.\n\nThe user request is as follows:"
+            \ as those details could be referenced later on in the outline.\n\nYour\
+            \ only expected output is the requested outline and no other comments.\
+            \ Remember, the default number of paragraphs per chapter is 1, unless\
+            \ the user specifies the number of paragraphs per chapter. If the user\
+            \ requests [2 paragraphs], you will add one additional paragraph of details\
+            \ for each chapter. If the user requests [3 paragraphs], you will add\
+            \ an additional two paragraphs of details for each chapter.\n\nFor example,\
+            \ if the user request contains the phrase \"2 paragraphs\", then write\
+            \ two paragraphs per chapter:\n\nChapter 1 \u2013 Sands of Departure \u2013\
+            \ In the distant future, humanity has ventured into the far reaches of\
+            \ space, colonizing planets with unimaginable landscapes and civilizations.\
+            \ The story begins on the\u2026\n\n(Continued) \u2013 The details of this\
+            \ paragraph will naturally continue and add to the outline in paragraph\
+            \ 1\u2026\n\nFor example, if the user request contains the phrase \"3\
+            \ paragraphs\", then write three paragraphs per chapter:\n\nChapter 1\
+            \ \u2013 Ashes of the Earth \u2013 In the bleak future where humanity\
+            \ has succumbed to the omnipresent grip of a dying Earth, a lone space\
+            \ vessel, the Eclipsed Solace, drifts\u2026\n\n(Continued) \u2013 The\
+            \ details of this paragraph will naturally continue and add to the outline\
+            \ in paragraph 1\u2026\n\n(Continued) \u2013 The details of this paragraph\
+            \ will naturally continue and add to the outline in paragraph 2\u2026\n\
+            \nWhen creating the title and chapter titles, be creative, don\u2019t\
+            \ make it obvious, it shouldn't be \"on the nose\", and use paraphrasing\
+            \ or just be creative when creating the book or chapter titles.\n\nThe\
+            \ user request is as follows:"
           label: Prompt
           type: textarea
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
-          - Groq
-          - Ollama DeepSeek r1
-          - Ollama llama3.1-8b
-          - OpenAI GPT gpt-4o-mini
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
           type: dropdown
         description:
-          default: Processes the input prompt with review capability.
+          default: Processes the input prompt with review capability and content enhancement.
           label: Description
           type: text
         enable_review:
           default: true
           label: Enable Review
           type: boolean
+        enhancement_prompt:
+          default: 'I want you to take the content below and give me a single search
+            term i can use to do a web search to find content related to the content
+            below. your only expected output is the single sentence search term that
+            contains key words, concepts, or subject matter, that can be used in google
+            search to search for ideas, concepts or details that could enhance or
+            make the story section below unique.  you will no provide any helpful
+            pre or post comments.  the content i need you to create a search term
+            for is as follows:'
+          label: Content Enhancement Prompt
+          type: textarea
         is_end_node:
           default: false
           label: End Node
@@ -130,25 +157,54 @@ graph:
           label: Start Node
           type: boolean
         node_name:
-          default: Outline Writer
+          default: OutlineWriterV3Node
           label: Custom Node Name
           type: text
-      title: Outline Writer
-      type: OutlineWriterV2Node
-      width: 142
-      x: 186
-      y: 164
+        searxng_endpoint:
+          default: SearXing
+          label: SearxNG Endpoint
+          options:
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        web_search_prompt:
+          default: 'Based on the following paragraph and web search results, create
+            additional content that expands on the topic section or chapter.  do not
+            include any markdown formatting.  the final content should be in a single
+            self contained paragraph. the final content should only contain new ideas,
+            concepts, story elements or information that adds to and enhances the
+            original paragraph below, do not just provide a re-written version of
+            the paragraph below. just create a paragraph that extends the original
+            paragraph below with all the new story building content for the section
+            below:
+
+
+            Original Paragraph:'
+          label: Web Search Summary Prompt
+          type: textarea
+      title: OutlineWriterV3Node
+      type: OutlineWriterV3Node
+      width: 200
+      x: 211
+      y: 189
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        description: 13
-        drag_bar: 11
-        input_input: 14
-        input_label_input: 15
-        output_label_output: 17
-        output_output: 16
-        rect: 10
-        resize_handle: 18
-        title: 12
+        description: 51
+        drag_bar: 49
+        input_input: 52
+        input_label_input: 53
+        output_label_output: 55
+        output_output: 54
+        rect: 48
+        resize_handle: 56
+        title: 50
       connections: []
       height: 112
       highlight_state: false
@@ -162,7 +218,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq
@@ -189,7 +245,7 @@ graph:
           label: Max Iterations
           type: text
         minimum_rating:
-          default: '8.3'
+          default: '8.7'
           description: Minimum rating threshold to consider content satisfactory
           label: Minimum Rating
           type: float
@@ -248,19 +304,19 @@ graph:
       title: Reviewer and Editor
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 580
-      y: 158
+      x: 618
+      y: 250
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        description: 22
-        drag_bar: 328
-        input_input: 330
-        input_label_input: 24
-        output_label_output: 26
-        output_output: 331
-        rect: 327
-        resize_handle: 27
-        title: 329
+        description: 60
+        drag_bar: 58
+        input_input: 61
+        input_label_input: 62
+        output_label_output: 64
+        output_output: 63
+        rect: 57
+        resize_handle: 65
+        title: 59
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -270,36 +326,61 @@ graph:
       - output
       properties:
         Prompt:
-          default: "Using the user request and details below, you will create a pre-draft\
-            \ outline for the following items: \nTitle and synopsis\nIf the user request\
-            \ does not provide the title or synopsis of the story, then you will creatively\
-            \ provide a uniqe title and short synopsis of the story.\n\nWorld/Univers\n\
-            start by constructing a detailed blueprint of your novel\u2019s universe.\
-            \ Begin with world building: clearly define the geography, culture, and\
-            \ any unique rules that govern the reality you\u2019re creating. This\
-            \ should include descriptions of the environment, societal structures,\
-            \ historical context, and the underlying principles (whether magical,\
-            \ scientific, or otherwise) that give your world its distinctive character.\n\
-            \nMain/side characters\nNext, focus on character development. Create comprehensive\
-            \ profiles for your main characters, outlining their backstories, personality\
-            \ traits, and motivations. Map out their growth arcs throughout the narrative.\
-            \ Don\u2019t neglect your supporting cast\u2014detail their roles, relationships\
-            \ with the protagonists, and unique attributes that make them memorable.\
-            \ Also, consider the antagonists and central conflicts, ensuring they\
-            \ are nuanced and provide meaningful challenges.\n\nPlot/Story Structure\n\
-            Then, turn your attention to the plot and structure of your story. Identify\
-            \ the core conflict that drives your narrative and sketch a rough outline\
-            \ of key events, turning points, and the climax. Plan any subplots that\
-            \ will enrich the main storyline and reinforce character development.\
-            \ Additionally, set the tone and themes early on by determining the mood,\
-            \ voice, and recurring symbols that will carry your message throughout\
-            \ the narrative.\n\nAdditional instructions:\nYour final output will be\
-            \ a single self contained paragraph containing all details needed.\n\n\
-            User request is as follows:"
+          default: "You will produce a single, richly detailed narrative paragraph\
+            \ of 1000-2000 words that serves as a pre-draft outline for a book. The\
+            \ paragraph must be complete, flowing, and cinematic \u2014 not a list\
+            \ \u2014 and should feel like a short, compelling synopsis with world\
+            \ building, character arcs, and act structure built in.\n\nTitle & Synopsis\n\
+            If the user has not provided a title or synopsis, invent a unique, memorable\
+            \ title and a short hook sentence that encapsulates tone, genre, and core\
+            \ conflict before flowing into the outline.\n\nWorld / Universe\nBegin\
+            \ by vividly introducing the setting \u2014 geography, political climate,\
+            \ cultural quirks, and historical backdrop.\n\nState the rules and limitations\
+            \ of magic, science, or supernatural elements, with at least two concrete\
+            \ examples of how they influence daily life, conflict, or danger.\n\n\
+            To maintain a brisk pace, demonstrate these world-building concepts through\
+            \ their consequences in the plot rather than through lengthy explanatory\
+            \ passages.\n\nInclude 3\u20135 distinctive named places the story will\
+            \ visit and foreshadow how each will impact the plot.\n\nSeed at least\
+            \ one instability or looming threat tied to the setting.\n\nMain / Side\
+            \ Characters\nIntroduce the protagonist(s) with a short but vivid backstory,\
+            \ core traits, and clear motivations. Ensure their character is revealed\
+            \ through their actions and reactions, and include physical details that\
+            \ inform their personality or history. Include one internal struggle and\
+            \ one external driving goal.\n\nPresent supporting allies with unique,\
+            \ memorable traits and explain their narrative purpose, grounding them\
+            \ with specific physical and behavioral quirks.\n\nIntroduce the primary\
+            \ antagonist(s) with enough detail to understand their motives, methods,\
+            \ and how they will evolve across the story.\n\nMention 1\u20132 secondary\
+            \ antagonists or opposing forces (rivals, environment, politics) to add\
+            \ depth.\n\nPlot / Story Structure\nBegin with a clear, gripping inciting\
+            \ incident that disrupts the protagonist\u2019s life.\n\nSketch the act\
+            \ structure inside the paragraph:\n\nAct One: Initial situation, inciting\
+            \ incident, and first complications.\n\nAct Two: Rising challenges, emotional\
+            \ shifts, at least one twist or betrayal.\n\nAct Three: Final confrontation,\
+            \ resolution, and the cost of victory.\n\nInclude two to three key subplots\
+            \ that enhance relationships, reveal secrets, or deepen themes.\n\nEnsure\
+            \ pacing escalates naturally, with each event more dangerous, personal,\
+            \ or morally complex than the last.\n\nResolve the main plot while leaving\
+            \ one or two threads dangling to connect to future books.\n\nAdditional\
+            \ Guidelines Write the outline using 700\u20131000 words in one continuous\
+            \ paragraph \u2014 no lists or section breaks.\n\nBalance action, worldbuilding,\
+            \ and character emotion so all three feel equally present.\n\nUse specific\
+            \ sensory language (sights, sounds, textures, smells) to make locations\
+            \ and scenes vivid.\n\nAvoid generic phrases; every major element should\
+            \ feel unique to this world.\n\nAvoid overly repetitive use of core thematic\
+            \ phrases. Instead of repeatedly stating a theme, weave it into the narrative\
+            \ through symbolic actions, evolving relationships, or character growth.\
+            \ Allow the theme to be inferred by the reader.\n\nInclude at least five\
+            \ memorable proper nouns (locations, characters, artifacts, events).\n\
+            \nForeshadow the thematic core of the book (friendship, loss, ambition,\
+            \ love, betrayal, etc.) through key moments in the outline.\n\nand your\
+            \ final output should be a single self contained paragraph that starts\
+            \ with the series title, book number, book title and author."
           label: Prompt
           type: textarea
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq
@@ -332,14 +413,14 @@ graph:
       y: 26
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        drag_bar: 29
-        input_input: 31
-        input_label_input: 32
-        output_label_prompt: 34
-        output_prompt: 33
-        rect: 28
-        resize_handle: 35
-        title: 30
+        drag_bar: 67
+        input_input: 69
+        input_label_input: 70
+        output_label_prompt: 72
+        output_prompt: 71
+        rect: 66
+        resize_handle: 73
+        title: 68
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -401,7 +482,7 @@ graph:
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: OpenAI 03-mini
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Groq
@@ -446,6 +527,6 @@ graph:
       title: LongOutputV4
       type: LongOutputV4Node
       width: 125
-      x: 383
-      y: 36
+      x: 463
+      y: 22
 name: Write long form story content

@@ -14,6 +14,7 @@ import uuid
 import math
 import re  # For parsing markdown-like formatting
 import queue  # Add this import at the top
+from utils.ffmpeg_installer import ensure_ffmpeg_available  # Ensure ffmpeg/avconv is available
 
 from node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
 from db_tools import DatabaseManager  # Import from db_tools.py
@@ -776,6 +777,15 @@ def stop_process(chat_tab):
         print(f"Stopped workflow: {workflow_id}")
 
 def main():
+    # Ensure ffmpeg is available for any audio/video operations that may be used by nodes/utilities
+    try:
+        ff_path = ensure_ffmpeg_available(auto_install=True)
+        if ff_path:
+            # Help libraries like imageio/moviepy find the binary consistently
+            os.environ["IMAGEIO_FFMPEG_EXE"] = ff_path
+    except Exception as e:
+        logging.warning(f"ffmpeg auto-install failed or not available: {e}")
+
     load_nodes()
 
     config = load_config()

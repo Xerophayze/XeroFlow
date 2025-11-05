@@ -1,0 +1,107 @@
+graph:
+  connections: []
+  nodes:
+    68a231a2-6620-445a-80b7-59f018e04f20:
+      canvas_items:
+        description: 11
+        drag_bar: 9
+        output_label_output: 13
+        output_output: 12
+        rect: 8
+        resize_handle: 14
+        title: 10
+      height: 150
+      id: 68a231a2-6620-445a-80b7-59f018e04f20
+      inputs: []
+      outputs:
+      - output
+      properties:
+        PreProcess:
+          default: "I want you to take the following information and take a look through\
+            \ it and determine intuitively if the user request has any requests to\
+            \ search for information.  it may be in the form of \"please search for\
+            \ some information regarding...\" or \"search for ....\" or \"Find some\
+            \ information about...\" or \"can you find...\"\nif you find terms like\
+            \ this or something similer.  if their phrase is requesting a search for\
+            \ multiple items or sources, your job is to break their request up and\
+            \ insert at that point an effective search term to search for what the\
+            \ user wants but encapsulated in the following tags <search> </search>\n\
+            for example:\nuser request may look like this, \"please find some information\
+            \ on mars and jupiter\"\nthis would insert two search terms at that point\
+            \ and would look like this, <search>factual scientific information about\
+            \ mars </search>, <search>factual scientific information about jupiter</search>\
+            \ \n\nAnother example may be \"i would like to find some information about\
+            \ how to program a maze game in python\"\nthis would be a single search\
+            \ term like this: <search>programing maze game using python with examples\
+            \ </search>\n\nplease adjust their search terms to be more effective at\
+            \ finding the information they are looking for.\n\nyour only output should\
+            \ be the exact user information below, but with the search terms and tags\
+            \ inserted within it. the user content is as follows:"
+          label: PreProcess
+          type: textarea
+        Prompt:
+          default: 'use the information below to provide me with a well formatted
+            and organized document organizing the information for the following user
+            request, the user request below may contain furthur instructions to follow.  the
+            information below the user request may include information gathered from
+            a web scrape of many urls.  please only include information from that
+            data as it relates to the following user request:'
+          label: Prompt Template
+          type: textarea
+        description:
+          default: Monitors a folder for text and audio files, processes them through
+            respective APIs.
+          label: Description
+          type: text
+        inbox_folder:
+          default: G:\Shared drives\Eric Thorup\Inbox
+          label: Inbox Folder Path
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: AssistantNode
+          label: Custom Node Name
+          type: text
+        num_search_results:
+          default: '3'
+          label: Number of Search Results
+          type: number
+        outbox_folder:
+          default: G:\Shared drives\Eric Thorup\Outbox
+          label: Outbox Folder Path
+          type: text
+        search_url:
+          default: http://xeroserv:8888/search
+          label: Search URL
+          type: text
+        text_api_endpoint:
+          default: OpenAI 03-mini
+          label: Text Processing API
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          type: dropdown
+        whisper_api_endpoint:
+          default: OpenAI Whisper
+          label: Audio Transcription API
+          options:
+          - Groq
+          - Ollama
+          - OpenAI 03-mini
+          - OpenAI 4o-mini
+          - OpenAI Whisper
+          type: dropdown
+      title: AssistantNode
+      type: AssistantNode
+      width: 200
+      x: 100
+      y: 100
+name: Assistantv2
