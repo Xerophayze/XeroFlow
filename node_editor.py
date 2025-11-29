@@ -669,6 +669,14 @@ class NodeEditor:
         node_instance = node_class(node_id=node['id'], config=self.config)
         fresh_properties = node_instance.define_properties()
 
+        # Merge fresh property definitions into the node while preserving saved values
+        for prop_name, prop_details in fresh_properties.items():
+            if prop_name in node['properties']:
+                existing_default = node['properties'][prop_name].get('default', prop_details.get('default'))
+                node['properties'][prop_name] = {**prop_details, 'default': existing_default}
+            else:
+                node['properties'][prop_name] = prop_details
+
         # Scrollable frame setup
         content_frame = ttk.Frame(prop_window)
         content_frame.pack(fill=tk.BOTH, expand=True)

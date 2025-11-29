@@ -2,7 +2,10 @@
 
 import sys
 import subprocess
-import pkg_resources
+try:
+    from importlib.metadata import distribution, PackageNotFoundError
+except ImportError:  # Python <3.8 fallback
+    from importlib_metadata import distribution, PackageNotFoundError
 import logging
 
 # Set up logging
@@ -773,16 +776,26 @@ def process_mermaid_diagram(mermaid_code):
         # Use Kroki SVG as primary method (no width limits), fall back to mermaid.ink if needed
         try:
             # Try Kroki SVG first - it's vector-based with no width limitations
-            kroki_base = os.environ.get("KROKI_SERVER", "https://kroki.io").rstrip('/')
+            # Default to local Kroki instance on searxng.local, fall back to public kroki.io if needed
+            kroki_base = os.environ.get("KROKI_SERVER", "http://searxng.local:8000").rstrip('/')
             kroki_svg_url = f"{kroki_base}/mermaid/svg"
             headers = {
                 'Accept': 'image/svg+xml',
                 'Content-Type': 'text/plain'
             }
             logging.info(f"Attempting Kroki SVG rendering at: {kroki_svg_url}")
-            response = requests.post(kroki_svg_url, data=mermaid_code.encode('utf-8'), headers=headers, timeout=30)
             
-            if response.status_code == 200 and response.headers.get('Content-Type', '').startswith('image/svg'):
+            # Try Kroki with timeout handling (reduced timeout for faster fallback)
+            try:
+                response = requests.post(kroki_svg_url, data=mermaid_code.encode('utf-8'), headers=headers, timeout=10)
+            except requests.exceptions.Timeout:
+                logging.warning("Kroki request timed out after 10 seconds. Falling back to mermaid.ink...")
+                response = None
+            except requests.exceptions.RequestException as req_err:
+                logging.warning(f"Kroki request failed: {req_err}. Falling back to mermaid.ink...")
+                response = None
+            
+            if response and response.status_code == 200 and response.headers.get('Content-Type', '').startswith('image/svg'):
                 logging.info(f"Successfully generated Mermaid SVG via Kroki. SVG size: {len(response.content)} bytes")
                 
                 # Convert SVG to high-resolution PNG using Kroki's PNG endpoint
@@ -795,9 +808,15 @@ def process_mermaid_diagram(mermaid_code):
                         'Content-Type': 'text/plain'
                     }
                     logging.info("Converting to high-resolution PNG via Kroki...")
-                    png_response = requests.post(kroki_png_url, data=mermaid_code.encode('utf-8'), headers=png_headers, timeout=30)
                     
-                    if png_response.status_code == 200 and png_response.headers.get('Content-Type', '').startswith('image/'):
+                    # Try PNG conversion with timeout handling (reduced timeout for faster fallback)
+                    try:
+                        png_response = requests.post(kroki_png_url, data=mermaid_code.encode('utf-8'), headers=png_headers, timeout=10)
+                    except (requests.exceptions.Timeout, requests.exceptions.RequestException) as png_err:
+                        logging.warning(f"Kroki PNG conversion timed out or failed after 10 seconds: {png_err}")
+                        png_response = None
+                    
+                    if png_response and png_response.status_code == 200 and png_response.headers.get('Content-Type', '').startswith('image/'):
                         from PIL import Image
                         import io
                         
@@ -823,57 +842,220 @@ def process_mermaid_diagram(mermaid_code):
                         logging.info(f"Converted to JPEG: {len(jpg_bytes):,} bytes (quality=80)")
                         return jpg_bytes
                     else:
-                        logging.warning(f"Kroki PNG conversion failed: {png_response.status_code}")
+                        status = png_response.status_code if png_response else "timeout/error"
+                        logging.warning(f"Kroki PNG conversion failed: {status}")
                         # Fall through to mermaid.ink fallback
                 except Exception as e:
                     logging.error(f"Error converting via Kroki PNG: {e}")
                     # Fall through to mermaid.ink fallback
             else:
-                logging.warning(f"Kroki SVG failed. Status: {response.status_code}. Falling back to mermaid.ink...")
+                status = response.status_code if response else "timeout/error"
+                logging.warning(f"Kroki SVG failed. Status: {status}. Falling back to mermaid.ink...")
             
-            # Fallback to mermaid.ink (limited to ~784px width but more reliable)
+            # Fallback to mermaid.ink - use SVG endpoint for better quality
             import base64
             graphbytes = mermaid_code.encode("utf8")
             base64_bytes = base64.urlsafe_b64encode(graphbytes)
             base64_string = base64_bytes.decode("ascii")
-            url = f"https://mermaid.ink/img/{base64_string}"
+            svg_url = f"https://mermaid.ink/svg/{base64_string}"
             
-            logging.info("Attempting mermaid.ink fallback...")
-            response = requests.get(url, timeout=15)
+            logging.info("Attempting mermaid.ink fallback (SVG)...")
+            response = requests.get(svg_url, timeout=15)
             if response.status_code == 200 and len(response.content) > 100:
-                logging.info(f"Successfully generated Mermaid diagram using mermaid.ink. PNG size: {len(response.content)} bytes")
+                logging.info(f"Successfully generated Mermaid SVG using mermaid.ink. SVG size: {len(response.content)} bytes")
                 
-                # Convert PNG to JPG for smaller file size
+                # Convert SVG to high-resolution PNG, then to JPEG
                 try:
                     from PIL import Image
                     import io
                     
-                    png_image = Image.open(BytesIO(response.content))
+                    # Try multiple SVG conversion methods
+                    png_data = None
+                    conversion_method = None
                     
-                    # Convert to RGB (JPG doesn't support transparency)
-                    if png_image.mode in ('RGBA', 'LA', 'P'):
-                        rgb_image = Image.new('RGB', png_image.size, (255, 255, 255))
-                        if png_image.mode == 'P':
-                            png_image = png_image.convert('RGBA')
-                        rgb_image.paste(png_image, mask=png_image.split()[-1] if png_image.mode in ('RGBA', 'LA') else None)
-                        png_image = rgb_image
-                    elif png_image.mode != 'RGB':
-                        png_image = png_image.convert('RGB')
+                    # Method 1: Try cairosvg (best quality)
+                    try:
+                        import cairosvg
+                        png_data = cairosvg.svg2png(
+                            bytestring=response.content,
+                            scale=4.0  # 4x resolution for high quality
+                        )
+                        conversion_method = "cairosvg (4x scale)"
+                    except ImportError:
+                        logging.info("cairosvg not available, trying alternative methods...")
+                    except Exception as e:
+                        logging.warning(f"cairosvg conversion failed: {e}")
                     
-                    jpg_buffer = io.BytesIO()
-                    png_image.save(jpg_buffer, format='JPEG', quality=70, optimize=True, progressive=True)
-                    jpg_bytes = jpg_buffer.getvalue()
+                    # Method 2: Try svglib + reportlab
+                    if not png_data:
+                        try:
+                            from svglib.svglib import svg2rlg
+                            from reportlab.graphics import renderPM
+                            import tempfile
+                            
+                            # Save SVG to temp file
+                            with tempfile.NamedTemporaryFile(suffix='.svg', delete=False) as tmp_svg:
+                                tmp_svg.write(response.content)
+                                tmp_svg_path = tmp_svg.name
+                            
+                            # Convert SVG to ReportLab drawing
+                            drawing = svg2rlg(tmp_svg_path)
+                            if drawing:
+                                # Scale up for higher resolution
+                                drawing.width *= 4
+                                drawing.height *= 4
+                                drawing.scale(4, 4)
+                                
+                                # Render to PNG
+                                png_data = renderPM.drawToString(drawing, fmt='PNG')
+                                conversion_method = "svglib (4x scale)"
+                            
+                            # Clean up temp file
+                            os.unlink(tmp_svg_path)
+                        except ImportError:
+                            logging.info("svglib not available, trying alternative methods...")
+                        except Exception as e:
+                            logging.warning(f"svglib conversion failed: {e}")
                     
-                    if len(jpg_bytes) < len(response.content):
-                        logging.info(f"Using JPG version: {len(jpg_bytes):,} bytes")
+                    # Method 3: Use wand (ImageMagick) if available
+                    if not png_data:
+                        try:
+                            from wand.image import Image as WandImage
+                            with WandImage(blob=response.content, format='svg', resolution=300) as img:
+                                img.format = 'png'
+                                png_data = img.make_blob()
+                            conversion_method = "wand (300 DPI)"
+                        except ImportError:
+                            logging.info("wand not available")
+                        except Exception as e:
+                            logging.warning(f"wand conversion failed: {e}")
+                    
+                    if png_data:
+                        # Open the PNG
+                        png_image = Image.open(BytesIO(png_data))
+                        logging.info(f"Converted SVG to PNG using {conversion_method}: {png_image.size[0]}x{png_image.size[1]} pixels")
+                        
+                        # Convert to RGB (JPG doesn't support transparency)
+                        if png_image.mode in ('RGBA', 'LA', 'P'):
+                            rgb_image = Image.new('RGB', png_image.size, (255, 255, 255))
+                            if png_image.mode == 'P':
+                                png_image = png_image.convert('RGBA')
+                            rgb_image.paste(png_image, mask=png_image.split()[-1] if png_image.mode in ('RGBA', 'LA') else None)
+                            png_image = rgb_image
+                        elif png_image.mode != 'RGB':
+                            png_image = png_image.convert('RGB')
+                        
+                        # Save as JPEG with 80% quality (same as Kroki path)
+                        jpg_buffer = io.BytesIO()
+                        png_image.save(jpg_buffer, format='JPEG', quality=80, optimize=True, progressive=True)
+                        jpg_bytes = jpg_buffer.getvalue()
+                        
+                        logging.info(f"Converted to JPEG: {len(jpg_bytes):,} bytes (quality=80)")
                         return jpg_bytes
                     else:
-                        logging.info("Using original PNG")
-                        return response.content
+                        # No SVG converter available, fall back to low-res PNG
+                        logging.warning("No SVG conversion library available (cairosvg, svglib, or wand). Falling back to low-resolution PNG...")
                         
                 except Exception as conv_error:
-                    logging.error(f"Error converting PNG to JPG: {conv_error}. Returning original PNG.")
-                    return response.content
+                    logging.error(f"Error converting SVG to PNG/JPEG: {conv_error}")
+                
+                # Fallback: Modify SVG dimensions and try to render at higher resolution
+                try:
+                    from PIL import Image
+                    import io
+                    import re
+                    
+                    # Modify the SVG to render at higher resolution
+                    svg_text = response.content.decode('utf-8')
+                    
+                    # Extract viewBox dimensions
+                    viewbox_match = re.search(r'viewBox="([^"]+)"', svg_text)
+                    if viewbox_match:
+                        viewbox_parts = viewbox_match.group(1).split()
+                        if len(viewbox_parts) == 4:
+                            vb_width = float(viewbox_parts[2])
+                            vb_height = float(viewbox_parts[3])
+                            
+                            # Set explicit large dimensions (6x scale for better quality)
+                            new_width = int(vb_width * 6)
+                            new_height = int(vb_height * 6)
+                            
+                            # Remove existing width/height and add new ones
+                            svg_text = re.sub(r'\s*width="[^"]*"', '', svg_text)
+                            svg_text = re.sub(r'\s*height="[^"]*"', '', svg_text)
+                            svg_text = re.sub(r'<svg', f'<svg width="{new_width}" height="{new_height}"', svg_text, count=1)
+                            
+                            logging.info(f"Modified SVG dimensions to {new_width}x{new_height} (6x scale)")
+                            
+                            # Try to convert the modified SVG with cairosvg if available
+                            try:
+                                import cairosvg
+                                png_data = cairosvg.svg2png(bytestring=svg_text.encode('utf-8'))
+                                
+                                # Open and convert to JPEG
+                                png_image = Image.open(BytesIO(png_data))
+                                logging.info(f"Rendered SVG to PNG: {png_image.size[0]}x{png_image.size[1]} pixels")
+                                
+                                # Convert to RGB
+                                if png_image.mode in ('RGBA', 'LA', 'P'):
+                                    rgb_image = Image.new('RGB', png_image.size, (255, 255, 255))
+                                    if png_image.mode == 'P':
+                                        png_image = png_image.convert('RGBA')
+                                    rgb_image.paste(png_image, mask=png_image.split()[-1] if png_image.mode in ('RGBA', 'LA') else None)
+                                    png_image = rgb_image
+                                elif png_image.mode != 'RGB':
+                                    png_image = png_image.convert('RGB')
+                                
+                                # Save as JPEG
+                                jpg_buffer = io.BytesIO()
+                                png_image.save(jpg_buffer, format='JPEG', quality=85, optimize=True, progressive=True)
+                                jpg_bytes = jpg_buffer.getvalue()
+                                
+                                logging.info(f"Converted to high-resolution JPEG: {len(jpg_bytes):,} bytes (quality=85)")
+                                return jpg_bytes
+                            except Exception as cairo_error:
+                                logging.warning(f"Cairo conversion failed: {cairo_error}. Falling back to PNG upscaling...")
+                    
+                    # Final fallback: Download low-res PNG and upscale
+                    png_url = f"https://mermaid.ink/img/{base64_string}"
+                    png_response = requests.get(png_url, timeout=15)
+                    if png_response.status_code == 200:
+                        logging.info(f"Downloaded low-resolution PNG: {len(png_response.content)} bytes")
+                        
+                        # Open the low-res PNG
+                        low_res_image = Image.open(BytesIO(png_response.content))
+                        original_size = low_res_image.size
+                        logging.info(f"Original size: {original_size[0]}x{original_size[1]} pixels")
+                        
+                        # Upscale 6x using high-quality resampling for better quality
+                        scale_factor = 6
+                        new_size = (original_size[0] * scale_factor, original_size[1] * scale_factor)
+                        high_res_image = low_res_image.resize(new_size, Image.Resampling.LANCZOS)
+                        logging.info(f"Upscaled to: {new_size[0]}x{new_size[1]} pixels ({scale_factor}x)")
+                        
+                        # Convert to RGB
+                        if high_res_image.mode in ('RGBA', 'LA', 'P'):
+                            rgb_image = Image.new('RGB', high_res_image.size, (255, 255, 255))
+                            if high_res_image.mode == 'P':
+                                high_res_image = high_res_image.convert('RGBA')
+                            rgb_image.paste(high_res_image, mask=high_res_image.split()[-1] if high_res_image.mode in ('RGBA', 'LA') else None)
+                            high_res_image = rgb_image
+                        elif high_res_image.mode != 'RGB':
+                            high_res_image = high_res_image.convert('RGB')
+                        
+                        # Save as JPEG with higher quality
+                        jpg_buffer = io.BytesIO()
+                        high_res_image.save(jpg_buffer, format='JPEG', quality=85, optimize=True, progressive=True)
+                        jpg_bytes = jpg_buffer.getvalue()
+                        
+                        logging.info(f"Converted to high-resolution JPEG: {len(jpg_bytes):,} bytes (quality=85, {scale_factor}x upscale)")
+                        return jpg_bytes
+                    else:
+                        logging.error("Low-resolution PNG fallback also failed")
+                        return None
+                except Exception as fallback_error:
+                    logging.error(f"Fallback processing failed: {fallback_error}")
+                    return None
             else:
                 logging.error(f"mermaid.ink also failed. Status: {response.status_code}")
                 return None
@@ -944,7 +1126,12 @@ def insert_chart_image(document, image_bytes):
                 raise
         return paragraph
     except Exception as e:
-        logging.error(f"Error inserting chart image: {e}")
+        try:
+            import importlib.metadata
+            if importlib.metadata.version('mutagen') is None:
+                subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'mutagen'])
+        except Exception as e:
+            logging.error(f"Error installing mutagen: {e}")
         return document.add_paragraph("[Error: Failed to insert chart]")
 
 def save_image_to_subdirectory(image_bytes, output_path, image_type, image_index):

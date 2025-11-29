@@ -393,6 +393,30 @@ class LongOutputV4Node(BaseNode):
                 'default': """if the section above starts with "Chapter #" then include that chapter number as a heading when writing the content.
 if the section above starts with "(Continued)" then only include "(Continued) - " at the beginning of your output like this:  (Continued) - content......""",
                 'description': 'Custom formatting instructions'
+            },
+            'searxng_api_url': {
+                'type': 'text',
+                'label': 'SearXNG API URL',
+                'default': 'http://localhost:8888/search',
+                'description': 'Endpoint used for optional web-search enrichment'
+            },
+            'num_search_results': {
+                'type': 'integer',
+                'label': 'Search Results to Fetch',
+                'default': 3,
+                'description': 'How many web results to pull during review'
+            },
+            'num_results_to_skip': {
+                'type': 'integer',
+                'label': 'Search Results to Skip',
+                'default': 0,
+                'description': 'Skip the first N search results before scraping'
+            },
+            'enable_url_selection': {
+                'type': 'boolean',
+                'label': 'Enable URL Selection Dialog',
+                'default': False,
+                'description': 'Allow manual selection of URLs to scrape during review'
             }
         }
 
@@ -461,7 +485,7 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
         # Very rough estimate: 1 token ≈ 4 characters
         return len(text) // 4
 
-    def process_with_retry(self, api_name, prompt, max_retries=3, timeout=None, cooldown=None, request_delay=None):
+    def process_with_retry(self, api_name, prompt, max_tokens=None, max_retries=3, timeout=None, cooldown=None, request_delay=None):
         """Process API request with retry logic and rate limit handling"""
         print(f"[LongOutputNodeV4] Processing API request with {max_retries} retries")
         
@@ -478,7 +502,8 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
                 api_response = self.send_api_request(
                     content=prompt,
                     api_name=api_name,
-                    model=self.config['interfaces'][api_name].get('selected_model')
+                    model=self.config['interfaces'][api_name].get('selected_model'),
+                    max_tokens=max_tokens
                 )
                 
                 if not api_response.success:
@@ -568,6 +593,13 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
             error_msg = f"API interface '{api_endpoint}' not found in configuration"
             print(f"[LongOutputNodeV4] Error: {error_msg}")
             return {'prompt': error_msg}
+
+        # Determine max tokens for downstream API calls
+        interface_max_tokens = api_details.get('max_tokens')
+        try:
+            max_tokens = int(interface_max_tokens) if interface_max_tokens else None
+        except (TypeError, ValueError):
+            max_tokens = None
             
         # Process items directly without initial review
         # Create progress window for API processing
@@ -652,7 +684,7 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
                         prompt = context + previous_response + instructions + section + formatting
                     
                     # Make the API call
-                    api_response = self.process_with_retry(api_endpoint, prompt)
+                    api_response = self.process_with_retry(api_endpoint, prompt, max_tokens=max_tokens)
                     if api_response is None:
                         error_msg = "API request failed after retries"
                         print(f"[LongOutputNodeV4] Error: {error_msg}")

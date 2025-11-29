@@ -11,7 +11,7 @@ def manage_documents_window(parent, config, refresh_callback):
     """Embed the Manage Documents interface within the given parent frame."""
 
     db_manager = DatabaseManager()
-    document_paths = []  # Internal list to map listbox indices to full document paths
+    document_records = []  # Map listbox indices to full metadata records
 
     def refresh_doc_list():
         db = selected_db.get()
@@ -19,13 +19,13 @@ def manage_documents_window(parent, config, refresh_callback):
             messagebox.showwarning("Input Required", "Please select a database.")
             return
         doc_listbox.delete(0, tk.END)
-        document_paths.clear()  # Clear the internal mapping
+        document_records.clear()
         try:
-            documents = db_manager.list_documents(db)
-            for doc in documents:
-                doc_name = os.path.basename(doc)  # Extract the file name
+            docs = db_manager.list_document_records(db)
+            for doc in docs:
+                doc_name = os.path.basename(doc.get('source', 'Unknown'))
                 doc_listbox.insert(tk.END, doc_name)
-                document_paths.append(doc)  # Map listbox index to full path
+                document_records.append(doc)
         except Exception as e:
             logging.error(f"Exception during refresh_doc_list: {e}")
             messagebox.showerror("Error", f"An error occurred while fetching documents: {e}")
@@ -83,14 +83,15 @@ def manage_documents_window(parent, config, refresh_callback):
             return
         index = selected[0]
         doc_name = doc_listbox.get(index)
-        full_path = document_paths[index]  # Retrieve the full path from the internal mapping
+        doc_record = document_records[index]
+        doc_name = doc_record.get('source', doc_name)
         confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the document '{doc_name}'?")
         if confirm:
             try:
                 # Start the busy indicator
                 start_busy()
 
-                result = db_manager.delete_document(db, full_path)
+                result = db_manager.delete_document(db, doc_name)
                 if result.get("success"):
                     messagebox.showinfo("Success", f"Document '{doc_name}' deleted successfully!")
                     refresh_doc_list()
@@ -123,12 +124,19 @@ def manage_documents_window(parent, config, refresh_callback):
                     output_box.insert(tk.END, "No results found.")
                 else:
                     for res in results:
-                        doc = res.get("source", "Unknown")
+                        doc_meta = res.get("document", {})
+                        doc_name = doc_meta.get("source") or res.get("source", "Unknown")
                         similarity = res.get("similarity", 0)
                         content = res.get("content", "")
-                        output_box.insert(tk.END, f"Document: {doc}\n")
+                        page = res.get("metadata", {}).get("page")
+                        section = res.get("metadata", {}).get("section")
+                        output_box.insert(tk.END, f"Document: {doc_name}\n")
+                        if page is not None:
+                            output_box.insert(tk.END, f"Page: {page}\n")
+                        if section:
+                            output_box.insert(tk.END, f"Section: {section}\n")
                         output_box.insert(tk.END, f"Similarity Score: {similarity:.4f}\n")
-                        output_box.insert(tk.END, f"Content: {content[:500]}...\n\n")  # Display more content if needed
+                        output_box.insert(tk.END, f"Content: {content[:700]}\n\n")
                 output_box.config(state=tk.DISABLED)
             except Exception as e:
                 logging.error(f"Exception during perform_search: {e}")

@@ -156,14 +156,47 @@ class APIConfigManager:
             ]
             
     def _fetch_claude_models(self, api_key: str, base_url: str) -> list:
-        """Fetch available models from Claude."""
+        """Fetch available models from AnthropX/Claude endpoints."""
+        fallback_models = [
+            "claude-3.5-sonnet-20241022",
+            "claude-3.5-sonnet-20240620",
+            "claude-3-opus-20240229",
+            "claude-3-sonnet-20240229",
+            "claude-3-haiku-20240307",
+            "claude-2.1",
+            "claude-2.0",
+            "claude-instant-1.2",
+        ]
+
         try:
-            # Claude doesn't have a models endpoint like OpenAI
-            # Return a list of known Claude models
-            return ["claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307", "claude-2.1", "claude-2.0", "claude-instant-1.2"]
+            if not api_key:
+                print("Anthropic API key missing; returning fallback model list")
+                return fallback_models
+
+            api_root = base_url.rstrip('/') if base_url else "https://api.anthropic.com"
+            url = f"{api_root}/v1/models"
+            headers = {
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "accept": "application/json",
+            }
+
+            response = requests.get(url, headers=headers, timeout=15)
+            if response.status_code == 200:
+                data = response.json()
+                models = data.get("data", [])
+                model_ids = [model.get("id") for model in models if model.get("id")]
+                if model_ids:
+                    model_ids.sort()
+                    return model_ids
+                print("Anthropic model list empty; using fallback models")
+                return fallback_models
+
+            print(f"Anthropic API error {response.status_code}: {response.text}")
+            return fallback_models
         except Exception as e:
             print(f"Error fetching Claude models: {str(e)}")
-            return []
+            return fallback_models
             
     def _fetch_google_models(self, api_key: str) -> list:
         try:

@@ -67,6 +67,12 @@ class ArrayProcessTestProcessNode(BaseNode):
                 'default': '10',
                 'description': 'Maximum number of iterations per array element'
             },
+            'skip_first_item': {
+                'type': 'boolean',
+                'label': 'Skip First Array Item During Processing',
+                'default': False,
+                'description': 'If enabled, the first array element bypasses processing but is still included in the final output'
+            },
             'api_endpoint': {
                 'type': 'dropdown',
                 'label': 'API Endpoint',
@@ -86,6 +92,12 @@ class ArrayProcessTestProcessNode(BaseNode):
         })
         return props
 
+    def get_property_value(self, key, default=None):
+        prop = self.properties.get(key, {})
+        if isinstance(prop, dict):
+            return prop.get('value', prop.get('default', default))
+        return prop if prop is not None else default
+
     def get_api_endpoints(self):
         # Retrieve API endpoint names from the configuration
         interfaces = self.config.get('interfaces', {})
@@ -98,11 +110,13 @@ class ArrayProcessTestProcessNode(BaseNode):
     def make_api_call(self, prompt, api_details):
         """Make an API call and return the response text."""
         try:
+            max_tokens = api_details.get('max_tokens')
             # Use the API service from BaseNode
             api_response = self.send_api_request(
                 content=prompt,
                 api_name=api_details['endpoint_name'],
-                model=self.config['interfaces'][api_details['endpoint_name']].get('selected_model')
+                model=self.config['interfaces'][api_details['endpoint_name']].get('selected_model'),
+                max_tokens=max_tokens
             )
             
             if not api_response.success:
@@ -160,7 +174,11 @@ class ArrayProcessTestProcessNode(BaseNode):
             
         try:
             min_rating_prop = self.properties.get('minimum_rating', '7.0')
-            min_rating = float(min_rating_prop if isinstance(min_rating_prop, str) else min_rating_prop.get('default', '7.0'))
+            if isinstance(min_rating_prop, dict):
+                min_rating_value = min_rating_prop.get('value', min_rating_prop.get('default', '7.0'))
+            else:
+                min_rating_value = min_rating_prop
+            min_rating = float(min_rating_value)
             print(f"[ArrayProcessTestProcessNode] Comparing rating {rating} against minimum {min_rating}")
             return rating >= min_rating
         except (ValueError, AttributeError) as e:
@@ -271,7 +289,8 @@ class ArrayProcessTestProcessNode(BaseNode):
     def process(self, inputs):
         """Process the input array through the validation-refinement loop."""
         input_data = inputs.get('input', [])
-        use_single_string = self.properties.get('use_single_string', {}).get('default', False)
+        use_single_string = self.get_property_value('use_single_string', False)
+        skip_first_item = self.get_property_value('skip_first_item', False)
         
         # Convert input to array based on the toggle setting
         if use_single_string:
@@ -287,11 +306,11 @@ class ArrayProcessTestProcessNode(BaseNode):
             input_array = input_data
 
         # Get properties
-        api_endpoint = self.properties.get('api_endpoint', {}).get('default', '')
-        validation_prompt = self.properties.get('validation_prompt', {}).get('default', '')
-        refinement_prompt = self.properties.get('refinement_prompt', {}).get('default', '')
-        search_string = self.properties.get('search_string', {}).get('default', '')
-        max_iterations = int(self.properties.get('max_iterations', {}).get('default', '10'))
+        api_endpoint = self.get_property_value('api_endpoint', '')
+        validation_prompt = self.get_property_value('validation_prompt', '')
+        refinement_prompt = self.get_property_value('refinement_prompt', '')
+        search_string = self.get_property_value('search_string', '')
+        max_iterations = int(self.get_property_value('max_iterations', '10'))
 
         # Validate API configuration
         api_config = self.config.get('interfaces', {}).get(api_endpoint)
@@ -301,10 +320,18 @@ class ArrayProcessTestProcessNode(BaseNode):
             return {"output": error_msg}
 
         # Format API details
+        # Parse max tokens from interface configuration
+        interface_max_tokens = api_config.get('max_tokens')
+        try:
+            max_tokens = int(interface_max_tokens) if interface_max_tokens else None
+        except (TypeError, ValueError):
+            max_tokens = None
+
         api_details = {
             'endpoint_name': api_endpoint,
             'config': api_config,
-            'api_type': api_config.get('api_type', 'OpenAI')
+            'api_type': api_config.get('api_type', 'OpenAI'),
+            'max_tokens': max_tokens
         }
         print(f"[ArrayProcessTestProcessNode] Using API endpoint: {api_endpoint}")
         print(f"[ArrayProcessTestProcessNode] API Type: {api_details['api_type']}")
@@ -325,6 +352,12 @@ class ArrayProcessTestProcessNode(BaseNode):
                     print("[ArrayProcessTestProcessNode] Processing cancelled by user")
                     progress_window.close()
                     return {"output": "Processing cancelled by user"}
+
+                if skip_first_item and i == 0:
+                    print("[ArrayProcessTestProcessNode] Skipping first array item per configuration")
+                    refinement_results.append(str(element))
+                    validation_results.append("[INFO] First item skipped per configuration")
+                    continue
 
                 # Process the element and wait for result
                 refinement_result, validation_result = self.process_single_element(

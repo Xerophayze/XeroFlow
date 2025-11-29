@@ -53,72 +53,73 @@ graph:
             \ requested. each section or paragraph has no limit on the number of words\
             \ that it uses to convey they section of the story.  it just needs to\
             \ be a self contained paragraph that includes the chapter or section heading.\n\
-            \nExample: \nThe dimensional series - Book 1 - Transcendent Doors - Eric\
-            \ Thorup - the rest of the exact user request all included in one single\
-            \ paragraph....\n\n\n4. Each chapter paragraph must begin with the chapter\
-            \ number and creative title, followed directly by the narrative outline\
-            \ for that chapter. Do not put the number and title on a separate line.\
-            \ Example:\nChapter 1 \u2013 Shadows on the Horizon \u2013 The caravan\
-            \ crosses the desert where\u2026\n\n\n5. Each chapter outline should escalate\
-            \ pacing and tension compared to previous chapters, include at least one\
-            \ turning point or revelation, and contain a mini-arc (setup, complication,\
-            \ shift). Every chapter should highlight at least one vivid, memorable\
-            \ \u201Cset-piece moment\u201D such as a confrontation, discovery, or\
-            \ revelation.\n\n\n6. Chapter details must integrate world mechanics (magic,\
-            \ politics, technology, culture) and use sensory detail where appropriate.\
-            \ Foreshadow important elements that will pay off in later chapters, and\
-            \ ensure subplots or secondary conflicts intersect meaningfully with the\
-            \ main plot.\n\n\n7. Each chapter must show at least some advancement\
-            \ of a character arc (protagonist, antagonist, or ally), whether through\
-            \ choices, conflicts, or emotional changes, keeping continuity consistent\
-            \ across the story.\n\n\n8. If the user requests [2 paragraphs], then\
-            \ an additional paragraph of details naturally continuing the outline\
-            \ from the first paragraph can be added here for a total of 2 paragraphs\
-            \ per chapter, continuing the story naturally.\n\n\n9. If the user requests\
-            \ [3 paragraphs], an additional two paragraphs of details naturally continuing\
-            \ the outline from the first paragraph can be added here for a total of\
-            \ 3 paragraphs per chapter, continuing the story naturally.\n\n\n\nDo\
-            \ not use any special formatting, i.e. bold, line separators, etc. Just\
-            \ one, two, or three self contained paragraphs that contain the detailed\
-            \ description of chronologically structured key points, people, actions,\
-            \ places, important items, worldbuilding details, foreshadowed elements,\
-            \ and notable characteristics of the chapter that structure the chapter\
-            \ for each chapter or section.\n\nEach paragraph will have a single blank\
-            \ line after it.\n\nIf the content is a story, the outline details will\
-            \ be written in the order in which events and actions take place, but\
-            \ ensuring story continuity and consistency. Each section in the outline\
-            \ should contain specific details important to that section of the story\
-            \ as those details could be referenced later on in the outline.\n\nYour\
-            \ only expected output is the requested outline and no other comments.\
-            \ Remember, the default number of paragraphs per chapter is 1, unless\
-            \ the user specifies the number of paragraphs per chapter. If the user\
-            \ requests [2 paragraphs], you will add one additional paragraph of details\
-            \ for each chapter. If the user requests [3 paragraphs], you will add\
-            \ an additional two paragraphs of details for each chapter.\n\nFor example,\
-            \ if the user request contains the phrase \"2 paragraphs\", then write\
-            \ two paragraphs per chapter:\n\nChapter 1 \u2013 Sands of Departure \u2013\
-            \ In the distant future, humanity has ventured into the far reaches of\
-            \ space, colonizing planets with unimaginable landscapes and civilizations.\
-            \ The story begins on the\u2026\n\n(Continued) \u2013 The details of this\
+            \nExample first self contained paragraph: \nThe dimensional series - Book\
+            \ 1 - Transcendent Doors - Eric Thorup - the rest of the exact user request\
+            \ all included in one single paragraph....\n\n\n4. Each chapter paragraph\
+            \ must begin with the chapter number and creative title, followed directly\
+            \ by the narrative outline for that chapter. Do not put the number and\
+            \ title on a separate line. Example:\nChapter 1 \u2013 Shadows on the\
+            \ Horizon \u2013 The caravan crosses the desert where\u2026\n\n\n5. Each\
+            \ chapter outline should escalate pacing and tension compared to previous\
+            \ chapters, include at least one turning point or revelation, and contain\
+            \ a mini-arc (setup, complication, shift). Every chapter should highlight\
+            \ at least one vivid, memorable \u201Cset-piece moment\u201D such as a\
+            \ confrontation, discovery, or revelation.\n\n\n6. Chapter details must\
+            \ integrate world mechanics (magic, politics, technology, culture) and\
+            \ use sensory detail where appropriate. Foreshadow important elements\
+            \ that will pay off in later chapters, and ensure subplots or secondary\
+            \ conflicts intersect meaningfully with the main plot.\n\n\n7. Each chapter\
+            \ must show at least some advancement of a character arc (protagonist,\
+            \ antagonist, or ally), whether through choices, conflicts, or emotional\
+            \ changes, keeping continuity consistent across the story.\n\n\n8. If\
+            \ the user requests [2 paragraphs], then an additional paragraph of details\
+            \ naturally continuing the outline from the first paragraph can be added\
+            \ here for a total of 2 paragraphs per chapter, continuing the story naturally.\n\
+            \n\n9. If the user requests [3 paragraphs], an additional two paragraphs\
+            \ of details naturally continuing the outline from the first paragraph\
+            \ can be added here for a total of 3 paragraphs per chapter, continuing\
+            \ the story naturally.\n\n\n\nDo not use any special formatting, i.e.\
+            \ bold, line separators, etc. Just one, two, or three self contained paragraphs\
+            \ that contain the detailed description of chronologically structured\
+            \ key points, people, actions, places, important items, worldbuilding\
+            \ details, foreshadowed elements, and notable characteristics of the chapter\
+            \ that structure the chapter for each chapter or section.\n\nEach paragraph\
+            \ will have a single blank line after it.\n\nIf the content is a story,\
+            \ the outline details will be written in the order in which events and\
+            \ actions take place, but ensuring story continuity and consistency. Each\
+            \ section in the outline should contain specific details important to\
+            \ that section of the story as those details could be referenced later\
+            \ on in the outline.\n\nYour only expected output is the requested outline\
+            \ and no other comments. Remember, the default number of paragraphs per\
+            \ chapter is 1, unless the user specifies the number of paragraphs per\
+            \ chapter. If the user requests [2 paragraphs], you will add one additional\
+            \ paragraph of details for each chapter. If the user requests [3 paragraphs],\
+            \ you will add an additional two paragraphs of details for each chapter.\n\
+            \nFor example, if the user request contains the phrase \"2 paragraphs\"\
+            , then write two paragraphs per chapter:\n\nChapter 1 \u2013 Sands of\
+            \ Departure \u2013 In the distant future, humanity has ventured into the\
+            \ far reaches of space, colonizing planets with unimaginable landscapes\
+            \ and civilizations. The story begins on the\u2026\n\n(Continued) \u2013\
+            \ The details of this paragraph will naturally continue and add to the\
+            \ outline in paragraph 1\u2026\n\nFor example, if the user request contains\
+            \ the phrase \"3 paragraphs\", then write three paragraphs per chapter:\n\
+            \nChapter 1 \u2013 Ashes of the Earth \u2013 In the bleak future where\
+            \ humanity has succumbed to the omnipresent grip of a dying Earth, a lone\
+            \ space vessel, the Eclipsed Solace, drifts\u2026\n\n(Continued) \u2013\
+            \ The details of this paragraph will naturally continue and add to the\
+            \ outline in paragraph 1\u2026\n\n(Continued) \u2013 The details of this\
             \ paragraph will naturally continue and add to the outline in paragraph\
-            \ 1\u2026\n\nFor example, if the user request contains the phrase \"3\
-            \ paragraphs\", then write three paragraphs per chapter:\n\nChapter 1\
-            \ \u2013 Ashes of the Earth \u2013 In the bleak future where humanity\
-            \ has succumbed to the omnipresent grip of a dying Earth, a lone space\
-            \ vessel, the Eclipsed Solace, drifts\u2026\n\n(Continued) \u2013 The\
-            \ details of this paragraph will naturally continue and add to the outline\
-            \ in paragraph 1\u2026\n\n(Continued) \u2013 The details of this paragraph\
-            \ will naturally continue and add to the outline in paragraph 2\u2026\n\
-            \nWhen creating the title and chapter titles, be creative, don\u2019t\
-            \ make it obvious, it shouldn't be \"on the nose\", and use paraphrasing\
-            \ or just be creative when creating the book or chapter titles.\n\nThe\
-            \ user request is as follows:"
+            \ 2\u2026\n\nWhen creating the title and chapter titles, be creative,\
+            \ don\u2019t make it obvious, it shouldn't be \"on the nose\", and use\
+            \ paraphrasing or just be creative when creating the book or chapter titles.\n\
+            \nThe user request is as follows:"
           label: Prompt
           type: textarea
         api_endpoint:
           default: Gemini 2.5
           label: API Endpoint
           options:
+          - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
@@ -164,6 +165,7 @@ graph:
           default: SearXing
           label: SearxNG Endpoint
           options:
+          - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
@@ -221,10 +223,16 @@ graph:
           default: Gemini 2.5
           label: API Endpoint
           options:
-          - Groq
-          - Ollama DeepSeek r1
-          - Ollama llama3.1-8b
-          - OpenAI GPT gpt-4o-mini
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
           type: dropdown
         description:
           default: Processes array elements through multiple API calls until condition
@@ -245,10 +253,10 @@ graph:
           label: Max Iterations
           type: text
         minimum_rating:
-          default: '8.7'
-          description: Minimum rating threshold to consider content satisfactory
+          default: '9.3'
+          description: Minimum overall rating required (e.g., 7.5)
           label: Minimum Rating
-          type: float
+          type: text
         node_name:
           default: Reviewer and Editor
           label: Custom Node Name
@@ -278,6 +286,17 @@ graph:
           description: String to search for in validation results
           label: Search String
           type: text
+        skip_first_item:
+          default: true
+          description: If enabled, the first array element bypasses processing but
+            is still included in the final output
+          label: Skip First Array Item During Processing
+          type: boolean
+        use_single_string:
+          default: false
+          description: If enabled, treats input as a single string instead of an array
+          label: Use Single String Input
+          type: boolean
         validation_prompt:
           default: "You are a world renowned content and literature reviewer, please\
             \ provide a critical but constructive review of the content below, to\
@@ -383,11 +402,15 @@ graph:
           default: Gemini 2.5
           label: API Endpoint
           options:
-          - Groq
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
           - Ollama
-          - OpenAI 03-mini
           - OpenAI 4o-mini
+          - OpenAI GPT5
           - OpenAI Whisper
+          - OpenAI o3
           - SearXing
           type: dropdown
         description:
@@ -485,11 +508,15 @@ graph:
           default: Gemini 2.5
           label: API Endpoint
           options:
-          - Groq
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
           - Ollama
-          - OpenAI 03-mini
           - OpenAI 4o-mini
+          - OpenAI GPT5
           - OpenAI Whisper
+          - OpenAI o3
           - SearXing
           type: dropdown
         chunk_size:
@@ -498,23 +525,27 @@ graph:
           type: integer
         enable_url_selection:
           default: false
-          description: Enable manual URL selection from search results
+          description: Allow manual selection of URLs to scrape during review
+          label: Enable URL Selection Dialog
           type: boolean
         num_results_to_skip:
           default: '0'
-          description: Number of search results to skip
-          type: number
+          description: Skip the first N search results before scraping
+          label: Search Results to Skip
+          type: integer
         num_search_results:
           default: '5'
-          description: Number of search results to process
-          type: number
+          description: How many web results to pull during review
+          label: Search Results to Fetch
+          type: integer
         review_array:
           default: true
           description: Show review window for array output
           type: boolean
         searxng_api_url:
           default: http://localhost:8888/search
-          description: SearxNG API URL for web search
+          description: Endpoint used for optional web-search enrichment
+          label: SearXNG API URL
           type: text
         show_content_review:
           default: true

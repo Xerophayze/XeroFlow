@@ -1,7 +1,10 @@
 # nodes/Assistant_node.py
 import sys
 import subprocess
-import pkg_resources
+try:
+    from importlib.metadata import distribution, PackageNotFoundError
+except ImportError:  # Python <3.8 fallback if needed
+    from importlib_metadata import distribution, PackageNotFoundError
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 from threading import Thread, Event
