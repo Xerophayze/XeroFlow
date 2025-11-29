@@ -14,6 +14,10 @@ import uuid
 import math
 import re  # For parsing markdown-like formatting
 import queue  # Add this import at the top
+try:
+    import torch
+except ImportError:
+    torch = None
 from utils.ffmpeg_installer import ensure_ffmpeg_available  # Ensure ffmpeg/avconv is available
 
 from node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
@@ -64,6 +68,45 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
+
+
+def log_accelerator_status():
+    """Emit diagnostic information about accelerator availability."""
+    if torch is None:
+        message = "PyTorch not installed; GPU status unavailable. Defaulting to CPU."
+        print(message)
+        logging.info(message)
+        return
+
+    try:
+        torch_version = torch.__version__
+    except AttributeError:
+        torch_version = "unknown"
+
+    logging.info("Detected PyTorch version: %s", torch_version)
+    if torch.cuda.is_available():
+        try:
+            device_index = torch.cuda.current_device()
+            device_name = torch.cuda.get_device_name(device_index)
+            capability = torch.cuda.get_device_capability(device_index)
+            message = (
+                f"CUDA available - GPU {device_index}: {device_name} "
+                f"(compute capability {capability[0]}.{capability[1]})"
+            )
+        except Exception as cuda_error:
+            message = f"CUDA available but failed to query device details: {cuda_error}"
+            logging.warning(message)
+            print(message)
+            return
+        logging.info(message)
+        print(message)
+    else:
+        message = "CUDA not available. Running on CPU."
+        logging.info(message)
+        print(message)
+
+
+log_accelerator_status()
 
 # Initialize the Database Manager
 db_manager = DatabaseManager()
@@ -245,11 +288,19 @@ def perform_search(config, db_name, query, output_box, top_k_str="10"):
                 output_box.insert(tk.END, "No results found.")
             else:
                 for idx, res in enumerate(results, start=1):
-                    doc = res.get("source", "Unknown")
+                    doc_meta = res.get("document", {})
+                    doc_name = doc_meta.get("source") or res.get("source", "Unknown")
                     similarity = res.get("similarity", 0)
                     content = res.get("content", "")
+                    meta = res.get("metadata", {})
+                    page = meta.get("page")
+                    section = meta.get("section")
                     output_box.insert(tk.END, f"Result {idx}:\n")
-                    output_box.insert(tk.END, f"Document: {doc}\n")
+                    output_box.insert(tk.END, f"Document: {doc_name}\n")
+                    if page is not None:
+                        output_box.insert(tk.END, f"Page: {page}\n")
+                    if section:
+                        output_box.insert(tk.END, f"Section: {section}\n")
                     output_box.insert(tk.END, f"Similarity Score: {similarity:.4f}\n")
                     output_box.insert(tk.END, f"Content:\n{content}\n\n")
             output_box.config(state=tk.DISABLED)

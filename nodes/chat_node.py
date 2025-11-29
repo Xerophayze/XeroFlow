@@ -3,7 +3,7 @@ from .base_node import BaseNode
 from node_registry import register_node
 from db_tools import DatabaseManager
 import tkinter as tk
-from tkinter import END
+from tkinter import END, messagebox
 from tkinter import ttk
 from formatting_utils import apply_formatting
 import threading
@@ -301,7 +301,7 @@ class ChatNode(BaseNode):
         db_options = self.get_databases()
         db_var = tk.StringVar(value=selected_database)
         self.doc_var = tk.StringVar()  # For selected document
-        self.doc_paths = {}  # Dictionary to map display names to full paths
+        self.doc_records = {}  # Map display names to document metadata
 
         def update_document_list(event=None):
             new_db = db_var.get()
@@ -310,17 +310,17 @@ class ChatNode(BaseNode):
                 selected_database = new_db
                 self.properties['database']['value'] = new_db
                 # Update document dropdown
-                documents = db_manager.list_documents(new_db)
-                # Clear the path mapping
-                self.doc_paths.clear()
+                documents = db_manager.list_document_records(new_db)
+                # Clear the record mapping
+                self.doc_records.clear()
                 # Add "All Documents" option
-                self.doc_paths["All Documents"] = "All Documents"
+                self.doc_records["All Documents"] = None
                 # Create display names and update path mapping
                 display_names = ["All Documents"]
-                for doc_path in documents:
-                    display_name = os.path.basename(doc_path)
+                for record in documents:
+                    display_name = os.path.basename(record.get("source", "Unknown"))
                     display_names.append(display_name)
-                    self.doc_paths[display_name] = doc_path
+                    self.doc_records[display_name] = record
                 doc_dropdown['values'] = display_names
                 self.doc_var.set('All Documents')  # Reset to all documents
 
@@ -332,9 +332,13 @@ class ChatNode(BaseNode):
         db_dropdown.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
         db_dropdown.bind("<<ComboboxSelected>>", on_db_change)
 
-        # Create document dropdown
-        doc_label = tk.Label(root, text="Search Document:")
-        doc_label.pack(side=tk.TOP, fill=tk.X, padx=5)
+        # Create document dropdown + refresh button row
+        doc_row = tk.Frame(root)
+        doc_row.pack(side=tk.TOP, fill=tk.X, padx=5)
+        doc_label = tk.Label(doc_row, text="Search Document:")
+        doc_label.pack(side=tk.LEFT)
+        refresh_docs_btn = ttk.Button(doc_row, text="Refresh", width=10, command=update_document_list)
+        refresh_docs_btn.pack(side=tk.RIGHT, padx=(5, 0))
         doc_dropdown = ttk.Combobox(root, textvariable=self.doc_var, state="readonly")
         doc_dropdown.pack(side=tk.TOP, fill=tk.X, padx=5, pady=(0, 5))
 
@@ -466,6 +470,12 @@ class ChatNode(BaseNode):
             if user_input:
                 # Clear input field before disabling it
                 user_input_text.delete('1.0', END)
+                normalized_command = user_input.lower()
+                if normalized_command in ('/help', '/h'):
+                    help_text = self._get_command_help_text()
+                    self.chat_history.append({'role': 'system', 'content': help_text})
+                    update_chat_display()
+                    return
                 
                 # Show busy indicator
                 show_busy_indicator()
@@ -523,9 +533,11 @@ class ChatNode(BaseNode):
         # Create buttons
         submit_button = tk.Button(buttons_frame, text="Submit", command=submit_input)
         clear_button = tk.Button(buttons_frame, text="Clear History", command=clear_chat_history)
+        help_button = tk.Button(buttons_frame, text="Help", command=lambda: self.show_command_help(root))
         
         submit_button.pack(side=tk.RIGHT, padx=(5, 0))
         clear_button.pack(side=tk.RIGHT, padx=(5, 0))
+        help_button.pack(side=tk.RIGHT, padx=(5, 0))
 
         close_button = tk.Button(buttons_frame, text="Close", command=close_chat)
         close_button.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
@@ -675,26 +687,53 @@ class ChatNode(BaseNode):
             search_query = doc_match.group(2).strip()
             if search_query:
                 selected_doc_name = self.doc_var.get()
-                selected_doc = self.doc_paths.get(selected_doc_name, "All Documents")
-                
-                search_count = result_count * 3 if selected_doc != "All Documents" else result_count
-                
-                results = db_manager.search(selected_database, search_query, top_k=search_count)
-                
-                if selected_doc != "All Documents":
-                    results = [res for res in results if res['source'] == selected_doc]
+                selected_record = self.doc_records.get(selected_doc_name)
+
+                filters = {}
+                if selected_record and selected_doc_name != "All Documents":
+                    doc_id = selected_record.get("doc_id")
+                    if doc_id:
+                        filters["doc_id"] = doc_id
+                    else:
+                        filters["source"] = selected_record.get("source")
+
+                search_count = result_count * 3 if filters else result_count
+
+                results = db_manager.search(
+                    selected_database,
+                    search_query,
+                    top_k=search_count,
+                    filters=filters if filters else None
+                )
+
+                if filters:
                     results = results[:result_count]
                 
                 if results:
-                    search_results_str = "\n".join([
-                        f"Document: {os.path.basename(res['source'])}\nSimilarity Score: {res['similarity']:.4f}\nContent: {res['content']}\n"
-                        for res in results
-                    ])
+                    formatted_results = []
+                    for res in results:
+                        doc_meta = res.get("document", {})
+                        doc_label = doc_meta.get("source") or res.get("source", "Unknown")
+                        meta = res.get("metadata", {})
+                        page = meta.get("page")
+                        section = meta.get("section")
+                        snippet = res.get("content", "")
+                        body = [
+                            f"Document: {os.path.basename(doc_label)}",
+                            f"Similarity Score: {res.get('similarity', 0.0):.4f}"
+                        ]
+                        if page is not None:
+                            body.append(f"Page: {page}")
+                        if section:
+                            body.append(f"Section: {section}")
+                        body.append(f"Content: {snippet}")
+                        formatted_results.append("\n".join(body))
+                    search_results_str = "\n\n".join(formatted_results)
                     header = f"Search Results for '{search_query}' in {selected_doc_name} (showing {len(results)} of {result_count} requested results):\n"
                     combined_input = f"{header}//DataStart\n{search_results_str}\nDataEnd//"
                     return combined_input
                 else:
-                    if selected_doc != "All Documents":
+                    if filters:
                         return f"No results found for '{search_query}' in document '{selected_doc_name}'"
                     else:
                         return f"No results found for '{search_query}' in any document"
@@ -704,3 +743,23 @@ class ChatNode(BaseNode):
     def requires_api_call(self):
         """Indicates whether this node requires an API call."""
         return True
+
+    def _get_command_help_text(self):
+        return (
+            "Chat command shortcuts:\n"
+            "  /web or /web.N <query>  → Run a web search (N results, default 3).\n"
+            "  /doc or /doc.N <query>  → Search the selected database/document (N matches, default 5).\n"
+            "  /help or /h            → Show this help message.\n"
+            "Tips: Select a database/document from the dropdowns before using /doc, and include text after the command."
+        )
+
+    def show_command_help(self, parent=None):
+        help_text = self._get_command_help_text()
+        try:
+            messagebox.showinfo("Chat Commands", help_text, parent=parent)
+        except Exception:
+            pass
+        try:
+            self.chat_history.append({'role': 'system', 'content': help_text})
+        except Exception:
+            pass
