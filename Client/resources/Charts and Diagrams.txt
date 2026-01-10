@@ -1,0 +1,910 @@
+below is the reference information on how to format and setup charts and diagrams.
+
+****Chart and Diagram formatting examples*******
+if a chart is required to represent some of that information you will include the data needing to be presented in a code block labeled chart utlizing the proper chart formatting and type from the listed examples below:
+
+```chart
+chart code
+```
+
+Here are some examples of the type of code that goes in this code block:
+Bar Chart – Monthly Sales
+```chart
+{"width":500,"height":300,
+ "config":{"type":"bar",
+   "data":{"labels":["Jan","Feb","Mar","Apr","May"],
+           "datasets":[{"label":"Sales","data":[50,60,70,180,190],
+                        "backgroundColor":"rgb(75,192,192)"}]},
+   "options":{"title":{"display":true,"text":"Monthly Sales"}}}}
+```
+
+Stacked Bar Chart – Quarterly Products
+```chart
+{"width":600,"height":400,
+ "config":{"type":"bar",
+   "data":{"labels":["Q1","Q2","Q3","Q4"],
+           "datasets":[
+             {"label":"Product A","data":[30,50,70,90],
+              "backgroundColor":"rgba(255,99,132,0.8)"},
+             {"label":"Product B","data":[40,60,80,100],
+              "backgroundColor":"rgba(54,162,235,0.8)"},
+             {"label":"Product C","data":[20,40,60,80],
+              "backgroundColor":"rgba(75,192,192,0.8)"}]},
+   "options":{"title":{"display":true,"text":"Quarterly Sales"},
+              "scales":{"xAxes":[{"stacked":true}],
+                        "yAxes":[{"stacked":true}]}}}}
+```
+
+Mixed Bar + Line – Sales & Margin
+```chart
+{"width":600,"height":400,
+ "config":{"type":"bar",
+   "data":{"labels":["Jan","Feb","Mar","Apr","May"],
+           "datasets":[
+             {"type":"bar","label":"Sales","data":[200,300,400,500,600],
+              "backgroundColor":"rgba(75,192,192,0.8)"},
+             {"type":"line","label":"Margin","data":[20,25,30,35,40],
+              "fill":false,"borderColor":"rgba(255,99,132,0.8)","yAxisID":"y2"}]},
+   "options":{"title":{"display":true,"text":"Sales vs Margin"},
+              "scales":{"yAxes":[
+                {"id":"y1","type":"linear","position":"left"},
+                {"id":"y2","type":"linear","position":"right",
+                 "gridLines":{"drawOnChartArea":false}}]}}}}
+```
+
+Pie Chart – Color Distribution
+```chart
+{"width":400,"height":400,
+ "config":{"type":"pie",
+   "data":{"labels":["Red","Blue","Yellow","Green","Purple"],
+           "datasets":[{"data":[300,50,100,80,150],
+                        "backgroundColor":["#FF6384","#36A2EB","#FFCE56","#4BC0C0","#9966FF"]}]},
+   "options":{"title":{"display":true,"text":"Colors"}}}}
+```
+
+Scatter Plot – Ad Spend vs Sales
+```chart
+{"width":600,"height":400,
+ "config":{"type":"scatter",
+   "data":{"datasets":[
+     {"label":"Campaigns","data":[{"x":10,"y":200},{"x":20,"y":400},
+                                 {"x":30,"y":600},{"x":40,"y":800},
+                                 {"x":50,"y":1000}],
+      "backgroundColor":"rgba(255,99,132,0.8)"}]},
+   "options":{"title":{"display":true,"text":"Ad Spend vs Sales"},
+              "scales":{"xAxes":[{"scaleLabel":{"display":true,"labelString":"Spend ($k)"}}],
+                        "yAxes":[{"scaleLabel":{"display":true,"labelString":"Sales ($k)"}}]}}}}
+```
+
+**** Diagram examples and formatting information *****
+if a diagram is required to represent some of that information you will include the data needing to be presented in a code block labeled mermaid utlizing the proper diagram formatting and type from the listed examples below, you will only use the formatting and structures in the examples blow to create the needed diagrams:
+
+## Simple Binary Tree (With Special Characters)
+```mermaid
+graph TD
+  A["Root Node (Main)"] --> B["Left Branch (Secondary)"]
+  A --> C["Right Branch 'Alternative'"]
+```
+
+## Small Org Chart (With Special Characters)
+```mermaid
+graph TD
+  CEO("CEO (Chief Executive Officer)") --> CTO("CTO (Chief Tech Officer)")
+  CEO --> CFO("CFO (Chief Financial Officer)")
+  CTO --> Dev["Dev Team (Software)"]
+  CFO --> Fin["Finance Team 'Accounts'"]
+```
+
+## Decision Flow – Login (With Special Characters)
+```mermaid
+graph LR
+  Start(["Start Process"]) --> Auth{"Is User Authenticated?"}
+  Auth -- "Yes" --> Dash["User Dashboard"]
+  Auth -- "No" --> Choice{"SSO or Local Login?"}
+  Choice -- "SSO" --> SSOFlow["Redirect to SSO Portal"]
+  Choice -- "Local" --> Form["Show Local Login Form"]
+  SSOFlow --> Dash
+  Form --> Dash
+```
+
+## Office Equipment (With Parallelogram Nodes)
+
+This example specifically demonstrates the correct way to quote text inside parallelogram nodes, which has been a persistent issue.
+
+```mermaid
+graph TD
+  %% CORRECT: Quoting text inside parallelogram nodes
+  NetworkSW["24-Port Backbone Switch (Front Office Segment)"]
+  
+  subgraph "Front Office"
+    FO_PC1[Front Office PC 1]
+    FO_PC2[Front Office PC 2]
+    FD_Printer[/"HP LaserJet Pro M402 (Front Desk)"/]
+    BD_Printer1[/"Brother Printer (Back Desk)"/]
+    BD_Printer2[/"HP Color LaserJet (Back Desk)"/]
+  end
+  
+  NetworkSW --> FO_PC1
+  NetworkSW --> FO_PC2
+  NetworkSW --> FD_Printer
+  NetworkSW --> BD_Printer1
+  NetworkSW --> BD_Printer2
+```
+
+## Network Diagram (With Special Characters and Hyphens)
+
+This example specifically demonstrates quoting for network equipment names that contain hyphens and parentheses.
+
+```mermaid
+graph TD
+  %% CORRECT: Quoting labels with hyphens and parentheses
+  Switch["24-Port Backbone Switch"] --> Printer[/"HP LaserJet Pro M402 (Front Desk)"/]
+  Switch --> Server["Server (10.0.0.2) [Dentrix, Dexis]"]
+  Switch --> Workstation["5-Port Gigabit Switch (File Room)"]
+  
+  %% Link styling
+  linkStyle 0 stroke:#0000ff;
+  linkStyle 1 stroke:#00aa00;
+  linkStyle 2 stroke:#ff0000;
+```
+
+## Additional Parallelogram Examples
+
+This example reinforces the correct way to quote text inside various parallelogram nodes.
+
+```mermaid
+graph TD
+  A["Network Equipment"] --> B[/"Router (Main)"/]
+  A --> C[/"Switch (24-Port)"/]
+  A --> D[\"Printer (HP LaserJet)"\]
+  A --> E[\"Scanner (Epson)"\]
+  
+  %% Styling
+  style A fill:#e1f5fe,stroke:#01579b;
+  style B fill:#f3e5f5,stroke:#4a148c;
+  style C fill:#f3e5f5,stroke:#4a148c;
+  style D fill:#e8f5e8,stroke:#1b5e20;
+  style E fill:#e8f5e8,stroke:#1b5e20;
+```
+
+## Complex Network Diagram (With Parentheses in Labels)
+
+This example specifically demonstrates quoting for complex network equipment names that contain parentheses, which matches the patterns that are currently failing.
+
+```mermaid
+graph TD
+  %% CORRECT: Quoting labels with parentheses
+  StarlinkBackup["Starlink (Restaurant Backup)"]
+  MultifunctionPrinter["Multifunction Printer (Toshiba)"]
+  HomeNetwork["Home Area Network (2nd Floor)"]
+  AirFiberAntenna["Ubiquiti AirFiber 5U Antenna (10.0.0.9)"]
+  Router["Wireless Router (Gateway: 10.172.21.1)"]
+  %% CORRECT: Circle nodes with parentheses in labels MUST be quoted
+  RestaurantAntenna(("Restaurant AirFiber Antenna (10.0.0.10)"))
+  DexisImaging["Dexis Imaging System (On-site)"]
+  DoctorPC["Doctor's PC"]
+  
+  subgraph "Network Equipment"
+    StarlinkBackup
+    MultifunctionPrinter
+    HomeNetwork
+    AirFiberAntenna
+    Router
+    RestaurantAntenna
+    DexisImaging
+    DoctorPC
+  end
+  
+  StarlinkBackup --> AirFiberAntenna
+  MultifunctionPrinter --> HomeNetwork
+  Router --> StarlinkBackup
+  AirFiberAntenna --> RestaurantAntenna
+  RestaurantAntenna --> DexisImaging
+```
+
+## Network Diagram (Correct Link Styling)
+
+This example demonstrates the correct way to style links in Mermaid diagrams, which was causing parse errors.
+
+```mermaid
+graph TD
+  A["Source"] --> B["Destination 1"]
+  A --> C["Destination 2"]
+  A --> D["Destination 3"]
+  
+  %% CORRECT: Link styling syntax
+  linkStyle 0 stroke:#0000ff,stroke-width:2px,stroke-dasharray: 5 5;
+  linkStyle 1 stroke:#00aa00,stroke-width:2px;
+  linkStyle 2 stroke:#ff0000,stroke-width:2px;
+  
+  %% INCORRECT (This would cause a parse error):
+  %% linkStyle 0,1,2 classDef vpnlink;
+```
+
+## Circle Node Quoting (Common Mistake)
+
+This example shows a common mistake with circle nodes that contain parentheses in their labels.
+
+```mermaid
+graph TD
+  %% CORRECT: Circle nodes with parentheses in labels MUST be quoted
+  CorrectNode(("Restaurant AirFiber Antenna (10.0.0.10)"))
+  
+  %% INCORRECT (This would cause a parse error):
+  %% IncorrectNode((Restaurant AirFiber Antenna (10.0.0.10)))
+  
+  %% The incorrect version fails because:
+  %% 1. The label contains parentheses: "(10.0.0.10)"
+  %% 2. The node shape also uses parentheses: (( ))
+  %% 3. Without quotes, Mermaid can't distinguish between the node shape and the label
+```
+
+## Layered Architecture (Correct Subgraph Syntax)
+```mermaid
+flowchart TB
+  classDef layer fill:#e0e0ff,stroke:#333;
+  
+  %% CORRECT: Subgraphs without direction statements
+  subgraph Client
+    Web["Web App"]:::layer
+    Mobile["Mobile App"]:::layer
+  end
+  
+  subgraph API
+    GQL["GraphQL"]:::layer
+    REST["REST"]:::layer
+  end
+  
+  subgraph Services
+    Auth["Auth"]:::layer
+    User["User"]:::layer
+    Billing["Billing"]:::layer
+  end
+  
+  subgraph Data
+    PG["PostgreSQL"]:::layer
+    Cache["Redis"]:::layer
+  end
+  
+  Web & Mobile --> GQL & REST
+  GQL & REST --> Auth & User & Billing
+  Auth & User & Billing --> PG
+  Billing --> Cache
+```
+
+## Office Equipment – Parallelogram Nodes (Correct Quoting)
+
+This example specifically demonstrates the correct way to quote labels in parallelogram nodes `[/.../]` and `[\...\]`, which have been a source of syntax errors.
+
+```mermaid
+graph TD
+    %% CORRECT: Parallelogram nodes with quoted labels containing special characters
+    Input1[/"User Input Data (JSON)"/]
+    Input2[/"File Upload (CSV)"/]
+    Output1[\"Processed Report (PDF)"\]
+    Output2[\"Error Log 'Critical'"\]
+    
+    Input1 --> Output1
+    Input2 --> Output2
+```
+
+## State Machine – Widget
+```mermaid
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Processing : start
+  Processing --> Success : ok
+  Processing --> Error : fail
+  Success --> [*]
+  Error --> Idle : reset
+```
+
+## Detailed Gantt Chart for a Project
+```mermaid
+gantt
+    title Project XYZ Timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat %Y-%m-%d
+    section "Phase 1: Discovery & Planning"
+    Research           :done,    des1, 2025-01-01, 7d
+    Define Scope       :active,  des2, 2025-01-08, 5d
+    Create Wireframes  :         des3, after des2, 10d
+    Milestone 1        :milestone, 2025-01-22, 0d
+
+    section "Phase 2: Development"
+    Backend Setup      :done,    2025-01-23, 7d
+    API Development    :active,  2025-01-30, 14d
+    Frontend UI        :         after des3, 20d
+    Integration        :         after API Development, 5d
+    Milestone 2        :milestone, 2025-02-28, 0d
+
+    section "Phase 3: Testing & Deployment"
+    QA Testing         :         2025-03-01, 10d
+    User Acceptance    :         after QA Testing, 5d
+    Deployment         :         2025-03-15, 2d
+```
+
+## Complex User Journey Flowchart
+```mermaid
+flowchart TB
+    subgraph "Stage 1: Awareness"
+        A("User sees an ad") --> B{"Interested?"};
+        B -- "Yes" --> C["Visits Website"];
+        B -- "No" --> D(["Ends Journey"]);
+    end
+
+    subgraph "Stage 2: Consideration"
+        C --> E["Browses Products"];
+        E --> F{"Finds a product they like?"};
+        F -- "Yes" --> G["Adds to Cart"];
+        F -- "No" --> E;
+    end
+
+    subgraph "Stage 3: Conversion"
+        G --> H["Proceeds to Checkout"];
+        H --> I{Login or Guest?};
+        I -- "Login" --> J["Enters Credentials"];
+        I -- "Guest" --> K["Enters Shipping Info"];
+        J --> L["Payment Page"];
+        K --> L;
+        L --> M(["Purchase Complete!"]);
+    end
+```
+
+## Git Branching and Merging Diagram
+```mermaid
+gitGraph
+    commit id: "Initial Commit"
+    branch develop
+    checkout develop
+    commit id: "New Dev Work"
+    branch feature-A
+    checkout feature-A
+    commit id: "Work on A-1"
+    commit id: "Work on A-2"
+    checkout develop
+    merge feature-A
+    branch feature-B
+    checkout feature-B
+    commit id: "Work on B-1"
+    checkout develop
+    merge feature-B
+    checkout main
+    merge develop
+    commit id: "Release v1.0"
+    branch hotfix-1
+    checkout hotfix-1
+    commit id: "Critical Bug Fix"
+    checkout main
+    merge hotfix-1
+    checkout develop
+    merge main
+```
+
+## Detailed Class Diagram for an E-commerce System
+```mermaid
+classDiagram
+    class User {
+        +String userId
+        +String name
+        +String email
+        +login()
+        +logout()
+    }
+
+    class Customer {
+        +String shippingAddress
+        +placeOrder(Order)
+    }
+
+    class Order {
+        +String orderId
+        +Date date
+        +List~OrderItem~ items
+        +OrderStatus status
+        +calculateTotal()
+    }
+
+    class OrderItem {
+        +Product product
+        +int quantity
+    }
+
+    class Product {
+        +String productId
+        +String name
+        +float price
+    }
+
+    User <|-- Customer
+    Customer "1" -- "*" Order : places
+    Order "1" o-- "*" OrderItem : contains
+    OrderItem "1" -- "1" Product : refers to
+```
+
+## Pie Chart Showing Market Share
+```mermaid
+pie
+    title Technology Market Share 2025
+    "Google" : 45.0
+    "Amazon" : 25.5
+    "Microsoft" : 20.0
+    "Apple" : 9.5
+    "Other" : 5.0
+```
+Here are 5 examples of network diagrams with correct Mermaid formatting, focusing on syntax for different node shapes and connections.
+
+Basic Home Network
+This diagram shows a simple home network setup, using various shapes to represent different devices.
+
+```mermaid
+graph TD
+    Internet((Internet)) --> Modem(Cable Modem)
+    Modem --> Router{Wi-Fi Router}
+    Router --> Laptop[Laptop]
+    Router --> Phone[/Mobile Phone/]
+    Router --> SmartTV[(Smart TV)]
+```
+
+Small Office Network with a DMZ
+This example illustrates a more complex setup with a firewall creating a demilitarized zone (DMZ) for public-facing servers.
+
+```mermaid
+flowchart TB
+    subgraph "Internet"
+        User([User])
+    end
+
+    subgraph DMZ
+        style DMZ fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5, 5
+        WebServer(Web Server)
+        MailServer(Mail Server)
+    end
+
+    subgraph InternalNet ["Internal Network"]
+        Workstation1[PC 1]
+        Workstation2[PC 2]
+        FileServer[(File Server)]
+        InternalSwitch((Switch))
+    end
+
+    User --> Firewall{{Firewall}}
+    Firewall -- "Port 80/443" --> WebServer
+    Firewall -- "Port 25" --> MailServer
+    Firewall -- "Internal Access" --> InternalSwitch
+    InternalSwitch --> Workstation1
+    InternalSwitch --> Workstation2
+    InternalSwitch --> FileServer
+
+    style InternalNet fill:#e0e0ff,stroke:#333
+```
+
+Cloud Architecture (AWS)
+This diagram shows a simplified AWS cloud infrastructure with a VPC, public and private subnets, and various services.
+
+```mermaid
+graph TD
+    subgraph "AWS Cloud"
+        VPC[VPC]
+        subgraph "Public Subnet"
+            ELB(Elastic Load Balancer)
+            NAT>NAT Gateway]
+        end
+        subgraph "Private Subnet"
+            AppServer1(App Server 1)
+            AppServer2(App Server 2)
+            Database[(RDS Database)]
+        end
+        InternetGateway((Internet Gateway))
+        S3[S3 Bucket]
+    end
+
+    InternetGateway <--> ELB
+    ELB --> AppServer1
+    ELB --> AppServer2
+    AppServer1 --> Database
+    AppServer2 --> Database
+    AppServer1 --> NAT --> S3
+    VPC --> InternetGateway
+```
+
+Site-to-Site VPN Connection
+This shows two office networks connected via a VPN tunnel over the internet.
+
+```mermaid
+graph LR
+    subgraph "Office A"
+        NetA[Network A: 192.168.1.0/24]
+        FWA{{Firewall A}}
+    end
+
+    subgraph "Office B"
+        NetB[Network B: 10.10.0.0/24]
+        FWB{{Firewall B}}
+    end
+
+    NetA -- LAN --> FWA
+    NetB -- LAN --> FWB
+
+    FWA <--> Internet((Internet)) <--> FWB
+
+    linkStyle 2 stroke:red,stroke-width:2px,stroke-dasharray: 5 5;
+    style FWA fill:#f2b2a0
+    style FWB fill:#a0c4f2
+```
+
+High-Availability Web Farm
+This diagram illustrates a redundant server setup for high availability, using load balancers and a database cluster.
+
+```mermaid
+graph TD
+    DNS((DNS)) --> LoadBalancer1{Primary LB}
+    DNS --> LoadBalancer2{Failover LB}
+
+    subgraph "Web Farm"
+        LoadBalancer1 --> Web1(Web Server 1)
+        LoadBalancer1 --> Web2(Web Server 2)
+        LoadBalancer2 --> Web1
+        LoadBalancer2 --> Web2
+    end
+
+    subgraph DBCluster ["Database Cluster"]
+        Web1 --> DB_Master[(DB Master)]
+        Web2 --> DB_Master
+        DB_Master <--> DB_Slave1[(DB Slave 1)]
+        DB_Master <--> DB_Slave2[(DB Slave 2)]
+    end
+
+    style DBCluster fill:#ccffcc,stroke:#333
+```
+
+```mermaid
+flowchart LR
+    subgraph BuildStage [Build]
+        A(Code Commit) --> B(Run Tests)
+    end
+
+    subgraph PackageStage [Package]
+        B --> C(Create Docker Image)
+    end
+
+    subgraph DeployStage [Deploy]
+        C --> D{Deploy to Staging}
+        D --> E(Deploy to Production)
+    end
+
+    style BuildStage fill:#e6f3ff,stroke:#0066cc
+    style PackageStage fill:#fff2e6,stroke:#ff8c1a
+    style DeployStage fill:#dff0d8,stroke:#3c763d,stroke-dasharray: 5 5
+	
+	graph TD
+    subgraph Services [Microservices]
+        direction LR
+        Auth(Authentication)
+        Orders(Order Processing)
+        Payments(Payment Gateway)
+    end
+
+    subgraph Infrastructure [Cloud Infrastructure]
+        direction LR
+        APIGateway{API Gateway} --> Services
+        APIGateway --> Logging(Logging Service)
+    end
+
+    %% Style definitions
+    style Services fill:#f0f0f5,stroke:#666
+    style Infrastructure fill:#e0e0eb,stroke:#444
+
+    %% Specific node styles
+    style Payments fill:#ffcccc,stroke:#cc0000,stroke-width:2px
+    style Logging fill:#fff9e6,stroke:#ffcc00
+```
+
+## Network Diagram with Special Characters and Scoped Styles
+
+This example demonstrates two important syntax rules:
+1.  **Quoting Node Text**: Node text containing special characters like parentheses `()` must be enclosed in double quotes.
+2.  **Scoped Styling**: `style` definitions for nodes inside a subgraph must also be placed inside that same subgraph.
+
+```mermaid
+graph TD
+    subgraph TayOffice ["Taylorsville Office (10.0.16.0/24)"]
+        Tay_FW{{WatchGuard Firewall}} -- "Site-to-Site VPN" --> Azure_Cloud((Azure Cloud VPN))
+        Tay_FW -- LAN --> Tay_SW(Switch)
+
+        Tay_SW --> FD_Checkin[Front Desk: Check-in]
+        Tay_SW --> FD_Checkout[Front Desk: Check-out]
+        Tay_SW --> FD_Insurance[Front Desk: Insurance]
+        Tay_SW --> Doc_PC[Doctor's PC]
+        Tay_SW --> Op_PC1[Operatory PC 1]
+        Tay_SW --> Op_PC2[Operatory PC 2]
+        Tay_SW --> Op_PC3[Operatory PC 3]
+        Tay_SW --> Op_PC4[Operatory PC 4]
+        Tay_SW --> Op_PC5[Operatory PC 5]
+        Tay_SW --> Op_PC6[Operatory PC 6]
+        Tay_SW --> Op_PC7[Operatory PC 7]
+        Tay_SW --> Op_PC8_Ortho["Operatory PC 8 (Ortho)"]
+        Tay_SW --> Pan_PC[Panoramic Computer]
+        Tay_SW --> Dexis_Server(Gen-tdex: Dexis Server)
+        Tay_SW --> File_Room_PC[File Room PC]
+        Tay_SW --> Printer1[/Printer 1/]
+        Tay_SW --> Printer2[/Printer 2/]
+        
+        style Tay_FW fill:#f2dede,stroke:#b94a48
+        style Azure_Cloud fill:#add8e6,stroke:#333
+    end
+```
+
+## More Examples of Quoting Text with Special Characters
+
+To prevent parsing errors, any node text that contains special characters such as `( )`, `[ ]`, or `{ }` must be enclosed in double quotes. Here are several examples demonstrating this rule.
+
+### Example 1: Basic Flowchart with Parentheses
+
+This shows the fundamental rule. The node text "Start (with init)" requires quotes.
+
+```mermaid
+graph TD
+    A["Start (with init)"] --> B[Process Data]
+    B --> C{Check Status (OK?)}
+    C -- "Yes" --> D["End (Success)"]
+    C -- "No" --> E["End (Failure)"]
+```
+
+### Example 2: Organizational Chart with Roles
+
+This example uses both parentheses and brackets in the text, all correctly quoted.
+
+```mermaid
+graph LR
+    subgraph "Leadership Team"
+        CEO["CEO (Chief Executive Officer)"]
+        CTO["CTO (Chief Technology Officer)"]
+        CFO["CFO [Finance Lead]"]
+    end
+    CEO --> CTO
+    CEO --> CFO
+```
+
+### Example 3: System Architecture with Component Details
+
+This combines subgraphs, styling, and nodes with special characters, showing how to correctly quote text in a more complex diagram.
+
+```mermaid
+flowchart TB
+    subgraph WebTier [Web Tier]
+        style WebTier fill:#e6f3ff
+        LB["Load Balancer (NGINX)"]
+        WebApp1["Web App 1 (Node.js)"]
+        WebApp2["Web App 2 (Node.js)"]
+    end
+
+    subgraph AppTier [Application Tier]
+        style AppTier fill:#fff2e6
+        APIServer["API Server (Go)"]
+        Worker["Background Worker (Redis Q)"]
+    end
+
+    subgraph DataTier [Data Tier]
+        style DataTier fill:#dff0d8
+        DB["Database (PostgreSQL)"]
+        Cache["Cache (Redis)"]
+    end
+
+    LB --> WebApp1
+    LB --> WebApp2
+    WebApp1 --> APIServer
+    WebApp2 --> APIServer
+    APIServer --> DB
+    APIServer --> Worker
+    Worker --> Cache
+```
+
+## Example 4: Avoiding Redundant Direction Statements
+
+**IMPORTANT:** Do not declare a `direction` inside a `subgraph` if it is redundant (the same as the parent graph's direction). This can cause parsing errors. The top-level `graph TD` already defines the direction for all elements.
+
+```mermaid
+%% Correct: No redundant direction statement
+graph TD
+    subgraph "Correct Example"
+        A --> B
+    end
+```
+
+```mermaid
+%% Incorrect: Redundant direction causes a parse error
+graph TD
+    subgraph "Incorrect Example"
+        direction TD  %% This line is redundant and will cause an error
+        C --> D
+    end
+```
+
+## Example 5: Correct Subgraph Styling with Display Names
+
+```mermaid
+graph TD
+    %% CORRECT: Using IDs for subgraphs with display names
+    subgraph sg1 ["Azure Cloud Environment (10.0.3.0/24)"]
+        AD_VM(AD-VM)
+        SQL_VM(SQL-VM)
+    end
+    
+    subgraph sg2 ["Physical Office Locations"]
+        Office1[Salt Lake Office]
+        Office2[Taylorsville Office]
+    end
+    
+    %% CORRECT: Style definitions AFTER all subgraph definitions
+    style sg1 fill:#add8e6,stroke:#333
+    style sg2 fill:#ccffcc,stroke:#333
+```
+
+```mermaid
+graph TD
+    %% INCORRECT: This will cause parsing errors
+    subgraph "Azure Cloud Environment (10.0.3.0/24)"
+        style "Azure Cloud Environment (10.0.3.0/24)" fill:#add8e6,stroke:#333
+        AD_VM(AD-VM)
+        SQL_VM(SQL-VM)
+    end
+```
+
+```mermaid
+graph TD
+    %% CORRECT: Using class definitions for styling groups
+    classDef azure fill:#add8e6,stroke:#333
+    classDef office fill:#ccffcc,stroke:#333
+    
+    subgraph sg1 ["Azure Cloud Environment (10.0.3.0/24)"]
+        AD_VM(AD-VM)
+        SQL_VM(SQL-VM)
+    end
+    
+    subgraph sg2 ["Physical Office Locations"]
+        Office1[Salt Lake Office]
+        Office2[Taylorsville Office]
+    end
+    
+    %% Apply classes to subgraphs
+    class sg1 azure
+    class sg2 office
+```
+
+## Example 6: Handling Apostrophes in Node Text
+
+```mermaid
+graph TD
+    %% CORRECT: Quoting text with apostrophes
+    A["User's Profile"] --> B[Settings]
+    C["Manager's Dashboard"] --> D[Reports]
+    
+    %% INCORRECT: This will cause parsing errors
+    %% E[Manager's Dashboard] --> F[Reports]
+```
+
+## AI Instructions for Generating Mermaid Diagrams
+
+## Example 7: Handling Special Characters in Node Labels
+
+```mermaid
+graph TD
+    %% CORRECT: Quoting text with special characters like 'x'
+    A["7 x Remote Systems"] --> B[Regular Node]
+    C["Quantity: 5 x Items"] --> D[Another Node]
+    
+    %% INCORRECT: This will cause parsing errors
+    %% E[7 x Remote Systems] --> F[Regular Node]
+```
+
+## AI Instructions for Generating Mermaid Diagrams
+
+## Example 8: Handling Special Characters in Various Node Shapes
+
+```mermaid
+graph TD
+    %% CORRECT: Quoting text with parentheses in different node shapes
+    A["Node with (parentheses)"]
+    B("Another node (with parens)")
+    C[/
+        Multiline (and parens)
+    /]
+    D{{
+        Hexagon (with parens)
+    }}
+
+    %% INCORRECT: These will cause parsing errors
+    %% E[/Node with (parentheses)/]
+    %% F{{Hexagon with (parentheses)}}
+```
+
+## AI Instructions for Generating Mermaid Diagrams
+
+## Example 9: Quoting Labels that Contain Brackets
+
+When a node label itself contains the same characters as its delimiter (e.g., a label with parentheses inside a `()` node), the label MUST be enclosed in double quotes.
+
+```mermaid
+graph TD
+    %% CORRECT: Quoting labels that contain their own delimiter characters
+    A["[Bracketed Label]"]
+    B("(Parenthesized Label)")
+    C{{"{Curly-Braced Label}"}}
+    D(("(Double-Parenenthesized Label)"))
+    E[/"HP Color LaserJet (Back Desk)"/]
+    F{{"Netgear Router (Tomato OS) - 10.0.0.1 (Gateway)"}}
+
+    %% INCORRECT: This will cause a parse error
+    %% G([Bracketed Label])
+    %% H[/HP Color LaserJet (Back Desk)/]
+    %% I{{Netgear Router (Tomato OS) - 10.0.0.1 (Gateway)}}
+```
+
+## Example 10: Comprehensive Node Quoting Guide
+
+This example demonstrates the correct way to quote node labels containing special characters (parentheses `()`, apostrophes `'`, square brackets `[]`, and the letter `x` used as a multiplication symbol) for ALL common Mermaid node shapes.
+
+```mermaid
+graph TD
+    %% --- Node Shapes with Special Characters Quoted ---
+    
+    %% Standard Rectangle []
+    A["Standard Node (with parens)"]
+    B["User's Profile"]
+    C["Calculate 5 x items"]
+    
+    %% Round Edges ()
+    D("Rounded Node (with parens)")
+    E("Another User's Node")
+    F("Process 3 x files")
+    
+    %% Circle (( ))
+    G(("Circle Node (with parens)"))
+    H(("Circle Node 'Quote'"))
+    I(("Circle 2 x Data"))
+    
+    %% Asymmetric Shape { }
+    J{"Decision Node (with parens)"}
+    K{"Decision 'Choice'"}
+    L{"Evaluate 4 x parameters"}
+    
+    %% Hexagon {{ }}
+    M{{"Hexagon Node (with parens)"}}
+    N{{"Hexagon 'Special' Node"}}
+    O{{"Hexagon 6 x speed"}}
+    
+    %% Parallelogram [/ /]
+    P[/"Parallelogram Input (data)"/]
+    Q[/"Parallelogram 'Input'"/]
+    R[/"Parallelogram 1 x record"/]
+    
+    %% Parallelogram alt. \ \ 
+    S[\"Parallelogram Output (result)"\]
+    T[\"Parallelogram 'Output'"\]
+    U[\"Parallelogram 10 x faster"\]
+    
+    %% Subroutine [[ ]]
+    V[["Subroutine (function call)"]]
+    W[["Subroutine 'call'" ]]
+    X[["Subroutine 2 x loops"]]
+    
+    %% --- Node Shapes without Special Characters (No Quotes Needed) ---
+    
+    %% These are fine without quotes
+    Y[Simple Node]
+    Z("Another Simple Node")
+    AA{{Hexagon}}
+    AB((Circle))
+```
+
+## AI Instructions for Generating Mermaid Diagrams
+
+When creating Mermaid diagrams, adhere strictly to the following syntax rules to ensure they render correctly:
+1.  **Quote Special Characters**: Enclose node text in double quotes if it contains special characters like `(`, `)`, `'`, `[`, `]`, `-`, or the letter `x` used as a multiplication symbol (e.g., `5 x items`). This is especially critical if the label itself contains brackets that match the node's shape (e.g., `A("(My Label)")`). Refer to `Example 10`, the `Network Diagram`, and the new `Complex Network Diagram` examples for comprehensive guides on quoting for all node shapes. This rule applies to ALL node shapes: `[]`, `()`, `(())`, `{}`, `{{}}`, `[/.../]`, etc.
+2.  **Subgraph Styling**: To style a subgraph, assign it an ID (e.g., `subgraph myId [My Title]`) and define the style *outside* the subgraph block using that ID. NEVER style a subgraph by its title string.
+3.  **Avoid Redundancy**: Do not add redundant `direction` statements inside subgraphs. The top-level `graph` declaration (e.g., `graph TD`) sets the orientation for the entire diagram. Subgraphs inherit this direction and should not contain their own `direction` statement. This is a common source of parse errors.
+4.  **Link Styling**: When styling links, use the correct syntax: `linkStyle 0 stroke:#color,stroke-width:2px;` rather than referencing a `classDef` directly.
+5.  **Apostrophes and 'x'**: Always enclose text containing apostrophes (e.g., `"User's Profile"`) or the multiplication symbol `x` (e.g., `"7 x items"`) in double quotes.
+6.  **Circle Nodes**: For circle nodes `(( ))` that contain special characters like parentheses, be especially careful to quote the text correctly (e.g., `(("Label (with parens)"))`).
+***************

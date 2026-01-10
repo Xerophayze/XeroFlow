@@ -64,10 +64,7 @@ python-dateutil>=2.8.2
 pytz>=2020.1
 tzdata>=2022.7
 
-# Newly observed dependencies
-torch==2.5.0
-torchvision==0.20.0
-torchaudio==2.5.0
+# PyTorch is installed by setup.bat with the correct CPU/GPU wheel
 
 # YouTube transcript dependencies
 youtube-transcript-api>=0.6.2

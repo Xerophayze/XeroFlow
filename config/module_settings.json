@@ -1,0 +1,12 @@
+{
+    "modules": {
+        "PreProcess": {
+            "prompt": "Process the following text: ",
+            "api_endpoint": "Groq llama-3.1-70b-versatile"
+        },
+        "PostProcess": {
+            "prompt": "Process the following text:",
+            "api_endpoint": "Groq"
+        }
+    }
+}

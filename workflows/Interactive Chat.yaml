@@ -30,22 +30,22 @@ graph:
           default: Gemini 2.5
           label: API Endpoint
           options:
-          - Groq
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
           - Ollama
-          - OpenAI 03-mini
           - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
           type: dropdown
         database:
-          default: Novels by Eric
+          default: Eric Writting
           label: Database
           options:
-          - Colonial Flag
-          - Genesis Dental
-          - Log Haven
-          - Novels by Eric
-          - Sci-fi Novels
-          - TEK Utah
-          - test
+          - Eric Writting
           type: dropdown
         description:
           default: Handles a chat conversation with the user.

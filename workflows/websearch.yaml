@@ -46,7 +46,7 @@ graph:
           default: ''
           type: textarea
         searxng_api_url:
-          default: http://searxng.local:8888/search
+          default: http://192.168.76.5:8888/search
           type: text
       title: WebSearchNode
       type: WebSearchNode

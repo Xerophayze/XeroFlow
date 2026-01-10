@@ -253,7 +253,7 @@ graph:
           label: Max Iterations
           type: text
         minimum_rating:
-          default: '9.3'
+          default: '8.6'
           description: Minimum overall rating required (e.g., 7.5)
           label: Minimum Rating
           type: text
