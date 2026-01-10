@@ -1,0 +1,178 @@
+Below is the reference information that is used for TEK Utahs contracts and legal information.
+
+Combined Master Service Agreement and Service Level Agreement:
+MASTER SERVICE AGREEMENT (MSA)
+SERVICES LEVEL AGREEMENT (SLA)
+TEK Utah – Master Service Agreement (MSA)
+This Master Service Agreement ("Agreement") is entered into by and between TEK Utah, LLC ("TEK"), with its principal place of business at 3868 North Davencourt Loop, Lehi, Utah 84043, and the undersigned client ("Client"). This Agreement sets forth the general legal terms and conditions under which TEK and Client shall engage with respect to the performance of services, including but not limited to consultations, managed IT services, and any related services ("Services"). This Agreement is intended to serve as the legally binding framework for the ongoing relationship between the parties.
+________________________________________
+1. Services and Engagement
+TEK agrees to provide the Services as requested by the Client. These Services may include, but are not limited to, one-time consultations, ongoing advisory or technical services, managed IT support, and related professional offerings. Unless covered under a separate retainer or service level agreement, all Services will be billed at TEK’s standard hourly rate. Pricing, system quantities, or specific scope will be addressed in relevant Schedules or Statements of Work (SOW).
+TEK reserves the right to modify its service pricing upon thirty (30) days’ written notice to Client. Continued use of Services after such notice period shall constitute acceptance of the new pricing. If Client objects to the change, Client may terminate the affected Services without penalty by providing written notice prior to the effective date of the pricing adjustment.
+________________________________________
+2. Term and Termination
+a. Term
+This Agreement shall commence on the Effective Date and remain in effect until terminated by either party under the provisions below.
+b. Termination
+Either party may terminate this Agreement with 30 days written notice. Upon termination:
+•	TEK shall be released from all obligations for future services.
+•	Client shall remain liable for all amounts due through the termination date.
+•	TEK will cooperate with the Client for the return or secure destruction of Client Data.
+c. Effect of Termination
+Client shall pay all outstanding fees immediately upon termination. TEK will facilitate a reasonable data transition or retrieval process within thirty (30) days of the termination date.
+________________________________________
+3. Client Responsibilities
+Client shall:
+•	Provide timely access to systems, facilities, passwords, and personnel as reasonably required.
+•	Maintain a safe and operable environment for any equipment serviced by TEK.
+•	Verify that all software provided is properly licensed.
+•	Accept responsibility for delays or limitations resulting from restricted access or incomplete information.
+________________________________________
+4. Privacy and Data Security
+TEK may collect and retain personal or system information solely for the performance of Services. TEK shall:
+•	Maintain the confidentiality of Client Data;
+•	Limit disclosure to third parties to those under equivalent confidentiality obligations;
+•	Take reasonable precautions to protect the data against unauthorized access or disclosure.
+Client remains responsible for:
+•	The integrity, licensing, and backup of its own data, unless otherwise specified in a service level agreement;
+•	Providing a secure environment for sensitive operations.
+________________________________________
+5. Intellectual Property and Proprietary Rights
+a. TEK Intellectual Property
+All methods, tools, techniques, and intellectual property owned or used by TEK remain the exclusive property of TEK.
+b. License to Use
+Client is granted a non-exclusive, non-transferable, perpetual license to use deliverables solely for internal business purposes.
+c. Client Data Ownership
+Client retains full ownership of its data. TEK will access or use Client Data only as needed to perform the Services.
+d. Restrictions
+Client may not modify, reverse engineer, copy, or distribute TEK Intellectual Property without express written consent.
+________________________________________
+6. Independent Contractor Status; Non-Solicitation
+TEK shall operate as an independent contractor. Nothing in this Agreement creates a partnership, joint venture, or employment relationship. During the term and for one (1) year following termination, neither party may directly hire or solicit the other’s employees without written consent.
+________________________________________
+7. Warranties and Disclaimers
+a. Warranty
+TEK warrants that Services will be performed in a professional and workmanlike manner. If a deficiency is reported, TEK will use reasonable efforts to correct it.
+b. Disclaimer
+EXCEPT AS EXPRESSLY SET FORTH HEREIN, TEK DISCLAIMS ALL OTHER WARRANTIES, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. TEK DOES NOT GUARANTEE THAT SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE.
+________________________________________
+8. Limitation of Liability
+TEK shall not be liable for indirect, incidental, or consequential damages, including lost profits or data, even if advised of the possibility of such damages. TEK’s total liability under this Agreement shall not exceed the fees actually paid by Client for the specific Services giving rise to the claim.
+The above limitations shall not apply to:
+•	Breaches of confidentiality;
+•	Data protection violations;
+•	Acts of gross negligence or willful misconduct.
+________________________________________
+9. Force Majeure
+Neither party shall be liable for delays or failure to perform due to events beyond their reasonable control, including natural disasters, acts of war, terrorism, or government intervention. This does not excuse Client’s obligation to pay for Services already rendered.
+________________________________________
+10. Confidentiality
+Each party agrees to:
+•	Use Confidential Information solely for the purpose of fulfilling this Agreement;
+•	Restrict disclosure to only those with a business need to know;
+•	Protect the information for a period of three (3) years after termination.
+Confidential Information does not include information that is:
+•	Publicly available without breach;
+•	Already in the recipient’s possession;
+•	Independently developed; or
+•	Required by law to be disclosed (with notice to the discloser when permitted).
+________________________________________
+11. General Provisions
+a. Entire Agreement
+This document represents the full understanding between the parties and supersedes all previous agreements.
+b. Amendments
+Amendments must be in writing and signed by both parties.
+c. Waiver
+A failure or delay in enforcing any right does not constitute a waiver of that right.
+d. Severability
+If any provision is found unenforceable, the remainder will remain in effect.
+e. Notices
+All notices must be sent in writing or email to the parties' official addresses listed in schedule A of the SLA.
+f. Governing Law and Jurisdiction
+This Agreement shall be governed by and construed in accordance with the laws of the State of Utah, without regard to its conflict of law provisions. Any legal action, suit, or proceeding arising out of or relating to this Agreement shall be filed exclusively in the state or federal courts located in Salt Lake City, Utah. Both parties consent to the jurisdiction and venue of such courts and waive any objection based on convenience or location.
+g. No Third-Party Beneficiaries
+This Agreement is solely between TEK and Client. No third party shall have any rights under this Agreement.
+12. Special Notes, Considerations and Customizations
+a.  In the following section please fill in, if any, special instructions, customizations or considerations that will be taken into account for this agreement.
+
+SCHEDULE C – Description of Services
+
+Service Terms: Services provided under this Agreement are based on the following terms and definitions:
+“Managed IT Services” means the maintenance, repair, installation. and general network and computer support services provided to Client by TEK pursuant to a Services Plan as described in Schedule C at the monthly fee set forth in this Schedule B. Unless stated otherwise in this Schedule B, Services billed at an hourly rate will be billed at TEK’s then prevailing standard hourly rate which TEK may change from time to time. The Managed I.T. Services provided may include the use of third party products and services. TEK may bill Client, and Client agrees to pay, for such third party products or services only if such product or service and the applicable Client charge are set forth in this Schedule B.  All services will be performed by assigned technician, but at the discretion of the assigned technician, may seek backup and assistive services from other TEK technicians and services.
+
+“Out of Plan Services” and “Other Professional Services” mean those Services that are not explicitly included in the Managed I.T. Services as defined in Schedule C.
+
+“Critical Response Services” means those Services provided on an unscheduled basis in response to a situation that is or has caused, or is reasonably anticipated to cause, a significant loss of computer functionality, data or connectivity to Client's network where such loss would reasonably be expected to cause a material impairment to Client's computer equipment, data or ordinary business operations. Unless stated otherwise in this Schedule B. TEK will charge Client for Critical Response Services at one and one-half times TEK's then applicable hourly rate for providing Out of Plan Services.
+
+“Help Desk” information and assistance resource that troubleshoots problems with Equipment and similar products over the phone or using remote connection software. If the help desk is unable to solve the issue remotely, an on-site technician will be scheduled and dispatched.
+What's Included in All Tiers
+•	24/7 Security Operations Center Monitoring
+•	Advanced Endpoint Protection with EDR
+•	Server Image Backup (up to 1 TB)
+•	Remote Access Licenses (up to 5 per tier)
+•	Firewall Monitoring & Management
+•	Email Security and Phishing Protection for One Domain
+•	Dark Web ID Monitoring	
+•	Automated Cloud Backups for Workstations
+	-	3 included in Essence
+	-	5 included in Foundation
+	-	10 included in Pinnacle
+•	Ongoing Employee Security Awareness Training
+•	Credential & Vulnerability Scanning
+•	Annual Security Assessments & Reporting
+Service Level Differences
+Essence: Basic coverage. Does not include support services. Remote, phone, and on-site support are available at our standard hourly rate of $135/hr.
+Foundation: Includes unlimited phone, remote and 3rd party vendor liaison support during normal business hours. On-site support is billed at a discounted $100/hr.
+Pinnacle: Our most comprehensive offering. Includes unlimited phone, remote, on-site and 3rd party vendor liaison support during normal business hours.
+⚠️ After-hours support (outside of business hours and holidays) is billed at 2x the applicable hourly rate for all tiers.
+
+
+Response Times
+The following table outlines TEK Utah’s standard response time targets based on the severity level of the issue reported:
+Priority Level	Description	Target Response Time
+Critical	Complete system outage, widespread network failure, or major security incident.	Within 1 hour (24/7)
+High	Significant degradation of service impacting multiple users or business ops.	Within 2 business hours
+Medium	Moderate impact or isolated issue; workaround may exist.	Within 4 business hours
+Low	Minor inconvenience, general questions, or routine service requests.	Within 1 business day
+⚠️ Actual resolution time may vary depending on complexity and third-party involvement. TEK Utah will provide regular updates for ongoing issues and prioritize escalations as needed.
+
+
+These integrated tiers represent our standard managed service structure going forward.
+Agreement Terms for New Service Tiers:
+Contract Options: Clients can choose between a Month-to-Month, 1 year or 2 year agreement.
+Annual Discount: Clients committing to a One-Year agreement receive a 10% discount, and 15% for a 2 year committment, on their total monthly managed services amount (Tier + Site Management + Backup). Month-to-Month agreements are billed at the standard rates below.
+90-Day Trial (1 and 2 year Agreement Only): Clients signing a 1 or 2 year agreement have a 90-day trial period to evaluate our services. They can choose to discontinue the service within these 90 days without penalty.
+Early Termination (1 and 2 year Agreement Only): After the 90-day trial period (from day 91 onwards), the 1 and 2 year agreement term is in full effect. Cancellation before the end of the one-year term will incur an early termination fee of approximately 50% of the remaining contract value.
+Cancellation Notice: We require a 30-day written notification for service cancellation. This allows us an opportunity to address and rectify any issues potentially leading to the cancellation request.
+
+
+One-Time Services & Security Packages:
+(These project-based services remain available):
+Free Initial Consultation: Includes a 2-hour consultation, a free Dark Web ID Scan (1 domain), and a simple internal network vulnerability scan for prospective new clients.
+Dark Web Credential Scan: $50 per domain (Stand-alone or additional domains).
+Internal Network Audit and Vulnerability Scan: $285 (Stand-alone detailed internal security and vulnerability scan with report).
+Full Network Security, Vulnerability & Penetration Test (Internal/External): $800 (Comprehensive stand-alone test; Note: Included annually with Pinnacle Site Management).
+Cloud Migration Services (Google Workspace <> Microsoft 365): $80 per user.
+High-Level Data Wipe Service (DOD Grade): $50 per hard drive.
+(Security Scan Packages section was not included in the provided base text for this update).
+Hardware & Hourly Services:
+Firewall Solutions (Fortinet FortiGate):
+Recommendation Note: While the FortiGate 60F remains a viable option, the FortiGate 70F offers double the memory (4GB vs 2GB). As Unified Threat Management (UTM) databases grow, this additional memory can improve performance. There is a known issue with the 60F (as of early 2025) that Fortinet expects to address in an upcoming firmware update. We are providing pricing for both models to allow for the best fit based on current needs and budget.
+FortiGate 60F Options:
+FortiGate 60F Appliance + 1 year FortiCare Premium & FortiGuard Unified Threat Protection: $1,281.50
+FortiGate 60F Appliance + 3 years FortiCare Premium & FortiGuard Unified Threat Protection: $2,208.55
+FortiGate 70F Options:
+FortiGate 70F Appliance + 1 year FortiCare Premium & FortiGuard Unified Threat Protection: $1,675.60
+FortiGate 70F Appliance + 3 years FortiCare Premium & FortiGuard Unified Threat Protection: $2,708.52
+Setup & Shipping:
+Standard Setup Fee (for either model): $500
+Shipping: $20
+Notable Differences:
+60F: 700K Sessions | 700Mbps Threat Protection | 630 Mbps SSL Inspection | 2GB Memory
+70F: 1.5M Sessions | 800Mbps Threat Protection | 700 Mbps SSL Inspection | 4GB Memory
+Hourly Service Rates:
+Standard Rate: $125/hour (On-site: 1-hour minimum; Phone/Remote: 15-minute minimum) (Note: Hourly rates are primarily only for managed service clients for services not covered under their agreement. Prospective clients may utilize our hourly services once as an exploratory and prospecting service to let them see how we work and if we are going to be a good fit. After that it will be required to sign a Managed Services Agreement).
+Discounted Rate: $100/hour (Available for clients on Foundation and Pinnacle tiers for non-covered services like large projects, office moves, after-hours support).
+Refurbished Equipment:
+TEK Utah offers a range of refurbished workstations and monitors, plus new keyboards, mice, and other computer equipment as needed.
+*****

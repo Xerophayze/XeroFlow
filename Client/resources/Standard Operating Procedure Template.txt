@@ -1,0 +1,42 @@
+****SOP template*****
+the following template will be used when asked to create a standard operating procedure or SOP.  please ensure proper formatting, headers, and markdown to make it visually appealing. anything in [] brackets are just instructions on how to fill in that section. this is not just plain text, please use proper document formatting and include the table.
+STANDARD OPERATING PROCEDURE (SOP) TEMPLATE
+(Purpose – fill in each section with information about a specific procedure. Descriptions in brackets explain what belongs in that spot.)
+
+SOP DATE: \[insert original approval date]
+SOP AUTHOR: \[name and role of the person who prepared the SOP]
+SOP MODIFICATION DATE: \[most recent revision or review date]
+
+PROCESS: \[concise, action-oriented title for this procedure]
+
+SCOPE: \[brief statement of what the procedure covers, its objectives, and any exclusions]
+
+PREREQUISITES / INPUTS:
+\[list any tools, information, approvals, or materials required before starting the process]
+
+STEP-BY-STEP PROCESS
+(List each major action in the order it must happen; include sub-steps if needed.)
+
+1. \[Step Title] – description of the exact actions to perform and who is responsible.
+2. \[Step Title] – continue numbering until the workflow is complete.
+   (Use clear, directive language such as “Verify…,” “Install…,” “Record….”)
+
+PROCESS MEASUREMENT AND AUTHORIZATION
+(Track how each task is validated, documented, and approved.)
+
+Example table layout:
+
+\| Task | Inner Measure of Success | Outer Measure of Success | Reporting | Authorization |
+
+Populate each row as follows:
+• **Task** – name or short description of the activity.
+• **Inner Measure of Success** – how the implementer confirms the task was completed correctly (technical proof, checklist, log entry).
+• **Outer Measure of Success** – how the client, end user, or stakeholder experiences success (perceived value, reduced downtime, satisfaction).
+• **Reporting** – where and how completion is documented (ticketing system, inventory update, final report).
+• **Authorization** – roles, approvals, or system permissions required to perform the task.
+
+GENERAL NOTES
+– Use consistent naming conventions and labeling standards.
+– Attach or reference any required forms, checklists, or templates.
+– Specify outputs such as inventories, service-ticket updates, or verification reports.
+*********
