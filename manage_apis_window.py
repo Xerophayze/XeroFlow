@@ -28,6 +28,8 @@ class APIConfigManager:
                 return self._fetch_google_models(api_key)
             elif api_type.lower() == "searchengine":
                 return self._fetch_searchengine_models(base_url)
+            elif api_type.lower() == "lmstudio":
+                return self._fetch_lmstudio_models(api_key, base_url)
             return []
         except Exception as e:
             print(f"Error fetching models: {str(e)}")
@@ -224,6 +226,44 @@ class APIConfigManager:
         except Exception as e:
             print(f"Error fetching SearchEngine models: {str(e)}")
             return []
+        
+    def _lmstudio_base(self, base_url: str) -> str:
+        """Normalize LM Studio base URL to include /v1"""
+        base = (base_url or "http://localhost:1234").rstrip('/')
+        if base.endswith('/v1'):
+            return base
+        return f"{base}/v1"
+    
+    def _fetch_lmstudio_models(self, api_key: str, base_url: str) -> list:
+        """Fetch available models from LM Studio."""
+        try:
+            url = f"{self._lmstudio_base(base_url)}/models"
+            headers = {
+                "Authorization": f"Bearer {api_key}" if api_key else None,
+                "Content-Type": "application/json"
+            }
+            headers = {k: v for k, v in headers.items() if v}
+            response = requests.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                models = data.get("data") or data.get("models", [])
+                # LM Studio returns {"data":[{"id": ...}]}, but fall back for newer schemas
+                if isinstance(models, list):
+                    names = []
+                    for model in models:
+                        if isinstance(model, dict):
+                            if "id" in model:
+                                names.append(model["id"])
+                            elif "name" in model:
+                                names.append(model["name"])
+                        elif isinstance(model, str):
+                            names.append(model)
+                    return names
+            print(f"LM Studio model fetch failed ({response.status_code}): {response.text[:200]}")
+            return []
+        except Exception as e:
+            print(f"Error fetching LM Studio models: {str(e)}")
+            return []
             
     def fetch_model_max_tokens(self, api_type: str, api_key: str, model: str, base_url: Optional[str] = None) -> Optional[int]:
         """Fetch the maximum token limit for a given model."""
@@ -240,6 +280,8 @@ class APIConfigManager:
                 return self._fetch_google_max_tokens(api_key, model)
             elif api_type.lower() == "searchengine":
                 return self._fetch_searchengine_max_tokens(model, base_url)
+            elif api_type.lower() == "lmstudio":
+                return self._fetch_lmstudio_max_tokens(api_key, model, base_url)
             return None
         except Exception as e:
             print(f"Error fetching max tokens: {str(e)}")
@@ -352,6 +394,26 @@ class APIConfigManager:
         except Exception as e:
             print(f"Error fetching SearchEngine max tokens: {str(e)}")
             return None
+    
+    def _fetch_lmstudio_max_tokens(self, api_key: str, model: str, base_url: Optional[str] = None) -> Optional[int]:
+        """Attempt to fetch max tokens for LM Studio models."""
+        try:
+            url = f"{self._lmstudio_base(base_url)}/models/{model}"
+            headers = {
+                "Authorization": f"Bearer {api_key}" if api_key else None,
+                "Content-Type": "application/json"
+            }
+            headers = {k: v for k, v in headers.items() if v}
+            response = requests.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                max_tokens = data.get('max_tokens') or data.get('context_window')
+                if max_tokens:
+                    return int(max_tokens)
+            return None
+        except Exception as e:
+            print(f"Error fetching LM Studio max tokens: {str(e)}")
+            return None
 
 def manage_apis_window(parent, config, refresh_callback):
     """Create and manage the APIs configuration window."""
@@ -407,7 +469,8 @@ def manage_apis_window(parent, config, refresh_callback):
                 'Groq': '/v1/chat/completions',
                 'Claude': '/v1/messages',
                 'Google': '/v1/generate',
-                'SearchEngine': '/search'  # Default search endpoint, can be overridden by URL
+                'SearchEngine': '/search',  # Default search endpoint, can be overridden by URL
+                'LMStudio': '/v1/chat/completions'
             }.get(api_type, '/v1/chat/completions')
             
             interface_config = {
@@ -530,8 +593,9 @@ def manage_apis_window(parent, config, refresh_callback):
             model = model_var.get().strip()
             base_url = url_entry.get().strip()
             
-            if not all([api_type, api_key, model, base_url]):
-                messagebox.showwarning("Warning", "Please fill in API type, key, URL, and select a model first")
+            requires_key = api_type not in ("Ollama", "LMStudio", "SearchEngine")
+            if not api_type or not model or not base_url or (requires_key and not api_key):
+                messagebox.showwarning("Warning", "Please fill in API type, URL, model, and key if required")
                 return
                 
             print(f"Fetching max tokens for: Type={api_type}, Model={model}, URL={base_url}")
@@ -562,6 +626,9 @@ def manage_apis_window(parent, config, refresh_callback):
         elif api_type == "Google":
             url_entry.delete(0, tk.END)
             url_entry.insert(0, "https://api.google.com")
+        elif api_type == "LMStudio":
+            url_entry.delete(0, tk.END)
+            url_entry.insert(0, "http://localhost:1234")
         # Don't auto-fill for Llama/Ollama as it's typically local and varies
     
     # Create main frame
@@ -608,7 +675,7 @@ def manage_apis_window(parent, config, refresh_callback):
     ttk.Label(form_frame, text="API Type:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
     api_type_var = tk.StringVar()
     api_type_dropdown = ttk.Combobox(form_frame, textvariable=api_type_var, 
-                                   values=["OpenAI", "Ollama", "Groq", "Claude", "Google", "SearchEngine"], 
+                                   values=["OpenAI", "Ollama", "Groq", "Claude", "Google", "SearchEngine", "LMStudio"], 
                                    state="readonly")
     api_type_dropdown.grid(row=3, column=1, padx=5, pady=5, sticky="ew")
     api_type_dropdown.bind("<<ComboboxSelected>>", on_api_type_change)

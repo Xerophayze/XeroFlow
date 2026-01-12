@@ -6,6 +6,7 @@ from typing import Optional, Dict, Any, List
 import logging
 import re
 from urllib.parse import urlparse
+import requests
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -79,7 +80,8 @@ class APIService:
                 return
 
             # For other API types, check for API key
-            if not api_type == "ollama" and not api_key:
+            requires_key = api_type not in ("ollama", "lmstudio")
+            if requires_key and not api_key:
                 logger.error(f"Missing API key for {api_name}")
                 return
 
@@ -115,6 +117,16 @@ class APIService:
                 client = Anthropic(api_key=api_key)
                 self._clients[api_name] = {"client": client, "type": api_type}
                 logger.info(f"Initialized Claude client for {api_name}")
+
+            elif api_type == "lmstudio":
+                base = api_url or "http://localhost:1234"
+                base = base.rstrip('/')
+                self._clients[api_name] = {
+                    "type": api_type,
+                    "api_url": base,
+                    "api_key": api_key
+                }
+                logger.info(f"Initialized LM Studio client with base URL: {base}")
 
             else:
                 logger.warning(f"Unsupported API type: {api_type}")
@@ -334,8 +346,6 @@ class APIService:
                     logger.info(f"Claude token usage - Prompt: {prompt_tokens}, Completion: {completion_tokens}, Total: {total_tokens}")
 
             elif api_type == "searchengine":
-                import requests
-                
                 client_info = self._clients.get(request.api_name, {})
                 api_url = client_info.get('api_url', '')
                 if not api_url:
@@ -386,6 +396,61 @@ class APIService:
                     content=content, 
                     raw_response={'results': clean_urls}, 
                     success=True
+                )
+
+            elif api_type == "lmstudio":
+                base_url = client_info.get("api_url") or "http://localhost:1234"
+                base_url = base_url.rstrip('/')
+                if not base_url.endswith("/v1"):
+                    base_url = f"{base_url}/v1"
+                url = f"{base_url}/chat/completions"
+
+                # Determine messages payload
+                messages = request.additional_params.get('messages')
+                if not messages:
+                    messages = []
+                    system_message = request.additional_params.get('system_message')
+                    if system_message:
+                        messages.append({"role": "system", "content": system_message})
+                    messages.append({"role": "user", "content": request.content})
+
+                payload = {
+                    "model": request.model,
+                    "messages": messages
+                }
+
+                if request.max_tokens:
+                    payload["max_tokens"] = request.max_tokens
+                if request.temperature is not None:
+                    payload["temperature"] = request.temperature
+
+                headers = {"Content-Type": "application/json"}
+                api_key = client_info.get("api_key")
+                if api_key:
+                    headers["Authorization"] = f"Bearer {api_key}"
+
+                response = requests.post(url, headers=headers, json=payload, timeout=120)
+                if response.status_code != 200:
+                    raise ValueError(f"LM Studio request failed ({response.status_code}): {response.text}")
+
+                data = response.json()
+                choices = data.get("choices", [])
+                if not choices:
+                    raise ValueError("LM Studio response missing choices")
+
+                content = choices[0].get("message", {}).get("content", "")
+                usage = data.get("usage", {})
+                prompt_tokens = usage.get("prompt_tokens", 0)
+                completion_tokens = usage.get("completion_tokens", 0)
+                total_tokens = usage.get("total_tokens", prompt_tokens + completion_tokens)
+
+                return APIResponse(
+                    content=content,
+                    raw_response=data,
+                    success=True,
+                    prompt_tokens=prompt_tokens,
+                    completion_tokens=completion_tokens,
+                    total_tokens=total_tokens
                 )
 
             else:
