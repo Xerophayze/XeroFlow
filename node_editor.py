@@ -624,23 +624,27 @@ class NodeEditor:
 
     def edit_node_properties(self, node):
         def save_properties():
-            for prop_name in node['properties']:
-                prop_details = node['properties'][prop_name]
-                widget = prop_widgets[prop_name]
-                if prop_details['type'] == 'text':
+            # Only iterate through properties that actually have widgets in this dialog.
+            for prop_name, widget in prop_widgets.items():
+                prop_details = node['properties'].get(prop_name, fresh_properties.get(prop_name, {}))
+                prop_type = prop_details.get('type', 'text')
+
+                if prop_type == 'text':
                     value = widget.get()
-                elif prop_details['type'] == 'dropdown':
+                elif prop_type == 'dropdown':
                     value = widget.get()
-                elif prop_details['type'] == 'textarea':
+                elif prop_type == 'textarea':
                     value = widget.get("1.0", tk.END).strip()
-                elif prop_details['type'] == 'boolean':
-                    value = var_states[prop_name].get()
+                elif prop_type == 'boolean':
+                    value = var_states.get(prop_name, tk.BooleanVar(value=False)).get()
                 else:
                     value = widget.get()
 
+                if prop_name not in node['properties']:
+                    node['properties'][prop_name] = {}
                 node['properties'][prop_name]['default'] = value
 
-                display_value = 'Yes' if prop_details['type'] == 'boolean' and value else value
+                display_value = 'Yes' if prop_type == 'boolean' and value else value
                 canvas_item_key = f'prop_{prop_name}'
                 if canvas_item_key in node['canvas_items']:
                     self.canvas.itemconfigure(node['canvas_items'][canvas_item_key], text=f"{prop_name}: {display_value}")
