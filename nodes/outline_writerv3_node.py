@@ -369,7 +369,7 @@ class ChapterNavigationWindow:
         new_title = self._format_paragraph_title(self.current_chapter_index, updated_content)
         paragraph['title'] = new_title
 
-        # Update listbox entry to reflect possible title change
+        # Update listbox entry to reflect possible title change. testing.
         self.chapter_listbox.delete(self.current_chapter_index)
         self.chapter_listbox.insert(self.current_chapter_index, new_title)
         self.chapter_listbox.selection_set(self.current_chapter_index)
