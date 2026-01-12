@@ -129,6 +129,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - llama-3.1
           type: dropdown
         description:
           default: Processes the input prompt with review capability and content enhancement.
@@ -175,6 +176,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - llama-3.1
           type: dropdown
         web_search_prompt:
           default: 'Based on the following paragraph and web search results, create
@@ -194,8 +196,8 @@ graph:
       title: OutlineWriterV3Node
       type: OutlineWriterV3Node
       width: 200
-      x: 211
-      y: 189
+      x: 267
+      y: 234
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
         description: 51
@@ -323,8 +325,8 @@ graph:
       title: Reviewer and Editor
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 618
-      y: 250
+      x: 726
+      y: 227
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
         description: 60
@@ -345,57 +347,38 @@ graph:
       - output
       properties:
         Prompt:
-          default: "You will produce a single, richly detailed narrative paragraph\
-            \ of 1000-2000 words that serves as a pre-draft outline for a book. The\
-            \ paragraph must be complete, flowing, and cinematic \u2014 not a list\
-            \ \u2014 and should feel like a short, compelling synopsis with world\
-            \ building, character arcs, and act structure built in.\n\nTitle & Synopsis\n\
-            If the user has not provided a title or synopsis, invent a unique, memorable\
-            \ title and a short hook sentence that encapsulates tone, genre, and core\
-            \ conflict before flowing into the outline.\n\nWorld / Universe\nBegin\
-            \ by vividly introducing the setting \u2014 geography, political climate,\
-            \ cultural quirks, and historical backdrop.\n\nState the rules and limitations\
-            \ of magic, science, or supernatural elements, with at least two concrete\
-            \ examples of how they influence daily life, conflict, or danger.\n\n\
-            To maintain a brisk pace, demonstrate these world-building concepts through\
-            \ their consequences in the plot rather than through lengthy explanatory\
-            \ passages.\n\nInclude 3\u20135 distinctive named places the story will\
-            \ visit and foreshadow how each will impact the plot.\n\nSeed at least\
-            \ one instability or looming threat tied to the setting.\n\nMain / Side\
-            \ Characters\nIntroduce the protagonist(s) with a short but vivid backstory,\
-            \ core traits, and clear motivations. Ensure their character is revealed\
-            \ through their actions and reactions, and include physical details that\
-            \ inform their personality or history. Include one internal struggle and\
-            \ one external driving goal.\n\nPresent supporting allies with unique,\
-            \ memorable traits and explain their narrative purpose, grounding them\
-            \ with specific physical and behavioral quirks.\n\nIntroduce the primary\
-            \ antagonist(s) with enough detail to understand their motives, methods,\
-            \ and how they will evolve across the story.\n\nMention 1\u20132 secondary\
-            \ antagonists or opposing forces (rivals, environment, politics) to add\
-            \ depth.\n\nPlot / Story Structure\nBegin with a clear, gripping inciting\
-            \ incident that disrupts the protagonist\u2019s life.\n\nSketch the act\
-            \ structure inside the paragraph:\n\nAct One: Initial situation, inciting\
-            \ incident, and first complications.\n\nAct Two: Rising challenges, emotional\
-            \ shifts, at least one twist or betrayal.\n\nAct Three: Final confrontation,\
-            \ resolution, and the cost of victory.\n\nInclude two to three key subplots\
-            \ that enhance relationships, reveal secrets, or deepen themes.\n\nEnsure\
-            \ pacing escalates naturally, with each event more dangerous, personal,\
-            \ or morally complex than the last.\n\nResolve the main plot while leaving\
-            \ one or two threads dangling to connect to future books.\n\nAdditional\
-            \ Guidelines Write the outline using 700\u20131000 words in one continuous\
-            \ paragraph \u2014 no lists or section breaks.\n\nBalance action, worldbuilding,\
-            \ and character emotion so all three feel equally present.\n\nUse specific\
-            \ sensory language (sights, sounds, textures, smells) to make locations\
-            \ and scenes vivid.\n\nAvoid generic phrases; every major element should\
-            \ feel unique to this world.\n\nAvoid overly repetitive use of core thematic\
-            \ phrases. Instead of repeatedly stating a theme, weave it into the narrative\
-            \ through symbolic actions, evolving relationships, or character growth.\
-            \ Allow the theme to be inferred by the reader.\n\nInclude at least five\
-            \ memorable proper nouns (locations, characters, artifacts, events).\n\
-            \nForeshadow the thematic core of the book (friendship, loss, ambition,\
-            \ love, betrayal, etc.) through key moments in the outline.\n\nand your\
-            \ final output should be a single self contained paragraph that starts\
-            \ with the series title, book number, book title and author."
+          default: "Role: You are a Master Story Architect and Narrative Designer.\n\
+            \nTask: Create a high-level, cinematic story synopsis as a single, unbroken,\
+            \ monolithic paragraph of 1,000 to 1,500 words. Strict Formatting Rule:\
+            \ You must not use any line breaks, bullet points, or section headers.\
+            \ The entire output must be one continuous block of text. Start the paragraph\
+            \ exactly with the format: [Series Title], [Book Number]: [Book Title]\
+            \ by [Author Name].\n\nNarrative Integration Requirements: Within this\
+            \ single paragraph, you must fluidly weave together the following elements\
+            \ without stopping:\n\nThe Hook & World: Begin with a short hook sentence,\
+            \ then immediately flow into the world-building. Describe the geography,\
+            \ political climate, and the specific rules of magic or science. Show\
+            \ these rules through the eyes of people living in the world, identifying\
+            \ 3\u20135 named locations and a looming systemic threat.\n\nThe Players:\
+            \ Integrate the protagonist\u2019s introduction naturally. Detail their\
+            \ backstory, physical traits, internal struggle, and external goal. Introduce\
+            \ the primary antagonist and their motives, along with 2\u20133 key allies\
+            \ and secondary rivals, ensuring their quirks and roles are described\
+            \ as they enter the \"camera's\" view.\n\nThe Journey (Three-Act Arc):\
+            \ Narrate the plot from the inciting incident through a rising escalation\
+            \ of stakes. Weave in at least two subplots and a major betrayal or twist.\
+            \ The pacing must feel like a crescendo, moving through Act One (complications),\
+            \ Act Two (rising danger), and Act Three (the final confrontation and\
+            \ its emotional cost).\n\nSensory Detail & Theme: Use rich, sensory language\
+            \ (sights, smells, textures) and specific proper nouns for artifacts or\
+            \ events. Ensure the theme (e.g., loss, ambition, or betrayal) is felt\
+            \ through character actions rather than stated as a fact.\n\nThe Resolution:\
+            \ Close the paragraph by resolving the primary conflict while explicitly\
+            \ leaving 1\u20132 narrative threads open for future installments.\n\n\
+            Constraint: Avoid generic phrases. Every sentence must add concrete detail\
+            \ to the specific story requested. Do not use \"First,\" \"Second,\" or\
+            \ \"In conclusion.\" Use transitional phrases to maintain a seamless,\
+            \ \"cinematic\" prose style."
           label: Prompt
           type: textarea
         api_endpoint:
@@ -412,6 +395,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - llama-3.1
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -432,8 +416,8 @@ graph:
       title: PreWritting Draft
       type: BasicNode
       width: 129
-      x: 12
-      y: 26
+      x: 62
+      y: 66
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
         drag_bar: 67
@@ -558,6 +542,6 @@ graph:
       title: LongOutputV4
       type: LongOutputV4Node
       width: 125
-      x: 463
-      y: 22
+      x: 553
+      y: 59
 name: Write long form story content

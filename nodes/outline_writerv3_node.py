@@ -217,6 +217,16 @@ class ChapterNavigationWindow:
         y = (self.root.winfo_screenheight() // 2) - (height // 2)
         self.root.geometry(f'+{x}+{y}')
     
+    def _format_paragraph_title(self, index, paragraph_text):
+        """Generate the display title for a paragraph list entry."""
+        stripped = paragraph_text.strip()
+        if not stripped:
+            title = "Untitled"
+        else:
+            first_line = stripped.split('\n')[0]
+            title = first_line[:50] + "..." if len(first_line) > 50 else first_line
+        return f"Paragraph {index + 1}: {title}"
+
     def parse_chapters(self, content):
         """Parse the content into individual paragraphs"""
         # Split content by double newlines (blank lines) to get paragraphs
@@ -225,25 +235,21 @@ class ChapterNavigationWindow:
         for i, para in enumerate(paragraphs):
             para = para.strip()
             if para:  # Only add non-empty paragraphs
-                # Create a title from the first 50 characters or first line
-                first_line = para.split('\n')[0]
-                if len(first_line) > 50:
-                    title = first_line[:50] + "..."
-                else:
-                    title = first_line
-                
+                title = self._format_paragraph_title(i, para)
                 self.chapters.append({
-                    'title': f"Paragraph {i+1}: {title}",
+                    'title': title,
                     'content': para
                 })
     
     def init_ui(self):
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.pack(fill=tk.BOTH, expand=True)
+        main_frame.rowconfigure(0, weight=1)
+        main_frame.columnconfigure(0, weight=1)
         
         # Create horizontal paned window for list and content
         paned = ttk.PanedWindow(main_frame, orient=tk.HORIZONTAL)
-        paned.pack(fill=tk.BOTH, expand=True)
+        paned.grid(row=0, column=0, sticky="nsew", pady=(0, 5))
         
         # Left panel - Paragraph list
         left_frame = ttk.Frame(paned)
@@ -284,6 +290,13 @@ class ChapterNavigationWindow:
         self.content_text = tk.Text(content_frame, wrap=tk.WORD, yscrollcommand=content_scrollbar.set)
         self.content_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         content_scrollbar.config(command=self.content_text.yview)
+
+        save_frame = ttk.Frame(right_frame)
+        save_frame.pack(fill=tk.X, pady=(0, 10))
+        self.save_button = ttk.Button(save_frame, text="Save Changes", command=self.on_save_paragraph_changes)
+        self.save_button.pack(side=tk.LEFT)
+        self.save_status_label = ttk.Label(save_frame, text="", foreground="green")
+        self.save_status_label.pack(side=tk.LEFT, padx=10)
         
         # Enhancement section
         enhance_frame = ttk.LabelFrame(right_frame, text="Content Enhancement", padding="5")
@@ -321,7 +334,7 @@ class ChapterNavigationWindow:
         
         # Bottom buttons
         bottom_frame = ttk.Frame(main_frame)
-        bottom_frame.pack(fill=tk.X, pady=10)
+        bottom_frame.grid(row=1, column=0, sticky="ew", pady=(0, 5))
         
         # Save & Continue button
         save_button = ttk.Button(bottom_frame, text="Save & Continue", command=self.on_save)
@@ -341,6 +354,29 @@ class ChapterNavigationWindow:
             # Display paragraph content
             self.content_text.delete("1.0", tk.END)
             self.content_text.insert(tk.END, paragraph['content'])
+            if hasattr(self, 'save_status_label'):
+                self.save_status_label.config(text="")
+
+    def on_save_paragraph_changes(self):
+        """Persist edits made to the currently selected paragraph."""
+        if self.current_chapter_index < 0:
+            messagebox.showwarning("No Selection", "Please select a paragraph to save changes.")
+            return
+
+        updated_content = self.content_text.get("1.0", tk.END).strip()
+        paragraph = self.chapters[self.current_chapter_index]
+        paragraph['content'] = updated_content
+        new_title = self._format_paragraph_title(self.current_chapter_index, updated_content)
+        paragraph['title'] = new_title
+
+        # Update listbox entry to reflect possible title change
+        self.chapter_listbox.delete(self.current_chapter_index)
+        self.chapter_listbox.insert(self.current_chapter_index, new_title)
+        self.chapter_listbox.selection_set(self.current_chapter_index)
+        self.chapter_listbox.see(self.current_chapter_index)
+
+        self.save_status_label.config(text="Changes saved")
+        self.root.after(2000, lambda: self.save_status_label.config(text=""))
     
     def parse_batch_input(self, batch_str):
         """Parse batch input string into list of indices.
