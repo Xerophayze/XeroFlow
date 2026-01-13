@@ -41,8 +41,8 @@ from pygments import lex
 from pygments.lexers import get_lexer_by_name, TextLexer
 from pygments.token import Token
 
-# Import NodeEditor module
-from node_editor import NodeEditor
+# Import NodeEditor module (using modern version)
+from node_editor_modern import ModernNodeEditor as NodeEditor
 
 from ollama import Client
 
