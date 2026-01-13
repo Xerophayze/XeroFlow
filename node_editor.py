@@ -858,6 +858,11 @@ class NodeEditor:
                 tags=('node', node['id'], 'rect')
             )
             node['canvas_items']['rect'] = new_rect
+            
+            # Rebind rect events (right-click and hover)
+            self.canvas.tag_bind(new_rect, "<Button-3>", self.on_right_click)
+            self.canvas.tag_bind(new_rect, "<Enter>", lambda e, nid=node['id']: self.on_node_enter(nid))
+            self.canvas.tag_bind(new_rect, "<Leave>", lambda e, nid=node['id']: self.on_node_leave(nid))
 
             # Update drag bar
             self.canvas.delete(drag_bar)

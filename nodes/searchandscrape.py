@@ -30,7 +30,7 @@ class SearchAndScrapeNode(BaseNode):
         return ['input']  # 'input' will be used for the user input
 
     def define_outputs(self):
-        return ['prompt']  # Output the processed web search results or scraped content
+        return ['output']  # Output the processed web search results or scraped content
 
     def define_properties(self):
         props = self.get_default_properties()
@@ -173,7 +173,7 @@ class SearchAndScrapeNode(BaseNode):
                         print(f"[SearchAndScrapeNode] Error scraping {url}: {e}")
 
                 print("[SearchAndScrapeNode] Completed web scraping. Returning combined text.")
-                return {'prompt': combined_text}  # Return the combined scraped text as the output
+                return {'output': combined_text}  # Return the combined scraped text as the output
 
             else:
                 # Scrape the content of each URL
@@ -190,7 +190,7 @@ class SearchAndScrapeNode(BaseNode):
                         print(f"[SearchAndScrapeNode] Error scraping {url}: {e}")
 
                 print("[SearchAndScrapeNode] Completed web scraping. Returning combined text.")
-                return {'prompt': combined_text}  # Return the combined scraped text as the output
+                return {'output': combined_text}  # Return the combined scraped text as the output
 
         else:
             # Web search is disabled, check if input contains URLs or list of URLs separated by commas
@@ -226,7 +226,7 @@ class SearchAndScrapeNode(BaseNode):
                     print(f"[SearchAndScrapeNode] Error scraping {url}: {e}")
 
             print("[SearchAndScrapeNode] Completed web scraping. Returning combined text.")
-            return {'prompt': combined_text}  # Return the combined scraped text as the output
+            return {'output': combined_text}  # Return the combined scraped text as the output
 
     def requires_api_call(self):
         return False  # No external API call required, only web search and scraping

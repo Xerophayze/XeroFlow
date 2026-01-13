@@ -1,0 +1,637 @@
+graph:
+  connections:
+  - canvas_item: 164219
+    canvas_items:
+    - 164219
+    - 164220
+    - 164221
+    - 164222
+    - 164223
+    - 164224
+    - 164225
+    - 164226
+    - 164227
+    - 164228
+    - 164229
+    - 164230
+    - 164231
+    - 164232
+    - 164233
+    - 164234
+    - 164235
+    from_node: 33dc54ce-fb65-4573-885d-e48c727f7b79
+    from_output: output
+    to_input: input
+    to_node: 63a6c636-74ae-42c8-aff7-1f9b03f53fbf
+  - canvas_item: 12596
+    canvas_items:
+    - 12596
+    - 12597
+    - 12598
+    - 12599
+    - 12600
+    - 12601
+    - 12602
+    - 12603
+    - 12604
+    - 12605
+    - 12606
+    - 12607
+    - 12608
+    - 12609
+    - 12610
+    - 12611
+    - 12612
+    from_node: 63a6c636-74ae-42c8-aff7-1f9b03f53fbf
+    from_output: output
+    to_input: input
+    to_node: a698304e-5c93-4b95-828e-1d0aa946c9e3
+  - canvas_item: 164236
+    canvas_items:
+    - 164236
+    - 164237
+    - 164238
+    - 164239
+    - 164240
+    - 164241
+    - 164242
+    - 164243
+    - 164244
+    from_node: a698304e-5c93-4b95-828e-1d0aa946c9e3
+    from_output: output1
+    to_input: input
+    to_node: 512db1ef-f82b-45d4-8a41-bb90124d8a1a
+  - canvas_item: 164245
+    canvas_items:
+    - 164245
+    - 164246
+    - 164247
+    - 164248
+    - 164249
+    - 164250
+    - 164251
+    - 164252
+    - 164253
+    from_node: a698304e-5c93-4b95-828e-1d0aa946c9e3
+    from_output: output2
+    to_input: input
+    to_node: f7a2394e-1ef0-466e-b721-073fc346a0b1
+  - canvas_item: 164254
+    canvas_items:
+    - 164254
+    - 164255
+    - 164256
+    - 164257
+    - 164258
+    - 164259
+    - 164260
+    - 164261
+    - 164262
+    from_node: 512db1ef-f82b-45d4-8a41-bb90124d8a1a
+    from_output: output
+    to_input: input1
+    to_node: a5dc27a9-0a9f-4af6-be68-ff8fab6816f4
+  - canvas_item: 164263
+    canvas_items:
+    - 164263
+    - 164264
+    - 164265
+    - 164266
+    - 164267
+    - 164268
+    - 164269
+    - 164270
+    - 164271
+    from_node: f7a2394e-1ef0-466e-b721-073fc346a0b1
+    from_output: output
+    to_input: input2
+    to_node: a5dc27a9-0a9f-4af6-be68-ff8fab6816f4
+  - canvas_item: 164272
+    canvas_items:
+    - 164272
+    - 164273
+    - 164274
+    - 164275
+    - 164276
+    - 164277
+    - 164278
+    - 164279
+    - 164280
+    - 164281
+    - 164282
+    - 164283
+    - 164284
+    - 164285
+    - 164286
+    - 164287
+    - 164288
+    from_node: a5dc27a9-0a9f-4af6-be68-ff8fab6816f4
+    from_output: output
+    to_input: input
+    to_node: 00c8b1b5-20b0-4e32-ac52-0fda68878bc3
+  - canvas_item: 164289
+    canvas_items:
+    - 164289
+    - 164290
+    - 164291
+    - 164292
+    - 164293
+    - 164294
+    - 164295
+    - 164296
+    - 164297
+    - 164298
+    - 164299
+    - 164300
+    - 164301
+    - 164302
+    - 164303
+    - 164304
+    - 164305
+    from_node: 00c8b1b5-20b0-4e32-ac52-0fda68878bc3
+    from_output: output
+    to_input: input
+    to_node: 296780a7-ea04-4675-a715-9883d41599c5
+  nodes:
+    00c8b1b5-20b0-4e32-ac52-0fda68878bc3:
+      canvas_items:
+        body: 158624
+        description: 158627
+        header: 158625
+        input_input: 158628
+        input_label_input: 158629
+        output_label_output: 158631
+        output_output: 158630
+        resize_handle: 158632
+        shadow: 158623
+        title: 158626
+      height: 100
+      highlight_state: false
+      id: 00c8b1b5-20b0-4e32-ac52-0fda68878bc3
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: 'Please take the following content and provide me we a refined
+            and well formatted Blog Style document formatted to present the information
+            below and a easy to read and informative format, it''s okay to include
+            Markdown language:'
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          - llama-3.1
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Final  processing
+          label: Custom Node Name
+          type: text
+      title: Final  processing
+      type: BasicNode
+      width: 139
+      x: 375
+      y: 325
+    296780a7-ea04-4675-a715-9883d41599c5:
+      canvas_items:
+        body: 156130
+        description: 156133
+        header: 156131
+        input_input: 156134
+        input_label_input: 156135
+        output_label_output: 156137
+        output_output: 156136
+        resize_handle: 156138
+        shadow: 156129
+        title: 156132
+      height: 120
+      highlight_state: false
+      id: 296780a7-ea04-4675-a715-9883d41599c5
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        auto_open:
+          default: true
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          type: dropdown
+        filename:
+          default: exported_document
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Export Document
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: Export Document
+      type: ExportDocumentNode
+      width: 180
+      x: 350
+      y: 150
+    33dc54ce-fb65-4573-885d-e48c727f7b79:
+      canvas_items:
+        body: 13588
+        description: 13591
+        header: 13589
+        input_input: 13592
+        input_label_input: 13593
+        output_label_output: 13595
+        output_output: 13594
+        resize_handle: 13596
+        shadow: 13587
+        title: 13590
+      height: 119
+      highlight_state: false
+      id: 33dc54ce-fb65-4573-885d-e48c727f7b79
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: please take the following user request and refine it into an effective
+            web search string to maximize effective search results in a search engine
+            like google.  you are not to provide your own opinion about the request,
+            you only expected output is the requested refined web search string.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          - llama-3.1
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 124
+      x: 100
+      y: 150
+    512db1ef-f82b-45d4-8a41-bb90124d8a1a:
+      canvas_items:
+        body: 164210
+        description: 164213
+        header: 164211
+        input_input: 164214
+        input_label_input: 164215
+        output_label_output: 164217
+        output_output: 164216
+        resize_handle: 164218
+        shadow: 164209
+        title: 164212
+      height: 102
+      highlight_state: false
+      id: 512db1ef-f82b-45d4-8a41-bb90124d8a1a
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: PLease take the following web search content and provide me a critics
+            review and opinion of the content. Find the risks, flaws or counter argument
+            as to why this may not be a good thing.  the Critic or Pesamist veiew
+            of it.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          - llama-3.1
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Critic Opinion
+          label: Custom Node Name
+          type: text
+      title: Critic Opinion
+      type: BasicNode
+      width: 120
+      x: 300
+      y: 475
+    63a6c636-74ae-42c8-aff7-1f9b03f53fbf:
+      canvas_items:
+        body: 17984
+        description: 17987
+        header: 17985
+        input_input: 17988
+        input_label_input: 17989
+        output_label_output: 17991
+        output_output: 17990
+        resize_handle: 17992
+        shadow: 17983
+        title: 17986
+      height: 108
+      highlight_state: false
+      id: 63a6c636-74ae-42c8-aff7-1f9b03f53fbf
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Processes the input for web search and scraping.
+          type: text
+        enable_url_selection:
+          default: false
+          description: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: SearchAndScrapeNode
+          type: text
+        num_results_to_skip:
+          default: '0'
+          type: number
+        num_search_results:
+          default: '10'
+          type: number
+        searxng_api_url:
+          default: http://searxng.local:8888/search
+          type: text
+      title: SearchAndScrapeNode
+      type: SearchAndScrapeNode
+      width: 118
+      x: 100
+      y: 325
+    a5dc27a9-0a9f-4af6-be68-ff8fab6816f4:
+      canvas_items:
+        body: 82550
+        description: 82553
+        header: 82551
+        input_input1: 82554
+        input_input2: 82556
+        input_label_input1: 82555
+        input_label_input2: 82557
+        output_label_output: 82559
+        output_output: 82558
+        resize_handle: 82560
+        shadow: 82549
+        title: 82552
+      height: 114
+      highlight_state: false
+      id: a5dc27a9-0a9f-4af6-be68-ff8fab6816f4
+      inputs:
+      - input1
+      - input2
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Combines two inputs into a single output.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: MergerNode
+          label: Custom Node Name
+          type: text
+        separator:
+          default: '
+
+
+            '
+          description: Text to insert between the two inputs when merging.
+          label: Separator
+          type: text
+      title: Merger
+      type: MergerNode
+      width: 123
+      x: 500
+      y: 525
+    a698304e-5c93-4b95-828e-1d0aa946c9e3:
+      canvas_items:
+        body: 22826
+        description: 22829
+        header: 22827
+        input_input: 22830
+        input_label_input: 22831
+        output_label_output1: 22833
+        output_label_output2: 22835
+        output_output1: 22832
+        output_output2: 22834
+        resize_handle: 22836
+        shadow: 22825
+        title: 22828
+      height: 118
+      highlight_state: false
+      id: a698304e-5c93-4b95-828e-1d0aa946c9e3
+      inputs:
+      - input
+      outputs:
+      - output1
+      - output2
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Duplicates input to two outputs for parallel processing.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: SplitterNode
+          label: Custom Node Name
+          type: text
+      title: Splitter
+      type: SplitterNode
+      width: 107
+      x: 125
+      y: 500
+    f7a2394e-1ef0-466e-b721-073fc346a0b1:
+      canvas_items:
+        body: 159930
+        description: 159933
+        header: 159931
+        input_input: 159934
+        input_label_input: 159935
+        output_label_output: 159937
+        output_output: 159936
+        resize_handle: 159938
+        shadow: 159929
+        title: 159932
+      height: 100
+      highlight_state: false
+      id: f7a2394e-1ef0-466e-b721-073fc346a0b1
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: please take the following web search content and provide me with
+            and optimist review, finding possible benefits, opportunities or the "pro"
+            side of the argument for it.
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          - llama-3.1
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Optimist Opinion
+          label: Custom Node Name
+          type: text
+      title: Optimist Opinion
+      type: BasicNode
+      width: 127
+      x: 300
+      y: 650
+name: test logic

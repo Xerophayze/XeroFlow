@@ -1,16 +1,62 @@
 graph:
   connections:
-  - canvas_item: 74
+  - canvas_item: 59728
+    canvas_items:
+    - 59728
+    - 59729
+    - 59730
+    - 59731
+    - 59732
+    - 59733
+    - 59734
+    - 59735
+    - 59736
+    - 59737
+    - 59738
+    - 59739
+    - 59740
+    - 59741
+    - 59742
+    - 59743
+    - 59744
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
     from_output: prompt
     to_input: input
     to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 75
+  - canvas_item: 59745
+    canvas_items:
+    - 59745
+    - 59746
+    - 59747
+    - 59748
+    - 59749
+    - 59750
+    - 59751
+    - 59752
+    - 59753
+    - 59754
+    - 59755
+    - 59756
+    - 59757
+    - 59758
+    - 59759
+    - 59760
+    - 59761
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
     from_output: output
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 76
+  - canvas_item: 59762
+    canvas_items:
+    - 59762
+    - 59763
+    - 59764
+    - 59765
+    - 59766
+    - 59767
+    - 59768
+    - 59769
+    - 59770
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
     from_output: output
     to_input: input
@@ -18,15 +64,16 @@ graph:
   nodes:
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        description: 42
-        drag_bar: 40
-        input_input: 43
-        input_label_input: 44
-        output_label_output: 46
-        output_output: 45
-        rect: 39
-        resize_handle: 47
-        title: 41
+        body: 59719
+        description: 59722
+        header: 59720
+        input_input: 59723
+        input_label_input: 59724
+        output_label_output: 59726
+        output_output: 59725
+        resize_handle: 59727
+        shadow: 59718
+        title: 59721
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -196,19 +243,20 @@ graph:
       title: OutlineWriterV3Node
       type: OutlineWriterV3Node
       width: 200
-      x: 267
-      y: 234
+      x: 75
+      y: 200
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        description: 51
-        drag_bar: 49
-        input_input: 52
-        input_label_input: 53
-        output_label_output: 55
-        output_output: 54
-        rect: 48
-        resize_handle: 56
-        title: 50
+        body: 57000
+        description: 57003
+        header: 57001
+        input_input: 57004
+        input_label_input: 57005
+        output_label_output: 57007
+        output_output: 57006
+        resize_handle: 57008
+        shadow: 56999
+        title: 57002
       connections: []
       height: 112
       highlight_state: false
@@ -325,19 +373,20 @@ graph:
       title: Reviewer and Editor
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 726
-      y: 227
+      x: 375
+      y: 225
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        description: 60
-        drag_bar: 58
-        input_input: 61
-        input_label_input: 62
-        output_label_output: 64
-        output_output: 63
-        rect: 57
-        resize_handle: 65
-        title: 59
+        body: 38132
+        description: 38135
+        header: 38133
+        input_input: 38136
+        input_label_input: 38137
+        output_label_output: 38139
+        output_output: 38138
+        resize_handle: 38140
+        shadow: 38131
+        title: 38134
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -416,18 +465,19 @@ graph:
       title: PreWritting Draft
       type: BasicNode
       width: 129
-      x: 62
-      y: 66
+      x: 100
+      y: 50
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        drag_bar: 67
-        input_input: 69
-        input_label_input: 70
-        output_label_prompt: 72
-        output_prompt: 71
-        rect: 66
-        resize_handle: 73
-        title: 68
+        body: 42997
+        header: 42998
+        input_input: 43000
+        input_label_input: 43001
+        output_label_prompt: 43003
+        output_prompt: 43002
+        resize_handle: 43004
+        shadow: 42996
+        title: 42999
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -542,6 +592,6 @@ graph:
       title: LongOutputV4
       type: LongOutputV4Node
       width: 125
-      x: 553
-      y: 59
+      x: 350
+      y: 25
 name: Write long form story content
