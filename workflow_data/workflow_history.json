@@ -2778,5 +2778,35 @@
         "status": "completed",
         "duration": "59s",
         "content_file": "H:\\Personal\\hobbies\\AICoding\\XeroFlow Dev\\workflow_data\\history\\0277bf07-4fe5-4dd4-b788-8511f586ad4f.txt"
+    },
+    {
+        "id": "d7ef7aba-23f3-456c-9e59-63347d6be825",
+        "workflow_name": "Interactive Chat",
+        "user_input": "are you there\n",
+        "start_time": "2026-01-13T16:38:54.412211",
+        "end_time": "2026-01-13T16:42:09.201566",
+        "status": "completed",
+        "duration": "3m 14s",
+        "content_file": "H:\\Personal\\hobbies\\AICoding\\XeroFlow Dev\\workflow_data\\history\\d7ef7aba-23f3-456c-9e59-63347d6be825.txt"
+    },
+    {
+        "id": "d7b36a6b-edb4-4ebe-86f3-e712c8331e23",
+        "workflow_name": "Write long form story content",
+        "user_input": "please write a short story about a boy and his dog, tragic ending though.\n",
+        "start_time": "2026-01-13T19:27:38.120111",
+        "end_time": "2026-01-13T19:53:42.552981",
+        "status": "completed",
+        "duration": "26m 4s",
+        "content_file": "H:\\Personal\\hobbies\\AICoding\\XeroFlow Dev\\workflow_data\\history\\d7b36a6b-edb4-4ebe-86f3-e712c8331e23.txt"
+    },
+    {
+        "id": "8c6903c5-d9a9-4231-9fb2-69d00c665946",
+        "workflow_name": "Interactive Chat",
+        "user_input": " hello\n",
+        "start_time": "2026-01-14T19:42:43.117495",
+        "end_time": "2026-01-14T19:46:09.312153",
+        "status": "completed",
+        "duration": "3m 26s",
+        "content_file": "H:\\Personal\\hobbies\\AICoding\\XeroFlow Dev\\workflow_data\\history\\8c6903c5-d9a9-4231-9fb2-69d00c665946.txt"
     }
 ]

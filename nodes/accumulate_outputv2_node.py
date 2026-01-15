@@ -168,7 +168,7 @@ class AccumulateOutputV2Node(BaseNode):
                 print(f"[AccumulateOutputV2Node] User set iterations to: {user_iterations}")
             else:
                 # If user cancelled the dialog, reset and return
-                return output
+                return {'output': 'Cancelled by user', 'output2': ''}
 
         # Retrieve the iterations property
         iterations = self.properties.get('iterations', {}).get('default', 3)
@@ -184,7 +184,7 @@ class AccumulateOutputV2Node(BaseNode):
         if not input_text:
             # No input to process
             print("[AccumulateOutputV2Node] No input received.")
-            return output
+            return {'output': 'Error: No input received', 'output2': ''}
 
         # Retrieve internal state from properties
         initial_input = self.properties.get('initial_input', {}).get('default', '')

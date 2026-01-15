@@ -36,7 +36,7 @@ class WebSearchNode(BaseNode):
             num_results_to_skip = int(self.properties.get('num_results_to_skip', {}).get('default', 0))
         except ValueError:
             print("[WebSearchNode] num_results or num_results_to_skip is not a valid integer.")
-            return {}
+            return {'urls': 'Error: num_results or num_results_to_skip is not a valid integer.'}
 
         # Use user input as search query if provided
         user_input = inputs.get('input', '').strip()
@@ -44,7 +44,7 @@ class WebSearchNode(BaseNode):
 
         if not query.strip():
             print("[WebSearchNode] No query provided.")
-            return {}
+            return {'urls': 'Error: No query provided.'}
 
         # Prepare search parameters for API request
         params = {
@@ -58,7 +58,7 @@ class WebSearchNode(BaseNode):
         response = requests.get(searxng_api_url, params=params)
         if response.status_code != 200:
             print(f"[WebSearchNode] SearxNG API Error: {response.status_code}")
-            return {}
+            return {'urls': f'Error: SearxNG API returned status {response.status_code}'}
 
         search_results = response.json().get('results', [])
         

@@ -1202,7 +1202,7 @@ class OutlineWriterV3Node(BaseNode):
             
             # If dialog was cancelled or closed
             if not config:
-                return None
+                return {'output': 'Cancelled by user'}
                 
             num_chapters = config['num_chapters']
             paragraphs_per_chapter = config['paragraphs_per_chapter']
@@ -1256,36 +1256,47 @@ class OutlineWriterV3Node(BaseNode):
             self.review_completed = False
             final_result = accumulated_result
             
-            # First review window - Edit & Accept or Accept
-            initial_window = ReviewWindow(content=final_result, node_instance=self)
-            action, edited_result = None, None
-            
-            # Show the window and wait for result
-            initial_window.show()
-            
+            # Try to show review windows - these may fail if running in a background thread
             try:
-                action, edited_result = initial_window.result_queue.get_nowait()
-            except queue.Empty:
-                return None
+                # First review window - Edit & Accept or Accept
+                initial_window = ReviewWindow(content=final_result, node_instance=self)
+                action, edited_result = None, None
                 
-            if action == "cancel" or edited_result is None:
-                return None
-            
-            # Now show the Chapter Navigation window for detailed editing
-            nav_window = ChapterNavigationWindow(content=edited_result.strip(), node_instance=self)
-            nav_window.show()
-            
-            try:
-                nav_action, nav_result = nav_window.result_queue.get_nowait()
-            except queue.Empty:
-                return None
-            
-            if nav_action == "cancel" or nav_result is None:
-                return None
+                # Show the window and wait for result
+                initial_window.show()
                 
-            return {'output': nav_result.strip()}
+                try:
+                    action, edited_result = initial_window.result_queue.get_nowait()
+                except queue.Empty:
+                    # If queue is empty, return the accumulated result as-is
+                    print("[OutlineWriterV3Node] Review window queue empty, returning accumulated result")
+                    return {'output': final_result}
+                    
+                if action == "cancel" or edited_result is None:
+                    return {'output': 'Cancelled by user'}
+                
+                # Now show the Chapter Navigation window for detailed editing
+                nav_window = ChapterNavigationWindow(content=edited_result.strip(), node_instance=self)
+                nav_window.show()
+                
+                try:
+                    nav_action, nav_result = nav_window.result_queue.get_nowait()
+                except queue.Empty:
+                    # If queue is empty, return the edited result from first window
+                    print("[OutlineWriterV3Node] Navigation window queue empty, returning edited result")
+                    return {'output': edited_result.strip()}
+                
+                if nav_action == "cancel" or nav_result is None:
+                    return {'output': 'Cancelled by user'}
+                    
+                return {'output': nav_result.strip()}
+                
+            except Exception as window_error:
+                # If windows fail to show (e.g., running in background thread), return accumulated result
+                print(f"[OutlineWriterV3Node] Review window error: {str(window_error)}, returning accumulated result")
+                return {'output': final_result}
                 
         except Exception as e:
             import traceback
             traceback.print_exc()
-            return f"Error in OutlineWriterV3Node: {str(e)}"
+            return {'output': f"Error in OutlineWriterV3Node: {str(e)}"}
