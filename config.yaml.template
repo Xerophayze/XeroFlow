@@ -1,0 +1,54 @@
+# XeroFlow Configuration Template
+# Copy this file to config.yaml and fill in your API keys
+
+auto_startup_workflows: []
+interfaces:
+  Claude:
+    api_key: YOUR_ANTHROPIC_API_KEY_HERE
+    api_url: https://api.anthropic.com
+    max_tokens: 8192
+    models_endpoint: /v1/messages
+    selected_model: claude-haiku-4-5-20251001
+    type: Claude
+  OpenAI:
+    api_key: YOUR_OPENAI_API_KEY_HERE
+    api_url: https://api.openai.com
+    max_tokens: null
+    models_endpoint: /v1/chat/completions
+    selected_model: gpt-4o
+    type: OpenAI
+  Gemini:
+    api_key: YOUR_GOOGLE_API_KEY_HERE
+    api_url: https://api.google.com
+    max_tokens: 8192
+    models_endpoint: /v1/generate
+    selected_model: models/gemini-2.0-flash
+    type: Google
+  Groq:
+    api_key: YOUR_GROQ_API_KEY_HERE
+    api_url: https://api.groq.com
+    max_tokens: 8000
+    models_endpoint: /v1/chat/completions
+    selected_model: llama-3.3-70b-versatile
+    type: Groq
+  LMStudio:
+    api_key: not-needed
+    api_url: http://localhost:1234
+    max_tokens: 4096
+    models_endpoint: /v1/chat/completions
+    selected_model: local-model
+    type: LMStudio
+  Ollama:
+    api_key: not-needed
+    api_url: http://localhost:11434
+    max_tokens: 4096
+    models_endpoint: /api/generate
+    selected_model: llama3
+    type: Ollama
+  SearXNG:
+    api_key: not-needed
+    api_url: http://localhost:8888
+    max_tokens: null
+    models_endpoint: /search
+    selected_model: null
+    type: SearchEngine
