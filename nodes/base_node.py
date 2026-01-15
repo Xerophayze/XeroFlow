@@ -104,7 +104,9 @@ class BaseNode(ABC):
         # Default implementation just passes through the input
         # Derived classes should override this method
         if not inputs:
-            return {}
+            # Return empty strings for all defined outputs instead of empty dict
+            outputs = self.define_outputs()
+            return {output_name: '' for output_name in outputs}
             
         # Handle the case where an input might be a list from multiple connections
         processed_inputs = {}

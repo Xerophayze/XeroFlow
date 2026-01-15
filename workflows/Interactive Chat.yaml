@@ -3,17 +3,18 @@ graph:
   nodes:
     add862e1-0ed5-4d9a-96e7-827fa6737ff8:
       canvas_items:
-        description: 15
-        drag_bar: 13
-        input_gui_queue: 18
-        input_input: 16
-        input_label_gui_queue: 19
-        input_label_input: 17
-        output_chat_history: 20
-        output_label_chat_history: 21
-        rect: 12
-        resize_handle: 22
-        title: 14
+        body: 317
+        description: 320
+        header: 318
+        input_gui_queue: 323
+        input_input: 321
+        input_label_gui_queue: 324
+        input_label_input: 322
+        output_chat_history: 325
+        output_label_chat_history: 326
+        resize_handle: 327
+        shadow: 316
+        title: 319
       height: 150
       highlight_state: false
       id: add862e1-0ed5-4d9a-96e7-827fa6737ff8
@@ -27,13 +28,14 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: LMStudio-MIstral-Nemo-Instruct
           label: API Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
           - OpenAI 4o-mini
           - OpenAI GPT5
@@ -89,4 +91,10 @@ graph:
       width: 200
       x: 102
       y: 105
+  viewport:
+    pan_offset_x: 0
+    pan_offset_y: 0
+    window_height: 800
+    window_width: 1200
+    zoom_level: 1.0
 name: Interactive Chat

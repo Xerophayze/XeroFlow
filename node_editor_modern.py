@@ -197,6 +197,7 @@ class ModernNodeEditor:
         tk.Label(bottom, text="Instruction Set Name:", bg=Theme.TOOLBAR_BG, fg=Theme.TEXT_PRIMARY, font=('Segoe UI', 9)).pack(side=tk.LEFT, padx=(10, 5), pady=12)
         
         self.name_var = tk.StringVar(value=self.instruction_name)
+        self.name_var.trace_add('write', self.on_name_changed)
         name_entry = tk.Entry(bottom, textvariable=self.name_var, bg=Theme.NODE_BG, fg=Theme.TEXT_PRIMARY,
                               insertbackground=Theme.TEXT_PRIMARY, relief='flat', font=('Segoe UI', 10))
         name_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5, pady=12)
@@ -204,6 +205,10 @@ class ModernNodeEditor:
         self.save_btn = self.create_button(bottom, "Save", self.save_node_graph)
         self.save_btn.config(state='disabled')
         self.save_btn.pack(side=tk.RIGHT, padx=5, pady=12)
+        
+        # Track window resize to enable save button
+        self.initial_window_size = None
+        self.editor_window.bind('<Configure>', self.on_window_configure)
 
         self.create_button(bottom, "Cancel", self.on_close).pack(side=tk.RIGHT, padx=5, pady=12)
 
@@ -317,6 +322,30 @@ class ModernNodeEditor:
 
     def update_save_button_state(self):
         self.save_btn.config(state='normal' if self.is_modified else 'disabled')
+
+    def on_name_changed(self, *args):
+        """Called when the instruction set name is changed."""
+        self.is_modified = True
+        self.update_save_button_state()
+
+    def on_window_configure(self, event):
+        """Called when the window is resized or moved."""
+        # Only track resize events for the main editor window
+        if event.widget != self.editor_window:
+            return
+        
+        current_size = (event.width, event.height)
+        
+        # Store initial size on first configure event
+        if self.initial_window_size is None:
+            self.initial_window_size = current_size
+            return
+        
+        # If size changed from initial, mark as modified
+        if current_size != self.initial_window_size:
+            if not self.is_modified:
+                self.is_modified = True
+                self.update_save_button_state()
 
     def on_close(self):
         if self.is_modified:

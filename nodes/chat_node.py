@@ -108,7 +108,7 @@ class ChatNode(BaseNode):
         api_config = self.config['interfaces'].get(api_endpoint_name)
         if not api_config:
             print(f"[ChatNode] Error: API config not found for {api_endpoint_name}")
-            return {}
+            return {'chat_history': f"Error: API config not found for {api_endpoint_name}"}
 
         print("[ChatNode] Getting database configuration")
         database_property = self.properties.get('database', {})

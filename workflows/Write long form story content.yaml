@@ -1,62 +1,62 @@
 graph:
   connections:
-  - canvas_item: 59728
+  - canvas_item: 566
     canvas_items:
-    - 59728
-    - 59729
-    - 59730
-    - 59731
-    - 59732
-    - 59733
-    - 59734
-    - 59735
-    - 59736
-    - 59737
-    - 59738
-    - 59739
-    - 59740
-    - 59741
-    - 59742
-    - 59743
-    - 59744
+    - 566
+    - 567
+    - 568
+    - 569
+    - 570
+    - 571
+    - 572
+    - 573
+    - 574
+    - 575
+    - 576
+    - 577
+    - 578
+    - 579
+    - 580
+    - 581
+    - 582
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
     from_output: prompt
     to_input: input
     to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 59745
+  - canvas_item: 583
     canvas_items:
-    - 59745
-    - 59746
-    - 59747
-    - 59748
-    - 59749
-    - 59750
-    - 59751
-    - 59752
-    - 59753
-    - 59754
-    - 59755
-    - 59756
-    - 59757
-    - 59758
-    - 59759
-    - 59760
-    - 59761
+    - 583
+    - 584
+    - 585
+    - 586
+    - 587
+    - 588
+    - 589
+    - 590
+    - 591
+    - 592
+    - 593
+    - 594
+    - 595
+    - 596
+    - 597
+    - 598
+    - 599
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
     from_output: output
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 59762
+  - canvas_item: 600
     canvas_items:
-    - 59762
-    - 59763
-    - 59764
-    - 59765
-    - 59766
-    - 59767
-    - 59768
-    - 59769
-    - 59770
+    - 600
+    - 601
+    - 602
+    - 603
+    - 604
+    - 605
+    - 606
+    - 607
+    - 608
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
     from_output: output
     to_input: input
@@ -64,16 +64,16 @@ graph:
   nodes:
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        body: 59719
-        description: 59722
-        header: 59720
-        input_input: 59723
-        input_label_input: 59724
-        output_label_output: 59726
-        output_output: 59725
-        resize_handle: 59727
-        shadow: 59718
-        title: 59721
+        body: 528
+        description: 531
+        header: 529
+        input_input: 532
+        input_label_input: 533
+        output_label_output: 535
+        output_output: 534
+        resize_handle: 536
+        shadow: 527
+        title: 530
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -176,7 +176,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - llama-3.1
+          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         description:
           default: Processes the input prompt with review capability and content enhancement.
@@ -210,7 +210,7 @@ graph:
           label: Custom Node Name
           type: text
         searxng_endpoint:
-          default: SearXing
+          default: LMStudio-MIstral-Nemo-Instruct
           label: SearxNG Endpoint
           options:
           - Claude
@@ -223,7 +223,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - llama-3.1
+          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         web_search_prompt:
           default: 'Based on the following paragraph and web search results, create
@@ -247,16 +247,16 @@ graph:
       y: 200
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        body: 57000
-        description: 57003
-        header: 57001
-        input_input: 57004
-        input_label_input: 57005
-        output_label_output: 57007
-        output_output: 57006
-        resize_handle: 57008
-        shadow: 56999
-        title: 57002
+        body: 538
+        description: 541
+        header: 539
+        input_input: 542
+        input_label_input: 543
+        output_label_output: 545
+        output_output: 544
+        resize_handle: 546
+        shadow: 537
+        title: 540
       connections: []
       height: 112
       highlight_state: false
@@ -270,7 +270,7 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: LMStudio-MIstral-Nemo-Instruct
           label: API Endpoint
           options:
           - Claude
@@ -283,6 +283,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         description:
           default: Processes array elements through multiple API calls until condition
@@ -377,16 +378,16 @@ graph:
       y: 225
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        body: 38132
-        description: 38135
-        header: 38133
-        input_input: 38136
-        input_label_input: 38137
-        output_label_output: 38139
-        output_output: 38138
-        resize_handle: 38140
-        shadow: 38131
-        title: 38134
+        body: 548
+        description: 551
+        header: 549
+        input_input: 552
+        input_label_input: 553
+        output_label_output: 555
+        output_output: 554
+        resize_handle: 556
+        shadow: 547
+        title: 550
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -431,7 +432,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: LMStudio-MIstral-Nemo-Instruct
           label: API Endpoint
           options:
           - Claude
@@ -444,7 +445,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - llama-3.1
+          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -469,15 +470,15 @@ graph:
       y: 50
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        body: 42997
-        header: 42998
-        input_input: 43000
-        input_label_input: 43001
-        output_label_prompt: 43003
-        output_prompt: 43002
-        resize_handle: 43004
-        shadow: 42996
-        title: 42999
+        body: 558
+        header: 559
+        input_input: 561
+        input_label_input: 562
+        output_label_prompt: 564
+        output_prompt: 563
+        resize_handle: 565
+        shadow: 557
+        title: 560
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -539,7 +540,7 @@ graph:
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: Gemini 2.5
+          default: LMStudio-MIstral-Nemo-Instruct
           label: API Endpoint
           options:
           - Claude
@@ -552,6 +553,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         chunk_size:
           default: '10'
@@ -594,4 +596,10 @@ graph:
       width: 125
       x: 350
       y: 25
+  viewport:
+    pan_offset_x: 0
+    pan_offset_y: 0
+    window_height: 520
+    window_width: 597
+    zoom_level: 1.0
 name: Write long form story content

@@ -2095,11 +2095,11 @@ class AssistantNode(BaseNode):
                     # Don't re-raise, just continue monitoring
                     continue
 
-            return None  # Return None to indicate normal termination
+            return {'output': 'Assistant monitoring stopped normally'}
             
         except Exception as e:
             print(f"[DEBUG] Critical error in process: {str(e)}")
-            return None  # Return None instead of error to prevent node termination
+            return {'output': f'Assistant error: {str(e)}'}
 
     def send_to_api(self, prompt, api_endpoint):
         """Send the prompt to the API and return the response."""

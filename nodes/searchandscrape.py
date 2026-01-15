@@ -69,7 +69,7 @@ class SearchAndScrapeNode(BaseNode):
         if enable_web_search:
             if not combined_prompt.strip():
                 print("[SearchAndScrapeNode] No input provided for the web search.")
-                return {}
+                return {'output': 'Error: No input provided for the web search.'}
 
             # Perform a web search using SearxNG API
             params = {
@@ -84,7 +84,7 @@ class SearchAndScrapeNode(BaseNode):
             response = requests.get(searxng_api_url, params=params)
             if response.status_code != 200:
                 print(f"[SearchAndScrapeNode] SearxNG API Error: {response.status_code}")
-                return {}
+                return {'output': f'Error: SearxNG API returned status {response.status_code}'}
 
             search_results = response.json().get('results', [])
             print(f"[SearchAndScrapeNode] SearxNG returned {len(search_results)} results.")
@@ -95,7 +95,7 @@ class SearchAndScrapeNode(BaseNode):
                 num_results_to_skip = int(num_results_to_skip)
             except ValueError:
                 print("[SearchAndScrapeNode] Error: num_results or num_results_to_skip is not a valid integer.")
-                return {}
+                return {'output': 'Error: num_results or num_results_to_skip is not a valid integer.'}
 
             # Skip the specified number of results, then take the next num_results results
             search_results = search_results[num_results_to_skip:num_results_to_skip + num_results]
@@ -154,11 +154,11 @@ class SearchAndScrapeNode(BaseNode):
                     selected_urls = get_user_selected_urls(urls)
                 except Exception as e:
                     print(f"[SearchAndScrapeNode] {str(e)}")
-                    return {}
+                    return {'output': f'Error: {str(e)}'}
 
                 if not selected_urls:
                     print("[SearchAndScrapeNode] No URLs selected.")
-                    return {}
+                    return {'output': 'Error: No URLs selected.'}
 
                 # Now scrape the selected URLs
                 combined_text = ''
@@ -211,7 +211,7 @@ class SearchAndScrapeNode(BaseNode):
 
             if not valid_urls:
                 print("[SearchAndScrapeNode] No valid URLs provided for scraping.")
-                return {}
+                return {'output': 'Error: No valid URLs provided for scraping.'}
 
             # Scrape the content of each valid URL
             combined_text = ''

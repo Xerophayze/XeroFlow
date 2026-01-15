@@ -62,7 +62,7 @@ class AccumulatorNode(BaseNode):
         input_text = inputs.get('input', '').strip()
         if not input_text:
             print("[AccumulatorNode] No input received.")
-            return output
+            return {'output': 'Error: No input received'}
 
         # Get current state
         initial_input = self.properties['initial_input']['default']
@@ -76,7 +76,7 @@ class AccumulatorNode(BaseNode):
             print("[AccumulatorNode] Already at max iterations. No further processing.")
             # Ensure end node is set
             self.properties['is_end_node'] = {'type': 'boolean', 'default': True}
-            return output
+            return {'output': accumulated_data if accumulated_data else initial_input}
 
         # First input handling - store it but don't count as iteration
         if not initial_input:
