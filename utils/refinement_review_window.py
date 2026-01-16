@@ -3,12 +3,24 @@ from tkinter import ttk, messagebox
 import textwrap
 
 class RefinementReviewWindow:
-    def __init__(self, refinement_results, validation_results, refine_callback=None):
+    def __init__(self, refinement_results, validation_results, refine_callback=None, parent=None):
         """
         Initialize the review window with refinement and validation results.
         Each item in refinement_results should correspond to the same index in validation_results.
         """
-        self.root = tk.Tk()
+        # Use Toplevel if parent provided or if Tk root already exists
+        # This helps avoid Tcl_AsyncDelete errors in threaded contexts
+        if parent:
+            self.root = tk.Toplevel(parent)
+            self._owns_root = False
+        else:
+            try:
+                self.root = tk.Toplevel()
+                self._owns_root = False
+            except tk.TclError:
+                self.root = tk.Tk()
+                self._owns_root = True
+        
         self.root.title("Review Refinement Results")
         
         # Store results and callback
@@ -166,7 +178,7 @@ class RefinementReviewWindow:
     def cancel(self):
         """Handle cancel button click"""
         self.approved = False
-        self.root.destroy()
+        self._safe_destroy()
     
     def approve(self):
         """Handle approve button click"""
@@ -183,7 +195,22 @@ class RefinementReviewWindow:
                 final_results.append(self.refinement_results[i])
         
         self.final_output = "\n\n".join(final_results)
-        self.root.destroy()
+        self._safe_destroy()
+    
+    def _safe_destroy(self):
+        """Safely destroy the window to avoid Tcl_AsyncDelete errors"""
+        def do_destroy():
+            try:
+                self.root.quit()
+                self.root.destroy()
+            except:
+                pass
+        
+        try:
+            if self.root.winfo_exists():
+                self.root.after(0, do_destroy)
+        except:
+            pass
     
     def start_refinement(self):
         """Start refinement of selected result"""
@@ -249,5 +276,8 @@ class RefinementReviewWindow:
     
     def show(self):
         """Show the window and return whether results were approved and the final output"""
-        self.root.mainloop()
+        try:
+            self.root.mainloop()
+        except Exception as e:
+            print(f"[RefinementReviewWindow] Error in mainloop: {e}")
         return self.approved, self.final_output

@@ -14,6 +14,7 @@ Features:
 """
 
 import os
+import threading
 from tkinter import filedialog, Tk, messagebox
 from .base_node import BaseNode
 from node_registry import register_node
@@ -119,6 +120,8 @@ class ExportDocumentNode(BaseNode):
         
         # Determine output path
         output_path = None
+        gui_queue = inputs.get('gui_queue')
+        parent_window = inputs.get('parent_window')
         
         if output_folder and os.path.isdir(output_folder):
             # Use the specified output folder
@@ -127,7 +130,7 @@ class ExportDocumentNode(BaseNode):
         else:
             # No valid output folder - show file dialog
             print("[ExportDocumentNode] No output folder specified, showing file dialog...")
-            output_path = self._show_save_dialog(filename, extension, export_type)
+            output_path = self._show_save_dialog(filename, extension, export_type, gui_queue, parent_window)
             
             if not output_path:
                 print("[ExportDocumentNode] User cancelled file save dialog.")
@@ -164,27 +167,47 @@ class ExportDocumentNode(BaseNode):
             filename = filename.replace(char, '_')
         return filename.strip()
     
-    def _show_save_dialog(self, default_filename, extension, export_type):
+    def _show_save_dialog(self, default_filename, extension, export_type, gui_queue=None, parent_window=None):
         """Show a file save dialog and return the selected path."""
         try:
-            root = Tk()
-            root.withdraw()
-            root.attributes('-topmost', True)
-            
             if export_type == 'word':
                 filetypes = [("Word Document", "*.docx"), ("All Files", "*.*")]
                 title = "Save Word Document"
             else:
                 filetypes = [("Excel Workbook", "*.xlsx"), ("All Files", "*.*")]
                 title = "Save Excel Workbook"
-            
+
+            if gui_queue and parent_window:
+                result = {'path': None}
+                dialog_done = threading.Event()
+
+                def show_dialog():
+                    try:
+                        result['path'] = filedialog.asksaveasfilename(
+                            parent=parent_window,
+                            defaultextension=extension,
+                            filetypes=filetypes,
+                            title=title,
+                            initialfile=f"{default_filename}{extension}"
+                        )
+                    finally:
+                        dialog_done.set()
+
+                gui_queue.put(show_dialog)
+                dialog_done.wait()
+                return result['path'] if result['path'] else None
+
+            root = Tk()
+            root.withdraw()
+            root.attributes('-topmost', True)
+
             file_path = filedialog.asksaveasfilename(
                 defaultextension=extension,
                 filetypes=filetypes,
                 title=title,
                 initialfile=f"{default_filename}{extension}"
             )
-            
+
             root.destroy()
             return file_path if file_path else None
             

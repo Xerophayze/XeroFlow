@@ -1,79 +1,329 @@
 graph:
   connections:
-  - canvas_item: 566
+  - canvas_item: 112
     canvas_items:
-    - 566
-    - 567
-    - 568
-    - 569
-    - 570
-    - 571
-    - 572
-    - 573
-    - 574
-    - 575
-    - 576
-    - 577
-    - 578
-    - 579
-    - 580
-    - 581
-    - 582
-    from_node: d407e984-dd52-4549-ae40-821e2646d5ae
-    from_output: prompt
-    to_input: input
-    to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 583
-    canvas_items:
-    - 583
-    - 584
-    - 585
-    - 586
-    - 587
-    - 588
-    - 589
-    - 590
-    - 591
-    - 592
-    - 593
-    - 594
-    - 595
-    - 596
-    - 597
-    - 598
-    - 599
+    - 112
+    - 113
+    - 114
+    - 115
+    - 116
+    - 117
+    - 118
+    - 119
+    - 120
+    - 121
+    - 122
+    - 123
+    - 124
+    - 125
+    - 126
+    - 127
+    - 128
+    flow_offset: 0
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
     from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55fa9d'
+    - '#55f99e'
+    - '#55f99e'
+    - '#55f99e'
+    - '#55eaad'
+    - '#55eaad'
+    - '#55e9ae'
+    - '#55e9ae'
+    - '#55c7d0'
+    - '#55c7d0'
+    - '#55c6d1'
+    - '#55c6d1'
+    - '#559ef9'
+    - '#559ef9'
+    - '#559ef9'
+    - '#559dfa'
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 600
+  - canvas_item: 129
     canvas_items:
-    - 600
-    - 601
-    - 602
-    - 603
-    - 604
-    - 605
-    - 606
-    - 607
-    - 608
+    - 129
+    - 130
+    - 131
+    - 132
+    - 133
+    - 134
+    - 135
+    - 136
+    - 137
+    - 138
+    - 139
+    - 140
+    - 141
+    - 142
+    - 143
+    - 144
+    - 145
+    flow_offset: 2
+    from_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
+    from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55efa8'
+    - '#55eea9'
+    - '#55ecab'
+    - '#55ebac'
+    - '#55adea'
+    - '#55aceb'
+    - '#55abec'
+    - '#55a9ee'
+    to_input: input
+    to_node: 6976a651-76f1-410c-b10b-0f4324774546
+  - canvas_item: 146
+    canvas_items:
+    - 146
+    - 147
+    - 148
+    - 149
+    - 150
+    - 151
+    - 152
+    - 153
+    - 154
+    flow_offset: 4
+    from_node: 96669a06-cf73-4bde-9fbf-613c80727d20
+    from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55efa8'
+    - '#55edaa'
+    - '#55ebac'
+    - '#55e8af'
+    - '#55b1e6'
+    - '#55afe8'
+    - '#55adea'
+    - '#55abec'
+    to_input: input
+    to_node: a674f96f-b608-4852-b39f-7a4b1f15b13f
+  - canvas_item: 155
+    canvas_items:
+    - 155
+    - 156
+    - 157
+    - 158
+    - 159
+    - 160
+    - 161
+    - 162
+    - 163
+    flow_offset: 2
+    from_node: d407e984-dd52-4549-ae40-821e2646d5ae
+    from_output: prompt
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55f6a1'
+    - '#55f5a2'
+    - '#55f5a2'
+    - '#55f4a3'
+    - '#55e6b1'
+    - '#55e6b1'
+    - '#55e5b2'
+    - '#55e4b3'
+    - '#55c6d1'
+    - '#55c5d2'
+    - '#55c4d3'
+    - '#55c3d4'
+    - '#55a3f4'
+    - '#55a2f5'
+    - '#55a2f5'
+    - '#55a1f6'
+    to_input: input
+    to_node: d40b6cbb-3284-47de-ab07-da0ec7176748
+  - canvas_item: 164
+    canvas_items:
+    - 164
+    - 165
+    - 166
+    - 167
+    - 168
+    - 169
+    - 170
+    - 171
+    - 172
+    - 173
+    - 174
+    - 175
+    - 176
+    - 177
+    - 178
+    - 179
+    - 180
+    flow_offset: 8
+    from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
+    from_output: output2
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55f6a1'
+    - '#55f5a2'
+    - '#55f4a3'
+    - '#55f3a4'
+    - '#55dfb8'
+    - '#55deb9'
+    - '#55deb9'
+    - '#55ddba'
+    - '#55c2d5'
+    - '#55c1d6'
+    - '#55c1d6'
+    - '#55c0d7'
+    - '#55a4f3'
+    - '#55a3f4'
+    - '#55a2f5'
+    - '#55a1f6'
+    to_input: input
+    to_node: 96669a06-cf73-4bde-9fbf-613c80727d20
+  - canvas_item: 181
+    canvas_items:
+    - 181
+    - 182
+    - 183
+    - 184
+    - 185
+    - 186
+    - 187
+    - 188
+    - 189
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
     from_output: output
     to_input: input
+    to_node: f08be467-3921-42ce-befa-51c12bc15775
+  - canvas_item: 190
+    canvas_items:
+    - 190
+    - 191
+    - 192
+    - 193
+    - 194
+    - 195
+    - 196
+    - 197
+    - 198
+    - 199
+    - 200
+    - 201
+    - 202
+    - 203
+    - 204
+    - 205
+    - 206
+    from_node: f08be467-3921-42ce-befa-51c12bc15775
+    from_output: output1
+    to_input: input
     to_node: d407e984-dd52-4549-ae40-821e2646d5ae
+  - canvas_item: 207
+    canvas_items:
+    - 207
+    - 208
+    - 209
+    - 210
+    - 211
+    - 212
+    - 213
+    - 214
+    - 215
+    - 216
+    - 217
+    - 218
+    - 219
+    - 220
+    - 221
+    - 222
+    - 223
+    from_node: f08be467-3921-42ce-befa-51c12bc15775
+    from_output: output2
+    to_input: input
+    to_node: 3039be00-3cd7-4220-9a08-0347e8208a57
   nodes:
+    3039be00-3cd7-4220-9a08-0347e8208a57:
+      canvas_items:
+        body: 2
+        description: 5
+        header: 3
+        input_input: 6
+        input_label_input: 7
+        output_label_output: 9
+        output_output: 8
+        resize_handle: 10
+        shadow: 1
+        title: 4
+      height: 120
+      highlight_state: false
+      id: 3039be00-3cd7-4220-9a08-0347e8208a57
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        auto_open:
+          default: false
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          type: dropdown
+        filename:
+          default: exported_document
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Export Document
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: ExportDocument
+      type: ExportDocumentNode
+      width: 180
+      x: 375
+      y: 400
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        body: 528
-        description: 531
-        header: 529
-        input_input: 532
-        input_label_input: 533
-        output_label_output: 535
-        output_output: 534
-        resize_handle: 536
-        shadow: 527
-        title: 530
+        body: 12
+        description: 15
+        header: 13
+        input_input: 16
+        input_label_input: 17
+        output_label_output: 19
+        output_output: 18
+        resize_handle: 20
+        shadow: 11
+        title: 14
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -83,83 +333,49 @@ graph:
       - output
       properties:
         Prompt:
-          default: "You are to take the user request below and write an outline. The\
-            \ outline will consist of a self contained paragraph representing the\
-            \ chapter, or paragraph extending the details of a chapter.\n\nYou are\
-            \ responsible for the following duties:\n\n1. Crafting content that aligns\
-            \ with the intended tone, purpose, and audience.\n\n\n2. Structuring ideas\
-            \ logically to enhance readability and flow.\n\n\n3. Your expected output\
-            \ will always be the provided title or new title followed by the exact\
-            \ original user request shown below in a single paragraph, then a detailed\
-            \ outline for whatever the user request is. This outline will consist\
-            \ of the provided title or if no title is provided then you will provide\
-            \ the title, then the exact original user request shown below, and then\
-            \ a self contained paragraph for each chapter and/or section that makes\
-            \ up the outline with as many details and key points, notable items, and\
-            \ major points of what is in that chapter or section for the content being\
-            \ requested. each section or paragraph has no limit on the number of words\
-            \ that it uses to convey they section of the story.  it just needs to\
-            \ be a self contained paragraph that includes the chapter or section heading.\n\
-            \nExample first self contained paragraph: \nThe dimensional series - Book\
-            \ 1 - Transcendent Doors - Eric Thorup - the rest of the exact user request\
-            \ all included in one single paragraph....\n\n\n4. Each chapter paragraph\
-            \ must begin with the chapter number and creative title, followed directly\
-            \ by the narrative outline for that chapter. Do not put the number and\
-            \ title on a separate line. Example:\nChapter 1 \u2013 Shadows on the\
-            \ Horizon \u2013 The caravan crosses the desert where\u2026\n\n\n5. Each\
-            \ chapter outline should escalate pacing and tension compared to previous\
-            \ chapters, include at least one turning point or revelation, and contain\
-            \ a mini-arc (setup, complication, shift). Every chapter should highlight\
-            \ at least one vivid, memorable \u201Cset-piece moment\u201D such as a\
-            \ confrontation, discovery, or revelation.\n\n\n6. Chapter details must\
-            \ integrate world mechanics (magic, politics, technology, culture) and\
-            \ use sensory detail where appropriate. Foreshadow important elements\
-            \ that will pay off in later chapters, and ensure subplots or secondary\
-            \ conflicts intersect meaningfully with the main plot.\n\n\n7. Each chapter\
-            \ must show at least some advancement of a character arc (protagonist,\
-            \ antagonist, or ally), whether through choices, conflicts, or emotional\
-            \ changes, keeping continuity consistent across the story.\n\n\n8. If\
-            \ the user requests [2 paragraphs], then an additional paragraph of details\
-            \ naturally continuing the outline from the first paragraph can be added\
-            \ here for a total of 2 paragraphs per chapter, continuing the story naturally.\n\
-            \n\n9. If the user requests [3 paragraphs], an additional two paragraphs\
-            \ of details naturally continuing the outline from the first paragraph\
-            \ can be added here for a total of 3 paragraphs per chapter, continuing\
-            \ the story naturally.\n\n\n\nDo not use any special formatting, i.e.\
-            \ bold, line separators, etc. Just one, two, or three self contained paragraphs\
-            \ that contain the detailed description of chronologically structured\
-            \ key points, people, actions, places, important items, worldbuilding\
-            \ details, foreshadowed elements, and notable characteristics of the chapter\
-            \ that structure the chapter for each chapter or section.\n\nEach paragraph\
-            \ will have a single blank line after it.\n\nIf the content is a story,\
-            \ the outline details will be written in the order in which events and\
-            \ actions take place, but ensuring story continuity and consistency. Each\
-            \ section in the outline should contain specific details important to\
-            \ that section of the story as those details could be referenced later\
-            \ on in the outline.\n\nYour only expected output is the requested outline\
-            \ and no other comments. Remember, the default number of paragraphs per\
-            \ chapter is 1, unless the user specifies the number of paragraphs per\
-            \ chapter. If the user requests [2 paragraphs], you will add one additional\
-            \ paragraph of details for each chapter. If the user requests [3 paragraphs],\
-            \ you will add an additional two paragraphs of details for each chapter.\n\
-            \nFor example, if the user request contains the phrase \"2 paragraphs\"\
-            , then write two paragraphs per chapter:\n\nChapter 1 \u2013 Sands of\
-            \ Departure \u2013 In the distant future, humanity has ventured into the\
-            \ far reaches of space, colonizing planets with unimaginable landscapes\
-            \ and civilizations. The story begins on the\u2026\n\n(Continued) \u2013\
-            \ The details of this paragraph will naturally continue and add to the\
-            \ outline in paragraph 1\u2026\n\nFor example, if the user request contains\
-            \ the phrase \"3 paragraphs\", then write three paragraphs per chapter:\n\
-            \nChapter 1 \u2013 Ashes of the Earth \u2013 In the bleak future where\
-            \ humanity has succumbed to the omnipresent grip of a dying Earth, a lone\
-            \ space vessel, the Eclipsed Solace, drifts\u2026\n\n(Continued) \u2013\
-            \ The details of this paragraph will naturally continue and add to the\
-            \ outline in paragraph 1\u2026\n\n(Continued) \u2013 The details of this\
-            \ paragraph will naturally continue and add to the outline in paragraph\
-            \ 2\u2026\n\nWhen creating the title and chapter titles, be creative,\
-            \ don\u2019t make it obvious, it shouldn't be \"on the nose\", and use\
-            \ paraphrasing or just be creative when creating the book or chapter titles.\n\
-            \nThe user request is as follows:"
+          default: "Role: You are a Master Story Architect and Narrative Designer.\
+            \ Your task is to transform a high-level story narrative into a granular,\
+            \ multi-paragraph chapter outline.\n\nCore Task: Using the \"Master Narrative\"\
+            \ provided by the user, you will generate a detailed outline for five\
+            \ chapters at a time. Each chapter must feel like a self-contained movement\
+            \ within a larger symphony.\n\nThe Structural Blueprint (The Rule of Three):\
+            \ Every chapter must follow a mini-arc:\n\nThe Hook: Each chapter starts\
+            \ with an immediate narrative hook or a \"status quo\" shift.\n\nThe Escalation:\
+            \ Introduce a specific conflict\u2014Man vs. Man, Man vs. Nature, or Man\
+            \ vs. Self.\n\nThe Hangman: Every chapter must end with a \"Hangman\"\
+            \ beat\u2014a cliffhanger, a startling revelation, or a profound internal\
+            \ realization that forces the reader to the next chapter.\n\nIntegration\
+            \ Requirements:\n\nEmotional Beats: Within the prose, explicitly describe\
+            \ the protagonist's shifting internal state (e.g., from hope to dread)\
+            \ to ensure character growth is visible.\n\nWorld Mechanics: Intertwine\
+            \ specific rules of magic, tech, or politics into the action of the chapter.\
+            \ Do not just describe them; show them being used or failing.\n\nThe Callback:\
+            \ Ensure each 5-chapter block includes at least one \"callback\" to an\
+            \ item, phrase, or minor character established in a previous chapter to\
+            \ maintain cohesion.\n\nVariable Pacing: While tension should generally\
+            \ rise, ensure at least one chapter in this block serves as a \"Breather\
+            \ Beat,\" focusing on character bonding or lore-deepening to prevent \"\
+            tension fatigue.\"\n\nParagraph Expansion Logic:\n\nDefault (1 Paragraph):\
+            \ A high-density, self-contained narrative covering the full chapter arc.\n\
+            \nIf [2 Paragraphs] is requested: The first paragraph focuses on the primary\
+            \ plot and the \"Hook.\" The second paragraph must shift focus to a Subplot,\
+            \ an Antagonist\u2019s move, or a Secondary Character's perspective that\
+            \ intersects with the main event.\n\nIf [3 Paragraphs] is requested: Follow\
+            \ the \"2 Paragraph\" logic. The third paragraph must focus on Atmospheric\
+            \ Texture, Sensory Foreshadowing, and the \"Hangman\" ending, deepening\
+            \ the cinematic immersion.\n\nFormatting Rules (Strict):\n\nNo Special\
+            \ Formatting: Do not use bolding, italics, or horizontal lines.\n\nThe\
+            \ Header: Start the response with the [Series Title], [Book Title], and\
+            \ [Author Name], followed by the original user request text in a single,\
+            \ continuous paragraph.\n\nChapter Formatting: Each chapter must begin\
+            \ with the chapter number and a creative, non-obvious title (e.g., Chapter\
+            \ 1 \u2013 The Weight of Rust). The narrative must follow the title on\
+            \ the same line.\n\nSpacing: Place exactly one blank line after every\
+            \ paragraph.\n\nTransitions: Do not use \"(Continued).\" Instead, start\
+            \ expansion paragraphs with a narrative transition that signals a shift\
+            \ in focus or time (e.g., \"While the dust settles...\" or \"Beneath the\
+            \ surface of this encounter...\").\n\nThe user request (Master Narrative)\
+            \ is as follows:"
           label: Prompt
           type: textarea
         api_endpoint:
@@ -170,13 +386,13 @@ graph:
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
           - OpenAI 4o-mini
           - OpenAI GPT5
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         description:
           default: Processes the input prompt with review capability and content enhancement.
@@ -210,20 +426,20 @@ graph:
           label: Custom Node Name
           type: text
         searxng_endpoint:
-          default: LMStudio-MIstral-Nemo-Instruct
+          default: SearXing
           label: SearxNG Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
           - OpenAI 4o-mini
           - OpenAI GPT5
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         web_search_prompt:
           default: 'Based on the following paragraph and web search results, create
@@ -243,24 +459,90 @@ graph:
       title: OutlineWriterV3Node
       type: OutlineWriterV3Node
       width: 200
-      x: 75
+      x: 50
       y: 200
-    b02230a3-53b8-49d1-b90a-d06a1cb59c73:
+    6976a651-76f1-410c-b10b-0f4324774546:
       canvas_items:
-        body: 538
-        description: 541
-        header: 539
-        input_input: 542
-        input_label_input: 543
-        output_label_output: 545
-        output_output: 544
-        resize_handle: 546
-        shadow: 537
-        title: 540
-      connections: []
-      height: 112
+        body: 22
+        description: 25
+        header: 23
+        input_input: 26
+        input_label_input: 27
+        output_label_output: 29
+        output_output: 28
+        resize_handle: 30
+        shadow: 21
+        title: 24
+      height: 120
       highlight_state: false
-      id: b02230a3-53b8-49d1-b90a-d06a1cb59c73
+      id: 6976a651-76f1-410c-b10b-0f4324774546
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        auto_open:
+          default: false
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          type: dropdown
+        filename:
+          default: exported_document
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Export Document
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: Export Document
+      type: ExportDocumentNode
+      width: 180
+      x: 950
+      y: 125
+    96669a06-cf73-4bde-9fbf-613c80727d20:
+      canvas_items:
+        body: 32
+        description: 35
+        header: 33
+        input_input: 36
+        input_label_input: 37
+        output_label_output: 39
+        output_output: 38
+        resize_handle: 40
+        shadow: 31
+        title: 34
+      height: 117.0
+      highlight_state: false
+      id: 96669a06-cf73-4bde-9fbf-613c80727d20
       inputs:
       - input
       outputs:
@@ -270,28 +552,28 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: LMStudio-MIstral-Nemo-Instruct
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
           - OpenAI 4o-mini
           - OpenAI GPT5
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         description:
           default: Processes array elements through multiple API calls until condition
-            is met.
+            is met. Includes previous/next context.
           label: Description
           type: text
         is_end_node:
-          default: true
+          default: false
           label: End Node
           type: boolean
         is_start_node:
@@ -304,32 +586,45 @@ graph:
           label: Max Iterations
           type: text
         minimum_rating:
-          default: '8.6'
+          default: '8.1'
           description: Minimum overall rating required (e.g., 7.5)
           label: Minimum Rating
           type: text
         node_name:
-          default: Reviewer and Editor
+          default: Reviewer and Editor V2
           label: Custom Node Name
           type: text
         refinement_prompt:
-          default: "You are a world-renowned writer and literary content creator tasked\
-            \ with revising the provided content strictly according to the review\
-            \ and suggestions below, with your output containing only the improved\
-            \ content and no additional commentary. As you revise, incorporate burstiness\
-            \ by consciously varying sentence lengths and structures\u2014mixing short,\
-            \ impactful sentences with longer, more complex ones\u2014to create a\
-            \ dynamic, engaging rhythm. Use diverse grammatical constructions to prevent\
-            \ monotonous patterns and to mirror natural speech, and include poetic\
-            \ elements only when they enhance the narrative or descriptive qualities.\
-            \ Ensure your prose remains clear, accessible, and immersive throughout.\n\
-            If the content below contains a chapter or heading of some kind, please\
-            \ ensure that it is included. If the content below does not contain a\
-            \ heading or chapter number, do not include one.\nIf the content below\
-            \ contains the chapter number and title at the beginning, it should always\
-            \ be formatted as a heading. if the content below has a \"(Continued)\
-            \ - \" at the beginning, it will not be formatted as a heading.\nThe content\
-            \ to improve, and suggestions are as follows:"
+          default: "the content above is only for reference and only there to help\
+            \ maintain story consistency for the chapter below that is about to be\
+            \ edited\n\nRole: You are a Master Stylist and Pulitzer-winning Prose\
+            \ Surgeon. You do not just \"tweak\" drafts; you transform them into haunting,\
+            \ visceral literature. Your goal is to eliminate every trace of \"AI-sounding\"\
+            \ prose.\n\nTask: Revise the \"Content to Improve\" by strictly applying\
+            \ the \"Editorial Critique\" and \"Suggestions\" provided.\n\nStrategic\
+            \ Mandate:\n\nTarget the Weakest Link: Identify the category with the\
+            \ lowest score in the provided review. You must prioritize a total overhaul\
+            \ of that specific element while keeping other strengths intact.\n\nRadical\
+            \ Revision: If the review suggests the prose is \"monotonous\" or \"generic,\"\
+            \ do not just swap words\u2014restructure the sentences entirely.\n\n\
+            Revision Stylistic Rules:\n\nKill the \"To-Be\" Verbs: Scan for was, were,\
+            \ had, and started to. Replace them with sharp, active verbs that \"show\"\
+            \ the character\u2019s reality (e.g., instead of \"He was angry,\" use\
+            \ \"His jaw set into a jagged line\").\n\nThe 3-1-2 Rhythmic Rule: To\
+            \ master \"Burstiness,\" use a long, descriptive sentence, followed by\
+            \ a short 3-word punch, followed by a medium-length observation.\n\nForbidden\
+            \ AI-isms: Do not use the following words: testament, dance, shroud, symphony,\
+            \ tapestry, thick with, at once, suddenly, felt, seemed, remarkably, essentially.\n\
+            \nSubtext Injection: If dialogue is flagged as \"on-the-nose,\" rewrite\
+            \ it so characters communicate through hesitation, disagreement, or physical\
+            \ action rather than stating their feelings directly.\n\nPreservation\
+            \ of Intent: You must maintain all plot points and character actions.\
+            \ Do not change the \"What,\" only the \"How.\"\n\nFormatting Rules (Strict):\n\
+            \nHeaders: If the section starts with \"Chapter #,\" format it exactly\
+            \ as: ## Chapter # - Title.\n\nContinued Sections: If it starts with \"\
+            (Continued) - \", do not use a heading. Simply start with (Continued)\
+            \ - [Prose].\n\nNo Commentary: Output ONLY the refined story content.\n\
+            \nThe content to improve and the editorial suggestions are as follows:"
           label: Refinement Prompt
           type: textarea
         search_string:
@@ -349,45 +644,302 @@ graph:
           label: Use Single String Input
           type: boolean
         validation_prompt:
-          default: "You are a world renowned content and literature reviewer, please\
-            \ provide a critical but constructive review of the content below, to\
-            \ include what you like and dont like about it, and then rate the following\
-            \ content below on a scale of 1.0 to 10.0 in 6 different categories related\
-            \ to the content and then provide an OVERALL RATING between 1.0 and 10.0,\
-            \ and then provide 8 detailed and very specific suggestions that would\
-            \ help improve the overall rating, which could include but is not limited\
-            \ to incporating burstiness and varying sentence lengths and structurers,\
-            \ or if it should incorporate mixing short, impactful sentences with longer,\
-            \ more complex ones to create a dynamic rhythm.  should it include different\
-            \ grammatical constructions to avoid monotonous patterns.  these are just\
-            \ a few things that could be suggested to help improve the content below.\
-            \ \n\nyou only expected output is: \nyour review, which includes what\
-            \ you like and what you dont like, then 8 different categorized ratings\
-            \ between 1.0 and 10.0, then the \"OVERALL RATING\" between 1.0 and 10.0,\
-            \ then 8 detailed and very specific suggestions for improvement. \n\n\
-            The overal rating should be formatted as follows:\nOVERALL RATING: and\
-            \ then the rating with no other formatting.\n\nif the following content\
-            \ starts with the word \"Title\", then do not do the review, just print\
-            \ the word \"REVIEWPASS\"\n\nThe content is as follows:"
+          default: "the content above is only for reference and only there to help\
+            \ maintain story consistency for the chapter below that is about to be\
+            \ reviewed.\n\nRole: You are a Senior Acquisitions Editor at a \"Big Five\"\
+            \ publishing house. You have a reputation for being hyper-critical and\
+            \ impossible to please. You are not here to offer encouragement; you are\
+            \ here to ensure this prose is indistinguishable from a best-selling literary\
+            \ novel.\n\nThe Calibration Rubric:\n\n7.0\u20137.9 (Standard AI): Clear\
+            \ and functional, but plagued by \"AI-isms,\" clich\xE9s, repetitive sentence\
+            \ structures, and \"on-the-nose\" dialogue.\n\n8.0\u20138.5 (Professional\
+            \ Grade): Strong \"Show, Don't Tell\" execution, visceral sensory grounding,\
+            \ unique character voice, and zero generic filler.\n\n8.6+ (Masterpiece):\
+            \ Exceptional subtext, haunting metaphors, and perfect rhythmic \"burstiness.\"\
+            \n\nTask: Provide a clinical, critical evaluation of the content provided\
+            \ below. You are hunting for \"prose fatigue,\" \"telling\" instead of\
+            \ \"showing,\" and generic AI transition markers.\n\nEvaluation Criteria:\n\
+            \nProse Rhythm & Burstiness: Does the text vary sentence length effectively\
+            \ (The 3-1-2 Rule), or is it a monotonous wall of medium-length sentences?\n\
+            \nSensory Grounding: Does the author \"Show\" instead of \"Tell\"? Look\
+            \ for specific textures, smells, and sounds that ground the scene.\n\n\
+            Character Voice & Internal Monologue: Are the character\u2019s thoughts\
+            \ visceral and unique, or do they sound like an all-knowing narrator?\n\
+            \nDialogue Subtext: Is the dialogue layered, or are characters saying\
+            \ exactly what they think? (Look for \"on-the-nose\" speech).\n\nPacing\
+            \ & The \"Hangman\": Does the scene move toward a meaningful cliffhanger\
+            \ or a profound realization?\n\nElimination of AI-isms: Flag and penalize\
+            \ flowery clich\xE9s (e.g., \"shrouded in mystery,\" \"testament to,\"\
+            \ \"dance of light,\" \"at once\").\n\nVivid Verbs & Action: Has the author\
+            \ avoided \"was/were\" and \"felt\" in favor of sharp, active verbs?\n\
+            \nWorld Integration: Are the specific rules of the world (Oxygen Tax,\
+            \ Spore-Lung, etc.) integrated through action rather than description?\n\
+            \nFormatting Instructions: Your only expected output must follow this\
+            \ exact structure:\n\nEDITORIAL CRITIQUE: A section detailing exactly\
+            \ what works and identifying \"Dealbreaker\" flaws that are suppressing\
+            \ the score.\n\nCATEGORIZED RATINGS: 8 categorized ratings (1.0 to 10.0)\
+            \ based on the criteria above.\n\nOVERALL RATING: [Calculated Average]\n\
+            \n8 SURGICAL SUGGESTIONS: Be hyper-specific. 4 must focus on Technical\
+            \ Prose (eliminating passive voice, fixing rhythm) and 4 must focus on\
+            \ Narrative Logic (character subtext, pacing shifts).\n\nConstraint: Do\
+            \ not be polite. If a paragraph is generic, say so. If the dialogue is\
+            \ weak, label it as \"filler.\"\n\nConditional Logic: If the following\
+            \ content starts with the word \"Title\", do not perform the review. Simply\
+            \ output the word: REVIEWPASS\n\nOVERALL RATING: [Score]\n\nThe content\
+            \ to be reviewed is as follows:"
           label: Validation Prompt
           type: textarea
-      title: Reviewer and Editor
+      title: Reviewer and Editor V2
+      type: ArrayProcessTestProcessV2Node
+      width: 176.0
+      x: 700
+      y: 425
+    a674f96f-b608-4852-b39f-7a4b1f15b13f:
+      canvas_items:
+        body: 42
+        description: 45
+        header: 43
+        input_input: 46
+        input_label_input: 47
+        output_label_output: 49
+        output_output: 48
+        resize_handle: 50
+        shadow: 41
+        title: 44
+      height: 120
+      highlight_state: false
+      id: a674f96f-b608-4852-b39f-7a4b1f15b13f
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        auto_open:
+          default: false
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          type: dropdown
+        filename:
+          default: exported_document
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Export Document
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: Export Document
+      type: ExportDocumentNode
+      width: 180
+      x: 950
+      y: 275
+    b02230a3-53b8-49d1-b90a-d06a1cb59c73:
+      canvas_items:
+        body: 52
+        description: 55
+        header: 53
+        input_input: 56
+        input_label_input: 57
+        output_label_output: 59
+        output_output: 58
+        resize_handle: 60
+        shadow: 51
+        title: 54
+      connections: []
+      height: 112
+      highlight_state: false
+      id: b02230a3-53b8-49d1-b90a-d06a1cb59c73
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes array elements through multiple API calls until condition
+            is met.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        max_iterations:
+          default: '20'
+          description: Maximum number of iterations per array element
+          label: Max Iterations
+          type: text
+        minimum_rating:
+          default: '8.1'
+          description: Minimum overall rating required (e.g., 7.5)
+          label: Minimum Rating
+          type: text
+        node_name:
+          default: Reviewer and Editor V1
+          label: Custom Node Name
+          type: text
+        refinement_prompt:
+          default: "the content above is only for reference and only there to help\
+            \ maintain story consistency for the chapter below that is about to be\
+            \ edited\n\nRole: You are a Master Stylist and Pulitzer-winning Prose\
+            \ Surgeon. You do not just \"tweak\" drafts; you transform them into haunting,\
+            \ visceral literature. Your goal is to eliminate every trace of \"AI-sounding\"\
+            \ prose.\n\nTask: Revise the \"Content to Improve\" by strictly applying\
+            \ the \"Editorial Critique\" and \"Suggestions\" provided.\n\nStrategic\
+            \ Mandate:\n\nTarget the Weakest Link: Identify the category with the\
+            \ lowest score in the provided review. You must prioritize a total overhaul\
+            \ of that specific element while keeping other strengths intact.\n\nRadical\
+            \ Revision: If the review suggests the prose is \"monotonous\" or \"generic,\"\
+            \ do not just swap words\u2014restructure the sentences entirely.\n\n\
+            Revision Stylistic Rules:\n\nKill the \"To-Be\" Verbs: Scan for was, were,\
+            \ had, and started to. Replace them with sharp, active verbs that \"show\"\
+            \ the character\u2019s reality (e.g., instead of \"He was angry,\" use\
+            \ \"His jaw set into a jagged line\").\n\nThe 3-1-2 Rhythmic Rule: To\
+            \ master \"Burstiness,\" use a long, descriptive sentence, followed by\
+            \ a short 3-word punch, followed by a medium-length observation.\n\nForbidden\
+            \ AI-isms: Do not use the following words: testament, dance, shroud, symphony,\
+            \ tapestry, thick with, at once, suddenly, felt, seemed, remarkably, essentially.\n\
+            \nSubtext Injection: If dialogue is flagged as \"on-the-nose,\" rewrite\
+            \ it so characters communicate through hesitation, disagreement, or physical\
+            \ action rather than stating their feelings directly.\n\nPreservation\
+            \ of Intent: You must maintain all plot points and character actions.\
+            \ Do not change the \"What,\" only the \"How.\"\n\nFormatting Rules (Strict):\n\
+            \nHeaders: If the section starts with \"Chapter #,\" format it exactly\
+            \ as: ## Chapter # - Title.\n\nContinued Sections: If it starts with \"\
+            (Continued) - \", do not use a heading. Simply start with (Continued)\
+            \ - [Prose].\n\nNo Commentary: Output ONLY the refined story content.\n\
+            \nThe content to improve and the editorial suggestions are as follows:"
+          label: Refinement Prompt
+          type: textarea
+        search_string:
+          default: REVIEWPASS
+          description: String to search for in validation results
+          label: Search String
+          type: text
+        skip_first_item:
+          default: true
+          description: If enabled, the first array element bypasses processing but
+            is still included in the final output
+          label: Skip First Array Item During Processing
+          type: boolean
+        use_single_string:
+          default: false
+          description: If enabled, treats input as a single string instead of an array
+          label: Use Single String Input
+          type: boolean
+        validation_prompt:
+          default: "the content above is only for reference and only there to help\
+            \ maintain story consistency for the chapter below that is about to be\
+            \ reviewed.\n\nRole: You are a Senior Acquisitions Editor at a \"Big Five\"\
+            \ publishing house. You have a reputation for being hyper-critical and\
+            \ impossible to please. You are not here to offer encouragement; you are\
+            \ here to ensure this prose is indistinguishable from a best-selling literary\
+            \ novel.\n\nThe Calibration Rubric:\n\n7.0\u20137.9 (Standard AI): Clear\
+            \ and functional, but plagued by \"AI-isms,\" clich\xE9s, repetitive sentence\
+            \ structures, and \"on-the-nose\" dialogue.\n\n8.0\u20138.5 (Professional\
+            \ Grade): Strong \"Show, Don't Tell\" execution, visceral sensory grounding,\
+            \ unique character voice, and zero generic filler.\n\n8.6+ (Masterpiece):\
+            \ Exceptional subtext, haunting metaphors, and perfect rhythmic \"burstiness.\"\
+            \n\nTask: Provide a clinical, critical evaluation of the content provided\
+            \ below. You are hunting for \"prose fatigue,\" \"telling\" instead of\
+            \ \"showing,\" and generic AI transition markers.\n\nEvaluation Criteria:\n\
+            \nProse Rhythm & Burstiness: Does the text vary sentence length effectively\
+            \ (The 3-1-2 Rule), or is it a monotonous wall of medium-length sentences?\n\
+            \nSensory Grounding: Does the author \"Show\" instead of \"Tell\"? Look\
+            \ for specific textures, smells, and sounds that ground the scene.\n\n\
+            Character Voice & Internal Monologue: Are the character\u2019s thoughts\
+            \ visceral and unique, or do they sound like an all-knowing narrator?\n\
+            \nDialogue Subtext: Is the dialogue layered, or are characters saying\
+            \ exactly what they think? (Look for \"on-the-nose\" speech).\n\nPacing\
+            \ & The \"Hangman\": Does the scene move toward a meaningful cliffhanger\
+            \ or a profound realization?\n\nElimination of AI-isms: Flag and penalize\
+            \ flowery clich\xE9s (e.g., \"shrouded in mystery,\" \"testament to,\"\
+            \ \"dance of light,\" \"at once\").\n\nVivid Verbs & Action: Has the author\
+            \ avoided \"was/were\" and \"felt\" in favor of sharp, active verbs?\n\
+            \nWorld Integration: Are the specific rules of the world (Oxygen Tax,\
+            \ Spore-Lung, etc.) integrated through action rather than description?\n\
+            \nFormatting Instructions: Your only expected output must follow this\
+            \ exact structure:\n\nEDITORIAL CRITIQUE: A section detailing exactly\
+            \ what works and identifying \"Dealbreaker\" flaws that are suppressing\
+            \ the score.\n\nCATEGORIZED RATINGS: 8 categorized ratings (1.0 to 10.0)\
+            \ based on the criteria above.\n\nOVERALL RATING: [Calculated Average]\n\
+            \n8 SURGICAL SUGGESTIONS: Be hyper-specific. 4 must focus on Technical\
+            \ Prose (eliminating passive voice, fixing rhythm) and 4 must focus on\
+            \ Narrative Logic (character subtext, pacing shifts).\n\nConstraint: Do\
+            \ not be polite. If a paragraph is generic, say so. If the dialogue is\
+            \ weak, label it as \"filler.\"\n\nConditional Logic: If the following\
+            \ content starts with the word \"Title\", do not perform the review. Simply\
+            \ output the word: REVIEWPASS\n\nOVERALL RATING: [Score]\n\nThe content\
+            \ to be reviewed is as follows:"
+          label: Validation Prompt
+          type: textarea
+      title: Reviewer and Editor V1
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 375
-      y: 225
+      x: 675
+      y: 50
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        body: 548
-        description: 551
-        header: 549
-        input_input: 552
-        input_label_input: 553
-        output_label_output: 555
-        output_output: 554
-        resize_handle: 556
-        shadow: 547
-        title: 550
+        body: 62
+        description: 65
+        header: 63
+        input_input: 66
+        input_label_input: 67
+        output_label_output: 69
+        output_output: 68
+        resize_handle: 70
+        shadow: 61
+        title: 64
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -397,55 +949,58 @@ graph:
       - output
       properties:
         Prompt:
-          default: "Role: You are a Master Story Architect and Narrative Designer.\n\
-            \nTask: Create a high-level, cinematic story synopsis as a single, unbroken,\
-            \ monolithic paragraph of 1,000 to 1,500 words. Strict Formatting Rule:\
-            \ You must not use any line breaks, bullet points, or section headers.\
-            \ The entire output must be one continuous block of text. Start the paragraph\
-            \ exactly with the format: [Series Title], [Book Number]: [Book Title]\
-            \ by [Author Name].\n\nNarrative Integration Requirements: Within this\
-            \ single paragraph, you must fluidly weave together the following elements\
-            \ without stopping:\n\nThe Hook & World: Begin with a short hook sentence,\
-            \ then immediately flow into the world-building. Describe the geography,\
-            \ political climate, and the specific rules of magic or science. Show\
-            \ these rules through the eyes of people living in the world, identifying\
-            \ 3\u20135 named locations and a looming systemic threat.\n\nThe Players:\
-            \ Integrate the protagonist\u2019s introduction naturally. Detail their\
-            \ backstory, physical traits, internal struggle, and external goal. Introduce\
-            \ the primary antagonist and their motives, along with 2\u20133 key allies\
-            \ and secondary rivals, ensuring their quirks and roles are described\
-            \ as they enter the \"camera's\" view.\n\nThe Journey (Three-Act Arc):\
-            \ Narrate the plot from the inciting incident through a rising escalation\
-            \ of stakes. Weave in at least two subplots and a major betrayal or twist.\
-            \ The pacing must feel like a crescendo, moving through Act One (complications),\
-            \ Act Two (rising danger), and Act Three (the final confrontation and\
-            \ its emotional cost).\n\nSensory Detail & Theme: Use rich, sensory language\
-            \ (sights, smells, textures) and specific proper nouns for artifacts or\
-            \ events. Ensure the theme (e.g., loss, ambition, or betrayal) is felt\
-            \ through character actions rather than stated as a fact.\n\nThe Resolution:\
-            \ Close the paragraph by resolving the primary conflict while explicitly\
-            \ leaving 1\u20132 narrative threads open for future installments.\n\n\
-            Constraint: Avoid generic phrases. Every sentence must add concrete detail\
-            \ to the specific story requested. Do not use \"First,\" \"Second,\" or\
-            \ \"In conclusion.\" Use transitional phrases to maintain a seamless,\
-            \ \"cinematic\" prose style."
+          default: "Role: You are a Master Story Architect and Narrative Designer\
+            \ specializing in high-density cinematic treatments.\n\nTask: Create a\
+            \ high-level, cinematic story synopsis as a single, unbroken, monolithic\
+            \ paragraph of 1,000 to 1,500 words.\n\nStrict Formatting Rule: You must\
+            \ not use any line breaks, bullet points, or section headers. The entire\
+            \ output must be one continuous block of text. Start the paragraph exactly\
+            \ with the format: [Series Title], [Book Number]: [Book Title] by [Author\
+            \ Name].\n\nStructural Blueprint: Before writing, internally map out a\
+            \ 12-point narrative beat sheet. You must ensure the prose follows a \"\
+            Crescendo Pacing\" model:\n\n0-300 words: The Hook, World-Building, and\
+            \ the Cost of Magic/Tech.\n\n300-750 words: The Players, their internal\
+            \ flaws, and the Rising Complications.\n\n750 words: The Midpoint Shift\
+            \ (A major reversal or \"False Victory\").\n\n750-1,200 words: Escalation,\
+            \ Subplots, and the sensory \"Theme Motif.\"\n\n1,200-1,500 words: The\
+            \ Climax, the Resolution of the Flaw, and the Cliffhanger.\n\nNarrative\
+            \ Integration Requirements:\n\nThe World & Its Price: Describe the geography\
+            \ and political climate. Define the rules of the world, specifically emphasizing\
+            \ the limitations and costs of the magic or technology. Identify 3\u2013\
+            5 bolded locations and a systemic threat.\n\nThe Players: Naturally introduce\
+            \ the bolded names of the protagonist, antagonist, and 2\u20133 allies.\
+            \ The protagonist\u2019s fatal flaw must be established early and serve\
+            \ as the primary obstacle to the resolution. The antagonist must have\
+            \ a clear, logical \"why\" or a visible vulnerability.\n\nCinematic Prose:\
+            \ Weave in 1\u20132 brief, impactful snippets of dialogue that define\
+            \ a character\u2019s philosophy. Use a mix of long, sweeping descriptions\
+            \ and short, punchy action sentences to control the reader's \"eye.\"\n\
+            \nTheme & Motif: Choose a recurring sensory metaphor (e.g., the smell\
+            \ of ozone, the sound of grinding gears, or the visual of encroaching\
+            \ shadows) to represent the theme (loss, ambition, etc.) throughout the\
+            \ text.\n\nLogical Anchors: To maintain scannability within the monolith,\
+            \ BOLD the first mention of every major character, unique artifact, and\
+            \ key location.\n\nConstraint: Avoid generic filler. Every sentence must\
+            \ provide concrete detail. Do not use transitional markers like \"First,\"\
+            \ \"Next,\" or \"In conclusion.\" Use narrative flow and thematic motifs\
+            \ to signal transitions between acts.\n\nThe user request is as follows:"
           label: Prompt
           type: textarea
         api_endpoint:
-          default: LMStudio-MIstral-Nemo-Instruct
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
           - OpenAI 4o-mini
           - OpenAI GPT5
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -466,19 +1021,19 @@ graph:
       title: PreWritting Draft
       type: BasicNode
       width: 129
-      x: 100
-      y: 50
+      x: 75
+      y: 25
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        body: 558
-        header: 559
-        input_input: 561
-        input_label_input: 562
-        output_label_prompt: 564
-        output_prompt: 563
-        resize_handle: 565
-        shadow: 557
-        title: 560
+        body: 72
+        header: 73
+        input_input: 75
+        input_label_input: 76
+        output_label_prompt: 78
+        output_prompt: 77
+        resize_handle: 79
+        shadow: 71
+        title: 74
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -522,38 +1077,56 @@ graph:
           description: Prompt template for the first item
           type: text
         Main instructions for array element to focus on:
-          default: As a professional writer, please write the detailed content for
-            the section shown below. Do not include any of your own commentary, just
-            write the content based on the section listed below. Be detailed, creative,
-            giving depth and meaning and remember To incorporate burstiness into your
-            writing, consciously vary sentence lengths and structures as you generate
-            text - mix short, impactful sentences with longer, more complex ones to
-            create a dynamic rhythm; use different grammatical constructions, monitor
-            your output for monotonous patterns in real time, and adjust accordingly
-            to enhance engagement and mirror natural speech patterns. Write in a natural
-            storytelling format by separating dialogue, descriptions, and internal
-            thoughts into distinct paragraphs. Begin a new paragraph for each new
-            speaker in dialogue, and keep spoken dialogue separate from narrative
-            descriptions or internal reflections. This structure ensures clarity,
-            readability, and a traditional storytelling flow. The content should be
-            at least 500 words long.
+          default: "Role: You are a Professional Novelist and Master of Prose. Your\
+            \ goal is to transform the provided outline into a high-fidelity, immersive\
+            \ narrative.\n\nCore Writing Instructions: As a professional writer, please\
+            \ write the detailed content for the section shown below. Do not include\
+            \ any of your own commentary; provide only the story prose.\n\n1. Narrative\
+            \ Style & Rhythm:\n\nIncorporate \"Burstiness\": Consciously vary sentence\
+            \ lengths. Interlace short, punchy action beats with longer, lyrical descriptions\
+            \ to create a dynamic, cinematic rhythm.\n\nActive Voice: Prioritize active\
+            \ verbs. Minimize passive constructions and \"to be\" verbs (was/were)\
+            \ to maintain narrative momentum.\n\nTight Perspective: Write in a Tight\
+            \ Third-Person Limited perspective. Ground the reader in the current POV\
+            \ character\u2019s immediate sensory perceptions\u2014what they smell,\
+            \ the texture of their surroundings, and their visceral physical reactions.\n\
+            \n2. Depth & Substance (The 500-Word Mandate):\n\nShow, Don't Tell: Instead\
+            \ of naming an emotion (e.g., \"He was nervous\"), describe the physical\
+            \ manifestation (e.g., \"His thumb traced the jagged edge of the coin\
+            \ until the skin went numb\").\n\nMicro-Expressions: During dialogue and\
+            \ conflict, expand the word count by detailing the micro-expressions,\
+            \ shifts in posture, and hesitations of the characters.\n\nInternal Monologue:\
+            \ Weave the character\u2019s internal thoughts directly into the narrative.\
+            \ These thoughts should be sharp, subjective, and colored by their current\
+            \ motivations and flaws.\n\n3. Dialogue & Structural Formatting:\n\nStandard\
+            \ Fiction Formatting: Use a natural storytelling format. Separate dialogue,\
+            \ physical descriptions, and internal reflections into distinct paragraphs.\n\
+            \nSpeaker Rules: Start a new paragraph for every new speaker.\n\nDialogue\
+            \ Tags: Keep dialogue tags simple (e.g., \"said,\" \"asked\") or replace\
+            \ them with \"action beats\" (a character doing something while speaking)\
+            \ to keep the flow natural. Avoid \"on-the-nose\" dialogue where characters\
+            \ say exactly what they feel.\n\n4. Negative Constraints (Avoid AI-isms):\n\
+            \nAvoid flowery clich\xE9s and repetitive AI transitions (e.g., \"A testament\
+            \ to,\" \"In that moment,\" \"The air was thick with,\" or \"Little did\
+            \ they know\").\n\nEnsure that consecutive paragraphs do not begin with\
+            \ the same word or character name."
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: LMStudio-MIstral-Nemo-Instruct
+          default: Gemini 2.5
           label: API Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
           - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
           - OpenAI 4o-mini
           - OpenAI GPT5
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
-          - LMStudio-MIstral-Nemo-Instruct
           type: dropdown
         chunk_size:
           default: '10'
@@ -594,12 +1167,168 @@ graph:
       title: LongOutputV4
       type: LongOutputV4Node
       width: 125
-      x: 350
+      x: 475
       y: 25
+    d40b6cbb-3284-47de-ab07-da0ec7176748:
+      canvas_items:
+        body: 81
+        description: 84
+        header: 82
+        input_input: 85
+        input_label_input: 86
+        output_label_output1: 88
+        output_label_output2: 90
+        output_label_output3: 92
+        output_label_output4: 94
+        output_output1: 87
+        output_output2: 89
+        output_output3: 91
+        output_output4: 93
+        resize_handle: 95
+        shadow: 80
+        title: 83
+      height: 120
+      highlight_state: false
+      id: d40b6cbb-3284-47de-ab07-da0ec7176748
+      inputs:
+      - input
+      outputs:
+      - output1
+      - output2
+      - output3
+      - output4
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Duplicates input to two outputs for parallel processing.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: SplitterNode
+          label: Custom Node Name
+          type: text
+        output1_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output1.
+          label: Convert Output 1 Array to Text
+          type: boolean
+        output2_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output2.
+          label: Convert Output 2 Array to Text
+          type: boolean
+        output3_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output3.
+          label: Convert Output 3 Array to Text
+          type: boolean
+        output4_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output4.
+          label: Convert Output 4 Array to Text
+          type: boolean
+        output_count:
+          default: '2'
+          description: How many outputs to populate (up to 4).
+          label: Number of Outputs (1-4)
+          type: text
+      title: SplitterNode
+      type: SplitterNode
+      width: 180
+      x: 650
+      y: 225
+    f08be467-3921-42ce-befa-51c12bc15775:
+      canvas_items:
+        body: 97
+        description: 100
+        header: 98
+        input_input: 101
+        input_label_input: 102
+        output_label_output1: 104
+        output_label_output2: 106
+        output_label_output3: 108
+        output_label_output4: 110
+        output_output1: 103
+        output_output2: 105
+        output_output3: 107
+        output_output4: 109
+        resize_handle: 111
+        shadow: 96
+        title: 99
+      height: 120
+      highlight_state: false
+      id: f08be467-3921-42ce-befa-51c12bc15775
+      inputs:
+      - input
+      outputs:
+      - output1
+      - output2
+      - output3
+      - output4
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Duplicates input to two outputs for parallel processing.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: SplitterNode
+          label: Custom Node Name
+          type: text
+        output1_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output1.
+          label: Convert Output 1 Array to Text
+          type: boolean
+        output2_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output2.
+          label: Convert Output 2 Array to Text
+          type: boolean
+        output3_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output3.
+          label: Convert Output 3 Array to Text
+          type: boolean
+        output4_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output4.
+          label: Convert Output 4 Array to Text
+          type: boolean
+        output_count:
+          default: '2'
+          description: How many outputs to populate (up to 4).
+          label: Number of Outputs (1-4)
+          type: text
+      title: Splitter
+      type: SplitterNode
+      width: 180
+      x: 350
+      y: 200
   viewport:
     pan_offset_x: 0
     pan_offset_y: 0
-    window_height: 520
-    window_width: 597
+    window_height: 664
+    window_width: 1160
     zoom_level: 1.0
 name: Write long form story content

@@ -623,6 +623,22 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
                 
                 # Process each item in the chunk
                 for i, item in enumerate(chunk, chunk_start):
+                    # Check for cancellation at the start of each item
+                    if progress_window.is_cancelled():
+                        print("[LongOutputNodeV4] Processing cancelled by user")
+                        progress_window.close()
+                        if use_array and temp_file:
+                            temp_file.close()
+                            # Read what we have so far
+                            with open(temp_file.name, 'r', encoding='utf-8') as f:
+                                partial_content = f.read()
+                            import os
+                            os.unlink(temp_file.name)
+                            if partial_content:
+                                partial_responses = [r.strip() for r in partial_content.split('---CHAPTER_BREAK---') if r.strip()]
+                                return {'prompt': partial_responses if partial_responses else ['Processing cancelled by user']}
+                        return {'prompt': 'Processing cancelled by user' if not use_array else ['Processing cancelled by user']}
+                    
                     # Show progress with current item number and first line of content
                     first_line = str(item).split('\n')[0] if item else ''
                     # Limit the length of the first line to prevent it from being cut off

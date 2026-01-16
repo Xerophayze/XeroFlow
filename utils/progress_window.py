@@ -1,10 +1,24 @@
 import tkinter as tk
 from tkinter import ttk
 import time
+import threading
 
 class ProgressWindow:
-    def __init__(self, max_value=100, title="Processing"):
-        self.root = tk.Tk()
+    def __init__(self, max_value=100, title="Processing", parent=None):
+        # Use Toplevel if parent provided, otherwise create Tk root
+        # This helps avoid Tcl_AsyncDelete errors in threaded contexts
+        if parent:
+            self.root = tk.Toplevel(parent)
+            self._owns_root = False
+        else:
+            # Try to get existing Tk instance or create new one
+            try:
+                self.root = tk.Toplevel()
+                self._owns_root = False
+            except tk.TclError:
+                self.root = tk.Tk()
+                self._owns_root = True
+        
         self.root.title(title)
         self.cancelled = False
         self.max_value = max_value
@@ -178,9 +192,17 @@ class ProgressWindow:
             return f"{hours}h {minutes}m"
     
     def close(self):
-        """Close the progress window"""
+        """Close the progress window safely across threads"""
+        def do_close():
+            try:
+                self.root.destroy()
+            except:
+                pass  # Window might already be destroyed
+        
+        # Schedule destruction on the main thread to avoid Tcl_AsyncDelete errors
         try:
-            self.root.destroy()
+            if self.root.winfo_exists():
+                self.root.after(0, do_close)
         except:
             pass  # Window might already be destroyed
     

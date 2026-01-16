@@ -134,10 +134,9 @@ def process_node_graph(
                                     'value': output_value
                                 })
 
-                # Check if this is the final output
+                # Track end nodes without downstream connections (no early termination)
                 if is_end_node and not downstream:
-                    if node_output:
-                        return node_id, node_output, 'FINAL'
+                    return node_id, node_output, 'END_NODE'
                     
                 print(f"[PARALLEL] Node '{node_id}' returning downstream: {len(downstream)} targets: {[d['to_node'] for d in downstream]}")
                 return node_id, node_output, downstream
@@ -197,6 +196,7 @@ def process_node_graph(
                     print(f"[PARALLEL] Delivered output from '{from_node_id}' to '{to_node}' input '{to_input}' (count: {pending_inputs[to_node]['_count']}/{incoming_connection_count.get(to_node, 1)})")
 
         # === MAIN EXECUTION LOOP ===
+        end_node_outputs = []
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             futures = {}
             
@@ -267,14 +267,12 @@ def process_node_graph(
                         if downstream.startswith('ERROR:'):
                             workflow_error[0] = downstream
                             continue
-                        elif downstream == 'FINAL':
-                            final_output[0] = next(iter(output.values())) if output else ''
-                            print(f"[PARALLEL] Final output received from '{result_node_id}'")
-                            workflow_complete.set()
-                            for f in futures:
-                                f.cancel()
-                            futures.clear()
-                            break
+                        elif downstream == 'END_NODE':
+                            if output:
+                                end_node_outputs.append(output)
+                                final_output[0] = next(iter(output.values()))
+                                print(f"[PARALLEL] End node output received from '{result_node_id}'")
+                            downstream = []
 
                     with state_lock:
                         completed_nodes.add(result_node_id)
@@ -295,8 +293,8 @@ def process_node_graph(
             gui_queue.put(lambda err=workflow_error[0]: messagebox.showerror("Error", err))
             if on_error_callback:
                 gui_queue.put(lambda err=workflow_error[0]: on_error_callback(err))
-        elif final_output[0] is not None:
-            output_text = final_output[0]
+        elif final_output[0] is not None or end_node_outputs:
+            output_text = final_output[0] if final_output[0] is not None else ''
             gui_queue.put(lambda: [
                 setattr(chat_tab, 'response_content', output_text),
                 append_formatted_text(output_box, output_text)
