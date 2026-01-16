@@ -1,0 +1,819 @@
+graph:
+  connections:
+  - canvas_item: 511
+    canvas_items:
+    - 511
+    flow_offset: 0
+    from_node: 2f73318d-18fd-4850-a0ae-78578f8a16a1
+    from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    to_input: input
+    to_node: e4cd7e51-e4ae-462c-a3f5-93e829529c06
+  - canvas_item: 512
+    canvas_items:
+    - 512
+    - 513
+    - 514
+    flow_offset: 0
+    from_node: e4cd7e51-e4ae-462c-a3f5-93e829529c06
+    from_output: output1
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55bdda'
+    - '#55bbdc'
+    - '#55b9de'
+    - '#55b7e0'
+    - '#55b4e3'
+    - '#55b2e5'
+    - '#55b0e7'
+    - '#55aee9'
+    to_input: input
+    to_node: b8c5e908-faca-43a8-8897-19a3a0295558
+  - canvas_item: 515
+    canvas_items:
+    - 515
+    - 516
+    - 517
+    - 518
+    - 519
+    - 520
+    - 521
+    - 522
+    - 523
+    - 524
+    - 525
+    - 526
+    - 527
+    - 528
+    - 529
+    - 530
+    - 531
+    flow_offset: 0
+    from_node: e4cd7e51-e4ae-462c-a3f5-93e829529c06
+    from_output: output2
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55f4a3'
+    - '#55f3a4'
+    - '#55f2a5'
+    - '#55f1a6'
+    - '#55b7e0'
+    - '#55b6e1'
+    - '#55b6e1'
+    - '#55b5e2'
+    to_input: input2
+    to_node: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
+  - canvas_item: 532
+    canvas_items:
+    - 532
+    - 533
+    - 534
+    - 535
+    - 536
+    - 537
+    - 538
+    - 539
+    - 540
+    - 541
+    - 542
+    - 543
+    - 544
+    - 545
+    - 546
+    - 547
+    - 548
+    flow_offset: 0
+    from_node: b8c5e908-faca-43a8-8897-19a3a0295558
+    from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55f89f'
+    - '#55f89f'
+    - '#55f7a0'
+    - '#55f7a0'
+    - '#55ebac'
+    - '#55eaad'
+    - '#55eaad'
+    - '#55e9ae'
+    - '#55b3e4'
+    - '#55b2e5'
+    - '#55b1e6'
+    - '#55b1e6'
+    - '#55a0f7'
+    - '#55a0f7'
+    - '#559ff8'
+    - '#559ff8'
+    to_input: input1
+    to_node: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
+  - canvas_item: 549
+    canvas_items:
+    - 549
+    - 550
+    - 551
+    flow_offset: 0
+    from_node: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
+    from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    to_input: input
+    to_node: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
+  - canvas_item: 552
+    canvas_items:
+    - 552
+    - 553
+    - 554
+    - 555
+    - 556
+    - 557
+    - 558
+    - 559
+    - 560
+    - 561
+    - 562
+    - 563
+    - 564
+    - 565
+    - 566
+    - 567
+    - 568
+    flow_offset: 4
+    from_node: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
+    from_output: output2
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55fa9d'
+    - '#55f99e'
+    - '#55f99e'
+    - '#55f89f'
+    - '#55eaad'
+    - '#55eaad'
+    - '#55e9ae'
+    - '#55e9ae'
+    - '#55badd'
+    - '#55b9de'
+    - '#55b9de'
+    - '#55b8df'
+    - '#55a0f7'
+    - '#55a0f7'
+    - '#559ff8'
+    - '#559ff8'
+    to_input: input
+    to_node: f3434ff9-823c-410b-9909-ec7c37f2dfce
+  - canvas_item: 569
+    canvas_items:
+    - 569
+    - 570
+    - 571
+    from_node: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
+    from_output: output1
+    to_input: input
+    to_node: d8753ad8-9970-4df1-9298-8d1b18d2c916
+  - canvas_item: 572
+    canvas_items:
+    - 572
+    - 573
+    - 574
+    from_node: f3434ff9-823c-410b-9909-ec7c37f2dfce
+    from_output: output
+    to_input: input
+    to_node: f1c2ce00-3b18-4c41-845c-7ecfd122651c
+  nodes:
+    07ee6883-464d-4abe-8c3e-8770ecdf6a35:
+      canvas_items:
+        body: 418
+        description: 421
+        header: 419
+        input_input1: 422
+        input_input2: 424
+        input_label_input1: 423
+        input_label_input2: 425
+        output_label_output: 427
+        output_output: 426
+        resize_handle: 428
+        shadow: 417
+        title: 420
+      height: 120
+      highlight_state: false
+      id: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
+      inputs:
+      - input1
+      - input2
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Combines two inputs into a single output.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: MergerNode
+          label: Custom Node Name
+          type: text
+        separator:
+          default: '
+
+
+            '
+          description: Text to insert between the two inputs when merging.
+          label: Separator
+          type: text
+      title: Merger
+      type: MergerNode
+      width: 180
+      x: 99.4444444444445
+      y: 251.11111111111111
+    2f73318d-18fd-4850-a0ae-78578f8a16a1:
+      canvas_items:
+        body: 430
+        description: 433
+        header: 431
+        input_input: 434
+        input_label_input: 435
+        output_label_output: 437
+        output_output: 436
+        resize_handle: 438
+        shadow: 429
+        title: 432
+      height: 120
+      highlight_state: false
+      id: 2f73318d-18fd-4850-a0ae-78578f8a16a1
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "Role: You are a Master Series Architect and Narrative Visionary.\
+            \ Your expertise lies in taking a high-level story concept and expanding\
+            \ it into a rich, high-fidelity series roadmap that maintains consistency\
+            \ across any number of volumes.\n\nTask: Expand the provided story concept\
+            \ into a detailed, multi-volume Character-Centric Roadmap. You must determine\
+            \ the ideal number of books for the series based on the user's request\
+            \ (e.g., a trilogy, a 5-book saga, or a 10-book epic). If the user does\
+            \ not specify a book count, default to a 5-book cycle.\n\nThe Creative\
+            \ Expansion Mandate: If the user's request is sparse or lacks detail,\
+            \ you are authorized to creatively invent names, locations, subplots,\
+            \ and technological/magical rules that align with the established genre\
+            \ and tone. Your goal is to provide a \"Full Narrative Experience\" even\
+            \ from a single sentence of user input.\n\nRequirements for Each Book\
+            \ Paragraph: You must produce one monolithic, unbroken paragraph per book.\
+            \ Within that paragraph, you must fluidly weave together:\n\nThe Narrative\
+            \ Beat: A cinematic summary of the book\u2019s primary conflict, escalating\
+            \ stakes, and emotional resolution.\n\nThe Lead Status: Track the specific\
+            \ evolution of the protagonists. For The Verdant Resurrection, specifically\
+            \ track Jason Caldwell Dunlow\u2019s calcification/arrogance and Kaelen\
+            \ Vance\u2019s mutation/leadership.\n+1\n\nCast of the Movement: Identify\
+            \ the core leads and introduce 2\u20133 new supporting characters (Allies,\
+            \ Rivals, or Antagonists) with specific names and roles that are vital\
+            \ to that book's unique plot.\n\n\nWorld & Atmosphere: Describe a new\
+            \ primary location and the shifting Sensory Motif (e.g., moving from the\
+            \ smell of copper to scorched sugar).\n+1\n\n\nThe \"Bible\" Hook: Conclude\
+            \ the paragraph with a specific \"Technical Detail\" intended for the\
+            \ Series Bible (e.g., a new biological law, a political shift, or a specific\
+            \ piece of equipment).\n+2\n\nConstraint: Every book must be presented\
+            \ as a single, unbroken block of text (Monolithic Style). Avoid generic\
+            \ filler. Every character and event must have a logical reason for existing\
+            \ within that specific installment.\n\nThe user request to expand is as\
+            \ follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Claude
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Series Outline
+          label: Custom Node Name
+          type: text
+      title: Series Outline
+      type: BasicNode
+      width: 180
+      x: 25
+      y: 25
+    3932d707-c27d-4bdb-b00d-a1b8337ac20b:
+      canvas_items:
+        body: 440
+        description: 443
+        header: 441
+        input_input: 444
+        input_label_input: 445
+        output_label_output1: 447
+        output_label_output2: 449
+        output_label_output3: 451
+        output_label_output4: 453
+        output_output1: 446
+        output_output2: 448
+        output_output3: 450
+        output_output4: 452
+        resize_handle: 454
+        shadow: 439
+        title: 442
+      height: 120
+      highlight_state: false
+      id: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
+      inputs:
+      - input
+      outputs:
+      - output1
+      - output2
+      - output3
+      - output4
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Duplicates input to two outputs for parallel processing.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: SplitterNode
+          label: Custom Node Name
+          type: text
+        output1_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output1.
+          label: Convert Output 1 Array to Text
+          type: boolean
+        output2_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output2.
+          label: Convert Output 2 Array to Text
+          type: boolean
+        output3_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output3.
+          label: Convert Output 3 Array to Text
+          type: boolean
+        output4_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output4.
+          label: Convert Output 4 Array to Text
+          type: boolean
+        output_count:
+          default: '2'
+          description: How many outputs to populate (up to 4).
+          label: Number of Outputs (1-4)
+          type: text
+      title: Splitter
+      type: SplitterNode
+      width: 180
+      x: 375
+      y: 250
+    b8c5e908-faca-43a8-8897-19a3a0295558:
+      canvas_items:
+        body: 456
+        description: 459
+        header: 457
+        input_input: 460
+        input_label_input: 461
+        output_label_output: 463
+        output_output: 462
+        resize_handle: 464
+        shadow: 455
+        title: 458
+      height: 120
+      highlight_state: false
+      id: b8c5e908-faca-43a8-8897-19a3a0295558
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "Role: You are a Master Series Architect and Narrative Historian.\
+            \ Your task is to generate a comprehensive \"Series Bible\" based on the\
+            \ provided series roadmap/synopsis.\n+1\n\n\nTask: Analyze the provided\
+            \ series outline\u2014regardless of the total number of volumes\u2014\
+            and expand it into a structured reference document for absolute character\
+            \ and world consistency.\n\nPart 1: The Comprehensive Character Census\
+            \ You must perform a meticulous scan of the \"Cast of the Movement\" for\
+            \ every book provided in the input. For every named character (including\
+            \ major leads, book-specific secondary allies, rivals, and antagonists),\
+            \ provide:\n+4\n\n\nCore Identity: Name, Book of Introduction, and 3-word\
+            \ \"Essence\" (e.g., Jason: Brilliant, Fatally Arrogant, Calcifying).\n\
+            +4\n\n\nThe \"Ghost\": A specific past trauma or event that drives their\
+            \ behavior.\n+2\n\n\nRole & Utility: Their specific purpose in the story\
+            \ (e.g., Tactical Strategist, Archive Keeper, Xenobiologist).\n+3\n\n\n\
+            Personality Architecture: Inferred MBTI and Enneagram types to guide consistent\
+            \ decision-making.\n+2\n\n\nVocal Fingerprint: Distinct speech patterns\
+            \ and word choices unique to that character.\n+2\n\n\nRelationship Matrix:\
+            \ Their dynamic with other characters introduced in their arc.\n\n\nThe\
+            \ Multi-Book Arc: A summary of their status and emotional growth from\
+            \ their introduction to the end of the provided outline.\n\nPart 2: The\
+            \ World Compendium (Lore & Systems)\n\n\nSystemic Hard Rules: Detail the\
+            \ \"Hard Systems\" mentioned (e.g., Oxygen Tax, Helix-Core integration,\
+            \ the Hemoglobin Hum) and the physical or social costs associated with\
+            \ them .\n\n\nSensory Lexicon: A list of 10-15 specific sensory terms\
+            \ or metaphors that define the series' tone (e.g., \"Copper-tasted air,\"\
+            \ \"Scorched sugar\") .\n+1\n\n\nPolitical Geography: High-fidelity backgrounds\
+            \ for all locations mentioned (e.g., Sub-Terra Prime, Obsidian Fields,\
+            \ Emerald Scar) .\n+1\n\n\nThe Hierarchy of Threat: Categorize the escalating\
+            \ threats from environmental and political to cosmic/existential .\n\n\
+            Constraint: You are strictly forbidden from skipping any named character\
+            \ or world-building system. Every detail from the roadmap must be integrated\
+            \ into this document .\n\nThe series outline to analyze is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Series Bible Creator
+          label: Custom Node Name
+          type: text
+      title: Series Bible Creator
+      type: BasicNode
+      width: 180
+      x: 575
+      y: 0
+    d8753ad8-9970-4df1-9298-8d1b18d2c916:
+      canvas_items:
+        body: 466
+        description: 469
+        header: 467
+        input_input: 470
+        input_label_input: 471
+        output_label_output: 473
+        output_output: 472
+        resize_handle: 474
+        shadow: 465
+        title: 468
+      height: 120
+      highlight_state: false
+      id: d8753ad8-9970-4df1-9298-8d1b18d2c916
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        auto_open:
+          default: false
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          type: dropdown
+        filename:
+          default: exported_document
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Export Document
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: Export Document
+      type: ExportDocumentNode
+      width: 180
+      x: 675
+      y: 225
+    e4cd7e51-e4ae-462c-a3f5-93e829529c06:
+      canvas_items:
+        body: 476
+        description: 479
+        header: 477
+        input_input: 480
+        input_label_input: 481
+        output_label_output1: 483
+        output_label_output2: 485
+        output_label_output3: 487
+        output_label_output4: 489
+        output_output1: 482
+        output_output2: 484
+        output_output3: 486
+        output_output4: 488
+        resize_handle: 490
+        shadow: 475
+        title: 478
+      height: 120
+      highlight_state: false
+      id: e4cd7e51-e4ae-462c-a3f5-93e829529c06
+      inputs:
+      - input
+      outputs:
+      - output1
+      - output2
+      - output3
+      - output4
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Duplicates input to two outputs for parallel processing.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: SplitterNode
+          label: Custom Node Name
+          type: text
+        output1_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output1.
+          label: Convert Output 1 Array to Text
+          type: boolean
+        output2_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output2.
+          label: Convert Output 2 Array to Text
+          type: boolean
+        output3_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output3.
+          label: Convert Output 3 Array to Text
+          type: boolean
+        output4_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output4.
+          label: Convert Output 4 Array to Text
+          type: boolean
+        output_count:
+          default: '2'
+          description: How many outputs to populate (up to 4).
+          label: Number of Outputs (1-4)
+          type: text
+      title: Splitter
+      type: SplitterNode
+      width: 180
+      x: 300
+      y: 25
+    f1c2ce00-3b18-4c41-845c-7ecfd122651c:
+      canvas_items:
+        body: 492
+        description: 495
+        header: 493
+        input_input: 496
+        input_label_input: 497
+        output_label_output: 499
+        output_output: 498
+        resize_handle: 500
+        shadow: 491
+        title: 494
+      height: 120
+      highlight_state: false
+      id: f1c2ce00-3b18-4c41-845c-7ecfd122651c
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        auto_open:
+          default: false
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          type: dropdown
+        filename:
+          default: exported_document
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Export Document
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: ExportDocument
+      type: ExportDocumentNode
+      width: 180
+      x: 675
+      y: 450
+    f3434ff9-823c-410b-9909-ec7c37f2dfce:
+      canvas_items:
+        body: 502
+        description: 505
+        header: 503
+        input_input: 506
+        input_label_input: 507
+        output_label_output: 509
+        output_output: 508
+        resize_handle: 510
+        shadow: 501
+        title: 504
+      height: 120
+      highlight_state: false
+      id: f3434ff9-823c-410b-9909-ec7c37f2dfce
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "Role: You are a Master Narrative Architect. Your task is to synthesize\
+            \ the Original Series Outline and the Comprehensive Series Bible into\
+            \ localized, high-fidelity Writing Dossiers for each individual book.\n\
+            \nTask: Create a dedicated, standalone reference section for every book\
+            \ identified in the series. You must preserve the full integrity of the\
+            \ original story narrative while augmenting it with technical and character\
+            \ data from the Bible.\n\nInstructions for Each Book Section: You must\
+            \ produce a section titled \"## BOOK [N]: [TITLE] - WRITING DOSSIER\"\
+            . Each dossier must contain the following components:\n\nTHE VERBATIM\
+            \ NARRATIVE SNAPSHOT: * CRITICAL RULE: You must locate the original, single-paragraph\
+            \ narrative outline for this specific book from the \"Series Outline\"\
+            \ section provided at the end of the input.\n\nDO NOT EDIT, SUMMARIZE,\
+            \ OR TRUNCATE. You must copy the entire paragraph exactly as written,\
+            \ word-for-word, including all specific plot details, character names,\
+            \ and \"Series Bible Entries\" that were part of that original paragraph.\
+            \ This serves as the primary \"story soul\" for the dossier.\n\n\nACTIVE\
+            \ CHARACTER MATRIX: * List every character who appears or is introduced\
+            \ in this specific book .\n+1\n\nFor the leads (Jason and Kaelen), explicitly\
+            \ state their Evolutionary Status for this volume (e.g., current calcification\
+            \ percentage, mutation level, and psychological state) .\n\nInclude names\
+            \ of all secondary characters (e.g., Dr. Emara Okonkwo, Marcus Thale,\
+            \ etc.) mentioned in the verbatim outline above .\n+2\n\n\nLOCALIZED WORLD\
+            \ RULES & SYSTEMS: * Identify the specific technical or biological systems\
+            \ active in this book (e.g., Harmonic Negation, Hemocyanin-based Speciation,\
+            \ Oxygen Tax) .\n+2\n\nState the current Hierarchy of Threat level (Level\
+            \ 1 through Level 6) relevant to this volume .\n\n\nSENSORY & ATMOSPHERIC\
+            \ PALETTE: * Extract the specific Sensory Lexicon entries that define\
+            \ this book\u2019s atmosphere .\n\nList the primary Geographical Settings\
+            \ utilized in this volume (e.g., The Chasm of Iron, Sub-Terra Prime) .\n\
+            +1\n\n\nTHEMATIC ANCHOR: * Identify the core symbolic metaphor for this\
+            \ book (e.g., \"Mutation as Resistance\" or \"Ego Death by Integration\"\
+            ) .\n+1\n\nConstraint: The goal is Expansion, not Reduction. Every Writing\
+            \ Dossier must be a \"Super-Outline\" that combines the 100% original\
+            \ narrative text with the 100% accurate Bible data. Do not omit any detail\
+            \ from the original outline paragraph.\n\nThe Series Bible and Original\
+            \ Outline to deconstruct are as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 180
+      x: 376.6666666666671
+      y: 448.88888888888863
+  viewport:
+    pan_offset_x: 0
+    pan_offset_y: 0
+    window_height: 640
+    window_width: 864
+    zoom_level: 0.9
+name: Series Bible Creator

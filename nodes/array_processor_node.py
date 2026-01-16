@@ -98,7 +98,7 @@ class ArrayProcessorNode(BaseNode):
         else:
             return 'Unsupported API type.'
 
-    def process_single_element(self, element, api_details, validation_prompt_template, refinement_prompt_template, search_string, max_iterations):
+    def process_single_element(self, element, api_details, validation_prompt_template, refinement_prompt_template, search_string, max_iterations, progress_window=None):
         """Process a single array element through the validation-refinement loop."""
         iteration_count = 0
         current_validation_input = str(element)
@@ -107,6 +107,11 @@ class ArrayProcessorNode(BaseNode):
         print(f"\n[ArrayProcessorNode] Starting to process element: {element}")
         
         while iteration_count < max_iterations:
+            # Check for cancellation at the start of each iteration
+            if progress_window and progress_window.is_cancelled():
+                print("[ArrayProcessorNode] Processing cancelled by user during iteration")
+                return "CANCELLED"
+            
             # Prepare validation prompt by appending the current input to the template
             full_validation_prompt = f"{validation_prompt_template}\n\nContent to Review:\n{current_validation_input}"
             print(f"\n[ArrayProcessorNode] Iteration {iteration_count + 1}: Sending validation prompt to API:")
@@ -207,8 +212,19 @@ class ArrayProcessorNode(BaseNode):
                 validation_prompt,
                 refinement_prompt,
                 search_string,
-                max_iterations
+                max_iterations,
+                progress_window
             )
+            
+            # Check if processing was cancelled
+            if result == "CANCELLED":
+                print("[ArrayProcessorNode] Processing cancelled, returning partial results")
+                progress_window.close()
+                if results:
+                    final_output = "\n\n".join(str(r) for r in results if r)
+                    return {"output": f"Processing cancelled by user.\n\nPartial results:\n{final_output}"}
+                return {"output": "Processing cancelled by user"}
+            
             results.append(result)
 
         # Update final progress and close window
