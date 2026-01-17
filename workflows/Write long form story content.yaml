@@ -1,24 +1,25 @@
 graph:
   connections:
-  - canvas_item: 112
+  - canvas_item: 168
     canvas_items:
-    - 112
-    - 113
-    - 114
-    - 115
-    - 116
-    - 117
-    - 118
-    - 119
-    - 120
-    - 121
-    - 122
-    - 123
-    - 124
-    - 125
-    - 126
-    - 127
-    - 128
+    - 168
+    - 169
+    - 170
+    - 171
+    - 172
+    - 173
+    - 174
+    - 175
+    - 176
+    - 177
+    - 178
+    - 179
+    - 180
+    - 181
+    - 182
+    - 183
+    - 184
+    disabled: false
     flow_offset: 0
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
     from_output: output
@@ -43,25 +44,22 @@ graph:
     - '#559dfa'
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 129
+  - canvas_item: 185
     canvas_items:
-    - 129
-    - 130
-    - 131
-    - 132
-    - 133
-    - 134
-    - 135
-    - 136
-    - 137
-    - 138
-    - 139
-    - 140
-    - 141
-    - 142
-    - 143
-    - 144
-    - 145
+    - 185
+    - 186
+    - 187
+    - 188
+    - 189
+    - 190
+    - 191
+    - 192
+    - 193
+    - 194
+    - 195
+    - 196
+    - 197
+    disabled: false
     flow_offset: 2
     from_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
     from_output: output
@@ -78,45 +76,27 @@ graph:
     - '#55a9ee'
     to_input: input
     to_node: 6976a651-76f1-410c-b10b-0f4324774546
-  - canvas_item: 146
+  - canvas_item: 198
     canvas_items:
-    - 146
-    - 147
-    - 148
-    - 149
-    - 150
-    - 151
-    - 152
-    - 153
-    - 154
-    flow_offset: 4
-    from_node: 96669a06-cf73-4bde-9fbf-613c80727d20
-    from_output: output
-    is_flowing: false
-    original_colors:
-    - '#55ff99'
-    - '#55efa8'
-    - '#55edaa'
-    - '#55ebac'
-    - '#55e8af'
-    - '#55b1e6'
-    - '#55afe8'
-    - '#55adea'
-    - '#55abec'
-    to_input: input
-    to_node: a674f96f-b608-4852-b39f-7a4b1f15b13f
-  - canvas_item: 155
-    canvas_items:
-    - 155
-    - 156
-    - 157
-    - 158
-    - 159
-    - 160
-    - 161
-    - 162
-    - 163
-    flow_offset: 2
+    - 198
+    - 199
+    - 200
+    - 201
+    - 202
+    - 203
+    - 204
+    - 205
+    - 206
+    - 207
+    - 208
+    - 209
+    - 210
+    - 211
+    - 212
+    - 213
+    - 214
+    disabled: false
+    flow_offset: 8
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
     from_output: prompt
     is_flowing: false
@@ -140,25 +120,26 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d40b6cbb-3284-47de-ab07-da0ec7176748
-  - canvas_item: 164
+  - canvas_item: 215
     canvas_items:
-    - 164
-    - 165
-    - 166
-    - 167
-    - 168
-    - 169
-    - 170
-    - 171
-    - 172
-    - 173
-    - 174
-    - 175
-    - 176
-    - 177
-    - 178
-    - 179
-    - 180
+    - 215
+    - 216
+    - 217
+    - 218
+    - 219
+    - 220
+    - 221
+    - 222
+    - 223
+    - 224
+    - 225
+    - 226
+    - 227
+    - 228
+    - 229
+    - 230
+    - 231
+    disabled: false
     flow_offset: 8
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
     from_output: output2
@@ -183,80 +164,312 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: 96669a06-cf73-4bde-9fbf-613c80727d20
-  - canvas_item: 181
+  - canvas_item: 232
     canvas_items:
-    - 181
-    - 182
-    - 183
-    - 184
-    - 185
-    - 186
-    - 187
-    - 188
-    - 189
+    - 232
+    - 233
+    - 234
+    - 235
+    - 236
+    - 237
+    - 238
+    - 239
+    - 240
+    - 241
+    - 242
+    - 243
+    - 244
+    - 245
+    - 246
+    - 247
+    - 248
+    disabled: false
+    flow_offset: 0
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
     from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55c7d0'
+    - '#55c5d2'
+    - '#55c3d4'
+    - '#55c0d7'
+    - '#55bbdc'
+    - '#55b9de'
+    - '#55b7e0'
+    - '#55b4e3'
     to_input: input
     to_node: f08be467-3921-42ce-befa-51c12bc15775
-  - canvas_item: 190
+  - canvas_item: 249
     canvas_items:
-    - 190
-    - 191
-    - 192
-    - 193
-    - 194
-    - 195
-    - 196
-    - 197
-    - 198
-    - 199
-    - 200
-    - 201
-    - 202
-    - 203
-    - 204
-    - 205
-    - 206
+    - 249
+    - 250
+    - 251
+    - 252
+    - 253
+    - 254
+    - 255
+    - 256
+    - 257
+    disabled: false
+    flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
     from_output: output1
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55f6a1'
+    - '#55f5a2'
+    - '#55f4a3'
+    - '#55f3a4'
+    - '#55d9be'
+    - '#55d8bf'
+    - '#55d8bf'
+    - '#55d7c0'
+    - '#55b5e2'
+    - '#55b4e3'
+    - '#55b3e4'
+    - '#55b2e5'
+    - '#55a4f3'
+    - '#55a3f4'
+    - '#55a2f5'
+    - '#55a1f6'
     to_input: input
     to_node: d407e984-dd52-4549-ae40-821e2646d5ae
-  - canvas_item: 207
+  - canvas_item: 258
     canvas_items:
-    - 207
-    - 208
-    - 209
-    - 210
-    - 211
-    - 212
-    - 213
-    - 214
-    - 215
-    - 216
-    - 217
-    - 218
-    - 219
-    - 220
-    - 221
-    - 222
-    - 223
+    - 258
+    - 259
+    - 260
+    - 261
+    - 262
+    - 263
+    - 264
+    - 265
+    - 266
+    disabled: false
+    flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
     from_output: output2
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55f89f'
+    - '#55f89f'
+    - '#55f7a0'
+    - '#55f7a0'
+    - '#55e9ae'
+    - '#55e8af'
+    - '#55e8af'
+    - '#55e7b0'
+    - '#55bbdc'
+    - '#55badd'
+    - '#55badd'
+    - '#55b9de'
+    - '#55a0f7'
+    - '#55a0f7'
+    - '#559ff8'
+    - '#559ff8'
     to_input: input
     to_node: 3039be00-3cd7-4220-9a08-0347e8208a57
+  - canvas_item: 267
+    canvas_items:
+    - 267
+    - 268
+    - 269
+    disabled: false
+    from_node: 96669a06-cf73-4bde-9fbf-613c80727d20
+    from_output: output
+    to_input: input
+    to_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
+  - canvas_item: 270
+    canvas_items:
+    - 270
+    - 271
+    - 272
+    - 273
+    - 274
+    - 275
+    - 276
+    - 277
+    - 278
+    disabled: false
+    from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
+    from_output: output1
+    to_input: input
+    to_node: a674f96f-b608-4852-b39f-7a4b1f15b13f
+  - canvas_item: 279
+    canvas_items:
+    - 279
+    - 280
+    - 281
+    - 282
+    - 283
+    - 284
+    - 285
+    - 286
+    - 287
+    - 288
+    - 289
+    - 290
+    - 291
+    - 292
+    - 293
+    - 294
+    - 295
+    disabled: false
+    from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
+    from_output: output2
+    to_input: input
+    to_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
+  - canvas_item: 296
+    canvas_items:
+    - 296
+    disabled: false
+    from_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
+    from_output: output
+    to_input: input
+    to_node: ef04ae7a-8247-4da6-9621-f36766e76fdd
+  - canvas_item: 297
+    canvas_items:
+    - 297
+    - 298
+    - 299
+    - 300
+    - 301
+    - 302
+    - 303
+    - 304
+    - 305
+    - 306
+    - 307
+    - 308
+    - 309
+    - 310
+    - 311
+    - 312
+    - 313
+    - 314
+    disabled: true
+    from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
+    from_output: output1
+    to_input: input
+    to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
+  - canvas_item: 559
+    canvas_items:
+    - 559
+    - 560
+    - 561
+    - 562
+    - 563
+    - 564
+    - 565
+    - 566
+    - 567
+    - 568
+    - 569
+    - 570
+    - 571
+    - 572
+    - 573
+    - 574
+    - 575
+    disabled: false
+    from_node: d1b361f7-7122-4480-8867-a8bdfa3ac19d
+    from_output: chat_history
+    to_input: input
+    to_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
   nodes:
-    3039be00-3cd7-4220-9a08-0347e8208a57:
+    2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf:
       canvas_items:
         body: 2
         description: 5
         header: 3
         input_input: 6
         input_label_input: 7
-        output_label_output: 9
-        output_output: 8
-        resize_handle: 10
+        output_label_output1: 9
+        output_label_output2: 11
+        output_label_output3: 13
+        output_label_output4: 15
+        output_output1: 8
+        output_output2: 10
+        output_output3: 12
+        output_output4: 14
+        resize_handle: 16
         shadow: 1
         title: 4
+      height: 121.11111111111111
+      highlight_state: false
+      id: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
+      inputs:
+      - input
+      outputs:
+      - output1
+      - output2
+      - output3
+      - output4
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        description:
+          default: Duplicates input to two outputs for parallel processing.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: split to final export and review
+          label: Custom Node Name
+          type: text
+        output1_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output1.
+          label: Convert Output 1 Array to Text
+          type: boolean
+        output2_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output2.
+          label: Convert Output 2 Array to Text
+          type: boolean
+        output3_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output3.
+          label: Convert Output 3 Array to Text
+          type: boolean
+        output4_as_text:
+          default: false
+          description: If enabled, arrays are joined into a single string for output4.
+          label: Convert Output 4 Array to Text
+          type: boolean
+        output_count:
+          default: '2'
+          description: How many outputs to populate (up to 4).
+          label: Number of Outputs (1-4)
+          type: text
+      title: split to final export and review
+      type: SplitterNode
+      width: 182.22222222222223
+      x: 650
+      y: 400
+    3039be00-3cd7-4220-9a08-0347e8208a57:
+      canvas_items:
+        body: 18
+        description: 21
+        header: 19
+        input_input: 22
+        input_label_input: 23
+        output_label_output: 25
+        output_output: 24
+        resize_handle: 26
+        shadow: 17
+        title: 20
       height: 120
       highlight_state: false
       id: 3039be00-3cd7-4220-9a08-0347e8208a57
@@ -268,6 +481,10 @@ graph:
         Prompt:
           default: ''
           type: textarea
+        append_timestamp:
+          default: true
+          label: Append Date/Time to Filename
+          type: boolean
         auto_open:
           default: false
           label: Open File After Export
@@ -282,9 +499,10 @@ graph:
           options:
           - Word (.docx)
           - Excel (.xlsx)
+          - Text (.txt)
           type: dropdown
         filename:
-          default: exported_document
+          default: Book_Outline
           label: Filename (without extension)
           type: text
         formatting_enabled:
@@ -292,7 +510,7 @@ graph:
           label: Enable Markdown Formatting
           type: boolean
         is_end_node:
-          default: true
+          default: false
           label: End Node
           type: boolean
         is_start_node:
@@ -300,30 +518,30 @@ graph:
           label: Start Node
           type: boolean
         node_name:
-          default: Export Document
+          default: Export  chapter outline
           label: Custom Node Name
           type: text
         output_folder:
           default: ''
           label: Output Folder
           type: folder
-      title: ExportDocument
+      title: Export  chapter outline
       type: ExportDocumentNode
       width: 180
       x: 375
-      y: 400
+      y: 550
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        body: 12
-        description: 15
-        header: 13
-        input_input: 16
-        input_label_input: 17
-        output_label_output: 19
-        output_output: 18
-        resize_handle: 20
-        shadow: 11
-        title: 14
+        body: 28
+        description: 31
+        header: 29
+        input_input: 32
+        input_label_input: 33
+        output_label_output: 35
+        output_output: 34
+        resize_handle: 36
+        shadow: 27
+        title: 30
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -379,7 +597,7 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: Gemini 3 Flash
           label: API Endpoint
           options:
           - Claude
@@ -393,6 +611,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - Gemini 3 Flash
           type: dropdown
         description:
           default: Processes the input prompt with review capability and content enhancement.
@@ -440,6 +659,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - Gemini 3 Flash
           type: dropdown
         web_search_prompt:
           default: 'Based on the following paragraph and web search results, create
@@ -463,16 +683,16 @@ graph:
       y: 200
     6976a651-76f1-410c-b10b-0f4324774546:
       canvas_items:
-        body: 22
-        description: 25
-        header: 23
-        input_input: 26
-        input_label_input: 27
-        output_label_output: 29
-        output_output: 28
-        resize_handle: 30
-        shadow: 21
-        title: 24
+        body: 38
+        description: 41
+        header: 39
+        input_input: 42
+        input_label_input: 43
+        output_label_output: 45
+        output_output: 44
+        resize_handle: 46
+        shadow: 37
+        title: 40
       height: 120
       highlight_state: false
       id: 6976a651-76f1-410c-b10b-0f4324774546
@@ -484,6 +704,10 @@ graph:
         Prompt:
           default: ''
           type: textarea
+        append_timestamp:
+          default: true
+          label: Append Date/Time to Filename
+          type: boolean
         auto_open:
           default: false
           label: Open File After Export
@@ -498,9 +722,10 @@ graph:
           options:
           - Word (.docx)
           - Excel (.xlsx)
+          - Text (.txt)
           type: dropdown
         filename:
-          default: exported_document
+          default: Book-draftv1
           label: Filename (without extension)
           type: text
         formatting_enabled:
@@ -508,7 +733,7 @@ graph:
           label: Enable Markdown Formatting
           type: boolean
         is_end_node:
-          default: true
+          default: false
           label: End Node
           type: boolean
         is_start_node:
@@ -516,30 +741,30 @@ graph:
           label: Start Node
           type: boolean
         node_name:
-          default: Export Document
+          default: Final Book Export v1
           label: Custom Node Name
           type: text
         output_folder:
           default: ''
           label: Output Folder
           type: folder
-      title: Export Document
+      title: Final Book Export v1
       type: ExportDocumentNode
       width: 180
-      x: 950
+      x: 925
       y: 125
     96669a06-cf73-4bde-9fbf-613c80727d20:
       canvas_items:
-        body: 32
-        description: 35
-        header: 33
-        input_input: 36
-        input_label_input: 37
-        output_label_output: 39
-        output_output: 38
-        resize_handle: 40
-        shadow: 31
-        title: 34
+        body: 48
+        description: 51
+        header: 49
+        input_input: 52
+        input_label_input: 53
+        output_label_output: 55
+        output_output: 54
+        resize_handle: 56
+        shadow: 47
+        title: 50
       height: 117.0
       highlight_state: false
       id: 96669a06-cf73-4bde-9fbf-613c80727d20
@@ -552,12 +777,13 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: Gemini 3 Flash
           label: API Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
+          - Gemini 3 Flash
           - Groq gpt-oss 120b
           - LMStudio-MIstral-Nemo-Instruct
           - Ollama
@@ -678,34 +904,34 @@ graph:
             \ exact structure:\n\nEDITORIAL CRITIQUE: A section detailing exactly\
             \ what works and identifying \"Dealbreaker\" flaws that are suppressing\
             \ the score.\n\nCATEGORIZED RATINGS: 8 categorized ratings (1.0 to 10.0)\
-            \ based on the criteria above.\n\nOVERALL RATING: [Calculated Average]\n\
-            \n8 SURGICAL SUGGESTIONS: Be hyper-specific. 4 must focus on Technical\
-            \ Prose (eliminating passive voice, fixing rhythm) and 4 must focus on\
-            \ Narrative Logic (character subtext, pacing shifts).\n\nConstraint: Do\
-            \ not be polite. If a paragraph is generic, say so. If the dialogue is\
-            \ weak, label it as \"filler.\"\n\nConditional Logic: If the following\
-            \ content starts with the word \"Title\", do not perform the review. Simply\
-            \ output the word: REVIEWPASS\n\nOVERALL RATING: [Score]\n\nThe content\
-            \ to be reviewed is as follows:"
+            \ based on the criteria above.\n\n(Always include an overall rating.)\n\
+            OVERALL RATING: [Calculated Average]\n\n8 SURGICAL SUGGESTIONS: Be hyper-specific.\
+            \ 4 must focus on Technical Prose (eliminating passive voice, fixing rhythm)\
+            \ and 4 must focus on Narrative Logic (character subtext, pacing shifts).\n\
+            \nConstraint: Do not be polite. If a paragraph is generic, say so. If\
+            \ the dialogue is weak, label it as \"filler.\"\n\nConditional Logic:\
+            \ If the following content starts with the word \"Title\", do not perform\
+            \ the review. Simply output the word: REVIEWPASS\n\nOVERALL RATING: [Score]\n\
+            \nThe content to be reviewed is as follows:"
           label: Validation Prompt
           type: textarea
       title: Reviewer and Editor V2
       type: ArrayProcessTestProcessV2Node
       width: 176.0
-      x: 700
-      y: 425
+      x: 375
+      y: 400
     a674f96f-b608-4852-b39f-7a4b1f15b13f:
       canvas_items:
-        body: 42
-        description: 45
-        header: 43
-        input_input: 46
-        input_label_input: 47
-        output_label_output: 49
-        output_output: 48
-        resize_handle: 50
-        shadow: 41
-        title: 44
+        body: 58
+        description: 61
+        header: 59
+        input_input: 62
+        input_label_input: 63
+        output_label_output: 65
+        output_output: 64
+        resize_handle: 66
+        shadow: 57
+        title: 60
       height: 120
       highlight_state: false
       id: a674f96f-b608-4852-b39f-7a4b1f15b13f
@@ -717,6 +943,10 @@ graph:
         Prompt:
           default: ''
           type: textarea
+        append_timestamp:
+          default: true
+          label: Append Date/Time to Filename
+          type: boolean
         auto_open:
           default: false
           label: Open File After Export
@@ -731,9 +961,10 @@ graph:
           options:
           - Word (.docx)
           - Excel (.xlsx)
+          - Text (.txt)
           type: dropdown
         filename:
-          default: exported_document
+          default: Book-Draft
           label: Filename (without extension)
           type: text
         formatting_enabled:
@@ -741,7 +972,7 @@ graph:
           label: Enable Markdown Formatting
           type: boolean
         is_end_node:
-          default: true
+          default: false
           label: End Node
           type: boolean
         is_start_node:
@@ -749,30 +980,30 @@ graph:
           label: Start Node
           type: boolean
         node_name:
-          default: Export Document
+          default: Final Book Export
           label: Custom Node Name
           type: text
         output_folder:
           default: ''
           label: Output Folder
           type: folder
-      title: Export Document
+      title: Final Book Export
       type: ExportDocumentNode
       width: 180
-      x: 950
-      y: 275
+      x: 925
+      y: 325
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        body: 52
-        description: 55
-        header: 53
-        input_input: 56
-        input_label_input: 57
-        output_label_output: 59
-        output_output: 58
-        resize_handle: 60
-        shadow: 51
-        title: 54
+        body: 68
+        description: 71
+        header: 69
+        input_input: 72
+        input_label_input: 73
+        output_label_output: 75
+        output_output: 74
+        resize_handle: 76
+        shadow: 67
+        title: 70
       connections: []
       height: 112
       highlight_state: false
@@ -792,6 +1023,7 @@ graph:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
+          - Gemini 3 Flash
           - Groq gpt-oss 120b
           - LMStudio-MIstral-Nemo-Instruct
           - Ollama
@@ -912,34 +1144,34 @@ graph:
             \ exact structure:\n\nEDITORIAL CRITIQUE: A section detailing exactly\
             \ what works and identifying \"Dealbreaker\" flaws that are suppressing\
             \ the score.\n\nCATEGORIZED RATINGS: 8 categorized ratings (1.0 to 10.0)\
-            \ based on the criteria above.\n\nOVERALL RATING: [Calculated Average]\n\
-            \n8 SURGICAL SUGGESTIONS: Be hyper-specific. 4 must focus on Technical\
-            \ Prose (eliminating passive voice, fixing rhythm) and 4 must focus on\
-            \ Narrative Logic (character subtext, pacing shifts).\n\nConstraint: Do\
-            \ not be polite. If a paragraph is generic, say so. If the dialogue is\
-            \ weak, label it as \"filler.\"\n\nConditional Logic: If the following\
-            \ content starts with the word \"Title\", do not perform the review. Simply\
-            \ output the word: REVIEWPASS\n\nOVERALL RATING: [Score]\n\nThe content\
-            \ to be reviewed is as follows:"
+            \ based on the criteria above.\n\n(Always include the overall rating)\n\
+            OVERALL RATING: [Calculated Average]\n\n8 SURGICAL SUGGESTIONS: Be hyper-specific.\
+            \ 4 must focus on Technical Prose (eliminating passive voice, fixing rhythm)\
+            \ and 4 must focus on Narrative Logic (character subtext, pacing shifts).\n\
+            \nConstraint: Do not be polite. If a paragraph is generic, say so. If\
+            \ the dialogue is weak, label it as \"filler.\"\n\nConditional Logic:\
+            \ If the following content starts with the word \"Title\", do not perform\
+            \ the review. Simply output the word: REVIEWPASS\n\nOVERALL RATING: [Score]\n\
+            \nThe content to be reviewed is as follows:"
           label: Validation Prompt
           type: textarea
       title: Reviewer and Editor V1
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 675
-      y: 50
+      x: 725
+      y: 25
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        body: 62
-        description: 65
-        header: 63
-        input_input: 66
-        input_label_input: 67
-        output_label_output: 69
-        output_output: 68
-        resize_handle: 70
-        shadow: 61
-        title: 64
+        body: 78
+        description: 81
+        header: 79
+        input_input: 82
+        input_label_input: 83
+        output_label_output: 85
+        output_output: 84
+        resize_handle: 86
+        shadow: 77
+        title: 80
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -987,12 +1219,13 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: Gemini 3 Flash
           label: API Endpoint
           options:
           - Claude
           - GPT 5 chat
           - Gemini 2.5
+          - Gemini 3 Flash
           - Groq gpt-oss 120b
           - LMStudio-MIstral-Nemo-Instruct
           - Ollama
@@ -1011,7 +1244,7 @@ graph:
           label: End Node
           type: boolean
         is_start_node:
-          default: true
+          default: false
           label: Start Node
           type: boolean
         node_name:
@@ -1021,19 +1254,258 @@ graph:
       title: PreWritting Draft
       type: BasicNode
       width: 129
-      x: 75
+      x: 50
       y: 25
+    cf33029e-9118-4bfa-a8cd-469a4d0230fd:
+      canvas_items:
+        body: 88
+        description: 91
+        header: 89
+        input_input: 92
+        input_label_input: 93
+        output_label_output: 95
+        output_output: 94
+        resize_handle: 96
+        shadow: 87
+        title: 90
+      height: 120
+      highlight_state: false
+      id: cf33029e-9118-4bfa-a8cd-469a4d0230fd
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "This Master Critique Prompt is engineered to replicate the surgical,\
+            \ high-fidelity reviews provided during our session. It utilizes the Senior\
+            \ Acquisitions Editor persona to ensure the feedback remains objective,\
+            \ brutally honest, and focused on breaking through standard AI writing\
+            \ plateaus.\n\nMaster Prompt: The Surgical Literary Critic\nRole: You\
+            \ are a Senior Acquisitions Editor for a \"Big Five\" publishing house.\
+            \ You have a reputation for being brutally honest, analytical, and impossible\
+            \ to please. Your goal is to dissect the provided text to determine if\
+            \ it is \"Standard AI filler\" or \"Professional-grade literature.\"\n\
+            \nThe Calibration Rubric:\n\n7.0\u20137.9 (Standard AI): Functional and\
+            \ clear, but plagued by clich\xE9s, repetitive sentence structures, and\
+            \ \"on-the-nose\" dialogue.\n\n8.0\u20138.5 (Professional Grade): Strong\
+            \ \"Show, Don't Tell\" execution, visceral sensory grounding, unique character\
+            \ voice, and zero generic filler.\n\n8.6+ (Masterpiece): Exceptional subtext,\
+            \ haunting metaphors, and perfect rhythmic \"burstiness.\"\n\nTask: Provide\
+            \ a critical, high-fidelity evaluation of the content provided below.\
+            \ You are hunting for \"prose fatigue,\" \"telling\" instead of \"showing,\"\
+            \ and generic AI transition markers.\n\nEvaluation Criteria:\n\nProse\
+            \ Rhythm & Burstiness: Does the text vary sentence length effectively\
+            \ (The 3-1-2 Rule: Long-Short-Medium), or is it a monotonous wall of medium-length\
+            \ sentences?\n\nSensory Grounding: Does the author \"Show\" instead of\
+            \ \"Tell\"? Look for specific textures, smells, and sounds that ground\
+            \ the scene beyond simple sight.\n\nCharacter Voice & Internal Monologue:\
+            \ Are the character\u2019s thoughts visceral and unique, or do they sound\
+            \ like an all-knowing narrator?\n\nDialogue Subtext: Is the dialogue layered,\
+            \ or are characters saying exactly what they think (on-the-nose speech)?\n\
+            \nPacing & The \"Hangman\": Does the scene move toward a meaningful cliffhanger,\
+            \ a profound realization, or a shift in the status quo?\n\nElimination\
+            \ of AI-isms: Penalize flowery clich\xE9s (e.g., \"shrouded in,\" \"testament\
+            \ to,\" \"dance of light,\" \"at once,\" \"little did they know\").\n\n\
+            Vivid Verbs & Action: Has the author avoided \"was/were\" and \"felt\"\
+            \ in favor of sharp, active verbs that describe physical manifestations\
+            \ of emotion?\n\nWorld/Series Consistency: (If a Series Bible is provided)\
+            \ Does the text adhere to established hard rules, character states, and\
+            \ technical costs?\n\nFormatting Instructions: Your only expected output\
+            \ must follow this exact structure:\n\nEDITORIAL CRITIQUE: A section titled\
+            \ \"EDITORIAL CRITIQUE\" detailing \"The Good\" (specific successes) and\
+            \ \"The Dealbreakers\" (flaws suppressing the score).\n\nCATEGORIZED RATINGS:\
+            \ 8 categorized ratings (1.0 to 10.0) based on the criteria above.\n\n\
+            OVERALL RATING: [Calculated Average]\n\n8 SURGICAL SUGGESTIONS: Be hyper-specific.\
+            \ 4 must focus on Technical Prose (rhythm, verbs, sensory data) and 4\
+            \ must focus on Narrative Logic (subtext, character arcs, pacing).\n\n\
+            Constraint: Do not be polite. If a paragraph is generic, say so. If the\
+            \ dialogue is weak, label it as \"filler.\"\n\nThe content to be reviewed\
+            \ is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 3 Flash
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          - Gemini 3 Flash
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: BasicNode
+          label: Custom Node Name
+          type: text
+      title: BasicNode
+      type: BasicNode
+      width: 180
+      x: 650
+      y: 575
+    d1b361f7-7122-4480-8867-a8bdfa3ac19d:
+      canvas_items:
+        badge: 101
+        badge_label: 102
+        body: 98
+        description: 103
+        header: 99
+        input_gui_queue: 106
+        input_input: 104
+        input_label_gui_queue: 107
+        input_label_input: 105
+        input_label_workflow_id: 109
+        input_label_workflow_name: 111
+        input_workflow_id: 108
+        input_workflow_name: 110
+        output_chat_history: 112
+        output_label_chat_history: 113
+        resize_handle: 114
+        shadow: 97
+        title: 100
+      height: 120
+      highlight_state: false
+      id: d1b361f7-7122-4480-8867-a8bdfa3ac19d
+      inputs:
+      - input
+      - gui_queue
+      - workflow_id
+      - workflow_name
+      outputs:
+      - chat_history
+      properties:
+        Prompt:
+          default: "Role: You are a World-Class Story Discovery Consultant and Narrative\
+            \ Architect. Your exclusive objective is to act as a creative mirror,\
+            \ asking inquisitive, insightful questions to draw out the \"Story DNA\"\
+            \ from the user.\n\u200BSTRICT NEGATIVE CONSTRAINT: You are strictly forbidden\
+            \ from writing any part of the story, synopsis, or outline during this\
+            \ dialogue. Your goal is data collection, not content creation. If the\
+            \ user asks you to \"write the story,\" you must politely decline and\
+            \ explain that you are still gathering the essential components required\
+            \ for a high-fidelity narrative.\n\u200BOperational Directives:\n\u200B\
+            Incremental Inquiry: Ask only one or two simple questions at a time to\
+            \ prevent user fatigue.\n\u200BThe \"Stuck\" Protocol: If the user provides\
+            \ a very short or vague answer (e.g., \"A dog who takes over the world\"\
+            ), do not simply ask another question. Instead, provide three distinct,\
+            \ creative \"Pathways\" (e.g., A Sci-Fi Path, a Whimsical Path, and a\
+            \ Dark Political Path) to help them visualize specific details.\n\u200B\
+            DNA Extraction Categories: You must systematically gather information\
+            \ on:\n\u200BThe Spark: The core concept or \"What if?\"\n\u200BThe Hero:\
+            \ Name, unique expertise, and a fatal internal flaw (e.g., arrogance,\
+            \ fear of failure) [cite: 899-901, 1140].  \n\u200B[cite_start]The Canvas:\
+            \ The setting, its geography, and the Hard Rules or \"Price\" of the world\
+            \ (e.g., an Oxygen Tax or biological calcification) [cite: 955-958, 977].\
+            \  \n\u200B[cite_start]The Friction: The specific event that changes everything\
+            \ and the primary antagonist [cite: 927-928, 991].  \n\u200B[cite_start]The\
+            \ Horizon: The intended tone and the desired ending (Happy, Bittersweet,\
+            \ or Cliffhanger).  \n\u200BDiscovery Workflow:\n\u200BStep 1: Validate\
+            \ the user's initial idea and ask about the Protagonist.\n\u200BStep 2:\
+            \ Explore the World and its specific mechanics/costs.\n\u200BStep 3: Identify\
+            \ the Primary Conflict and the Antagonist.\n\u200BStep 4: Determine the\
+            \ Stakes and the final resolution.\n\u200BThe Hand-off Signal:\nOnly when\
+            \ the user indicates they have provided all the information they can,\
+            \ or when you have a complete picture of a multi-book arc, you must conclude\
+            \ your response with the exact phrase: \"DISCOVERY COMPLETE: Data Packet\
+            \ Initialized.\" Below this header, provide a clean, structured summary\
+            \ of all the story elements gathered during the chat for the next node\
+            \ to process."
+          type: textarea
+        api_endpoint:
+          default: Gemini 3 Flash
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Gemini 3 Flash
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        database:
+          default: Eric Writting
+          label: Database
+          options:
+          - Eric Writting
+          type: dropdown
+        description:
+          default: Handles a chat conversation with the user.
+          type: text
+        enable_url_selection:
+          default: false
+          description: Allow manual selection of URLs from search results
+          label: Enable URL Selection
+          type: boolean
+        enable_web_search:
+          default: true
+          description: Enable web search functionality
+          label: Enable Web Search
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: ' Story Discovery'
+          type: text
+        num_results_to_skip:
+          default: '0'
+          description: Number of search results to skip
+          label: Results to Skip
+          type: number
+        num_search_results:
+          default: '5'
+          description: Default number of search results to return
+          label: Default Search Results
+          type: number
+        searxng_api_url:
+          default: http://localhost:8888/search
+          description: URL for the SearxNG search engine API
+          label: SearxNG API URL
+          type: text
+      title: ' Story Discovery'
+      type: ChatNode
+      width: 180
+      x: 25
+      y: 575
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        body: 72
-        header: 73
-        input_input: 75
-        input_label_input: 76
-        output_label_prompt: 78
-        output_prompt: 77
-        resize_handle: 79
-        shadow: 71
-        title: 74
+        body: 116
+        header: 117
+        input_input: 119
+        input_label_input: 120
+        output_label_prompt: 122
+        output_prompt: 121
+        resize_handle: 123
+        shadow: 115
+        title: 118
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -1113,7 +1585,7 @@ graph:
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: Gemini 2.5
+          default: Gemini 3 Flash
           label: API Endpoint
           options:
           - Claude
@@ -1127,6 +1599,7 @@ graph:
           - OpenAI Whisper
           - OpenAI o3
           - SearXing
+          - Gemini 3 Flash
           type: dropdown
         chunk_size:
           default: '10'
@@ -1171,22 +1644,22 @@ graph:
       y: 25
     d40b6cbb-3284-47de-ab07-da0ec7176748:
       canvas_items:
-        body: 81
-        description: 84
-        header: 82
-        input_input: 85
-        input_label_input: 86
-        output_label_output1: 88
-        output_label_output2: 90
-        output_label_output3: 92
-        output_label_output4: 94
-        output_output1: 87
-        output_output2: 89
-        output_output3: 91
-        output_output4: 93
-        resize_handle: 95
-        shadow: 80
-        title: 83
+        body: 125
+        description: 128
+        header: 126
+        input_input: 129
+        input_label_input: 130
+        output_label_output1: 132
+        output_label_output2: 134
+        output_label_output3: 136
+        output_label_output4: 138
+        output_output1: 131
+        output_output2: 133
+        output_output3: 135
+        output_output4: 137
+        resize_handle: 139
+        shadow: 124
+        title: 127
       height: 120
       highlight_state: false
       id: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -1245,26 +1718,100 @@ graph:
       title: SplitterNode
       type: SplitterNode
       width: 180
-      x: 650
-      y: 225
+      x: 375
+      y: 200
+    ef04ae7a-8247-4da6-9621-f36766e76fdd:
+      canvas_items:
+        badge: 144
+        badge_label: 145
+        body: 141
+        description: 146
+        header: 142
+        input_input: 147
+        input_label_input: 148
+        output_label_output: 150
+        output_output: 149
+        resize_handle: 151
+        shadow: 140
+        title: 143
+      height: 120
+      highlight_state: false
+      id: ef04ae7a-8247-4da6-9621-f36766e76fdd
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        append_timestamp:
+          default: true
+          label: Append Date/Time to Filename
+          type: boolean
+        auto_open:
+          default: false
+          label: Open File After Export
+          type: boolean
+        description:
+          default: Exports input text to Word or Excel document.
+          label: Description
+          type: text
+        export_format:
+          default: Word (.docx)
+          label: Export Format
+          options:
+          - Word (.docx)
+          - Excel (.xlsx)
+          - Text (.txt)
+          type: dropdown
+        filename:
+          default: Book_Review
+          label: Filename (without extension)
+          type: text
+        formatting_enabled:
+          default: true
+          label: Enable Markdown Formatting
+          type: boolean
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Final Book Review
+          label: Custom Node Name
+          type: text
+        output_folder:
+          default: ''
+          label: Output Folder
+          type: folder
+      title: Final Book Review
+      type: ExportDocumentNode
+      width: 180
+      x: 925
+      y: 575
     f08be467-3921-42ce-befa-51c12bc15775:
       canvas_items:
-        body: 97
-        description: 100
-        header: 98
-        input_input: 101
-        input_label_input: 102
-        output_label_output1: 104
-        output_label_output2: 106
-        output_label_output3: 108
-        output_label_output4: 110
-        output_output1: 103
-        output_output2: 105
-        output_output3: 107
-        output_output4: 109
-        resize_handle: 111
-        shadow: 96
-        title: 99
+        body: 153
+        description: 156
+        header: 154
+        input_input: 157
+        input_label_input: 158
+        output_label_output1: 160
+        output_label_output2: 162
+        output_label_output3: 164
+        output_label_output4: 166
+        output_output1: 159
+        output_output2: 161
+        output_output3: 163
+        output_output4: 165
+        resize_handle: 167
+        shadow: 152
+        title: 155
       height: 120
       highlight_state: false
       id: f08be467-3921-42ce-befa-51c12bc15775
@@ -1323,12 +1870,12 @@ graph:
       title: Splitter
       type: SplitterNode
       width: 180
-      x: 350
-      y: 200
+      x: 100
+      y: 400
   viewport:
-    pan_offset_x: 0
-    pan_offset_y: 0
-    window_height: 664
-    window_width: 1160
-    zoom_level: 1.0
+    pan_offset_x: 16.5
+    pan_offset_y: 3.099999999999966
+    window_height: 764
+    window_width: 1239
+    zoom_level: 0.9
 name: Write long form story content

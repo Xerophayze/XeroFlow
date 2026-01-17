@@ -284,11 +284,18 @@ class AdminConsole:
         provider_frame.pack(fill=tk.X, padx=5, pady=5)
         
         # Provider selection
-        self.provider_var = tk.StringVar(value="openai")
-        ttk.Radiobutton(provider_frame, text="OpenAI", variable=self.provider_var, 
-                       value="openai", command=self.load_provider_models).pack(side=tk.LEFT, padx=10)
-        ttk.Radiobutton(provider_frame, text="Groq", variable=self.provider_var, 
-                       value="groq", command=self.load_provider_models).pack(side=tk.LEFT, padx=10)
+        providers = PricingService.get_providers()
+        default_provider = providers[0] if providers else "openai"
+        self.provider_var = tk.StringVar(value=default_provider)
+        for provider in providers or ["openai"]:
+            label = provider.replace("-", " ").title()
+            ttk.Radiobutton(
+                provider_frame,
+                text=label,
+                variable=self.provider_var,
+                value=provider,
+                command=self.load_provider_models
+            ).pack(side=tk.LEFT, padx=10)
         
         # Create model selection frame
         model_frame = ttk.LabelFrame(main_frame, text="Select Model")
@@ -968,6 +975,9 @@ class AdminConsole:
             # 1. Pie chart of token usage by model
             ax1 = fig.add_subplot(221)
             model_data = display_data.groupby('Model')['TotalTokens'].sum()
+            if model_data.empty or model_data.sum() <= 0:
+                ttk.Label(self.charts_frame, text="No token usage data to chart").pack(padx=20, pady=20)
+                return
             ax1.pie(model_data, labels=model_data.index, autopct='%1.1f%%', startangle=90)
             ax1.axis('equal')
             ax1.set_title('Token Usage by Model')

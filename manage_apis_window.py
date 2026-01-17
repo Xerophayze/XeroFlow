@@ -8,6 +8,7 @@ import requests
 from typing import Dict, Any, Optional
 import time
 from config_utils import load_config, save_config
+from services.pricing_service import PricingService
 
 class APIConfigManager:
     def __init__(self):
@@ -457,10 +458,19 @@ def manage_apis_window(parent, config, refresh_callback):
             api_type = api_type_var.get().strip()
             model = model_var.get().strip()
             max_tokens = max_tokens_entry.get().strip()
+            pricing_match = PricingService.get_model_pricing(model) if model else {}
+            pricing_model = PricingService.normalize_model_name(model) if pricing_match else None
             
             if not all([name, url, api_type]):
                 messagebox.showwarning("Warning", "Please fill in all required fields")
                 return
+
+            if model and not pricing_match:
+                messagebox.showwarning(
+                    "Pricing Not Found",
+                    f"The selected model '{model}' is not in the pricing catalog. "
+                    "Costs may be inaccurate until pricing is added."
+                )
                 
             # Determine models endpoint based on API type
             models_endpoint = {
@@ -478,6 +488,7 @@ def manage_apis_window(parent, config, refresh_callback):
                 'api_key': api_key,
                 'type': api_type,
                 'selected_model': model,
+                'pricing_model': pricing_model,
                 'max_tokens': int(max_tokens) if max_tokens.isdigit() else None,
                 'models_endpoint': models_endpoint
             }
@@ -554,6 +565,7 @@ def manage_apis_window(parent, config, refresh_callback):
         model = interface_details.get('selected_model', '')
         if model:
             model_var.set(model)
+        update_pricing_match()
             
         save_button.config(text="Save Changes", 
                          command=lambda: save_edited_interface(selected_interface))
@@ -583,7 +595,25 @@ def manage_apis_window(parent, config, refresh_callback):
         api_type_var.set('')
         model_var.set('')
         max_tokens_entry.delete(0, tk.END)
+        pricing_status_var.set("")
         save_button.config(text="Add API Interface", command=save_new_interface)
+
+    def update_pricing_match(event=None):
+        """Update pricing status label based on selected model."""
+        model = model_var.get().strip()
+        if not model:
+            pricing_status_var.set("")
+            return
+
+        pricing = PricingService.get_model_pricing(model)
+        if pricing:
+            normalized = PricingService.normalize_model_name(model)
+            if normalized != model:
+                pricing_status_var.set(f"Pricing matched: {normalized}")
+            else:
+                pricing_status_var.set("Pricing matched")
+        else:
+            pricing_status_var.set("Pricing: not found in catalog")
         
     def update_max_tokens():
         """Update max tokens based on selected API and model."""
@@ -690,10 +720,15 @@ def manage_apis_window(parent, config, refresh_callback):
     model_var = tk.StringVar()
     model_dropdown = ttk.Combobox(form_frame, textvariable=model_var, state="readonly")
     model_dropdown.grid(row=5, column=1, padx=5, pady=5, sticky="ew")
+    model_dropdown.bind("<<ComboboxSelected>>", update_pricing_match)
+
+    pricing_status_var = tk.StringVar()
+    pricing_status_label = ttk.Label(form_frame, textvariable=pricing_status_var, foreground="#6c757d")
+    pricing_status_label.grid(row=6, column=1, padx=5, pady=(0, 5), sticky="w")
     
     # Max Tokens with Auto-Fetch
     max_tokens_frame = ttk.Frame(form_frame)
-    max_tokens_frame.grid(row=6, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+    max_tokens_frame.grid(row=7, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
     
     ttk.Label(max_tokens_frame, text="Max Tokens:").pack(side=tk.LEFT)
     max_tokens_entry = ttk.Entry(max_tokens_frame)
@@ -705,7 +740,7 @@ def manage_apis_window(parent, config, refresh_callback):
     
     # Save Button
     save_button = ttk.Button(form_frame, text="Add API Interface", command=save_new_interface)
-    save_button.grid(row=7, column=0, columnspan=2, padx=5, pady=10, sticky="ew")
+    save_button.grid(row=8, column=0, columnspan=2, padx=5, pady=10, sticky="ew")
     
     # Configure grid weights
     main_frame.columnconfigure(1, weight=1)

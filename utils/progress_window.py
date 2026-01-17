@@ -40,9 +40,14 @@ class ProgressWindow:
         # Configure style for progress bar
         style = ttk.Style()
         style.theme_use('default')
-        style.configure("custom.Horizontal.TProgressbar", 
-                       foreground='green',
-                       background='green')
+        style.configure(
+            "custom.Horizontal.TProgressbar",
+            foreground='#4caf50',
+            background='#4caf50',
+            troughcolor='#d9d9d9',
+            lightcolor='#4caf50',
+            darkcolor='#4caf50'
+        )
         
         # Create main frame with padding
         main_frame = ttk.Frame(self.root, padding="15")
@@ -83,9 +88,29 @@ class ProgressWindow:
         self.time_label = ttk.Label(time_frame, text="", wraplength=600, font=("TkDefaultFont", 10))
         self.time_label.grid(row=0, column=0, pady=5, padx=5, sticky='w')
         
+        self.item_details = {}
+        self.item_labels = [f"Item {i + 1}" for i in range(max_value)]
+
+        list_frame = ttk.LabelFrame(main_frame, text="Processed Items", padding="10")
+        list_frame.grid(row=3, column=0, pady=10, padx=5, sticky='nsew')
+        list_frame.columnconfigure(0, weight=1)
+        list_frame.rowconfigure(0, weight=1)
+
+        self.item_listbox = tk.Listbox(list_frame, height=6)
+        list_scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.item_listbox.yview)
+        self.item_listbox.configure(yscrollcommand=list_scrollbar.set)
+
+        self.item_listbox.grid(row=0, column=0, sticky='nsew', padx=(0, 5))
+        list_scrollbar.grid(row=0, column=1, sticky='ns')
+
+        for label in self.item_labels:
+            self.item_listbox.insert(tk.END, label)
+
+        self.item_listbox.bind("<<ListboxSelect>>", self._on_item_select)
+
         # Current item label with better formatting
         item_frame = ttk.LabelFrame(main_frame, text="Current Item", padding="10")
-        item_frame.grid(row=3, column=0, pady=10, padx=5, sticky='nsew')
+        item_frame.grid(row=4, column=0, pady=10, padx=5, sticky='nsew')
         item_frame.columnconfigure(0, weight=1)
         item_frame.rowconfigure(0, weight=1)
         
@@ -100,10 +125,14 @@ class ProgressWindow:
         
         # Cancel button with better styling
         button_frame = ttk.Frame(main_frame)
-        button_frame.grid(row=4, column=0, pady=10, sticky='e')
+        button_frame.grid(row=5, column=0, pady=10, sticky='e')
         
+        self.skip_event = threading.Event()
+        self.skip_button = ttk.Button(button_frame, text="Skip", command=self.skip, width=15)
+        self.skip_button.grid(row=0, column=0, pady=5, padx=(0, 8))
+
         self.cancel_button = ttk.Button(button_frame, text="Cancel", command=self.cancel, width=15)
-        self.cancel_button.grid(row=0, column=0, pady=5)
+        self.cancel_button.grid(row=0, column=1, pady=5)
         
         # Keep window on top
         self.root.attributes('-topmost', True)
@@ -113,7 +142,7 @@ class ProgressWindow:
         
         # Configure grid weights
         main_frame.columnconfigure(0, weight=1)
-        main_frame.rowconfigure(3, weight=1)  # Make the item frame expandable
+        main_frame.rowconfigure(4, weight=1)  # Make the item frame expandable
         
         # Update the window
         self.root.update()
@@ -123,7 +152,7 @@ class ProgressWindow:
         self.cancelled = True
         self.close()
     
-    def update_progress(self, current_value, current_item=""):
+    def update_progress(self, current_value, current_item="", detail_text=""):
         """Update the progress bar and labels"""
         if not self.cancelled:
             # Initialize start time if not set
@@ -162,8 +191,15 @@ class ProgressWindow:
                 self.time_label.config(text=time_text)
             
             # Update current item text
-            if current_item:
-                self.update_current_item(current_item)
+            if current_item or detail_text:
+                combined_text = current_item
+                if detail_text:
+                    if combined_text:
+                        combined_text += "\n\n"
+                    combined_text += detail_text
+                self.update_current_item(combined_text)
+                if 0 <= current_value < self.max_value:
+                    self.update_item_entry(current_value, label=current_item, detail_text=combined_text, set_current=True)
             
             # Force update
             self.root.update_idletasks()
@@ -177,6 +213,34 @@ class ProgressWindow:
         self.item_text.see(tk.END)  # Scroll to show the latest text
         self.item_text.config(state=tk.DISABLED)  # Make read-only
         self.root.update_idletasks()
+
+    def update_item_entry(self, index, label=None, detail_text=None, set_current=False):
+        if index < 0 or index >= self.max_value:
+            return
+
+        if label:
+            short_label = label.replace("\n", " ")
+            if len(short_label) > 80:
+                short_label = f"{short_label[:77]}..."
+            self.item_labels[index] = short_label
+            self.item_listbox.delete(index)
+            self.item_listbox.insert(index, short_label)
+
+        if detail_text is not None:
+            self.item_details[index] = detail_text
+
+        if set_current:
+            self.item_listbox.selection_clear(0, tk.END)
+            self.item_listbox.selection_set(index)
+            self.item_listbox.see(index)
+
+    def _on_item_select(self, event=None):
+        selection = self.item_listbox.curselection()
+        if not selection:
+            return
+        index = selection[0]
+        detail_text = self.item_details.get(index) or self.item_labels[index]
+        self.update_current_item(detail_text)
 
     def _format_time(self, seconds):
         """Format seconds into a readable time string"""
@@ -209,3 +273,15 @@ class ProgressWindow:
     def is_cancelled(self):
         """Check if the operation was cancelled"""
         return self.cancelled
+
+    def skip(self):
+        """Signal skip for the current item"""
+        self.skip_event.set()
+
+    def clear_skip(self):
+        """Clear skip flag (call when starting a new item)"""
+        self.skip_event.clear()
+
+    def is_skip_requested(self):
+        """Check if skip has been requested"""
+        return self.skip_event.is_set()

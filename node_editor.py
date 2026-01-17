@@ -129,6 +129,8 @@ class NodeEditor:
     def load_graph(self, graph_data):
         self.nodes = graph_data.get('nodes', {})
         self.connections = graph_data.get('connections', [])
+        for conn in self.connections:
+            conn.setdefault('disabled', False)
 
         # Update node counters
         self.node_counter = {cls.__name__: 0 for cls in self.node_classes}
@@ -266,6 +268,31 @@ class NodeEditor:
             tags=('node', node['id'], 'title', 'draggable')  # Added draggable tag
         )
         node['canvas_items']['title'] = title_item
+
+        is_start = node.get('properties', {}).get('is_start_node', {}).get('default', False)
+        is_end = node.get('properties', {}).get('is_end_node', {}).get('default', False)
+        if is_start or is_end:
+            badge_size = 12
+            badge_padding = 4
+            badge_x2 = x + width - badge_padding
+            badge_x1 = badge_x2 - badge_size
+            badge_y1 = y + (drag_bar_height - badge_size) / 2
+            badge_y2 = badge_y1 + badge_size
+            badge_color = '#2ecc71' if is_start else '#e74c3c'
+            badge_text = 'S' if is_start else 'E'
+            badge = self.canvas.create_rectangle(
+                badge_x1, badge_y1, badge_x2, badge_y2,
+                fill=badge_color, outline='black', width=1,
+                tags=('node', node['id'], 'badge', 'draggable')
+            )
+            badge_label = self.canvas.create_text(
+                (badge_x1 + badge_x2) / 2, (badge_y1 + badge_y2) / 2,
+                text=badge_text, fill='white',
+                font=('Arial', 8, 'bold'),
+                tags=('node', node['id'], 'badge', 'draggable')
+            )
+            node['canvas_items']['badge'] = badge
+            node['canvas_items']['badge_label'] = badge_label
         
         # Add drag events to title text
         self.canvas.tag_bind(title_item, "<ButtonPress-1>", self.on_node_press)
@@ -481,15 +508,28 @@ class NodeEditor:
             to_x, to_y
         ]
 
+        line_kwargs = {
+            'smooth': True,
+            'splinesteps': 100,
+            'fill': 'black',
+            'arrow': tk.LAST,
+            'tags': ('connection',)
+        }
+        if conn.get('disabled'):
+            self.canvas.create_line(
+                points,
+                smooth=True,
+                splinesteps=100,
+                fill='#5a5a5a',
+                width=4,
+                capstyle='round',
+                tags=('connection',)
+            )
+            line_kwargs['fill'] = '#d0d0d0'
+            line_kwargs['dash'] = (4, 4)
+
         # Draw the curved line
-        line = self.canvas.create_line(
-            points,
-            smooth=True,
-            splinesteps=100,
-            fill='black',
-            arrow=tk.LAST,
-            tags=('connection',)
-        )
+        line = self.canvas.create_line(points, **line_kwargs)
         
         # Store the line item in the connection data
         conn['canvas_item'] = line
@@ -582,7 +622,8 @@ class NodeEditor:
                     'from_node': from_node_id,
                     'from_output': output_name,
                     'to_node': node_id,
-                    'to_input': input_name
+                    'to_input': input_name,
+                    'disabled': False
                 }
                 self.connections.append(connection)
                 self.draw_connection(connection)
@@ -1003,8 +1044,18 @@ class NodeEditor:
     def on_connection_right_click(self, event, conn):
         # Show context menu for deleting the connection
         menu = tk.Menu(self.canvas, tearoff=0)
+        if conn.get('disabled'):
+            menu.add_command(label="Enable Connection", command=lambda: self.toggle_connection(conn, False))
+        else:
+            menu.add_command(label="Disable Connection", command=lambda: self.toggle_connection(conn, True))
         menu.add_command(label="Delete Connection", command=lambda: self.delete_connection(conn))
         menu.post(event.x_root, event.y_root)
+
+    def toggle_connection(self, conn, disabled):
+        conn['disabled'] = disabled
+        self.redraw_connections()
+        self.is_modified = True
+        self.update_save_button_state()
 
     def delete_connection(self, conn):
         # Remove the line from the canvas

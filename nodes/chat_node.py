@@ -115,13 +115,29 @@ class ChatNode(BaseNode):
         selected_database = database_property.get('value') or database_property.get('default', '')
         db_manager = DatabaseManager()
         self.chat_history = []
-        
+        prompt_text = (
+            self.properties.get('prompt', {}).get('value')
+            or self.properties.get('prompt', {}).get('default', '')
+            or self.properties.get('Prompt', {}).get('value')
+            or self.properties.get('Prompt', {}).get('default', '')
+        )
+        if prompt_text:
+            self.chat_history.append({'role': 'system', 'content': str(prompt_text)})
+            prompt_response = self.send_api_request(str(prompt_text), api_endpoint_name)
+            if prompt_response.success:
+                self.chat_history.append({'role': 'assistant', 'content': prompt_response.content})
+
         initial_input = inputs.get('input', '').strip()
         if initial_input:
             print(f"[ChatNode] Processing initial input: {initial_input[:30]}...")
-            self.chat_history.append({'role': 'user', 'content': initial_input})
             modified_input = self.prepare_input_with_search(initial_input, db_manager, selected_database)
-            response = self.send_api_request(modified_input, api_endpoint_name)
+            if modified_input != initial_input:
+                self.chat_history.append({
+                    'role': 'system',
+                    'content': f"Use the following information to answer the user's request: {modified_input}"
+                })
+            self.chat_history.append({'role': 'user', 'content': initial_input})
+            response = self.send_api_request(initial_input, api_endpoint_name)
             if response.success:
                 self.chat_history.append({'role': 'assistant', 'content': response.content})
 
@@ -142,24 +158,12 @@ class ChatNode(BaseNode):
         
         print("[ChatNode] Waiting for chat window to be created")
         # Wait for the chat window to be created or for processing to complete
-        timeout_seconds = 30
-        start_time = time.time()
         while not self.processing_complete.is_set() and not self.chat_window_created.is_set():
-            # Check for timeout
-            if time.time() - start_time > timeout_seconds:
-                print("[ChatNode] Timeout waiting for chat window creation")
-                self.chat_history_output = "Error: Timeout waiting for chat window to appear."
-                self.processing_complete.set()
-                break
-            # Short sleep to prevent CPU hogging
             time.sleep(0.1)
         
         print("[ChatNode] Waiting for processing to complete")
-        # Wait for the chat to complete with timeout - increased to 180 seconds
-        if not self.processing_complete.wait(timeout=180):
-            print("[ChatNode] Timeout waiting for processing to complete")
-            self.chat_history_output = "Error: Chat processing timed out."
-            self.processing_complete.set()
+        # Wait for the chat to complete (user closes window)
+        self.processing_complete.wait()
         
         # Ensure we have a small delay to let the close_chat function finish properly
         time.sleep(1.0)
@@ -178,17 +182,6 @@ class ChatNode(BaseNode):
             
             self.chat_history_output = '\n'.join(formatted_history)
             print(f"[ChatNode] Generated chat history output. Length: {len(self.chat_history_output)}")
-        
-        # Manually notify the workflow manager that this workflow is complete
-        if self.workflow_id:
-            try:
-                # Import here to avoid circular imports
-                from main import workflow_manager
-                print(f"[ChatNode] Manually marking workflow {self.workflow_id} as completed")
-                workflow_manager.complete_workflow(self.workflow_id, self.chat_history_output)
-                print("[ChatNode] Workflow marked as completed successfully")
-            except Exception as e:
-                print(f"[ChatNode] Error marking workflow as completed: {str(e)}")
         
         print(f"[ChatNode] Process method completed. Output length: {len(self.chat_history_output)}")
         return {'chat_history': self.chat_history_output}

@@ -185,12 +185,13 @@ class ArrayProcessTestProcessNode(BaseNode):
             print(f"[ArrayProcessTestProcessNode] Error comparing ratings: {e}")
             return False
 
-    def process_single_element(self, element, api_details, validation_prompt_template, refinement_prompt_template, search_string, max_iterations, progress_window, index):
+    def process_single_element(self, element, api_details, validation_prompt_template, refinement_prompt_template, search_string, max_iterations, progress_window, index, min_rating):
         """Process a single array element through the validation-refinement loop."""
         try:
             iteration_count = 0
             current_content = str(element)
             original_content = current_content  # Store the original content
+            last_validation_result = None
             
             # Initialize variables to track highest-rated content
             highest_rating = float('-inf')
@@ -204,6 +205,13 @@ class ArrayProcessTestProcessNode(BaseNode):
                 if progress_window.is_cancelled():
                     print("[ArrayProcessTestProcessNode] Processing cancelled by user during iteration")
                     return "CANCELLED", "Processing cancelled by user"
+
+                if progress_window.is_skip_requested():
+                    progress_window.clear_skip()
+                    print("[ArrayProcessTestProcessNode] Skip requested - using best content so far")
+                    if best_validation_result:
+                        return best_content, best_validation_result
+                    return current_content, last_validation_result or "[INFO] Skipped by user"
                 
                 # Step 2: Append current item to the END of validation prompt
                 full_validation_prompt = f"{validation_prompt_template}\n\n{current_content}"
@@ -219,6 +227,7 @@ class ArrayProcessTestProcessNode(BaseNode):
                     return None, None
                     
                 print(f"[ArrayProcessTestProcessNode] Received validation result")
+                last_validation_result = validation_result
                 
                 # Extract current rating
                 current_rating = self.extract_rating(validation_result)
@@ -286,7 +295,15 @@ class ArrayProcessTestProcessNode(BaseNode):
                 iteration_count += 1
                 
                 # Update progress window
-                progress_window.update_progress(index, f"Processing item {index+1} - Iteration {iteration_count}")
+                rating_text = f"Current rating: {current_rating if current_rating is not None else 'N/A'} | Best: {highest_rating if highest_rating != float('-inf') else 'N/A'} | Min: {min_rating}"
+                snippet = ""
+                if validation_result:
+                    snippet_lines = [line.strip() for line in validation_result.splitlines() if line.strip()]
+                    snippet = "\n".join(snippet_lines[:4])
+                detail_text = rating_text
+                if snippet:
+                    detail_text += f"\n\nValidation (snippet):\n{snippet}"
+                progress_window.update_progress(index, f"Processing item {index+1} - Iteration {iteration_count}", detail_text)
 
             print(f"[ArrayProcessTestProcessNode] Max iterations ({max_iterations}) reached without successful validation")
             # If we didn't meet the conditions but have some content, return the best we found
@@ -361,6 +378,7 @@ class ArrayProcessTestProcessNode(BaseNode):
         try:
             for i, element in enumerate(input_array):
                 # Update initial progress
+                progress_window.clear_skip()
                 progress_window.update_progress(i, f"Starting item {i+1}/{len(input_array)}")
                 
                 if progress_window.is_cancelled():
@@ -383,7 +401,8 @@ class ArrayProcessTestProcessNode(BaseNode):
                     search_string,
                     max_iterations,
                     progress_window,
-                    i
+                    i,
+                    float(self.get_property_value('minimum_rating', '7.0'))
                 )
                 
                 # Check if processing was cancelled

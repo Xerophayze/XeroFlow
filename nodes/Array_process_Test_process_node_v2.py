@@ -195,11 +195,12 @@ class ArrayProcessTestProcessV2Node(BaseNode):
             return False
 
     def process_single_element(self, element, api_details, validation_prompt_template, refinement_prompt_template, search_string,
-                               max_iterations, progress_window, index, prev_item, next_item):
+                               max_iterations, progress_window, index, prev_item, next_item, min_rating):
         """Process a single array element through the validation-refinement loop."""
         try:
             iteration_count = 0
             current_content = str(element)
+            last_validation_result = None
 
             highest_rating = float('-inf')
             best_content = current_content
@@ -211,6 +212,13 @@ class ArrayProcessTestProcessV2Node(BaseNode):
                 if progress_window.is_cancelled():
                     print("[ArrayProcessTestProcessNodeV2] Processing cancelled by user during iteration")
                     return "CANCELLED", "Processing cancelled by user"
+
+                if progress_window.is_skip_requested():
+                    progress_window.clear_skip()
+                    print("[ArrayProcessTestProcessNodeV2] Skip requested - using best content so far")
+                    if best_validation_result:
+                        return best_content, best_validation_result
+                    return current_content, last_validation_result or "[INFO] Skipped by user"
 
                 full_validation_prompt = self.build_context_prompt(
                     validation_prompt_template,
@@ -229,6 +237,7 @@ class ArrayProcessTestProcessV2Node(BaseNode):
                     return None, None
 
                 print(f"[ArrayProcessTestProcessNodeV2] Received validation result")
+                last_validation_result = validation_result
 
                 current_rating = self.extract_rating(validation_result)
                 if current_rating is not None:
@@ -292,7 +301,15 @@ class ArrayProcessTestProcessV2Node(BaseNode):
                 print("[ArrayProcessTestProcessNodeV2] Updated current content for next validation iteration")
                 iteration_count += 1
 
-                progress_window.update_progress(index, f"Processing item {index+1} - Iteration {iteration_count}")
+                rating_text = f"Current rating: {current_rating if current_rating is not None else 'N/A'} | Best: {highest_rating if highest_rating != float('-inf') else 'N/A'} | Min: {min_rating}"
+                snippet = ""
+                if validation_result:
+                    snippet_lines = [line.strip() for line in validation_result.splitlines() if line.strip()]
+                    snippet = "\n".join(snippet_lines[:4])
+                detail_text = rating_text
+                if snippet:
+                    detail_text += f"\n\nValidation (snippet):\n{snippet}"
+                progress_window.update_progress(index, f"Processing item {index+1} - Iteration {iteration_count}", detail_text)
 
             print(f"[ArrayProcessTestProcessNodeV2] Max iterations ({max_iterations}) reached without successful validation")
             if best_validation_result is not None:
@@ -357,6 +374,7 @@ class ArrayProcessTestProcessV2Node(BaseNode):
 
         try:
             for i, element in enumerate(input_array):
+                progress_window.clear_skip()
                 progress_window.update_progress(i, f"Starting item {i+1}/{len(input_array)}")
 
                 if progress_window.is_cancelled():
@@ -368,6 +386,17 @@ class ArrayProcessTestProcessV2Node(BaseNode):
                     print("[ArrayProcessTestProcessNodeV2] Skipping first array item per configuration")
                     refinement_results.append(str(element))
                     validation_results.append("[INFO] First item skipped per configuration")
+                    detail_text = (
+                        f"Item {i + 1} (skipped)\n\n"
+                        f"Input:\n{element}\n\n"
+                        "Result:\n[INFO] First item skipped per configuration"
+                    )
+                    progress_window.update_item_entry(
+                        i,
+                        label=f"Item {i + 1}: {str(element)[:60]}",
+                        detail_text=detail_text,
+                        set_current=True
+                    )
                     continue
 
                 prev_item = input_array[i - 1] if i > 0 else None
@@ -383,7 +412,8 @@ class ArrayProcessTestProcessV2Node(BaseNode):
                     progress_window,
                     i,
                     prev_item,
-                    next_item
+                    next_item,
+                    float(self.get_property_value('minimum_rating', '7.0'))
                 )
 
                 if refinement_result == "CANCELLED":
@@ -397,10 +427,28 @@ class ArrayProcessTestProcessV2Node(BaseNode):
                 if refinement_result is not None and validation_result is not None:
                     refinement_results.append(refinement_result)
                     validation_results.append(validation_result)
+                    detail_text = (
+                        f"Item {i + 1}\n\n"
+                        f"Input:\n{element}\n\n"
+                        f"Result:\n{refinement_result}\n\n"
+                        f"Validation:\n{validation_result}"
+                    )
                 else:
                     print(f"[ArrayProcessTestProcessNodeV2] Warning: Item {i+1} processing failed")
                     refinement_results.append(f"[ERROR] Processing failed for item {i+1}")
                     validation_results.append(f"[ERROR] Validation failed for item {i+1}")
+                    detail_text = (
+                        f"Item {i + 1} (failed)\n\n"
+                        f"Input:\n{element}\n\n"
+                        f"Result:\n[ERROR] Processing failed for item {i + 1}"
+                    )
+
+                progress_window.update_item_entry(
+                    i,
+                    label=f"Item {i + 1}: {str(element)[:60]}",
+                    detail_text=detail_text,
+                    set_current=True
+                )
 
             progress_window.update_progress(len(input_array), "Processing complete!")
             progress_window.close()
