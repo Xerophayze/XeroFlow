@@ -63,6 +63,8 @@ def process_node_graph(
         # Count how many upstream connections feed into each node
         incoming_connection_count = {}
         for conn in connections:
+            if conn.get('disabled'):
+                continue
             to_node_id = conn['to_node']
             incoming_connection_count[to_node_id] = incoming_connection_count.get(to_node_id, 0) + 1
 
@@ -127,6 +129,8 @@ def process_node_graph(
                         if not output_value:
                             continue
                         for conn in connections:
+                            if conn.get('disabled'):
+                                continue
                             if conn['from_node'] == node_id and conn['from_output'] == output_key:
                                 downstream.append({
                                     'to_node': conn['to_node'],

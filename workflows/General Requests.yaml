@@ -3,15 +3,18 @@ graph:
   nodes:
     6089622f-6dc2-47ba-a901-1cc0e862f990:
       canvas_items:
-        description: 13
-        drag_bar: 11
-        input_input: 14
-        input_label_input: 15
-        output_label_output: 17
-        output_output: 16
-        rect: 10
-        resize_handle: 18
-        title: 12
+        badge: 433
+        badge_label: 434
+        body: 430
+        description: 435
+        header: 431
+        input_input: 436
+        input_label_input: 437
+        output_label_output: 439
+        output_output: 438
+        resize_handle: 440
+        shadow: 429
+        title: 432
       connections: []
       height: 80
       highlight_state: false
@@ -26,13 +29,21 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: Gemini 3 Flash
           label: API Endpoint
           options:
-          - Groq
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Gemini 3 Flash
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
           - Ollama
-          - OpenAI 03-mini
           - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -55,4 +66,10 @@ graph:
       width: 150
       x: 70
       y: 70
+  viewport:
+    pan_offset_x: 0
+    pan_offset_y: 0
+    window_height: 800
+    window_width: 1200
+    zoom_level: 1.0
 name: General Requests

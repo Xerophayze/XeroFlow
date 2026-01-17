@@ -358,6 +358,8 @@ class ModernNodeEditor:
     def load_graph(self, graph_data):
         self.nodes = graph_data.get('nodes', {})
         self.connections = graph_data.get('connections', [])
+        for conn in self.connections:
+            conn.setdefault('disabled', False)
         self.node_counter = {cls.__name__: 0 for cls in self.node_classes}
         self.node_counter['MissingNode'] = 0
         for node in self.nodes.values():
@@ -498,6 +500,31 @@ class ModernNodeEditor:
             tags=('node', node['id'], 'title', 'draggable')
         )
         node['canvas_items']['title'] = title_item
+
+        is_start = node.get('properties', {}).get('is_start_node', {}).get('default', False)
+        is_end = node.get('properties', {}).get('is_end_node', {}).get('default', False)
+        if is_start or is_end:
+            badge_size = max(10, int(14 * self.zoom_level))
+            badge_padding = max(4, int(6 * self.zoom_level))
+            badge_x2 = x + width - badge_padding
+            badge_x1 = badge_x2 - badge_size
+            badge_y1 = y + (header_height - badge_size) / 2
+            badge_y2 = badge_y1 + badge_size
+            badge_color = '#2ecc71' if is_start else '#e74c3c'
+            badge_text = 'S' if is_start else 'E'
+            badge = self.canvas.create_rectangle(
+                badge_x1, badge_y1, badge_x2, badge_y2,
+                fill=badge_color, outline=Theme.NODE_BORDER, width=1,
+                tags=('node', node['id'], 'badge', 'draggable')
+            )
+            badge_label = self.canvas.create_text(
+                (badge_x1 + badge_x2) / 2, (badge_y1 + badge_y2) / 2,
+                text=badge_text, fill=Theme.TEXT_PRIMARY,
+                font=('Segoe UI', max(7, int(8 * self.zoom_level)), 'bold'),
+                tags=('node', node['id'], 'badge', 'draggable')
+            )
+            node['canvas_items']['badge'] = badge
+            node['canvas_items']['badge_label'] = badge_label
         
         self.canvas.tag_bind(title_item, "<ButtonPress-1>", self.on_node_press)
         self.canvas.tag_bind(title_item, "<B1-Motion>", self.on_node_move)
@@ -712,9 +739,42 @@ class ModernNodeEditor:
         # Store this connection's segments for future connections
         self.store_line_segments(waypoints)
         
-        # Draw the connection as gradient-colored segments
         line_width = max(2, int(3 * self.zoom_level))
-        self.draw_gradient_path(conn, waypoints, line_width)
+        if conn.get('disabled'):
+            self.draw_disabled_path(conn, waypoints, line_width)
+        else:
+            # Draw the connection as gradient-colored segments
+            self.draw_gradient_path(conn, waypoints, line_width)
+
+    def draw_disabled_path(self, conn, points, line_width):
+        if len(points) < 4:
+            return
+        canvas_items = []
+        for i in range(0, len(points) - 2, 2):
+            x1, y1 = points[i], points[i + 1]
+            x2, y2 = points[i + 2], points[i + 3]
+            outline = self.canvas.create_line(
+                x1, y1, x2, y2,
+                fill='#5a5a5a', width=max(3, int(4 * self.zoom_level)),
+                capstyle='round', joinstyle='round',
+                tags=('connection', f'conn_{id(conn)}')
+            )
+            line = self.canvas.create_line(
+                x1, y1, x2, y2,
+                fill='#d0d0d0', width=max(2, int(2 * self.zoom_level)),
+                dash=(4, 4), capstyle='round', joinstyle='round',
+                tags=('connection', f'conn_{id(conn)}')
+            )
+            canvas_items.extend([outline, line])
+
+        conn['canvas_items'] = canvas_items
+        conn['canvas_item'] = canvas_items[0] if canvas_items else None
+
+        for line in canvas_items:
+            self.canvas.tag_bind(line, "<Button-3>", lambda e, c=conn: self.on_connection_right_click(e, c))
+            self.canvas.tag_bind(line, "<Enter>", lambda e, items=canvas_items: self.highlight_connection(items, True))
+            self.canvas.tag_bind(line, "<Leave>", lambda e, items=canvas_items: self.highlight_connection(items, False))
+            self.canvas.tag_lower(line, 'node')
     
     def store_line_segments(self, points):
         """Store line segments from a drawn connection for future separation calculations."""
@@ -1410,6 +1470,8 @@ class ModernNodeEditor:
         """Highlight a connection with marching ants animation to show data flow."""
         # Find the connection between these nodes
         for conn in self.connections:
+            if conn.get('disabled'):
+                continue
             if conn['from_node'] == from_node_id and conn['to_node'] == to_node_id:
                 canvas_items = conn.get('canvas_items', [])
                 if canvas_items:
@@ -1467,6 +1529,8 @@ class ModernNodeEditor:
     def remove_connection_flow(self, from_node_id, to_node_id):
         """Remove the flow highlight from a connection."""
         for conn in self.connections:
+            if conn.get('disabled'):
+                continue
             if conn['from_node'] == from_node_id and conn['to_node'] == to_node_id:
                 conn['is_flowing'] = False
                 canvas_items = conn.get('canvas_items', [])
@@ -1490,12 +1554,16 @@ class ModernNodeEditor:
     def highlight_incoming_connections(self, node_id):
         """Highlight all connections leading into a node with flow animation."""
         for conn in self.connections:
+            if conn.get('disabled'):
+                continue
             if conn['to_node'] == node_id:
                 self.highlight_connection_flow(conn['from_node'], node_id)
     
     def remove_incoming_connection_highlights(self, node_id):
         """Remove flow highlights from all connections leading into a node."""
         for conn in self.connections:
+            if conn.get('disabled'):
+                continue
             if conn['to_node'] == node_id:
                 self.remove_connection_flow(conn['from_node'], node_id)
 
@@ -1601,7 +1669,8 @@ class ModernNodeEditor:
                     'from_node': from_node_id,
                     'from_output': output_name,
                     'to_node': node_id,
-                    'to_input': input_name
+                    'to_input': input_name,
+                    'disabled': False
                 }
                 self.connections.append(connection)
                 self.draw_connection(connection)
@@ -1688,8 +1757,18 @@ class ModernNodeEditor:
     def on_connection_right_click(self, event, conn):
         menu = tk.Menu(self.canvas, tearoff=0, bg=Theme.NODE_BG, fg=Theme.TEXT_PRIMARY,
                        activebackground=Theme.BUTTON_HOVER, activeforeground=Theme.TEXT_PRIMARY)
+        if conn.get('disabled'):
+            menu.add_command(label="Enable Connection", command=lambda: self.toggle_connection(conn, False))
+        else:
+            menu.add_command(label="Disable Connection", command=lambda: self.toggle_connection(conn, True))
         menu.add_command(label="Delete Connection", command=lambda: self.delete_connection(conn))
         menu.post(event.x_root, event.y_root)
+
+    def toggle_connection(self, conn, disabled):
+        conn['disabled'] = disabled
+        self.redraw_connections()
+        self.is_modified = True
+        self.update_save_button_state()
 
     def delete_connection(self, conn):
         # Delete all canvas items (connections are now multi-segment)

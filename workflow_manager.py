@@ -9,7 +9,10 @@ import datetime
 import time
 import json
 import os
+import csv
 from ExportWord import convert_markdown_to_docx
+from config_utils import load_config
+from services.pricing_service import PricingService
 
 class WorkflowInstance:
     """Represents a single workflow instance with its state and data."""
@@ -25,6 +28,7 @@ class WorkflowInstance:
         self.stop_event = threading.Event()
         self.output = ""
         self.error = None
+        self.token_summary = None
     
     def complete(self, output):
         """Mark the workflow as completed with the given output."""
@@ -91,6 +95,7 @@ class WorkflowManager:
         os.makedirs(self.data_dir, exist_ok=True)
         os.makedirs(self.history_dir, exist_ok=True)
         
+        self._run_token_log_migration()
         self.load_workflow_history()
     
     def create_workflow(self, workflow_name, user_input, thread=None):
@@ -118,16 +123,147 @@ class WorkflowManager:
         workflow = self.get_workflow(workflow_id)
         if workflow and workflow.status == "running":
             workflow.stop()
+            workflow.token_summary = self._summarize_workflow_tokens(workflow)
             self._notify_listeners()
             self.save_workflow_history()  # Save history after workflow is stopped
             return True
         return False
+
+    def _run_token_log_migration(self):
+        """Normalize model names in token logs one time."""
+        marker_file = os.path.join(self.data_dir, "token_log_migration_v1.done")
+        if os.path.exists(marker_file):
+            return
+
+        config = load_config()
+        interfaces = config.get('interfaces', {})
+        logs_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nodes", "Logs")
+        if not os.path.exists(logs_root):
+            return
+
+        def resolve_pricing_model(endpoint, model_name):
+            api_config = interfaces.get(endpoint, {})
+            pricing_model = api_config.get('pricing_model')
+            if pricing_model:
+                return pricing_model
+            if not model_name:
+                return model_name
+            normalized = PricingService.normalize_model_name(model_name)
+            if PricingService.get_model_pricing(normalized):
+                return normalized
+            if PricingService.get_model_pricing(model_name):
+                return model_name
+            return normalized
+
+        for root, _, files in os.walk(logs_root):
+            for filename in files:
+                if filename != "token_usage.csv":
+                    continue
+                file_path = os.path.join(root, filename)
+                try:
+                    with open(file_path, 'r', newline='', encoding='utf-8') as csvfile:
+                        reader = csv.DictReader(csvfile)
+                        rows = list(reader)
+                        fieldnames = reader.fieldnames or []
+
+                    if not rows or 'Model' not in fieldnames or 'API_Endpoint' not in fieldnames:
+                        continue
+
+                    updated = False
+                    for row in rows:
+                        current_model = row.get('Model')
+                        endpoint = row.get('API_Endpoint')
+                        pricing_model = resolve_pricing_model(endpoint, current_model)
+                        if pricing_model and pricing_model != current_model:
+                            row['Model'] = pricing_model
+                            updated = True
+
+                    if updated:
+                        with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+                            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                            writer.writeheader()
+                            writer.writerows(rows)
+                except Exception as e:
+                    print(f"Error migrating token log {file_path}: {e}")
+
+        try:
+            with open(marker_file, 'w', encoding='utf-8') as f:
+                f.write(datetime.datetime.now().isoformat())
+        except Exception as e:
+            print(f"Error writing migration marker {marker_file}: {e}")
+
+    def _summarize_workflow_tokens(self, workflow):
+        if not workflow or not workflow.start_time:
+            return None
+
+        end_time = workflow.end_time or datetime.datetime.now()
+        logs_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nodes", "Logs")
+        if not os.path.exists(logs_root):
+            return None
+
+        summary = {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "total_cost": 0.0,
+            "models": {},
+            "endpoints": set()
+        }
+
+        for root, _, files in os.walk(logs_root):
+            for filename in files:
+                if filename != "token_usage.csv":
+                    continue
+                file_path = os.path.join(root, filename)
+                try:
+                    with open(file_path, 'r', newline='', encoding='utf-8') as csvfile:
+                        reader = csv.DictReader(csvfile)
+                        for row in reader:
+                            row_date = row.get('Date')
+                            row_time = row.get('Time')
+                            if not row_date or not row_time:
+                                continue
+                            try:
+                                row_dt = datetime.datetime.strptime(f"{row_date} {row_time}", "%Y-%m-%d %H:%M:%S")
+                            except ValueError:
+                                continue
+
+                            if row_dt < workflow.start_time or row_dt > end_time:
+                                continue
+
+                            prompt_tokens = int(float(row.get('SubmitTokens', 0) or 0))
+                            completion_tokens = int(float(row.get('ReplyTokens', 0) or 0))
+                            total_tokens = int(float(row.get('TotalTokens', 0) or 0))
+                            model_name = row.get('Model') or ''
+                            endpoint = row.get('API_Endpoint') or ''
+                            audio_duration = float(row.get('AudioDuration(s)', 0) or 0)
+
+                            summary["input_tokens"] += prompt_tokens
+                            summary["output_tokens"] += completion_tokens
+                            summary["total_tokens"] += total_tokens
+
+                            if model_name:
+                                summary["models"][model_name] = summary["models"].get(model_name, 0) + total_tokens
+                            if endpoint:
+                                summary["endpoints"].add(endpoint)
+
+                            if audio_duration > 0 and model_name == "whisper-1":
+                                summary["total_cost"] += PricingService.get_whisper_cost(audio_duration)
+                            else:
+                                _, _, cost = PricingService.get_text_model_cost(model_name, prompt_tokens, completion_tokens)
+                                summary["total_cost"] += cost
+                except Exception as e:
+                    print(f"Error reading token log {file_path}: {e}")
+
+        summary["endpoints"] = sorted(summary["endpoints"])
+        return summary
     
     def complete_workflow(self, workflow_id, output):
         """Mark a workflow as completed with the given output."""
         workflow = self.get_workflow(workflow_id)
         if workflow:
             workflow.complete(output)
+            workflow.token_summary = self._summarize_workflow_tokens(workflow)
             self._notify_listeners()
             self.save_workflow_history()  # Save history after workflow is completed
             return True
@@ -138,6 +274,7 @@ class WorkflowManager:
         workflow = self.get_workflow(workflow_id)
         if workflow:
             workflow.set_error(error)
+            workflow.token_summary = self._summarize_workflow_tokens(workflow)
             self._notify_listeners()
             self.save_workflow_history()  # Save history after workflow error
             return True
@@ -226,25 +363,44 @@ class WorkflowManager:
             new_entries_added = False
             for wf_id, wf in list(self.workflows.items()): # Iterate over a copy in case self.workflows changes
                 if wf.status in ["completed", "error", "stopped"] and wf_id not in existing_ids_in_log:
-                    content_filename = os.path.join(self.history_dir, f"{wf_id}.txt")
-                    content_to_save = wf.output if wf.status == "completed" else wf.error if wf.status == "error" else "Workflow stopped by user."
-                    
+                    input_filename = f"{wf_id}_input.txt"
+                    output_filename = f"{wf_id}_output.txt"
+                    error_filename = f"{wf_id}_error.txt"
+
+                    input_path = os.path.join(self.history_dir, input_filename)
+                    output_path = os.path.join(self.history_dir, output_filename)
+                    error_path = os.path.join(self.history_dir, error_filename)
+
                     try:
-                        with open(content_filename, 'w', encoding='utf-8') as f_content:
-                            f_content.write(str(content_to_save))
+                        with open(input_path, 'w', encoding='utf-8') as f_input:
+                            f_input.write(str(wf.user_input or ""))
                     except Exception as e:
-                        print(f"Error saving content for workflow {wf_id} to {content_filename}: {e}")
-                        # Continue, don't let one file error stop all history saving
+                        print(f"Error saving input for workflow {wf_id} to {input_path}: {e}")
+
+                    if wf.status == "completed":
+                        try:
+                            with open(output_path, 'w', encoding='utf-8') as f_output:
+                                f_output.write(str(wf.output or ""))
+                        except Exception as e:
+                            print(f"Error saving output for workflow {wf_id} to {output_path}: {e}")
+                    elif wf.status == "error":
+                        try:
+                            with open(error_path, 'w', encoding='utf-8') as f_error:
+                                f_error.write(str(wf.error or ""))
+                        except Exception as e:
+                            print(f"Error saving error for workflow {wf_id} to {error_path}: {e}")
 
                     history_entry = {
                         'id': wf.id,
                         'workflow_name': wf.workflow_name,
-                        'user_input': wf.user_input,
+                        'input_preview': wf.user_input[:200] if wf.user_input else "",
                         'start_time': wf.start_time.isoformat() if wf.start_time else None,
                         'end_time': wf.end_time.isoformat() if wf.end_time else None,
                         'status': wf.status,
                         'duration': wf.get_formatted_duration(),
-                        'content_file': content_filename
+                        'input_file': input_filename,
+                        'output_file': output_filename if wf.status == "completed" else None,
+                        'error_file': error_filename if wf.status == "error" else None
                     }
                     history_data.append(history_entry)
                     existing_ids_in_log.add(wf_id) # Add to set to prevent re-adding if called multiple times quickly
@@ -281,57 +437,85 @@ class WorkflowManager:
             for workflow_data in history_data:
                 # Create a new workflow instance
                 workflow = WorkflowInstance(
-                    workflow_data["workflow_name"],
+                    workflow_data.get("workflow_name", "Unknown Workflow"),
                     ""  # Empty user_input initially
                 )
                 
                 # Set the ID to match the saved ID
-                workflow.id = workflow_data["id"]
+                workflow.id = workflow_data.get("id", workflow.id)
                 
                 # Set status
-                workflow.status = workflow_data["status"]
+                workflow.status = workflow_data.get("status", "completed")
                 
                 # Parse dates
-                workflow.start_time = datetime.datetime.fromisoformat(workflow_data["start_time"])
-                if workflow_data["end_time"]:
-                    workflow.end_time = datetime.datetime.fromisoformat(workflow_data["end_time"])
+                start_time = workflow_data.get("start_time")
+                if start_time:
+                    workflow.start_time = datetime.datetime.fromisoformat(start_time)
+                end_time = workflow_data.get("end_time")
+                if end_time:
+                    workflow.end_time = datetime.datetime.fromisoformat(end_time)
                 
                 # Load input from file
-                input_file = os.path.join(self.history_dir, workflow_data["input_file"])
-                if os.path.exists(input_file):
-                    try:
-                        with open(input_file, 'r', encoding='utf-8') as f:
-                            workflow.user_input = f.read()
-                    except Exception as e:
-                        print(f"Error reading input file {input_file}: {e}")
+                input_file = workflow_data.get("input_file")
+                if input_file:
+                    input_path = os.path.join(self.history_dir, input_file)
+                    if os.path.exists(input_path):
+                        try:
+                            with open(input_path, 'r', encoding='utf-8') as f:
+                                workflow.user_input = f.read()
+                        except Exception as e:
+                            print(f"Error reading input file {input_path}: {e}")
+                            workflow.user_input = workflow_data.get("input_preview", "")
+                    else:
                         workflow.user_input = workflow_data.get("input_preview", "")
                 else:
-                    # Fallback to preview if file doesn't exist
+                    # Backward compatibility for legacy content_file
                     workflow.user_input = workflow_data.get("input_preview", "")
                 
                 # Load output from file if it exists
-                if workflow_data["output_file"]:
-                    output_file = os.path.join(self.history_dir, workflow_data["output_file"])
-                    if os.path.exists(output_file):
+                output_file = workflow_data.get("output_file")
+                if output_file:
+                    output_path = os.path.join(self.history_dir, output_file)
+                    if os.path.exists(output_path):
                         try:
-                            with open(output_file, 'r', encoding='utf-8') as f:
+                            with open(output_path, 'r', encoding='utf-8') as f:
                                 workflow.output = f.read()
                         except Exception as e:
-                            print(f"Error reading output file {output_file}: {e}")
+                            print(f"Error reading output file {output_path}: {e}")
                             workflow.output = "Error loading output file"
                 
                 # Load error from file if it exists
-                if workflow_data["error_file"]:
-                    error_file = os.path.join(self.history_dir, workflow_data["error_file"])
-                    if os.path.exists(error_file):
+                error_file = workflow_data.get("error_file")
+                if error_file:
+                    error_path = os.path.join(self.history_dir, error_file)
+                    if os.path.exists(error_path):
                         try:
-                            with open(error_file, 'r', encoding='utf-8') as f:
+                            with open(error_path, 'r', encoding='utf-8') as f:
                                 workflow.error = f.read()
                         except Exception as e:
-                            print(f"Error reading error file {error_file}: {e}")
+                            print(f"Error reading error file {error_path}: {e}")
                             workflow.error = "Error loading error file"
+                elif workflow_data.get("content_file") and workflow.status == "error":
+                    legacy_path = workflow_data.get("content_file")
+                    if legacy_path and os.path.exists(legacy_path):
+                        try:
+                            with open(legacy_path, 'r', encoding='utf-8') as f:
+                                workflow.error = f.read()
+                        except Exception as e:
+                            print(f"Error reading legacy error file {legacy_path}: {e}")
+                            workflow.error = "Error loading error file"
+                elif workflow_data.get("content_file") and workflow.status == "completed":
+                    legacy_path = workflow_data.get("content_file")
+                    if legacy_path and os.path.exists(legacy_path):
+                        try:
+                            with open(legacy_path, 'r', encoding='utf-8') as f:
+                                workflow.output = f.read()
+                        except Exception as e:
+                            print(f"Error reading legacy output file {legacy_path}: {e}")
+                            workflow.output = "Error loading output file"
                 
                 # Add to workflows dictionary
+                workflow.token_summary = self._summarize_workflow_tokens(workflow)
                 self.workflows[workflow.id] = workflow
             
             print(f"Loaded {len(history_data)} workflows from history log: {self.log_file}")
@@ -347,7 +531,8 @@ class WorkflowManager:
             # Define CSV headers
             headers = [
                 "ID", "Workflow Name", "Input Preview", "Status", 
-                "Start Time", "End Time", "Duration"
+                "Start Time", "End Time", "Duration",
+                "Input Tokens", "Output Tokens", "Total Tokens", "Estimated Cost"
             ]
             
             with open(filepath, 'w', newline='', encoding='utf-8') as csvfile:
@@ -363,6 +548,7 @@ class WorkflowManager:
                     input_preview = workflow.user_input[:100] + "..." if len(workflow.user_input) > 100 else workflow.user_input
                     
                     # Prepare row data
+                    summary = workflow.token_summary or self._summarize_workflow_tokens(workflow) or {}
                     row = [
                         workflow.id,
                         workflow.workflow_name,
@@ -370,7 +556,11 @@ class WorkflowManager:
                         workflow.status,
                         start_time,
                         end_time,
-                        workflow.get_formatted_duration()
+                        workflow.get_formatted_duration(),
+                        summary.get("input_tokens", 0),
+                        summary.get("output_tokens", 0),
+                        summary.get("total_tokens", 0),
+                        f"${summary.get('total_cost', 0.0):.4f}"
                     ]
                     writer.writerow(row)
                 
@@ -425,13 +615,14 @@ class WorkflowManager:
         )
         
         for workflow in sorted_completed:
+            summary = workflow.token_summary or self._summarize_workflow_tokens(workflow) or {}
             completed_tree.insert(
                 "", "end", iid=workflow.id,
                 values=(
                     workflow.workflow_name,
                     workflow.user_input[:50] + "..." if len(workflow.user_input) > 50 else workflow.user_input,
-                    workflow.get_formatted_duration(),
-                    workflow.get_status_display()
+                    summary.get("total_tokens", 0),
+                    f"${summary.get('total_cost', 0.0):.4f}"
                 )
             )
         
@@ -497,10 +688,10 @@ def create_workflow_management_tab(notebook, config, gui_queue):
     completed_frame = ttk.Frame(completed_paned)
     completed_paned.add(completed_frame, weight=1)
     
-    completed_columns = ("Workflow", "Input")
+    completed_columns = ("Workflow", "Input", "Tokens", "Cost")
     completed_tree = ttk.Treeview(completed_frame, columns=completed_columns, show="headings", selectmode="browse")
     
-    for col, width in zip(completed_columns, [150, 300]):
+    for col, width in zip(completed_columns, [150, 260, 90, 90]):
         completed_tree.heading(col, text=col)
         completed_tree.column(col, width=width)
     
@@ -534,6 +725,26 @@ def create_workflow_management_tab(notebook, config, gui_queue):
     ttk.Label(info_frame, text="Ended:").grid(row=3, column=0, sticky="w", padx=5, pady=2)
     ended_label = ttk.Label(info_frame, text="")
     ended_label.grid(row=3, column=1, sticky="w", padx=5, pady=2)
+
+    ttk.Label(info_frame, text="Duration:").grid(row=4, column=0, sticky="w", padx=5, pady=2)
+    duration_label = ttk.Label(info_frame, text="")
+    duration_label.grid(row=4, column=1, sticky="w", padx=5, pady=2)
+
+    ttk.Label(info_frame, text="Tokens (in/out/total):").grid(row=5, column=0, sticky="w", padx=5, pady=2)
+    tokens_label = ttk.Label(info_frame, text="")
+    tokens_label.grid(row=5, column=1, sticky="w", padx=5, pady=2)
+
+    ttk.Label(info_frame, text="Estimated Cost:").grid(row=6, column=0, sticky="w", padx=5, pady=2)
+    cost_label = ttk.Label(info_frame, text="")
+    cost_label.grid(row=6, column=1, sticky="w", padx=5, pady=2)
+
+    ttk.Label(info_frame, text="Endpoints:").grid(row=7, column=0, sticky="w", padx=5, pady=2)
+    endpoints_label = ttk.Label(info_frame, text="", wraplength=350, justify="left")
+    endpoints_label.grid(row=7, column=1, sticky="w", padx=5, pady=2)
+
+    ttk.Label(info_frame, text="Models:").grid(row=8, column=0, sticky="w", padx=5, pady=2)
+    models_label = ttk.Label(info_frame, text="", wraplength=350, justify="left")
+    models_label.grid(row=8, column=1, sticky="w", padx=5, pady=2)
     
     # Input section
     ttk.Label(details_frame, text="User Input").grid(row=1, column=0, sticky="w", padx=5, pady=(10, 0))
@@ -646,6 +857,11 @@ def create_workflow_management_tab(notebook, config, gui_queue):
         'status_label': status_label,
         'started_label': started_label,
         'ended_label': ended_label,
+        'duration_label': duration_label,
+        'tokens_label': tokens_label,
+        'cost_label': cost_label,
+        'endpoints_label': endpoints_label,
+        'models_label': models_label,
         'input_text': input_text,
         'output_text': output_text,
         'formatting_var': formatting_var
@@ -791,13 +1007,14 @@ def update_workflow_trees(active_tree, completed_tree, workflow_tab=None):
     )
     
     for workflow in sorted_completed:
+        summary = workflow.token_summary or workflow_manager._summarize_workflow_tokens(workflow) or {}
         completed_tree.insert(
             "", "end", iid=workflow.id,
             values=(
                 workflow.workflow_name,
                 workflow.user_input[:50] + "..." if len(workflow.user_input) > 50 else workflow.user_input,
-                workflow.get_formatted_duration(),
-                workflow.get_status_display()
+                summary.get("total_tokens", 0),
+                f"${summary.get('total_cost', 0.0):.4f}"
             )
         )
     
@@ -819,11 +1036,28 @@ def update_workflow_details(workflow_tab, workflow_id, formatting_var=None):
     elements['name_label'].config(text=workflow.workflow_name)
     elements['status_label'].config(text=workflow.get_status_display())
     elements['started_label'].config(text=workflow.start_time.strftime('%Y-%m-%d %H:%M:%S'))
+    elements['duration_label'].config(text=workflow.get_formatted_duration())
     
     if workflow.end_time:
         elements['ended_label'].config(text=workflow.end_time.strftime('%Y-%m-%d %H:%M:%S'))
     else:
         elements['ended_label'].config(text="N/A")
+
+    summary = workflow.token_summary or workflow_manager._summarize_workflow_tokens(workflow) or {}
+    input_tokens = summary.get("input_tokens", 0)
+    output_tokens = summary.get("output_tokens", 0)
+    total_tokens = summary.get("total_tokens", 0)
+    total_cost = summary.get("total_cost", 0.0)
+    endpoints = ", ".join(summary.get("endpoints", []))
+
+    models_data = summary.get("models", {})
+    model_parts = [f"{name} ({tokens})" for name, tokens in sorted(models_data.items())]
+    models_display = ", ".join(model_parts)
+
+    elements['tokens_label'].config(text=f"{input_tokens} / {output_tokens} / {total_tokens}")
+    elements['cost_label'].config(text=f"${total_cost:.4f}")
+    elements['endpoints_label'].config(text=endpoints)
+    elements['models_label'].config(text=models_display)
     
     # Update input text
     elements['input_text'].config(state="normal")
@@ -857,6 +1091,11 @@ def clear_workflow_details(workflow_tab):
     elements['status_label'].config(text="")
     elements['started_label'].config(text="")
     elements['ended_label'].config(text="")
+    elements['duration_label'].config(text="")
+    elements['tokens_label'].config(text="")
+    elements['cost_label'].config(text="")
+    elements['endpoints_label'].config(text="")
+    elements['models_label'].config(text="")
     
     # Clear text widgets
     elements['input_text'].config(state="normal")

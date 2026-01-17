@@ -1,8 +1,8 @@
 graph:
   connections:
-  - canvas_item: 511
+  - canvas_item: 4607
     canvas_items:
-    - 511
+    - 4607
     flow_offset: 0
     from_node: 2f73318d-18fd-4850-a0ae-78578f8a16a1
     from_output: output
@@ -11,12 +11,12 @@ graph:
     - '#55ff99'
     to_input: input
     to_node: e4cd7e51-e4ae-462c-a3f5-93e829529c06
-  - canvas_item: 512
+  - canvas_item: 4608
     canvas_items:
-    - 512
-    - 513
-    - 514
-    flow_offset: 0
+    - 4608
+    - 4609
+    - 4610
+    flow_offset: 2
     from_node: e4cd7e51-e4ae-462c-a3f5-93e829529c06
     from_output: output1
     is_flowing: false
@@ -32,26 +32,26 @@ graph:
     - '#55aee9'
     to_input: input
     to_node: b8c5e908-faca-43a8-8897-19a3a0295558
-  - canvas_item: 515
+  - canvas_item: 4611
     canvas_items:
-    - 515
-    - 516
-    - 517
-    - 518
-    - 519
-    - 520
-    - 521
-    - 522
-    - 523
-    - 524
-    - 525
-    - 526
-    - 527
-    - 528
-    - 529
-    - 530
-    - 531
-    flow_offset: 0
+    - 4611
+    - 4612
+    - 4613
+    - 4614
+    - 4615
+    - 4616
+    - 4617
+    - 4618
+    - 4619
+    - 4620
+    - 4621
+    - 4622
+    - 4623
+    - 4624
+    - 4625
+    - 4626
+    - 4627
+    flow_offset: 8
     from_node: e4cd7e51-e4ae-462c-a3f5-93e829529c06
     from_output: output2
     is_flowing: false
@@ -67,26 +67,26 @@ graph:
     - '#55b5e2'
     to_input: input2
     to_node: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
-  - canvas_item: 532
+  - canvas_item: 4628
     canvas_items:
-    - 532
-    - 533
-    - 534
-    - 535
-    - 536
-    - 537
-    - 538
-    - 539
-    - 540
-    - 541
-    - 542
-    - 543
-    - 544
-    - 545
-    - 546
-    - 547
-    - 548
-    flow_offset: 0
+    - 4628
+    - 4629
+    - 4630
+    - 4631
+    - 4632
+    - 4633
+    - 4634
+    - 4635
+    - 4636
+    - 4637
+    - 4638
+    - 4639
+    - 4640
+    - 4641
+    - 4642
+    - 4643
+    - 4644
+    flow_offset: 8
     from_node: b8c5e908-faca-43a8-8897-19a3a0295558
     from_output: output
     is_flowing: false
@@ -110,11 +110,11 @@ graph:
     - '#559ff8'
     to_input: input1
     to_node: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
-  - canvas_item: 549
+  - canvas_item: 4645
     canvas_items:
-    - 549
-    - 550
-    - 551
+    - 4645
+    - 4646
+    - 4647
     flow_offset: 0
     from_node: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
     from_output: output
@@ -123,26 +123,26 @@ graph:
     - '#55ff99'
     to_input: input
     to_node: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
-  - canvas_item: 552
+  - canvas_item: 4648
     canvas_items:
-    - 552
-    - 553
-    - 554
-    - 555
-    - 556
-    - 557
-    - 558
-    - 559
-    - 560
-    - 561
-    - 562
-    - 563
-    - 564
-    - 565
-    - 566
-    - 567
-    - 568
-    flow_offset: 4
+    - 4648
+    - 4649
+    - 4650
+    - 4651
+    - 4652
+    - 4653
+    - 4654
+    - 4655
+    - 4656
+    - 4657
+    - 4658
+    - 4659
+    - 4660
+    - 4661
+    - 4662
+    - 4663
+    - 4664
+    flow_offset: 2
     from_node: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
     from_output: output2
     is_flowing: false
@@ -166,39 +166,63 @@ graph:
     - '#559ff8'
     to_input: input
     to_node: f3434ff9-823c-410b-9909-ec7c37f2dfce
-  - canvas_item: 569
+  - canvas_item: 4665
     canvas_items:
-    - 569
-    - 570
-    - 571
+    - 4665
+    - 4666
+    - 4667
+    - 4668
+    - 4669
+    - 4670
+    - 4671
+    - 4672
+    - 4673
+    flow_offset: 8
     from_node: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
     from_output: output1
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55b8df'
+    - '#55b6e1'
     to_input: input
     to_node: d8753ad8-9970-4df1-9298-8d1b18d2c916
-  - canvas_item: 572
+  - canvas_item: 4674
     canvas_items:
-    - 572
-    - 573
-    - 574
+    - 4674
+    - 4675
+    - 4676
+    - 4677
+    - 4678
+    - 4679
+    - 4680
+    - 4681
+    - 4682
+    flow_offset: 6
     from_node: f3434ff9-823c-410b-9909-ec7c37f2dfce
     from_output: output
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55b7e0'
+    - '#55b6e1'
     to_input: input
     to_node: f1c2ce00-3b18-4c41-845c-7ecfd122651c
   nodes:
     07ee6883-464d-4abe-8c3e-8770ecdf6a35:
       canvas_items:
-        body: 418
-        description: 421
-        header: 419
-        input_input1: 422
-        input_input2: 424
-        input_label_input1: 423
-        input_label_input2: 425
-        output_label_output: 427
-        output_output: 426
-        resize_handle: 428
-        shadow: 417
-        title: 420
+        body: 2
+        description: 5
+        header: 3
+        input_input1: 6
+        input_input2: 8
+        input_label_input1: 7
+        input_label_input2: 9
+        output_label_output: 11
+        output_output: 10
+        resize_handle: 12
+        shadow: 1
+        title: 4
       height: 120
       highlight_state: false
       id: 07ee6883-464d-4abe-8c3e-8770ecdf6a35
@@ -242,16 +266,16 @@ graph:
       y: 251.11111111111111
     2f73318d-18fd-4850-a0ae-78578f8a16a1:
       canvas_items:
-        body: 430
-        description: 433
-        header: 431
-        input_input: 434
-        input_label_input: 435
-        output_label_output: 437
-        output_output: 436
-        resize_handle: 438
-        shadow: 429
-        title: 432
+        body: 14
+        description: 17
+        header: 15
+        input_input: 18
+        input_label_input: 19
+        output_label_output: 21
+        output_output: 20
+        resize_handle: 22
+        shadow: 13
+        title: 16
       height: 120
       highlight_state: false
       id: 2f73318d-18fd-4850-a0ae-78578f8a16a1
@@ -334,22 +358,22 @@ graph:
       y: 25
     3932d707-c27d-4bdb-b00d-a1b8337ac20b:
       canvas_items:
-        body: 440
-        description: 443
-        header: 441
-        input_input: 444
-        input_label_input: 445
-        output_label_output1: 447
-        output_label_output2: 449
-        output_label_output3: 451
-        output_label_output4: 453
-        output_output1: 446
-        output_output2: 448
-        output_output3: 450
-        output_output4: 452
-        resize_handle: 454
-        shadow: 439
-        title: 442
+        body: 24
+        description: 27
+        header: 25
+        input_input: 28
+        input_label_input: 29
+        output_label_output1: 31
+        output_label_output2: 33
+        output_label_output3: 35
+        output_label_output4: 37
+        output_output1: 30
+        output_output2: 32
+        output_output3: 34
+        output_output4: 36
+        resize_handle: 38
+        shadow: 23
+        title: 26
       height: 120
       highlight_state: false
       id: 3932d707-c27d-4bdb-b00d-a1b8337ac20b
@@ -412,16 +436,16 @@ graph:
       y: 250
     b8c5e908-faca-43a8-8897-19a3a0295558:
       canvas_items:
-        body: 456
-        description: 459
-        header: 457
-        input_input: 460
-        input_label_input: 461
-        output_label_output: 463
-        output_output: 462
-        resize_handle: 464
-        shadow: 455
-        title: 458
+        body: 40
+        description: 43
+        header: 41
+        input_input: 44
+        input_label_input: 45
+        output_label_output: 47
+        output_output: 46
+        resize_handle: 48
+        shadow: 39
+        title: 42
       height: 120
       highlight_state: false
       id: b8c5e908-faca-43a8-8897-19a3a0295558
@@ -504,16 +528,16 @@ graph:
       y: 0
     d8753ad8-9970-4df1-9298-8d1b18d2c916:
       canvas_items:
-        body: 466
-        description: 469
-        header: 467
-        input_input: 470
-        input_label_input: 471
-        output_label_output: 473
-        output_output: 472
-        resize_handle: 474
-        shadow: 465
-        title: 468
+        body: 50
+        description: 53
+        header: 51
+        input_input: 54
+        input_label_input: 55
+        output_label_output: 57
+        output_output: 56
+        resize_handle: 58
+        shadow: 49
+        title: 52
       height: 120
       highlight_state: false
       id: d8753ad8-9970-4df1-9298-8d1b18d2c916
@@ -571,22 +595,22 @@ graph:
       y: 225
     e4cd7e51-e4ae-462c-a3f5-93e829529c06:
       canvas_items:
-        body: 476
-        description: 479
-        header: 477
-        input_input: 480
-        input_label_input: 481
-        output_label_output1: 483
-        output_label_output2: 485
-        output_label_output3: 487
-        output_label_output4: 489
-        output_output1: 482
-        output_output2: 484
-        output_output3: 486
-        output_output4: 488
-        resize_handle: 490
-        shadow: 475
-        title: 478
+        body: 60
+        description: 63
+        header: 61
+        input_input: 64
+        input_label_input: 65
+        output_label_output1: 67
+        output_label_output2: 69
+        output_label_output3: 71
+        output_label_output4: 73
+        output_output1: 66
+        output_output2: 68
+        output_output3: 70
+        output_output4: 72
+        resize_handle: 74
+        shadow: 59
+        title: 62
       height: 120
       highlight_state: false
       id: e4cd7e51-e4ae-462c-a3f5-93e829529c06
@@ -649,16 +673,16 @@ graph:
       y: 25
     f1c2ce00-3b18-4c41-845c-7ecfd122651c:
       canvas_items:
-        body: 492
-        description: 495
-        header: 493
-        input_input: 496
-        input_label_input: 497
-        output_label_output: 499
-        output_output: 498
-        resize_handle: 500
-        shadow: 491
-        title: 494
+        body: 4598
+        description: 4601
+        header: 4599
+        input_input: 4602
+        input_label_input: 4603
+        output_label_output: 4605
+        output_output: 4604
+        resize_handle: 4606
+        shadow: 4597
+        title: 4600
       height: 120
       highlight_state: false
       id: f1c2ce00-3b18-4c41-845c-7ecfd122651c
@@ -712,20 +736,20 @@ graph:
       title: ExportDocument
       type: ExportDocumentNode
       width: 180
-      x: 675
+      x: 650
       y: 450
     f3434ff9-823c-410b-9909-ec7c37f2dfce:
       canvas_items:
-        body: 502
-        description: 505
-        header: 503
-        input_input: 506
-        input_label_input: 507
-        output_label_output: 509
-        output_output: 508
-        resize_handle: 510
-        shadow: 501
-        title: 504
+        body: 86
+        description: 89
+        header: 87
+        input_input: 90
+        input_label_input: 91
+        output_label_output: 93
+        output_output: 92
+        resize_handle: 94
+        shadow: 85
+        title: 88
       height: 120
       highlight_state: false
       id: f3434ff9-823c-410b-9909-ec7c37f2dfce
@@ -813,7 +837,7 @@ graph:
   viewport:
     pan_offset_x: 0
     pan_offset_y: 0
-    window_height: 640
-    window_width: 864
+    window_height: 642
+    window_width: 1074
     zoom_level: 0.9
 name: Series Bible Creator

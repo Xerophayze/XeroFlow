@@ -7,6 +7,7 @@ import logging
 import re
 from urllib.parse import urlparse
 import requests
+from services.pricing_service import PricingService
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +24,8 @@ class APIRequest:
 
 class APIResponse:
     def __init__(self, content: str = "", raw_response: Any = None, success: bool = False, error: str = "", 
-                 prompt_tokens: int = 0, completion_tokens: int = 0, total_tokens: int = 0):
+                 prompt_tokens: int = 0, completion_tokens: int = 0, total_tokens: int = 0,
+                 pricing_model: Optional[str] = None):
         self.content = content
         self.raw_response = raw_response
         self.success = success
@@ -31,6 +33,7 @@ class APIResponse:
         self.prompt_tokens = prompt_tokens
         self.completion_tokens = completion_tokens
         self.total_tokens = total_tokens
+        self.pricing_model = pricing_model
 
 class APIService:
     """
@@ -198,6 +201,22 @@ class APIService:
             logger.warning(f"Param sanitization failed: {e}")
         return params
 
+    def _resolve_pricing_model(self, api_name: str, model: Optional[str]) -> Optional[str]:
+        api_config = self.config.get('interfaces', {}).get(api_name, {})
+        pricing_model = api_config.get('pricing_model')
+        if pricing_model:
+            return pricing_model
+
+        if not model:
+            return None
+
+        normalized = PricingService.normalize_model_name(model)
+        if PricingService.get_model_pricing(normalized):
+            return normalized
+        if PricingService.get_model_pricing(model):
+            return model
+        return normalized
+
     def _sanitize_openai_params(self, model: str, params: Dict[str, Any]) -> Dict[str, Any]:
         """Apply OpenAI model-specific parameter rules.
 
@@ -236,12 +255,14 @@ class APIService:
         Returns:
             APIResponse object containing the response
         """
+        pricing_model = self._resolve_pricing_model(request.api_name, request.model)
         if request.api_name not in self._clients:
             return APIResponse(
                 content="API endpoint not initialized",
                 raw_response=None,
                 success=False,
-                error=f"API endpoint {request.api_name} not initialized"
+                error=f"API endpoint {request.api_name} not initialized",
+                pricing_model=pricing_model
             )
 
         client_info = self._clients[request.api_name]
@@ -304,10 +325,11 @@ class APIService:
                 model = client.GenerativeModel(request.model)
                 response = model.generate_content(request.content)
                 content = response.text
-                # Placeholder for token count - Gemini API v1 doesn't directly expose it
-                prompt_tokens = 0
-                completion_tokens = 0
-                total_tokens = 0
+                # Gemini API v1 doesn't directly expose token usage; estimate by char length
+                prompt_text = request.content or ""
+                prompt_tokens = max(1, len(str(prompt_text)) // 4) if prompt_text else 0
+                completion_tokens = max(1, len(content) // 4) if content else 0
+                total_tokens = prompt_tokens + completion_tokens
 
             elif api_type == "ollama":
                 response = client.chat(
@@ -395,7 +417,8 @@ class APIService:
                 return APIResponse(
                     content=content, 
                     raw_response={'results': clean_urls}, 
-                    success=True
+                    success=True,
+                    pricing_model=pricing_model
                 )
 
             elif api_type == "lmstudio":
@@ -450,7 +473,8 @@ class APIService:
                     success=True,
                     prompt_tokens=prompt_tokens,
                     completion_tokens=completion_tokens,
-                    total_tokens=total_tokens
+                    total_tokens=total_tokens,
+                    pricing_model=pricing_model
                 )
 
             else:
@@ -458,7 +482,8 @@ class APIService:
                     content="",
                     raw_response=None,
                     success=False,
-                    error=f"Unsupported API type: {api_type}"
+                    error=f"Unsupported API type: {api_type}",
+                    pricing_model=pricing_model
                 )
 
             return APIResponse(
@@ -467,7 +492,8 @@ class APIService:
                 success=True,
                 prompt_tokens=prompt_tokens,
                 completion_tokens=completion_tokens,
-                total_tokens=total_tokens
+                total_tokens=total_tokens,
+                pricing_model=pricing_model
             )
 
         except Exception as e:
@@ -476,7 +502,8 @@ class APIService:
                 content="",
                 raw_response=None,
                 success=False,
-                error=str(e)
+                error=str(e),
+                pricing_model=pricing_model
             )
 
     def validate_request(self, request: APIRequest) -> Optional[str]:

@@ -1,6 +1,7 @@
 # nodes/base_node.py
 from abc import ABC, abstractmethod
 from services.api_service import APIService, APIRequest, APIResponse
+from services.pricing_service import PricingService
 from services.token_logger import TokenLogger
 
 class BaseNode(ABC):
@@ -72,7 +73,7 @@ class BaseNode(ABC):
         response = self._api_service.send_request(request)
         
         # Log token usage for all API calls
-        if response.success and hasattr(response, 'total_tokens') and response.total_tokens > 0:
+        if response.success and hasattr(response, 'total_tokens'):
             # Get node name from properties
             node_name = self.properties.get('node_name', {}).get('default', self.__class__.__name__)
             
@@ -84,8 +85,15 @@ class BaseNode(ABC):
                 'audio_duration': 0  # Default for text-based APIs
             }
             
-            # Log token usage
-            TokenLogger.log_token_usage(node_name, api_name, kwargs.get('model', 'default'), token_usage)
+            api_config = self.config.get('interfaces', {}).get(api_name, {})
+            model = kwargs.get('model') or api_config.get('selected_model') or 'default'
+            pricing_model = api_config.get('pricing_model')
+            if not pricing_model and model:
+                normalized = PricingService.normalize_model_name(model)
+                pricing_model = normalized if PricingService.get_model_pricing(normalized) else model
+
+            # Log token usage with pricing-normalized model if available
+            TokenLogger.log_token_usage(node_name, api_name, pricing_model or model, token_usage)
         
         return response
 
@@ -129,7 +137,12 @@ class BaseNode(ABC):
         """
         for prop, value in node_data.get('properties', {}).items():
             if prop in self.properties:
-                self.properties[prop]['default'] = value.get('default', self.properties[prop].get('default'))
+                if isinstance(value, dict):
+                    self.properties[prop]['default'] = value.get('default', self.properties[prop].get('default'))
+                    if 'value' in value:
+                        self.properties[prop]['value'] = value.get('value')
+                else:
+                    self.properties[prop]['default'] = value
 
     def get_default_properties(self):
         """

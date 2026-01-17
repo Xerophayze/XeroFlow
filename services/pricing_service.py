@@ -344,7 +344,9 @@ class PricingService:
     
     # Path to the custom pricing configuration file
     CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
-                              "config", "pricing_config.json")
+                             "config", "pricing_config.json")
+    CURRENT_PRICING_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                        "current-v1.json")
     
     # Current pricing data (will be loaded from config or defaults)
     _pricing_data = None
@@ -355,14 +357,92 @@ class PricingService:
         config_dir = os.path.dirname(cls.CONFIG_FILE)
         if not os.path.exists(config_dir):
             os.makedirs(config_dir)
+
+    @classmethod
+    def _load_current_pricing_file(cls):
+        """Load pricing data from current-v1.json if available."""
+        if not os.path.exists(cls.CURRENT_PRICING_FILE):
+            return {}
+
+        try:
+            with open(cls.CURRENT_PRICING_FILE, 'r') as f:
+                data = json.load(f)
+
+            pricing_data = {}
+            for entry in data.get("prices", []):
+                model_id = entry.get("id")
+                input_cost = entry.get("input")
+                output_cost = entry.get("output")
+                provider = entry.get("vendor")
+
+                if not model_id or input_cost is None or output_cost is None:
+                    continue
+
+                model_pricing = {
+                    "input_per_million": float(input_cost),
+                    "output_per_million": float(output_cost),
+                    "provider": provider
+                }
+                input_cached = entry.get("input_cached")
+                if input_cached is not None:
+                    model_pricing["input_cached_per_million"] = float(input_cached)
+
+                pricing_data[model_id] = model_pricing
+
+            return pricing_data
+        except Exception:
+            return {}
+
+    @staticmethod
+    def normalize_model_name(model):
+        """Normalize model identifiers to improve pricing lookups."""
+        if not model:
+            return model
+
+        normalized = model.strip()
+        if normalized.startswith("models/"):
+            normalized = normalized.split("/", 1)[1]
+
+        if "/" in normalized:
+            normalized = normalized.split("/")[-1]
+
+        return normalized
+
+    @classmethod
+    def _lookup_model_pricing(cls, pricing_data, model):
+        if not model:
+            return {}
+
+        model_pricing = pricing_data.get(model, {})
+        if model_pricing:
+            return model_pricing
+
+        normalized = cls.normalize_model_name(model)
+        if normalized != model:
+            return pricing_data.get(normalized, {})
+
+        return {}
     
     @classmethod
     def load_pricing_data(cls):
         """Load pricing data from config file or use defaults"""
         if cls._pricing_data is not None:
             return cls._pricing_data
-            
+
         try:
+            current_pricing = cls._load_current_pricing_file()
+            if current_pricing:
+                config_exists = os.path.exists(cls.CONFIG_FILE)
+                current_mtime = os.path.getmtime(cls.CURRENT_PRICING_FILE)
+                config_mtime = os.path.getmtime(cls.CONFIG_FILE) if config_exists else 0
+
+                if not config_exists or current_mtime >= config_mtime:
+                    merged_pricing = dict(cls.DEFAULT_PRICING)
+                    merged_pricing.update(current_pricing)
+                    cls._pricing_data = merged_pricing
+                    cls.save_pricing_data()
+                    return cls._pricing_data
+
             if os.path.exists(cls.CONFIG_FILE):
                 with open(cls.CONFIG_FILE, 'r') as f:
                     cls._pricing_data = json.load(f)
@@ -385,7 +465,7 @@ class PricingService:
     def get_model_pricing(cls, model):
         """Get pricing information for a specific model"""
         pricing_data = cls.load_pricing_data()
-        return pricing_data.get(model, {})
+        return cls._lookup_model_pricing(pricing_data, model)
     
     @classmethod
     def update_model_pricing(cls, model, input_cost=None, output_cost=None, per_minute=None, 
@@ -432,12 +512,19 @@ class PricingService:
                 if data.get("provider") == provider]
         # Sort models alphabetically for easier selection
         return sorted(models)
+
+    @classmethod
+    def get_providers(cls):
+        """Get a list of available providers."""
+        pricing_data = cls.load_pricing_data()
+        providers = {data.get("provider") for data in pricing_data.values() if data.get("provider")}
+        return sorted(providers)
     
     @classmethod
     def get_text_model_cost(cls, model, input_tokens, output_tokens):
         """Calculate cost for text model usage"""
         pricing_data = cls.load_pricing_data()
-        model_pricing = pricing_data.get(model, {})
+        model_pricing = cls._lookup_model_pricing(pricing_data, model)
         
         # Default to GPT-3.5-Turbo pricing if model not found
         if not model_pricing:

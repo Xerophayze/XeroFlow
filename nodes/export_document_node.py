@@ -3,7 +3,7 @@
 Export Document Node
 ====================
 
-This node exports input text to either a Word (.docx) or Excel (.xlsx) document.
+This node exports input text to Word (.docx), Excel (.xlsx), or Text (.txt) documents.
 It uses the existing ExportWord and ExportExcel modules for the actual conversion.
 
 Features:
@@ -15,6 +15,7 @@ Features:
 
 import os
 import threading
+import datetime
 from tkinter import filedialog, Tk, messagebox
 from .base_node import BaseNode
 from node_registry import register_node
@@ -22,7 +23,7 @@ from node_registry import register_node
 
 @register_node('ExportDocumentNode')
 class ExportDocumentNode(BaseNode):
-    """Node that exports input text to Word or Excel documents."""
+    """Node that exports input text to Word, Excel, or Text documents."""
     
     def define_inputs(self):
         return ['input']  # Single input for the text to export
@@ -46,7 +47,7 @@ class ExportDocumentNode(BaseNode):
             'export_format': {
                 'type': 'dropdown',
                 'label': 'Export Format',
-                'options': ['Word (.docx)', 'Excel (.xlsx)'],
+                'options': ['Word (.docx)', 'Excel (.xlsx)', 'Text (.txt)'],
                 'default': 'Word (.docx)'
             },
             'output_folder': {
@@ -58,6 +59,11 @@ class ExportDocumentNode(BaseNode):
                 'type': 'text',
                 'label': 'Filename (without extension)',
                 'default': 'exported_document'
+            },
+            'append_timestamp': {
+                'type': 'boolean',
+                'label': 'Append Date/Time to Filename',
+                'default': True
             },
             'formatting_enabled': {
                 'type': 'boolean',
@@ -81,6 +87,12 @@ class ExportDocumentNode(BaseNode):
             }
         })
         return props
+
+    def _get_property_value(self, key, default=None):
+        prop = self.properties.get(key, {})
+        if isinstance(prop, dict):
+            return prop.get('value', prop.get('default', default))
+        return prop if prop is not None else default
     
     def process(self, inputs):
         """
@@ -99,16 +111,20 @@ class ExportDocumentNode(BaseNode):
         print(f"[ExportDocumentNode] Received input text of length: {len(input_text)}")
         
         # Get properties
-        export_format = self.properties.get('export_format', {}).get('default', 'Word (.docx)')
-        output_folder = self.properties.get('output_folder', {}).get('default', '').strip()
-        filename = self.properties.get('filename', {}).get('default', 'exported_document').strip()
-        formatting_enabled = self.properties.get('formatting_enabled', {}).get('default', True)
-        auto_open = self.properties.get('auto_open', {}).get('default', False)
+        export_format = self._get_property_value('export_format', 'Word (.docx)')
+        output_folder = self._get_property_value('output_folder', '').strip()
+        filename = self._get_property_value('filename', 'exported_document').strip()
+        append_timestamp = self._get_property_value('append_timestamp', True)
+        formatting_enabled = self._get_property_value('formatting_enabled', True)
+        auto_open = self._get_property_value('auto_open', False)
         
         # Determine file extension
         if 'Word' in export_format:
             extension = '.docx'
             export_type = 'word'
+        elif 'Text' in export_format:
+            extension = '.txt'
+            export_type = 'text'
         else:
             extension = '.xlsx'
             export_type = 'excel'
@@ -118,6 +134,11 @@ class ExportDocumentNode(BaseNode):
         if not filename:
             filename = 'exported_document'
         
+        # Append timestamp if enabled
+        if append_timestamp:
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{filename}_{timestamp}"
+
         # Determine output path
         output_path = None
         gui_queue = inputs.get('gui_queue')
@@ -140,6 +161,8 @@ class ExportDocumentNode(BaseNode):
         try:
             if export_type == 'word':
                 result = self._export_to_word(input_text, output_path, formatting_enabled)
+            elif export_type == 'text':
+                result = self._export_to_text(input_text, output_path)
             else:
                 result = self._export_to_excel(input_text, output_path, formatting_enabled)
             
@@ -173,6 +196,9 @@ class ExportDocumentNode(BaseNode):
             if export_type == 'word':
                 filetypes = [("Word Document", "*.docx"), ("All Files", "*.*")]
                 title = "Save Word Document"
+            elif export_type == 'text':
+                filetypes = [("Text File", "*.txt"), ("All Files", "*.*")]
+                title = "Save Text File"
             else:
                 filetypes = [("Excel Workbook", "*.xlsx"), ("All Files", "*.*")]
                 title = "Save Excel Workbook"
@@ -240,6 +266,17 @@ class ExportDocumentNode(BaseNode):
                 
         except ImportError as e:
             return {'success': False, 'error': f'ExportWord module not available: {e}'}
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+
+    def _export_to_text(self, text, output_path):
+        """Export text to a plain text file."""
+        try:
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(text)
+            if os.path.exists(output_path):
+                return {'success': True, 'path': output_path}
+            return {'success': False, 'error': 'File was not created'}
         except Exception as e:
             return {'success': False, 'error': str(e)}
     
