@@ -78,10 +78,10 @@ pip install -r requirements.txt
 
 REM Install PyTorch with CUDA support (falls back to CPU wheels if needed)
 echo Installing PyTorch (CUDA wheels)...
-pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 --index-url https://download.pytorch.org/whl/cu121
+pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu121
 if %errorlevel% neq 0 (
     echo CUDA wheels failed to install. Falling back to CPU wheels...
-    pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 --index-url https://download.pytorch.org/whl/cpu
+    pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cpu
     if %errorlevel% neq 0 (
         echo Failed to install PyTorch. Please install manually and re-run this script.
         exit /b 1
