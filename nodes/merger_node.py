@@ -4,7 +4,7 @@ MergerNode: Takes two inputs and combines them into a single output.
 Useful for rejoining parallel processing branches in workflows.
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 
 @register_node('MergerNode')

@@ -4,7 +4,7 @@ ConditionalRouterNode: Routes input to one of two outputs based on a search cond
 If the search string is found in the input, it goes to output1; otherwise to output2.
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 
 @register_node('ConditionalRouterNode')

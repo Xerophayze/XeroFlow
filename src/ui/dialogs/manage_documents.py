@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
-from db_tools import DatabaseManager
+from src.database.db_tools import DatabaseManager
 import logging
 import threading
 import os  # Import os for path manipulations

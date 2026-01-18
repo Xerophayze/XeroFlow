@@ -7,7 +7,7 @@ import queue
 import os
 from pathlib import Path
 import yaml
-from config_utils import load_config, save_config
+from src.utils.config import load_config, save_config
 
 class AutoStartupManager:
     """Manages workflows that should automatically start when XeroFlow launches."""

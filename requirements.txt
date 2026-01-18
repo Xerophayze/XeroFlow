@@ -26,7 +26,7 @@ soundfile>=0.12.1  # Alternative for audio file processing
 openai>=1.0.0  # For OpenAI API
 anthropic>=0.8.0  # For Claude API
 groq>=0.3.0  # For Groq API
-google-generativeai>=0.4.0 # For Google Gemini API
+google-genai>=0.1.0  # For Google Gemini API (new unified SDK)
 
 # Core langchain dependencies
 langchain

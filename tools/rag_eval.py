@@ -38,7 +38,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from db_tools import DatabaseManager  # noqa: E402
+from src.database.db_tools import DatabaseManager  # noqa: E402
 
 
 def load_cases(path: Path) -> List[Dict[str, Any]]:

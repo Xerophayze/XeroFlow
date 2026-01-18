@@ -6,8 +6,8 @@ It iteratively processes each item from this list, sending each to the API,
 and accumulates the responses either as a combined string or as an array of responses.
 """
 from .base_node import BaseNode
-from node_registry import register_node  # Import the decorator
-from api_handler import process_api_request  # Correct import
+from src.workflows.node_registry import register_node  # Import the decorator
+from src.api.handler import process_api_request  # Correct import
 from utils.progress_window import ProgressWindow
 from utils.array_review_window import ArrayReviewWindow
 

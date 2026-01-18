@@ -28,7 +28,11 @@ def reload_nodes():
     NODE_REGISTRY.clear()
     print("Cleared NODE_REGISTRY for reloading nodes.")
 
-    nodes_dir = Path(__file__).parent / 'nodes'
+    # Get the project root directory
+    current_file = os.path.abspath(__file__)
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file)))
+    nodes_dir = os.path.join(project_root, "nodes")
+    
     for filename in os.listdir(nodes_dir):
         if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py', 'missing_node.py'):
             module_name = filename[:-3]
@@ -42,7 +46,17 @@ def reload_nodes():
 
 # Automatically import all node modules in the 'nodes' directory upon initial load
 def initial_load_nodes():
-    nodes_dir = Path(__file__).parent / 'nodes'
+    """Load all nodes from the nodes directory on first import."""
+    # Get the project root directory (where main.py is located)
+    # This file is at src/workflows/node_registry.py, so go up 2 levels to get to root
+    current_file = os.path.abspath(__file__)
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file)))
+    nodes_dir = os.path.join(project_root, "nodes")
+    
+    if not os.path.exists(nodes_dir):
+        print(f"Warning: nodes directory not found at {nodes_dir}")
+        return
+    
     for filename in os.listdir(nodes_dir):
         if filename.endswith('.py') and filename not in ('__init__.py', 'base_node.py', 'missing_node.py'):
             module_name = filename[:-3]

@@ -2,7 +2,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 import time
 from urllib.parse import urljoin, urlparse
 import tkinter as tk

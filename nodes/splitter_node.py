@@ -4,7 +4,7 @@ SplitterNode: Takes a single input and duplicates it to two outputs.
 Useful for creating parallel processing branches in workflows.
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 
 @register_node('SplitterNode')
