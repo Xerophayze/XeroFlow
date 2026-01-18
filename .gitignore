@@ -40,7 +40,7 @@ htmlcov/
 # XeroFlow specific - DO NOT COMMIT
 config.yaml          # Contains API keys
 nodes/Logs/          # Token usage logs
-workflow_data/       # Workflow history and run data
+**/workflow_data/    # Workflow history and run data (anywhere in repo)
 
 # Sync scripts (dev only)
 sync_to_repo.py

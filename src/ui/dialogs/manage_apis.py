@@ -7,7 +7,7 @@ import json
 import requests
 from typing import Dict, Any, Optional
 import time
-from config_utils import load_config, save_config
+from src.utils.config import load_config, save_config
 from services.pricing_service import PricingService
 
 class APIConfigManager:
@@ -203,17 +203,31 @@ class APIConfigManager:
             
     def _fetch_google_models(self, api_key: str) -> list:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
+            import google.genai as genai
+            client = genai.Client(api_key=api_key)
             models = []
-            for model in genai.list_models():
-                if 'generateContent' in model.supported_generation_methods:
-                    models.append(model.name)
-            return models
+            # Get all models and filter to text-only LLMs
+            for model in client.models.list():
+                if hasattr(model, 'name'):
+                    model_name = model.name
+                    # Filter out non-text models and specialized/lite versions - only include core text LLMs
+                    exclude_keywords = [
+                        'vision', 'imagen', 'image', 'embedding', 'aqa', 'audio',
+                        'veo',  # Video models
+                        'deep-research', 'deepresearch',  # Research models
+                        'gemma',  # Smaller Gemma models
+                        'lite'  # Lite versions
+                    ]
+                    if not any(keyword in model_name.lower() for keyword in exclude_keywords):
+                        models.append(model_name)
+            return models if models else ["No models found - check API key"]
         except ImportError:
-            return ["google-generativeai not installed"]
+            return ["google-genai not installed"]
         except Exception as e:
-            return [f"Error: {e}"]
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Error fetching Google models: {error_details}")
+            return [f"Error: {str(e)}"]
 
     def _fetch_searchengine_models(self, base_url: str) -> list:
         """Fetch available models from SearchEngine."""
@@ -372,13 +386,19 @@ class APIConfigManager:
             
     def _fetch_google_max_tokens(self, api_key: str, model: str) -> Optional[int]:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model_info = genai.get_model(model)
-            return model_info.max_tokens
+            import google.genai as genai
+            client = genai.Client(api_key=api_key)
+            model_info = client.models.get(model=model)
+            # Try different possible attribute names
+            if hasattr(model_info, 'max_tokens'):
+                return model_info.max_tokens
+            elif hasattr(model_info, 'output_token_limit'):
+                return model_info.output_token_limit
+            return None
         except ImportError:
             return None
         except Exception as e:
+            print(f"Error fetching Google max tokens: {e}")
             return None
             
     def _fetch_searchengine_max_tokens(self, model: str, base_url: Optional[str] = None) -> Optional[int]:

@@ -1,5 +1,5 @@
 from pathlib import Path
-from ExportExcel import convert_markdown_to_excel
+from src.export.excel import convert_markdown_to_excel
 from openpyxl import load_workbook
 
 SRC = Path("advanced_excel_markdown_examples (1).txt")

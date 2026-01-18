@@ -1,15 +1,15 @@
 # nodes/chat_node.py
 from .base_node import BaseNode
-from node_registry import register_node
-from db_tools import DatabaseManager
+from src.workflows.node_registry import register_node
+from src.database.db_tools import DatabaseManager
 import tkinter as tk
 from tkinter import END, messagebox
 from tkinter import ttk
-from formatting_utils import apply_formatting
+from src.export.formatting import apply_formatting
 import threading
 import re
 import os
-from api_handler import process_api_request
+from src.api.handler import process_api_request
 import time
 import traceback
 

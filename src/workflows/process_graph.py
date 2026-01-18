@@ -2,8 +2,8 @@
 
 import tkinter as tk
 from tkinter import messagebox
-from formatting_utils import append_formatted_text  # Use append_formatted_text instead of apply_formatting
-from node_registry import NODE_REGISTRY  # Ensure node_registry.py is accessible
+from src.export.formatting import append_formatted_text  # Use append_formatted_text instead of apply_formatting
+from src.workflows.node_registry import NODE_REGISTRY  # Ensure node_registry.py is accessible
 import queue
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED

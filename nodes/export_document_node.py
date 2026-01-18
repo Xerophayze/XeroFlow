@@ -18,7 +18,7 @@ import threading
 import datetime
 from tkinter import filedialog, Tk, messagebox
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 
 @register_node('ExportDocumentNode')
@@ -253,7 +253,7 @@ class ExportDocumentNode(BaseNode):
             if parent_dir not in sys.path:
                 sys.path.insert(0, parent_dir)
             
-            from ExportWord import convert_markdown_to_docx
+            from src.export.word import convert_markdown_to_docx
             
             # Call the conversion function
             convert_markdown_to_docx(text, output_path=output_path, formatting_enabled=formatting_enabled)
@@ -292,7 +292,7 @@ class ExportDocumentNode(BaseNode):
             if parent_dir not in sys.path:
                 sys.path.insert(0, parent_dir)
             
-            from ExportExcel import convert_markdown_to_excel
+            from src.export.excel import convert_markdown_to_excel
             
             # Call the conversion function
             convert_markdown_to_excel(text, output_path=output_path, formatting_enabled=formatting_enabled)

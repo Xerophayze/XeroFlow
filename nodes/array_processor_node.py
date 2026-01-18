@@ -5,8 +5,8 @@ Each array element is processed through a loop of API calls until a specified co
 The process involves two different prompts and a search condition.
 """
 from .base_node import BaseNode
-from node_registry import register_node
-from api_handler import process_api_request
+from src.workflows.node_registry import register_node
+from src.api.handler import process_api_request
 from utils.progress_window import ProgressWindow
 
 @register_node('ArrayProcessorNode')

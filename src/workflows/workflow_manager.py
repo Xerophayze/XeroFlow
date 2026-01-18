@@ -10,8 +10,8 @@ import time
 import json
 import os
 import csv
-from ExportWord import convert_markdown_to_docx
-from config_utils import load_config
+from src.export.word import convert_markdown_to_docx
+from src.utils.config import load_config
 from services.pricing_service import PricingService
 
 class WorkflowInstance:

@@ -110,9 +110,9 @@ class APIService:
                 logger.info(f"Initialized Groq client for {api_name}")
 
             elif api_type == "google":
-                import google.generativeai as genai
-                genai.configure(api_key=api_key)
-                self._clients[api_name] = {"client": genai, "type": api_type}
+                import google.genai as genai
+                client = genai.Client(api_key=api_key)
+                self._clients[api_name] = {"client": client, "type": api_type}
                 logger.info(f"Initialized Google Gemini client for {api_name}")
 
             elif api_type == "claude":
@@ -322,10 +322,12 @@ class APIService:
                         logger.info(f"OpenAI token usage - Prompt: {prompt_tokens}, Completion: {completion_tokens}, Total: {total_tokens}")
 
             elif api_type == "google":
-                model = client.GenerativeModel(request.model)
-                response = model.generate_content(request.content)
+                response = client.models.generate_content(
+                    model=request.model,
+                    contents=request.content
+                )
                 content = response.text
-                # Gemini API v1 doesn't directly expose token usage; estimate by char length
+                # Gemini API token counting
                 prompt_text = request.content or ""
                 prompt_tokens = max(1, len(str(prompt_text)) // 4) if prompt_text else 0
                 completion_tokens = max(1, len(content) // 4) if content else 0

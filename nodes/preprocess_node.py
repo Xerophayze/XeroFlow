@@ -3,7 +3,7 @@ PreProcess Node for XeroFlow.
 This node uses the PreProcess module to preprocess text before sending to an API.
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 import logging
 
 # Configure logging

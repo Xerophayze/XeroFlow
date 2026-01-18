@@ -33,7 +33,7 @@ will be saved as an ``.xlsx`` workbook.
 
 Example usage::
 
-    from ExportExcel import convert_markdown_to_excel
+    from src.export.excel import convert_markdown_to_excel
 
     markdown = '''
     # Heading Example

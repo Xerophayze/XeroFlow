@@ -7,7 +7,7 @@ LongOutputV4Node: Enhanced version of LongOutputV3Node with additional features:
 - Final array review window after processing completes
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 from utils.progress_window import ProgressWindow
 from utils.array_review_window import ArrayReviewWindow
 import tkinter as tk
@@ -15,7 +15,7 @@ from tkinter import ttk
 import requests
 from bs4 import BeautifulSoup
 import time
-from api_handler import process_api_request
+from src.api.handler import process_api_request
 import sys
 import os
 
