@@ -505,6 +505,100 @@ def create_gui(config):
     chat_tab.selected_prompt_index = None
     chat_tab.selected_prompt_name = None
 
+    # Right-click context menu for workflow listbox
+    def copy_workflow(chat_instruction_listbox):
+        """Copy the selected workflow with a new name."""
+        selected_indices = chat_instruction_listbox.curselection()
+        if not selected_indices:
+            messagebox.showwarning("Selection Required", "Please select a workflow to copy.")
+            return
+        index = selected_indices[0]
+        selected_name = chat_instruction_listbox.get(index)
+        
+        # Create dialog for new name
+        copy_dialog = Toplevel(root)
+        copy_dialog.title("Copy Workflow")
+        copy_dialog.geometry("350x120")
+        copy_dialog.transient(root)
+        copy_dialog.grab_set()
+        
+        # Center the dialog
+        copy_dialog.update_idletasks()
+        x = root.winfo_rootx() + (root.winfo_width() - 350) // 2
+        y = root.winfo_rooty() + (root.winfo_height() - 120) // 2
+        copy_dialog.geometry(f"+{x}+{y}")
+        
+        Label(copy_dialog, text="Enter name for the copy:").pack(padx=10, pady=(15, 5))
+        
+        name_entry = Entry(copy_dialog, width=40)
+        name_entry.pack(padx=10, pady=5)
+        name_entry.insert(0, f"{selected_name} - Copy")
+        name_entry.select_range(0, END)
+        name_entry.focus_set()
+        
+        def do_copy():
+            new_name = name_entry.get().strip()
+            if not new_name:
+                messagebox.showwarning("Name Required", "Please enter a name for the copy.")
+                return
+            
+            # Check if name already exists
+            existing_workflows = [wf['name'] for wf in load_workflows()]
+            if new_name in existing_workflows:
+                messagebox.showerror("Error", "A workflow with this name already exists.")
+                return
+            
+            # Load the original workflow
+            workflows = load_workflows()
+            original = next((wf for wf in workflows if wf['name'] == selected_name), None)
+            if not original:
+                messagebox.showerror("Error", f"Workflow '{selected_name}' not found.")
+                copy_dialog.destroy()
+                return
+            
+            # Create the copy
+            import copy
+            new_workflow = {
+                'name': new_name,
+                'graph': copy.deepcopy(original.get('graph', {}))
+            }
+            save_workflow(new_workflow)
+            update_workflow_list(chat_instruction_listbox)
+            copy_dialog.destroy()
+        
+        def on_cancel():
+            copy_dialog.destroy()
+        
+        # Bind Enter key to do_copy
+        name_entry.bind('<Return>', lambda e: do_copy())
+        copy_dialog.bind('<Escape>', lambda e: on_cancel())
+        
+        button_frame = ttk.Frame(copy_dialog)
+        button_frame.pack(pady=10)
+        ttk.Button(button_frame, text="Copy", command=do_copy, width=10).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Cancel", command=on_cancel, width=10).pack(side=tk.LEFT, padx=5)
+    
+    workflow_context_menu = Menu(root, tearoff=0)
+    workflow_context_menu.add_command(label="Add", command=lambda: add_instruction_prompt(config, chat_instruction_listbox))
+    workflow_context_menu.add_command(label="Edit", command=lambda: edit_instruction_prompt(config, chat_instruction_listbox))
+    workflow_context_menu.add_command(label="Copy", command=lambda: copy_workflow(chat_instruction_listbox))
+    workflow_context_menu.add_command(label="Delete", command=lambda: delete_instruction_prompt(config, chat_instruction_listbox))
+    workflow_context_menu.add_separator()
+    workflow_context_menu.add_command(label="Refresh", command=lambda: refresh_instruction_list(chat_instruction_listbox))
+    
+    def show_workflow_context_menu(event):
+        # Select the item under the cursor
+        index = chat_instruction_listbox.nearest(event.y)
+        if index >= 0:
+            chat_instruction_listbox.selection_clear(0, END)
+            chat_instruction_listbox.selection_set(index)
+            chat_instruction_listbox.activate(index)
+            # Update selection state
+            on_select_chat_instruction(event)
+        workflow_context_menu.tk_popup(event.x_root, event.y_root)
+    
+    chat_instruction_listbox.bind('<Button-3>', show_workflow_context_menu)
+
     db_search_frame = ttk.LabelFrame(top_container, text="Database Search")
     db_search_frame.grid(row=0, column=1, padx=(10, 0), pady=5, sticky="nsew")
     db_search_frame.columnconfigure(1, weight=1)

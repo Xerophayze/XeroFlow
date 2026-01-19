@@ -1,24 +1,24 @@
 graph:
   connections:
-  - canvas_item: 1735
+  - canvas_item: 24387
     canvas_items:
-    - 1735
-    - 1736
-    - 1737
-    - 1738
-    - 1739
-    - 1740
-    - 1741
-    - 1742
-    - 1743
-    - 1744
-    - 1745
-    - 1746
-    - 1747
-    - 1748
-    - 1749
-    - 1750
-    - 1751
+    - 24387
+    - 24388
+    - 24389
+    - 24390
+    - 24391
+    - 24392
+    - 24393
+    - 24394
+    - 24395
+    - 24396
+    - 24397
+    - 24398
+    - 24399
+    - 24400
+    - 24401
+    - 24402
+    - 24403
     disabled: false
     flow_offset: 0
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -44,11 +44,11 @@ graph:
     - '#559dfa'
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 1752
+  - canvas_item: 24404
     canvas_items:
-    - 1752
-    - 1753
-    - 1754
+    - 24404
+    - 24405
+    - 24406
     disabled: false
     flow_offset: 2
     from_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
@@ -66,25 +66,25 @@ graph:
     - '#55a9ee'
     to_input: input
     to_node: 6976a651-76f1-410c-b10b-0f4324774546
-  - canvas_item: 1755
+  - canvas_item: 24407
     canvas_items:
-    - 1755
-    - 1756
-    - 1757
-    - 1758
-    - 1759
-    - 1760
-    - 1761
-    - 1762
-    - 1763
-    - 1764
-    - 1765
-    - 1766
-    - 1767
-    - 1768
-    - 1769
-    - 1770
-    - 1771
+    - 24407
+    - 24408
+    - 24409
+    - 24410
+    - 24411
+    - 24412
+    - 24413
+    - 24414
+    - 24415
+    - 24416
+    - 24417
+    - 24418
+    - 24419
+    - 24420
+    - 24421
+    - 24422
+    - 24423
     disabled: false
     flow_offset: 8
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -110,25 +110,25 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d40b6cbb-3284-47de-ab07-da0ec7176748
-  - canvas_item: 1772
+  - canvas_item: 24424
     canvas_items:
-    - 1772
-    - 1773
-    - 1774
-    - 1775
-    - 1776
-    - 1777
-    - 1778
-    - 1779
-    - 1780
-    - 1781
-    - 1782
-    - 1783
-    - 1784
-    - 1785
-    - 1786
-    - 1787
-    - 1788
+    - 24424
+    - 24425
+    - 24426
+    - 24427
+    - 24428
+    - 24429
+    - 24430
+    - 24431
+    - 24432
+    - 24433
+    - 24434
+    - 24435
+    - 24436
+    - 24437
+    - 24438
+    - 24439
+    - 24440
     disabled: false
     flow_offset: 8
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -154,25 +154,25 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: 96669a06-cf73-4bde-9fbf-613c80727d20
-  - canvas_item: 1789
+  - canvas_item: 24441
     canvas_items:
-    - 1789
-    - 1790
-    - 1791
-    - 1792
-    - 1793
-    - 1794
-    - 1795
-    - 1796
-    - 1797
-    - 1798
-    - 1799
-    - 1800
-    - 1801
-    - 1802
-    - 1803
-    - 1804
-    - 1805
+    - 24441
+    - 24442
+    - 24443
+    - 24444
+    - 24445
+    - 24446
+    - 24447
+    - 24448
+    - 24449
+    - 24450
+    - 24451
+    - 24452
+    - 24453
+    - 24454
+    - 24455
+    - 24456
+    - 24457
     disabled: false
     flow_offset: 0
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -190,17 +190,17 @@ graph:
     - '#55b4e3'
     to_input: input
     to_node: f08be467-3921-42ce-befa-51c12bc15775
-  - canvas_item: 1806
+  - canvas_item: 24458
     canvas_items:
-    - 1806
-    - 1807
-    - 1808
-    - 1809
-    - 1810
-    - 1811
-    - 1812
-    - 1813
-    - 1814
+    - 24458
+    - 24459
+    - 24460
+    - 24461
+    - 24462
+    - 24463
+    - 24464
+    - 24465
+    - 24466
     disabled: false
     flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
@@ -226,17 +226,21 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d407e984-dd52-4549-ae40-821e2646d5ae
-  - canvas_item: 1815
+  - canvas_item: 24467
     canvas_items:
-    - 1815
-    - 1816
-    - 1817
-    - 1818
-    - 1819
-    - 1820
-    - 1821
-    - 1822
-    - 1823
+    - 24467
+    - 24468
+    - 24469
+    - 24470
+    - 24471
+    - 24472
+    - 24473
+    - 24474
+    - 24475
+    - 24476
+    - 24477
+    - 24478
+    - 24479
     disabled: false
     flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
@@ -262,132 +266,108 @@ graph:
     - '#559ff8'
     to_input: input
     to_node: 3039be00-3cd7-4220-9a08-0347e8208a57
-  - canvas_item: 1824
+  - canvas_item: 24480
     canvas_items:
-    - 1824
-    - 1825
-    - 1826
+    - 24480
+    - 24481
+    - 24482
+    - 24483
+    - 24484
+    - 24485
+    - 24486
+    - 24487
+    - 24488
     disabled: false
     from_node: 96669a06-cf73-4bde-9fbf-613c80727d20
     from_output: output
     to_input: input
     to_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
-  - canvas_item: 1827
+  - canvas_item: 24489
     canvas_items:
-    - 1827
-    - 1828
-    - 1829
-    - 1830
-    - 1831
-    - 1832
-    - 1833
-    - 1834
-    - 1835
+    - 24489
+    - 24490
+    - 24491
     disabled: false
     from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
     from_output: output1
     to_input: input
     to_node: a674f96f-b608-4852-b39f-7a4b1f15b13f
-  - canvas_item: 1836
+  - canvas_item: 24492
     canvas_items:
-    - 1836
-    - 1837
-    - 1838
-    - 1839
-    - 1840
-    - 1841
-    - 1842
-    - 1843
-    - 1844
+    - 24492
+    - 24493
+    - 24494
+    - 24495
+    - 24496
+    - 24497
+    - 24498
+    - 24499
+    - 24500
+    - 24501
+    - 24502
+    - 24503
+    - 24504
+    - 24505
+    - 24506
+    - 24507
+    - 24508
     disabled: false
     from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
     from_output: output2
     to_input: input
     to_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
-  - canvas_item: 1845
+  - canvas_item: 24509
     canvas_items:
-    - 1845
-    - 1846
-    - 1847
-    - 1848
-    - 1849
-    - 1850
-    - 1851
-    - 1852
-    - 1853
+    - 24509
     disabled: false
     from_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
     from_output: output
     to_input: input
     to_node: ef04ae7a-8247-4da6-9621-f36766e76fdd
-  - canvas_item: 1854
+  - canvas_item: 24510
     canvas_items:
-    - 1854
-    - 1855
-    - 1856
-    - 1857
-    - 1858
-    - 1859
-    - 1860
-    - 1861
-    - 1862
-    - 1863
-    - 1864
-    - 1865
-    - 1866
-    - 1867
-    - 1868
-    - 1869
-    - 1870
-    - 1871
+    - 24510
+    - 24511
+    - 24512
+    - 24513
+    - 24514
+    - 24515
+    - 24516
+    - 24517
+    - 24518
+    - 24519
+    - 24520
+    - 24521
+    - 24522
+    - 24523
+    - 24524
+    - 24525
+    - 24526
+    - 24527
     disabled: true
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
     from_output: output1
     to_input: input
     to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 1872
-    canvas_items:
-    - 1872
-    - 1873
-    - 1874
-    - 1875
-    - 1876
-    - 1877
-    - 1878
-    - 1879
-    - 1880
-    - 1881
-    - 1882
-    - 1883
-    - 1884
-    - 1885
-    - 1886
-    - 1887
-    - 1888
-    disabled: false
-    from_node: d1b361f7-7122-4480-8867-a8bdfa3ac19d
-    from_output: chat_history
-    to_input: input
-    to_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
   nodes:
     2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf:
       canvas_items:
-        body: 1569
-        description: 1572
-        header: 1570
-        input_input: 1573
-        input_label_input: 1574
-        output_label_output1: 1576
-        output_label_output2: 1578
-        output_label_output3: 1580
-        output_label_output4: 1582
-        output_output1: 1575
-        output_output2: 1577
-        output_output3: 1579
-        output_output4: 1581
-        resize_handle: 1583
-        shadow: 1568
-        title: 1571
+        body: 24239
+        description: 24242
+        header: 24240
+        input_input: 24243
+        input_label_input: 24244
+        output_label_output1: 24246
+        output_label_output2: 24248
+        output_label_output3: 24250
+        output_label_output4: 24252
+        output_output1: 24245
+        output_output2: 24247
+        output_output3: 24249
+        output_output4: 24251
+        resize_handle: 24253
+        shadow: 24238
+        title: 24241
       height: 121.11111111111111
       highlight_state: false
       id: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
@@ -443,23 +423,24 @@ graph:
           description: How many outputs to populate (up to 4).
           label: Number of Outputs (1-4)
           type: text
+      selection_state: false
       title: split to final export and review
       type: SplitterNode
       width: 182.22222222222223
-      x: 650
-      y: 400
+      x: 675
+      y: 275
     3039be00-3cd7-4220-9a08-0347e8208a57:
       canvas_items:
-        body: 1585
-        description: 1588
-        header: 1586
-        input_input: 1589
-        input_label_input: 1590
-        output_label_output: 1592
-        output_output: 1591
-        resize_handle: 1593
-        shadow: 1584
-        title: 1587
+        body: 24255
+        description: 24258
+        header: 24256
+        input_input: 24259
+        input_label_input: 24260
+        output_label_output: 24262
+        output_output: 24261
+        resize_handle: 24263
+        shadow: 24254
+        title: 24257
       height: 120
       highlight_state: false
       id: 3039be00-3cd7-4220-9a08-0347e8208a57
@@ -522,16 +503,16 @@ graph:
       y: 550
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        body: 1595
-        description: 1598
-        header: 1596
-        input_input: 1599
-        input_label_input: 1600
-        output_label_output: 1602
-        output_output: 1601
-        resize_handle: 1603
-        shadow: 1594
-        title: 1597
+        body: 24265
+        description: 24268
+        header: 24266
+        input_input: 24269
+        input_label_input: 24270
+        output_label_output: 24272
+        output_output: 24271
+        resize_handle: 24273
+        shadow: 24264
+        title: 24267
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -655,16 +636,16 @@ graph:
       y: 200
     6976a651-76f1-410c-b10b-0f4324774546:
       canvas_items:
-        body: 1605
-        description: 1608
-        header: 1606
-        input_input: 1609
-        input_label_input: 1610
-        output_label_output: 1612
-        output_output: 1611
-        resize_handle: 1613
-        shadow: 1604
-        title: 1607
+        body: 24275
+        description: 24278
+        header: 24276
+        input_input: 24279
+        input_label_input: 24280
+        output_label_output: 24282
+        output_output: 24281
+        resize_handle: 24283
+        shadow: 24274
+        title: 24277
       height: 120
       highlight_state: false
       id: 6976a651-76f1-410c-b10b-0f4324774546
@@ -720,23 +701,24 @@ graph:
           default: ''
           label: Output Folder
           type: folder
+      selection_state: true
       title: Final Book Export v1
       type: ExportDocumentNode
       width: 180
-      x: 1150
-      y: -75
+      x: 1050
+      y: 75
     96669a06-cf73-4bde-9fbf-613c80727d20:
       canvas_items:
-        body: 1615
-        description: 1618
-        header: 1616
-        input_input: 1619
-        input_label_input: 1620
-        output_label_output: 1622
-        output_output: 1621
-        resize_handle: 1623
-        shadow: 1614
-        title: 1617
+        body: 24285
+        description: 24288
+        header: 24286
+        input_input: 24289
+        input_label_input: 24290
+        output_label_output: 24292
+        output_output: 24291
+        resize_handle: 24293
+        shadow: 24284
+        title: 24287
       height: 117.0
       highlight_state: false
       id: 96669a06-cf73-4bde-9fbf-613c80727d20
@@ -885,16 +867,16 @@ graph:
       y: 400
     a674f96f-b608-4852-b39f-7a4b1f15b13f:
       canvas_items:
-        body: 1625
-        description: 1628
-        header: 1626
-        input_input: 1629
-        input_label_input: 1630
-        output_label_output: 1632
-        output_output: 1631
-        resize_handle: 1633
-        shadow: 1624
-        title: 1627
+        body: 24295
+        description: 24298
+        header: 24296
+        input_input: 24299
+        input_label_input: 24300
+        output_label_output: 24302
+        output_output: 24301
+        resize_handle: 24303
+        shadow: 24294
+        title: 24297
       height: 120
       highlight_state: false
       id: a674f96f-b608-4852-b39f-7a4b1f15b13f
@@ -950,23 +932,24 @@ graph:
           default: F:/My_AI/Books
           label: Output Folder
           type: folder
+      selection_state: false
       title: Final Book Export
       type: ExportDocumentNode
       width: 180
-      x: 1100
-      y: 350
+      x: 1175
+      y: 250
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        body: 1635
-        description: 1638
-        header: 1636
-        input_input: 1639
-        input_label_input: 1640
-        output_label_output: 1642
-        output_output: 1641
-        resize_handle: 1643
-        shadow: 1634
-        title: 1637
+        body: 24305
+        description: 24308
+        header: 24306
+        input_input: 24309
+        input_label_input: 24310
+        output_label_output: 24312
+        output_output: 24311
+        resize_handle: 24313
+        shadow: 24304
+        title: 24307
       connections: []
       height: 112
       highlight_state: false
@@ -1109,23 +1092,24 @@ graph:
             \nThe content to be reviewed is as follows:"
           label: Validation Prompt
           type: textarea
+      selection_state: true
       title: Reviewer and Editor V1
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 875
-      y: -75
+      x: 762.6923076923073
+      y: 72.69230769230774
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        body: 1645
-        description: 1648
-        header: 1646
-        input_input: 1649
-        input_label_input: 1650
-        output_label_output: 1652
-        output_output: 1651
-        resize_handle: 1653
-        shadow: 1644
-        title: 1647
+        body: 24315
+        description: 24318
+        header: 24316
+        input_input: 24319
+        input_label_input: 24320
+        output_label_output: 24322
+        output_output: 24321
+        resize_handle: 24323
+        shadow: 24314
+        title: 24317
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -1203,16 +1187,16 @@ graph:
       y: 25
     cf33029e-9118-4bfa-a8cd-469a4d0230fd:
       canvas_items:
-        body: 1655
-        description: 1658
-        header: 1656
-        input_input: 1659
-        input_label_input: 1660
-        output_label_output: 1662
-        output_output: 1661
-        resize_handle: 1663
-        shadow: 1654
-        title: 1657
+        body: 24325
+        description: 24328
+        header: 24326
+        input_input: 24329
+        input_label_input: 24330
+        output_label_output: 24332
+        output_output: 24331
+        resize_handle: 24333
+        shadow: 24324
+        title: 24327
       height: 120
       highlight_state: false
       id: cf33029e-9118-4bfa-a8cd-469a4d0230fd
@@ -1293,146 +1277,23 @@ graph:
           default: BasicNode
           label: Custom Node Name
           type: text
+      selection_state: false
       title: BasicNode
       type: BasicNode
       width: 180
-      x: 875
-      y: 550
-    d1b361f7-7122-4480-8867-a8bdfa3ac19d:
-      canvas_items:
-        badge: 1668
-        badge_label: 1669
-        body: 1665
-        description: 1670
-        header: 1666
-        input_gui_queue: 1673
-        input_input: 1671
-        input_label_gui_queue: 1674
-        input_label_input: 1672
-        input_label_workflow_id: 1676
-        input_label_workflow_name: 1678
-        input_workflow_id: 1675
-        input_workflow_name: 1677
-        output_chat_history: 1679
-        output_label_chat_history: 1680
-        resize_handle: 1681
-        shadow: 1664
-        title: 1667
-      height: 120
-      highlight_state: false
-      id: d1b361f7-7122-4480-8867-a8bdfa3ac19d
-      inputs:
-      - input
-      - gui_queue
-      - workflow_id
-      - workflow_name
-      outputs:
-      - chat_history
-      properties:
-        Prompt:
-          default: "Role: You are a World-Class Story Discovery Consultant and Narrative\
-            \ Architect. Your exclusive objective is to act as a creative mirror,\
-            \ asking inquisitive, insightful questions to draw out the \"Story DNA\"\
-            \ from the user.\n\u200BSTRICT NEGATIVE CONSTRAINT: You are strictly forbidden\
-            \ from writing any part of the story, synopsis, or outline during this\
-            \ dialogue. Your goal is data collection, not content creation. If the\
-            \ user asks you to \"write the story,\" you must politely decline and\
-            \ explain that you are still gathering the essential components required\
-            \ for a high-fidelity narrative.\n\u200BOperational Directives:\n\u200B\
-            Incremental Inquiry: Ask only one or two simple questions at a time to\
-            \ prevent user fatigue.\n\u200BThe \"Stuck\" Protocol: If the user provides\
-            \ a very short or vague answer (e.g., \"A dog who takes over the world\"\
-            ), do not simply ask another question. Instead, provide three distinct,\
-            \ creative \"Pathways\" (e.g., A Sci-Fi Path, a Whimsical Path, and a\
-            \ Dark Political Path) to help them visualize specific details.\n\u200B\
-            DNA Extraction Categories: You must systematically gather information\
-            \ on:\n\u200BThe Spark: The core concept or \"What if?\"\n\u200BThe Hero:\
-            \ Name, unique expertise, and a fatal internal flaw (e.g., arrogance,\
-            \ fear of failure) [cite: 899-901, 1140].  \n\u200B[cite_start]The Canvas:\
-            \ The setting, its geography, and the Hard Rules or \"Price\" of the world\
-            \ (e.g., an Oxygen Tax or biological calcification) [cite: 955-958, 977].\
-            \  \n\u200B[cite_start]The Friction: The specific event that changes everything\
-            \ and the primary antagonist [cite: 927-928, 991].  \n\u200B[cite_start]The\
-            \ Horizon: The intended tone and the desired ending (Happy, Bittersweet,\
-            \ or Cliffhanger).  \n\u200BDiscovery Workflow:\n\u200BStep 1: Validate\
-            \ the user's initial idea and ask about the Protagonist.\n\u200BStep 2:\
-            \ Explore the World and its specific mechanics/costs.\n\u200BStep 3: Identify\
-            \ the Primary Conflict and the Antagonist.\n\u200BStep 4: Determine the\
-            \ Stakes and the final resolution.\n\u200BThe Hand-off Signal:\nOnly when\
-            \ the user indicates they have provided all the information they can,\
-            \ or when you have a complete picture of a multi-book arc, you must conclude\
-            \ your response with the exact phrase: \"DISCOVERY COMPLETE: Data Packet\
-            \ Initialized.\" Below this header, provide a clean, structured summary\
-            \ of all the story elements gathered during the chat for the next node\
-            \ to process."
-          type: textarea
-        api_endpoint:
-          default: Gemini
-          label: API Endpoint
-          options:
-          - Gemini
-          - Local LLM
-          - SearXNG
-          type: dropdown
-        database:
-          default: Main
-          label: Database
-          options:
-          - Main
-          type: dropdown
-        description:
-          default: Handles a chat conversation with the user.
-          type: text
-        enable_url_selection:
-          default: false
-          description: Allow manual selection of URLs from search results
-          label: Enable URL Selection
-          type: boolean
-        enable_web_search:
-          default: true
-          description: Enable web search functionality
-          label: Enable Web Search
-          type: boolean
-        is_end_node:
-          default: false
-          type: boolean
-        is_start_node:
-          default: true
-          type: boolean
-        node_name:
-          default: ' Story Discovery'
-          type: text
-        num_results_to_skip:
-          default: '0'
-          description: Number of search results to skip
-          label: Results to Skip
-          type: number
-        num_search_results:
-          default: '5'
-          description: Default number of search results to return
-          label: Default Search Results
-          type: number
-        searxng_api_url:
-          default: http://127.0.0.1:8080/search
-          description: URL for the SearxNG search engine API
-          label: SearxNG API URL
-          type: text
-      title: ' Story Discovery'
-      type: ChatNode
-      width: 180
-      x: 50
-      y: 575
+      x: 675
+      y: 475
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        body: 1683
-        header: 1684
-        input_input: 1686
-        input_label_input: 1687
-        output_label_prompt: 1689
-        output_prompt: 1688
-        resize_handle: 1690
-        shadow: 1682
-        title: 1685
+        body: 24335
+        header: 24336
+        input_input: 24338
+        input_label_input: 24339
+        output_label_prompt: 24341
+        output_prompt: 24340
+        resize_handle: 24342
+        shadow: 24334
+        title: 24337
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -1555,29 +1416,30 @@ graph:
           default: true
           description: Output as array instead of string
           type: boolean
+      selection_state: false
       title: LongOutputV4
       type: LongOutputV4Node
       width: 125
-      x: 475
-      y: 25
+      x: 513.4615384615381
+      y: 52.6923076923077
     d40b6cbb-3284-47de-ab07-da0ec7176748:
       canvas_items:
-        body: 1692
-        description: 1695
-        header: 1693
-        input_input: 1696
-        input_label_input: 1697
-        output_label_output1: 1699
-        output_label_output2: 1701
-        output_label_output3: 1703
-        output_label_output4: 1705
-        output_output1: 1698
-        output_output2: 1700
-        output_output3: 1702
-        output_output4: 1704
-        resize_handle: 1706
-        shadow: 1691
-        title: 1694
+        body: 24344
+        description: 24347
+        header: 24345
+        input_input: 24348
+        input_label_input: 24349
+        output_label_output1: 24351
+        output_label_output2: 24353
+        output_label_output3: 24355
+        output_label_output4: 24357
+        output_output1: 24350
+        output_output2: 24352
+        output_output3: 24354
+        output_output4: 24356
+        resize_handle: 24358
+        shadow: 24343
+        title: 24346
       height: 120
       highlight_state: false
       id: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -1640,18 +1502,18 @@ graph:
       y: 200
     ef04ae7a-8247-4da6-9621-f36766e76fdd:
       canvas_items:
-        badge: 1711
-        badge_label: 1712
-        body: 1708
-        description: 1713
-        header: 1709
-        input_input: 1714
-        input_label_input: 1715
-        output_label_output: 1717
-        output_output: 1716
-        resize_handle: 1718
-        shadow: 1707
-        title: 1710
+        badge: 24363
+        badge_label: 24364
+        body: 24360
+        description: 24365
+        header: 24361
+        input_input: 24366
+        input_label_input: 24367
+        output_label_output: 24369
+        output_output: 24368
+        resize_handle: 24370
+        shadow: 24359
+        title: 24362
       height: 120
       highlight_state: false
       id: ef04ae7a-8247-4da6-9621-f36766e76fdd
@@ -1707,29 +1569,30 @@ graph:
           default: F:/My_AI/Books
           label: Output Folder
           type: folder
+      selection_state: false
       title: Final Book Review
       type: ExportDocumentNode
       width: 180
-      x: 1150
-      y: 575
+      x: 1175
+      y: 475
     f08be467-3921-42ce-befa-51c12bc15775:
       canvas_items:
-        body: 1720
-        description: 1723
-        header: 1721
-        input_input: 1724
-        input_label_input: 1725
-        output_label_output1: 1727
-        output_label_output2: 1729
-        output_label_output3: 1731
-        output_label_output4: 1733
-        output_output1: 1726
-        output_output2: 1728
-        output_output3: 1730
-        output_output4: 1732
-        resize_handle: 1734
-        shadow: 1719
-        title: 1722
+        body: 24372
+        description: 24375
+        header: 24373
+        input_input: 24376
+        input_label_input: 24377
+        output_label_output1: 24379
+        output_label_output2: 24381
+        output_label_output3: 24383
+        output_label_output4: 24385
+        output_output1: 24378
+        output_output2: 24380
+        output_output3: 24382
+        output_output4: 24384
+        resize_handle: 24386
+        shadow: 24371
+        title: 24374
       height: 120
       highlight_state: false
       id: f08be467-3921-42ce-befa-51c12bc15775
@@ -1791,9 +1654,9 @@ graph:
       x: 100
       y: 400
   viewport:
-    pan_offset_x: 171.90647546897566
-    pan_offset_y: 153.1342532467532
-    window_height: 764
-    window_width: 1239
+    pan_offset_x: 13.906475468975657
+    pan_offset_y: 16.13425324675319
+    window_height: 620
+    window_width: 935
     zoom_level: 0.6499999999999999
 name: Write long form story content
