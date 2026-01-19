@@ -369,27 +369,27 @@ class LongOutputV4Node(BaseNode):
                 'description': 'Number of items to process in each chunk'
             },
             'Instructions for how to processthe first element in the array': {
-                'type': 'text',
+                'type': 'textarea',
                 'default': 'Please just repeat the title content below exactly and nothing else:\n\n',
                 'description': 'Prompt template for the first item'
             },
             'Instructions for how to process the Original user request and original content': {
-                'type': 'text',
+                'type': 'textarea',
                 'default': 'The outline and user request is as follows and only for reference, do not use the same formatting as the outline:\n',
                 'description': 'Template for the context section'
             },
             'Main instructions for array element to focus on': {
-                'type': 'text',
+                'type': 'textarea',
                 'default': """As a professional writer, please write the detailed content for the section shown below. Do not include any of your own commentary, just write the content based on the section listed below. Be detailed, creative, giving depth and meaning and remember To incorporate burstiness into your writing, consciously vary sentence lengths and structures as you generate text - mix short, impactful sentences with longer, more complex ones to create a dynamic rhythm; use different grammatical constructions, monitor your output for monotonous patterns in real time, and adjust accordingly to enhance engagement and mirror natural speech patterns. Write in a natural storytelling format by separating dialogue, descriptions, and internal thoughts into distinct paragraphs. Begin a new paragraph for each new speaker in dialogue, and keep spoken dialogue separate from narrative descriptions or internal reflections. This structure ensures clarity, readability, and a traditional storytelling flow.""",
                 'description': 'Main instruction template for content generation'
             },
             'Instructions for how the AI should use the next array element for context': {
-                'type': 'text',
+                'type': 'textarea',
                 'default': '\nthe next section to write about is as follows:\n',
                 'description': 'Template for introducing the current section'
             },
             'Instructions for custom formatting': {
-                'type': 'text',
+                'type': 'textarea',
                 'default': """if the section above starts with "Chapter #" then include that chapter number as a heading when writing the content.
 if the section above starts with "(Continued)" then only include "(Continued) - " at the beginning of your output like this:  (Continued) - content......""",
                 'description': 'Custom formatting instructions'

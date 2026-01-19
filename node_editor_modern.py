@@ -8,7 +8,7 @@ import os
 import importlib
 import inspect
 import json
-from src.workflows.node_registry import NODE_REGISTRY
+from node_registry import NODE_REGISTRY
 from nodes.missing_node import MissingNode
 from nodes.base_node import BaseNode
 
@@ -69,6 +69,8 @@ class ModernNodeEditor:
         self.node_drag_data = {'x': 0, 'y': 0}
         self.connection_start = None
         self.temp_line = None
+        self.connection_motion_bind = None
+        self.connection_release_bind = None
         self.instruction_name = existing_name
         self.save_callback = save_callback
         self.close_callback = close_callback
@@ -76,17 +78,11 @@ class ModernNodeEditor:
         self.resize_start_data = None
         self.is_modified = False
         self.moving_node_id = None
-        
-        # Marquee selection state
+        self.selected_nodes = set()
+        self.dragging_nodes = []
         self.is_selecting = False
         self.selection_start = None
         self.selection_rect = None
-        self.selected_nodes = set()
-        
-        # Connection preview binding tracking
-        self.connection_motion_bind = None
-        self.connection_release_bind = None
-        self.temp_line_start = None
         
         # Zoom and pan - applied as world transform
         self.zoom_level = 1.0
@@ -152,14 +148,14 @@ class ModernNodeEditor:
         self.canvas.pack(fill=tk.BOTH, expand=True)
         
         self.canvas.bind("<Button-3>", self.on_canvas_right_click)
+        self.canvas.bind("<ButtonPress-1>", self.on_canvas_left_press)
+        self.canvas.bind("<B1-Motion>", self.on_canvas_left_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.on_canvas_left_release)
         self.canvas.bind("<MouseWheel>", self.on_mouse_wheel)
         self.canvas.bind("<Button-2>", self.on_pan_start)
         self.canvas.bind("<B2-Motion>", self.on_pan_move)
         self.canvas.bind("<ButtonRelease-2>", self.on_pan_end)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
-        self.canvas.bind("<ButtonPress-1>", self.on_canvas_left_press)
-        self.canvas.bind("<B1-Motion>", self.on_canvas_left_drag)
-        self.canvas.bind("<ButtonRelease-1>", self.on_canvas_left_release)
 
         self.create_bottom_panel()
         self.editor_window.after(100, self.draw_grid)
@@ -224,7 +220,7 @@ class ModernNodeEditor:
         self.initial_window_size = None
         self.editor_window.bind('<Configure>', self.on_window_configure)
 
-        self.create_button(bottom, "Cancel", self.on_close).pack(side=tk.RIGHT, padx=5, pady=12)
+        self.create_button(bottom, "Close", self.on_close).pack(side=tk.RIGHT, padx=5, pady=12)
 
     def draw_grid(self):
         self.canvas.delete('grid')
@@ -424,7 +420,8 @@ class ModernNodeEditor:
             'inputs': node_instance.define_inputs(),
             'outputs': node_instance.define_outputs(),
             'canvas_items': {},
-            'highlight_state': False
+            'highlight_state': False,
+            'selection_state': False
         }
 
         self.nodes[node_id] = node
@@ -653,17 +650,22 @@ class ModernNodeEditor:
             
         try:
             node_id = tags[tags.index('node') + 1]
+            if node_id not in self.selected_nodes:
+                self.clear_selection()
+                self.set_node_selected(node_id, True)
             self.moving_node_id = node_id
+            self.dragging_nodes = list(self.selected_nodes) or [node_id]
             self.node_drag_data['x'] = event.x
             self.node_drag_data['y'] = event.y
         except (ValueError, IndexError):
             self.moving_node_id = None
+            self.dragging_nodes = []
 
     def on_node_move(self, event):
         if not self.moving_node_id:
             return
         try:
-            node_id = self.moving_node_id
+            node_ids = self.dragging_nodes or [self.moving_node_id]
             
             # Calculate screen delta
             screen_dx = event.x - self.node_drag_data['x']
@@ -673,19 +675,13 @@ class ModernNodeEditor:
             world_dx = screen_dx / self.zoom_level
             world_dy = screen_dy / self.zoom_level
             
-            # Determine which nodes to move (selected nodes or just the dragged node)
-            nodes_to_move = list(self.selected_nodes) if node_id in self.selected_nodes and len(self.selected_nodes) > 1 else [node_id]
-            
-            for nid in nodes_to_move:
-                if nid not in self.nodes:
+            for node_id in node_ids:
+                node = self.nodes.get(node_id)
+                if not node:
                     continue
-                # Update world coordinates
-                node = self.nodes[nid]
                 node['x'] += world_dx
                 node['y'] += world_dy
-                
-                # Move all canvas items by screen delta (don't redraw - that breaks drag)
-                items = self.canvas.find_withtag(nid)
+                items = self.canvas.find_withtag(node_id)
                 for item in items:
                     self.canvas.move(item, screen_dx, screen_dy)
             
@@ -702,19 +698,24 @@ class ModernNodeEditor:
 
     def on_node_release(self, event):
         if self.moving_node_id and self.snap_to_grid:
-            node = self.nodes[self.moving_node_id]
-            old_x, old_y = node['x'], node['y']
-            new_x, new_y = self.snap_position(old_x, old_y)
-            
-            if new_x != old_x or new_y != old_y:
-                node['x'], node['y'] = new_x, new_y
-                # Redraw the node at snapped position
-                for item_id in node['canvas_items'].values():
-                    self.canvas.delete(item_id)
-                self.draw_node(node)
+            needs_redraw = False
+            for node_id in self.dragging_nodes or [self.moving_node_id]:
+                node = self.nodes.get(node_id)
+                if not node:
+                    continue
+                old_x, old_y = node['x'], node['y']
+                new_x, new_y = self.snap_position(old_x, old_y)
+                if new_x != old_x or new_y != old_y:
+                    node['x'], node['y'] = new_x, new_y
+                    for item_id in node['canvas_items'].values():
+                        self.canvas.delete(item_id)
+                    self.draw_node(node)
+                    needs_redraw = True
+            if needs_redraw:
                 self.redraw_connections()
                 
         self.moving_node_id = None
+        self.dragging_nodes = []
 
     def redraw_canvas(self):
         self.canvas.delete("all")
@@ -1896,10 +1897,11 @@ class ModernNodeEditor:
         node = self.nodes[node_id]
         body = node['canvas_items'].get('body')
         header = node['canvas_items'].get('header')
-        if body:
-            self.canvas.itemconfig(body, outline=Theme.NODE_BORDER, width=2)
-        if header:
-            self.canvas.itemconfig(header, outline=Theme.NODE_BORDER, width=2)
+        if not node.get('selection_state', False):
+            if body:
+                self.canvas.itemconfig(body, outline=Theme.NODE_BORDER, width=2)
+            if header:
+                self.canvas.itemconfig(header, outline=Theme.NODE_BORDER, width=2)
         node['highlight_state'] = False
         # Also remove connection flow highlights
         self.remove_incoming_connection_highlights(node_id)
@@ -1952,10 +1954,11 @@ class ModernNodeEditor:
             return
 
         for node_id, node in self.nodes.items():
-            sx, sy = self.world_to_screen(node['x'], node['y'])
-            width = node.get('width', 200) * self.zoom_level
-            height = node.get('height', 150) * self.zoom_level
-            if sx + width < min_x or sx > max_x or sy + height < min_y or sy > max_y:
+            wx, wy = node['x'], node['y']
+            ww, wh = node.get('width', 180), node.get('height', 120)
+            sx, sy = self.world_to_screen(wx, wy)
+            sw, sh = ww * self.zoom_level, wh * self.zoom_level
+            if sx + sw < min_x or sx > max_x or sy + sh < min_y or sy > max_y:
                 continue
             self.set_node_selected(node_id, True)
 
@@ -1965,9 +1968,9 @@ class ModernNodeEditor:
         self.selected_nodes.clear()
 
     def set_node_selected(self, node_id, selected):
-        if node_id not in self.nodes:
+        node = self.nodes.get(node_id)
+        if not node:
             return
-        node = self.nodes[node_id]
         node['selection_state'] = selected
         body = node['canvas_items'].get('body')
         header = node['canvas_items'].get('header')
@@ -1979,14 +1982,19 @@ class ModernNodeEditor:
                 self.canvas.itemconfig(header, outline=Theme.NODE_BORDER_SELECTED, width=3)
         else:
             self.selected_nodes.discard(node_id)
-            if not node.get('highlight_state', False):
+            if node.get('highlight_state', False):
+                if body:
+                    self.canvas.itemconfig(body, outline=Theme.NODE_BORDER_SELECTED, width=3)
+                if header:
+                    self.canvas.itemconfig(header, outline=Theme.NODE_BORDER_SELECTED, width=3)
+            else:
                 if body:
                     self.canvas.itemconfig(body, outline=Theme.NODE_BORDER, width=2)
                 if header:
                     self.canvas.itemconfig(header, outline=Theme.NODE_BORDER, width=2)
 
     def on_node_enter(self, node_id):
-        if node_id in self.nodes and not self.nodes[node_id].get('highlight_state', False):
+        if node_id in self.nodes and not self.nodes[node_id].get('highlight_state', False) and not self.nodes[node_id].get('selection_state', False):
             node = self.nodes[node_id]
             body = node['canvas_items'].get('body')
             header = node['canvas_items'].get('header')
@@ -1996,7 +2004,7 @@ class ModernNodeEditor:
                 self.canvas.itemconfig(header, outline=Theme.NODE_BORDER_HOVER, width=2)
 
     def on_node_leave(self, node_id):
-        if node_id in self.nodes and not self.nodes[node_id].get('highlight_state', False):
+        if node_id in self.nodes and not self.nodes[node_id].get('highlight_state', False) and not self.nodes[node_id].get('selection_state', False):
             node = self.nodes[node_id]
             body = node['canvas_items'].get('body')
             header = node['canvas_items'].get('header')
@@ -2223,7 +2231,6 @@ class ModernNodeEditor:
 
         self.is_modified = False
         self.update_save_button_state()
-        self.on_close()
 
 
 # Alias for backward compatibility
