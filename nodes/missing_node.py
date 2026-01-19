@@ -1,7 +1,7 @@
 # nodes/missing_node.py
 
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 @register_node("MissingNode")
 class MissingNode(BaseNode):

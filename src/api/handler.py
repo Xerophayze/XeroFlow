@@ -90,10 +90,10 @@ except ImportError:
 
 GOOGLE_GENAI_AVAILABLE = False
 try:
-    import google.generativeai as genai
+    import google.genai as genai
     GOOGLE_GENAI_AVAILABLE = True
 except ImportError:
-    print("[API Handler] Google Gemini API support not available. Run 'pip install google-generativeai' to enable.")
+    print("[API Handler] Google Gemini API support not available. Run 'pip install google-genai' to enable.")
 
 def process_api_request(api_name: str, config: Dict[str, Any], request_data: Dict[str, Any], is_whisper: bool = False) -> Optional[Dict[str, Any]]:
     """
@@ -897,11 +897,11 @@ def process_api_request_v2(api_name: str, config: Dict[str, Any], request_data: 
 
         elif api_type == "Google":
             if not GOOGLE_GENAI_AVAILABLE:
-                return {"error": "Google Gemini API support not available. Run 'pip install google-generativeai' to enable."}
+                return {"error": "Google Gemini API support not available. Run 'pip install google-genai' to enable."}
             try:
-                genai.configure(api_key=api_key)
+                # Initialize the new google.genai client
+                client = genai.Client(api_key=api_key)
                 model_name = api_config.get('selected_model', 'gemini-pro')
-                model = genai.GenerativeModel(model_name)
 
                 messages = request_data.get("messages", [])
                 if not messages:
@@ -920,11 +920,24 @@ def process_api_request_v2(api_name: str, config: Dict[str, Any], request_data: 
                     if content:
                         gemini_messages.append({'role': role, 'parts': [content] if isinstance(content, str) else content})
 
-                response = model.generate_content(gemini_messages)
+                # Use new API: client.models.generate_content
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=gemini_messages
+                )
 
-                # Token counting
-                prompt_tokens = model.count_tokens(gemini_messages).total_tokens
-                completion_tokens = model.count_tokens(response.text).total_tokens
+                # Token counting with new API
+                prompt_token_count = client.models.count_tokens(
+                    model=model_name,
+                    contents=gemini_messages
+                )
+                completion_token_count = client.models.count_tokens(
+                    model=model_name,
+                    contents=response.text
+                )
+                
+                prompt_tokens = prompt_token_count.total_tokens
+                completion_tokens = completion_token_count.total_tokens
                 total_tokens = prompt_tokens + completion_tokens
 
                 return {

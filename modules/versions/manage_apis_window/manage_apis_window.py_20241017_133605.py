@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import requests
-from config_utils import save_config  # Importing from config_utils.py
+from src.utils.config import save_config  # Importing from config_utils.py
 import logging
 
 def manage_apis_window(parent, config, refresh_callback):

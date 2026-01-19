@@ -12,16 +12,16 @@ import uuid
 import math
 import re  # For parsing markdown-like formatting
 
-from node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
-from db_tools import DatabaseManager  # Import from db_tools.py
-from config_utils import load_config, save_config  # Importing from config_utils.py
+from src.workflows.node_registry import register_node, NODE_REGISTRY  # Import from node_registry.py
+from src.database.db_tools import DatabaseManager  # Import from db_tools.py
+from src.utils.config import load_config, save_config  # Importing from config_utils.py
 
 # Import separated functions
-from manage_apis_window import manage_apis_window
-from manage_databases_window import manage_databases_window
-from manage_documents_window import manage_documents_window
-from manage_settings import manage_settings_window
-from process_node_graph import process_node_graph
+from src.ui.dialogs.manage_apis import manage_apis_window
+from src.ui.dialogs.manage_databases import manage_databases_window
+from src.ui.dialogs.manage_documents import manage_documents_window
+from src.ui.dialogs.manage_settings import manage_settings_window
+from src.workflows.process_graph import src.workflows.process_graph as process_node_graph
 
 
 import tkinter as tk
@@ -42,7 +42,7 @@ from ollama import Client
 from nodes.base_node import BaseNode
 
 # Import formatting utilities
-from formatting_utils import append_formatted_text
+from src.export.formatting import append_formatted_text
 
 # Setup logging for main.py
 LOG_DIR = "logs"

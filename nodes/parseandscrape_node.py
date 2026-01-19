@@ -19,7 +19,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 @register_node('ParseAndScrapeNode')
 class ParseAndScrapeNode(BaseNode):

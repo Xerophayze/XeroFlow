@@ -1,7 +1,7 @@
 # nodes/chat_node.py
 from .base_node import BaseNode
-from node_registry import register_node
-from api_handler import process_api_request
+from src.workflows.node_registry import register_node
+from src.api.handler import process_api_request
 
 @register_node('TemplateNode')
 class BasicNode(BaseNode):

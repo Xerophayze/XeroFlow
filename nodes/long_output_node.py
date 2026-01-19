@@ -6,8 +6,8 @@ It iteratively processes each item from this list, sending each to the API,
 and accumulates the responses by appending each new response to the previous one along with the next item.
 """
 from .base_node import BaseNode
-from node_registry import register_node  # Import the decorator
-from api_handler import process_api_request  # Correct import
+from src.workflows.node_registry import register_node  # Import the decorator
+from src.api.handler import process_api_request  # Correct import
 
 @register_node('LongOutputNode')
 class LongOutputNode(BaseNode):

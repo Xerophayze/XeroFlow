@@ -4,7 +4,7 @@ PassThroughNode: A simple node that passes input directly to output without modi
 Useful for debugging, breakpoints, or as a placeholder in workflows.
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 
 
 @register_node('PassThroughNode')
