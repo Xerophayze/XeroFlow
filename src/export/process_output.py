@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 from typing import List, Tuple
 
-from ExportExcel import convert_markdown_to_excel
+from src.export.excel import convert_markdown_to_excel
 
 
 EXCEL_FENCE_PATTERN = re.compile(

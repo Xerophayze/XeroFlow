@@ -1,24 +1,24 @@
 graph:
   connections:
-  - canvas_item: 168
+  - canvas_item: 1735
     canvas_items:
-    - 168
-    - 169
-    - 170
-    - 171
-    - 172
-    - 173
-    - 174
-    - 175
-    - 176
-    - 177
-    - 178
-    - 179
-    - 180
-    - 181
-    - 182
-    - 183
-    - 184
+    - 1735
+    - 1736
+    - 1737
+    - 1738
+    - 1739
+    - 1740
+    - 1741
+    - 1742
+    - 1743
+    - 1744
+    - 1745
+    - 1746
+    - 1747
+    - 1748
+    - 1749
+    - 1750
+    - 1751
     disabled: false
     flow_offset: 0
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -44,21 +44,11 @@ graph:
     - '#559dfa'
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 185
+  - canvas_item: 1752
     canvas_items:
-    - 185
-    - 186
-    - 187
-    - 188
-    - 189
-    - 190
-    - 191
-    - 192
-    - 193
-    - 194
-    - 195
-    - 196
-    - 197
+    - 1752
+    - 1753
+    - 1754
     disabled: false
     flow_offset: 2
     from_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
@@ -76,25 +66,25 @@ graph:
     - '#55a9ee'
     to_input: input
     to_node: 6976a651-76f1-410c-b10b-0f4324774546
-  - canvas_item: 198
+  - canvas_item: 1755
     canvas_items:
-    - 198
-    - 199
-    - 200
-    - 201
-    - 202
-    - 203
-    - 204
-    - 205
-    - 206
-    - 207
-    - 208
-    - 209
-    - 210
-    - 211
-    - 212
-    - 213
-    - 214
+    - 1755
+    - 1756
+    - 1757
+    - 1758
+    - 1759
+    - 1760
+    - 1761
+    - 1762
+    - 1763
+    - 1764
+    - 1765
+    - 1766
+    - 1767
+    - 1768
+    - 1769
+    - 1770
+    - 1771
     disabled: false
     flow_offset: 8
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -120,25 +110,25 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d40b6cbb-3284-47de-ab07-da0ec7176748
-  - canvas_item: 215
+  - canvas_item: 1772
     canvas_items:
-    - 215
-    - 216
-    - 217
-    - 218
-    - 219
-    - 220
-    - 221
-    - 222
-    - 223
-    - 224
-    - 225
-    - 226
-    - 227
-    - 228
-    - 229
-    - 230
-    - 231
+    - 1772
+    - 1773
+    - 1774
+    - 1775
+    - 1776
+    - 1777
+    - 1778
+    - 1779
+    - 1780
+    - 1781
+    - 1782
+    - 1783
+    - 1784
+    - 1785
+    - 1786
+    - 1787
+    - 1788
     disabled: false
     flow_offset: 8
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -164,25 +154,25 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: 96669a06-cf73-4bde-9fbf-613c80727d20
-  - canvas_item: 232
+  - canvas_item: 1789
     canvas_items:
-    - 232
-    - 233
-    - 234
-    - 235
-    - 236
-    - 237
-    - 238
-    - 239
-    - 240
-    - 241
-    - 242
-    - 243
-    - 244
-    - 245
-    - 246
-    - 247
-    - 248
+    - 1789
+    - 1790
+    - 1791
+    - 1792
+    - 1793
+    - 1794
+    - 1795
+    - 1796
+    - 1797
+    - 1798
+    - 1799
+    - 1800
+    - 1801
+    - 1802
+    - 1803
+    - 1804
+    - 1805
     disabled: false
     flow_offset: 0
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -200,17 +190,17 @@ graph:
     - '#55b4e3'
     to_input: input
     to_node: f08be467-3921-42ce-befa-51c12bc15775
-  - canvas_item: 249
+  - canvas_item: 1806
     canvas_items:
-    - 249
-    - 250
-    - 251
-    - 252
-    - 253
-    - 254
-    - 255
-    - 256
-    - 257
+    - 1806
+    - 1807
+    - 1808
+    - 1809
+    - 1810
+    - 1811
+    - 1812
+    - 1813
+    - 1814
     disabled: false
     flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
@@ -236,17 +226,17 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d407e984-dd52-4549-ae40-821e2646d5ae
-  - canvas_item: 258
+  - canvas_item: 1815
     canvas_items:
-    - 258
-    - 259
-    - 260
-    - 261
-    - 262
-    - 263
-    - 264
-    - 265
-    - 266
+    - 1815
+    - 1816
+    - 1817
+    - 1818
+    - 1819
+    - 1820
+    - 1821
+    - 1822
+    - 1823
     disabled: false
     flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
@@ -272,108 +262,108 @@ graph:
     - '#559ff8'
     to_input: input
     to_node: 3039be00-3cd7-4220-9a08-0347e8208a57
-  - canvas_item: 267
+  - canvas_item: 1824
     canvas_items:
-    - 267
-    - 268
-    - 269
+    - 1824
+    - 1825
+    - 1826
     disabled: false
     from_node: 96669a06-cf73-4bde-9fbf-613c80727d20
     from_output: output
     to_input: input
     to_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
-  - canvas_item: 270
+  - canvas_item: 1827
     canvas_items:
-    - 270
-    - 271
-    - 272
-    - 273
-    - 274
-    - 275
-    - 276
-    - 277
-    - 278
+    - 1827
+    - 1828
+    - 1829
+    - 1830
+    - 1831
+    - 1832
+    - 1833
+    - 1834
+    - 1835
     disabled: false
     from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
     from_output: output1
     to_input: input
     to_node: a674f96f-b608-4852-b39f-7a4b1f15b13f
-  - canvas_item: 279
+  - canvas_item: 1836
     canvas_items:
-    - 279
-    - 280
-    - 281
-    - 282
-    - 283
-    - 284
-    - 285
-    - 286
-    - 287
-    - 288
-    - 289
-    - 290
-    - 291
-    - 292
-    - 293
-    - 294
-    - 295
+    - 1836
+    - 1837
+    - 1838
+    - 1839
+    - 1840
+    - 1841
+    - 1842
+    - 1843
+    - 1844
     disabled: false
     from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
     from_output: output2
     to_input: input
     to_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
-  - canvas_item: 296
+  - canvas_item: 1845
     canvas_items:
-    - 296
+    - 1845
+    - 1846
+    - 1847
+    - 1848
+    - 1849
+    - 1850
+    - 1851
+    - 1852
+    - 1853
     disabled: false
     from_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
     from_output: output
     to_input: input
     to_node: ef04ae7a-8247-4da6-9621-f36766e76fdd
-  - canvas_item: 297
+  - canvas_item: 1854
     canvas_items:
-    - 297
-    - 298
-    - 299
-    - 300
-    - 301
-    - 302
-    - 303
-    - 304
-    - 305
-    - 306
-    - 307
-    - 308
-    - 309
-    - 310
-    - 311
-    - 312
-    - 313
-    - 314
+    - 1854
+    - 1855
+    - 1856
+    - 1857
+    - 1858
+    - 1859
+    - 1860
+    - 1861
+    - 1862
+    - 1863
+    - 1864
+    - 1865
+    - 1866
+    - 1867
+    - 1868
+    - 1869
+    - 1870
+    - 1871
     disabled: true
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
     from_output: output1
     to_input: input
     to_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
-  - canvas_item: 559
+  - canvas_item: 1872
     canvas_items:
-    - 559
-    - 560
-    - 561
-    - 562
-    - 563
-    - 564
-    - 565
-    - 566
-    - 567
-    - 568
-    - 569
-    - 570
-    - 571
-    - 572
-    - 573
-    - 574
-    - 575
+    - 1872
+    - 1873
+    - 1874
+    - 1875
+    - 1876
+    - 1877
+    - 1878
+    - 1879
+    - 1880
+    - 1881
+    - 1882
+    - 1883
+    - 1884
+    - 1885
+    - 1886
+    - 1887
+    - 1888
     disabled: false
     from_node: d1b361f7-7122-4480-8867-a8bdfa3ac19d
     from_output: chat_history
@@ -382,22 +372,22 @@ graph:
   nodes:
     2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf:
       canvas_items:
-        body: 2
-        description: 5
-        header: 3
-        input_input: 6
-        input_label_input: 7
-        output_label_output1: 9
-        output_label_output2: 11
-        output_label_output3: 13
-        output_label_output4: 15
-        output_output1: 8
-        output_output2: 10
-        output_output3: 12
-        output_output4: 14
-        resize_handle: 16
-        shadow: 1
-        title: 4
+        body: 1569
+        description: 1572
+        header: 1570
+        input_input: 1573
+        input_label_input: 1574
+        output_label_output1: 1576
+        output_label_output2: 1578
+        output_label_output3: 1580
+        output_label_output4: 1582
+        output_output1: 1575
+        output_output2: 1577
+        output_output3: 1579
+        output_output4: 1581
+        resize_handle: 1583
+        shadow: 1568
+        title: 1571
       height: 121.11111111111111
       highlight_state: false
       id: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
@@ -460,16 +450,16 @@ graph:
       y: 400
     3039be00-3cd7-4220-9a08-0347e8208a57:
       canvas_items:
-        body: 18
-        description: 21
-        header: 19
-        input_input: 22
-        input_label_input: 23
-        output_label_output: 25
-        output_output: 24
-        resize_handle: 26
-        shadow: 17
-        title: 20
+        body: 1585
+        description: 1588
+        header: 1586
+        input_input: 1589
+        input_label_input: 1590
+        output_label_output: 1592
+        output_output: 1591
+        resize_handle: 1593
+        shadow: 1584
+        title: 1587
       height: 120
       highlight_state: false
       id: 3039be00-3cd7-4220-9a08-0347e8208a57
@@ -522,7 +512,7 @@ graph:
           label: Custom Node Name
           type: text
         output_folder:
-          default: ''
+          default: F:/My_AI/Books
           label: Output Folder
           type: folder
       title: Export  chapter outline
@@ -532,16 +522,16 @@ graph:
       y: 550
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        body: 28
-        description: 31
-        header: 29
-        input_input: 32
-        input_label_input: 33
-        output_label_output: 35
-        output_output: 34
-        resize_handle: 36
-        shadow: 27
-        title: 30
+        body: 1595
+        description: 1598
+        header: 1596
+        input_input: 1599
+        input_label_input: 1600
+        output_label_output: 1602
+        output_output: 1601
+        resize_handle: 1603
+        shadow: 1594
+        title: 1597
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -597,21 +587,12 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 3 Flash
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
-          - Gemini 3 Flash
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         description:
           default: Processes the input prompt with review capability and content enhancement.
@@ -645,21 +626,12 @@ graph:
           label: Custom Node Name
           type: text
         searxng_endpoint:
-          default: SearXing
+          default: SearXNG
           label: SearxNG Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
-          - Gemini 3 Flash
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         web_search_prompt:
           default: 'Based on the following paragraph and web search results, create
@@ -679,20 +651,20 @@ graph:
       title: OutlineWriterV3Node
       type: OutlineWriterV3Node
       width: 200
-      x: 50
+      x: 75
       y: 200
     6976a651-76f1-410c-b10b-0f4324774546:
       canvas_items:
-        body: 38
-        description: 41
-        header: 39
-        input_input: 42
-        input_label_input: 43
-        output_label_output: 45
-        output_output: 44
-        resize_handle: 46
-        shadow: 37
-        title: 40
+        body: 1605
+        description: 1608
+        header: 1606
+        input_input: 1609
+        input_label_input: 1610
+        output_label_output: 1612
+        output_output: 1611
+        resize_handle: 1613
+        shadow: 1604
+        title: 1607
       height: 120
       highlight_state: false
       id: 6976a651-76f1-410c-b10b-0f4324774546
@@ -751,20 +723,20 @@ graph:
       title: Final Book Export v1
       type: ExportDocumentNode
       width: 180
-      x: 925
-      y: 125
+      x: 1150
+      y: -75
     96669a06-cf73-4bde-9fbf-613c80727d20:
       canvas_items:
-        body: 48
-        description: 51
-        header: 49
-        input_input: 52
-        input_label_input: 53
-        output_label_output: 55
-        output_output: 54
-        resize_handle: 56
-        shadow: 47
-        title: 50
+        body: 1615
+        description: 1618
+        header: 1616
+        input_input: 1619
+        input_label_input: 1620
+        output_label_output: 1622
+        output_output: 1621
+        resize_handle: 1623
+        shadow: 1614
+        title: 1617
       height: 117.0
       highlight_state: false
       id: 96669a06-cf73-4bde-9fbf-613c80727d20
@@ -777,21 +749,12 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Gemini 3 Flash
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Gemini 3 Flash
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         description:
           default: Processes array elements through multiple API calls until condition
@@ -922,16 +885,16 @@ graph:
       y: 400
     a674f96f-b608-4852-b39f-7a4b1f15b13f:
       canvas_items:
-        body: 58
-        description: 61
-        header: 59
-        input_input: 62
-        input_label_input: 63
-        output_label_output: 65
-        output_output: 64
-        resize_handle: 66
-        shadow: 57
-        title: 60
+        body: 1625
+        description: 1628
+        header: 1626
+        input_input: 1629
+        input_label_input: 1630
+        output_label_output: 1632
+        output_output: 1631
+        resize_handle: 1633
+        shadow: 1624
+        title: 1627
       height: 120
       highlight_state: false
       id: a674f96f-b608-4852-b39f-7a4b1f15b13f
@@ -984,26 +947,26 @@ graph:
           label: Custom Node Name
           type: text
         output_folder:
-          default: ''
+          default: F:/My_AI/Books
           label: Output Folder
           type: folder
       title: Final Book Export
       type: ExportDocumentNode
       width: 180
-      x: 925
-      y: 325
+      x: 1100
+      y: 350
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        body: 68
-        description: 71
-        header: 69
-        input_input: 72
-        input_label_input: 73
-        output_label_output: 75
-        output_output: 74
-        resize_handle: 76
-        shadow: 67
-        title: 70
+        body: 1635
+        description: 1638
+        header: 1636
+        input_input: 1639
+        input_label_input: 1640
+        output_label_output: 1642
+        output_output: 1641
+        resize_handle: 1643
+        shadow: 1634
+        title: 1637
       connections: []
       height: 112
       highlight_state: false
@@ -1017,21 +980,12 @@ graph:
           default: ''
           type: textarea
         api_endpoint:
-          default: Gemini 2.5
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Gemini 3 Flash
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         description:
           default: Processes array elements through multiple API calls until condition
@@ -1158,20 +1112,20 @@ graph:
       title: Reviewer and Editor V1
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 725
-      y: 25
+      x: 875
+      y: -75
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        body: 78
-        description: 81
-        header: 79
-        input_input: 82
-        input_label_input: 83
-        output_label_output: 85
-        output_output: 84
-        resize_handle: 86
-        shadow: 77
-        title: 80
+        body: 1645
+        description: 1648
+        header: 1646
+        input_input: 1649
+        input_label_input: 1650
+        output_label_output: 1652
+        output_output: 1651
+        resize_handle: 1653
+        shadow: 1644
+        title: 1647
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -1219,21 +1173,12 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 3 Flash
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Gemini 3 Flash
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -1258,16 +1203,16 @@ graph:
       y: 25
     cf33029e-9118-4bfa-a8cd-469a4d0230fd:
       canvas_items:
-        body: 88
-        description: 91
-        header: 89
-        input_input: 92
-        input_label_input: 93
-        output_label_output: 95
-        output_output: 94
-        resize_handle: 96
-        shadow: 87
-        title: 90
+        body: 1655
+        description: 1658
+        header: 1656
+        input_input: 1659
+        input_label_input: 1660
+        output_label_output: 1662
+        output_output: 1661
+        resize_handle: 1663
+        shadow: 1654
+        title: 1657
       height: 120
       highlight_state: false
       id: cf33029e-9118-4bfa-a8cd-469a4d0230fd
@@ -1325,21 +1270,12 @@ graph:
           label: Prompt
           type: textarea
         api_endpoint:
-          default: Gemini 3 Flash
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
-          - Gemini 3 Flash
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         description:
           default: Processes the input prompt and prepares it for the API.
@@ -1360,28 +1296,28 @@ graph:
       title: BasicNode
       type: BasicNode
       width: 180
-      x: 650
-      y: 575
+      x: 875
+      y: 550
     d1b361f7-7122-4480-8867-a8bdfa3ac19d:
       canvas_items:
-        badge: 101
-        badge_label: 102
-        body: 98
-        description: 103
-        header: 99
-        input_gui_queue: 106
-        input_input: 104
-        input_label_gui_queue: 107
-        input_label_input: 105
-        input_label_workflow_id: 109
-        input_label_workflow_name: 111
-        input_workflow_id: 108
-        input_workflow_name: 110
-        output_chat_history: 112
-        output_label_chat_history: 113
-        resize_handle: 114
-        shadow: 97
-        title: 100
+        badge: 1668
+        badge_label: 1669
+        body: 1665
+        description: 1670
+        header: 1666
+        input_gui_queue: 1673
+        input_input: 1671
+        input_label_gui_queue: 1674
+        input_label_input: 1672
+        input_label_workflow_id: 1676
+        input_label_workflow_name: 1678
+        input_workflow_id: 1675
+        input_workflow_name: 1677
+        output_chat_history: 1679
+        output_label_chat_history: 1680
+        resize_handle: 1681
+        shadow: 1664
+        title: 1667
       height: 120
       highlight_state: false
       id: d1b361f7-7122-4480-8867-a8bdfa3ac19d
@@ -1431,27 +1367,18 @@ graph:
             \ to process."
           type: textarea
         api_endpoint:
-          default: Gemini 3 Flash
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Gemini 3 Flash
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         database:
-          default: Eric Writting
+          default: Main
           label: Database
           options:
-          - Eric Writting
+          - Main
           type: dropdown
         description:
           default: Handles a chat conversation with the user.
@@ -1486,26 +1413,26 @@ graph:
           label: Default Search Results
           type: number
         searxng_api_url:
-          default: http://localhost:8888/search
+          default: http://127.0.0.1:8080/search
           description: URL for the SearxNG search engine API
           label: SearxNG API URL
           type: text
       title: ' Story Discovery'
       type: ChatNode
       width: 180
-      x: 25
+      x: 50
       y: 575
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        body: 116
-        header: 117
-        input_input: 119
-        input_label_input: 120
-        output_label_prompt: 122
-        output_prompt: 121
-        resize_handle: 123
-        shadow: 115
-        title: 118
+        body: 1683
+        header: 1684
+        input_input: 1686
+        input_label_input: 1687
+        output_label_prompt: 1689
+        output_prompt: 1688
+        resize_handle: 1690
+        shadow: 1682
+        title: 1685
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -1585,21 +1512,12 @@ graph:
           description: Main instruction template for content generation
           type: text
         api_endpoint:
-          default: Gemini 3 Flash
+          default: Gemini
           label: API Endpoint
           options:
-          - Claude
-          - GPT 5 chat
-          - Gemini 2.5
-          - Groq gpt-oss 120b
-          - LMStudio-MIstral-Nemo-Instruct
-          - Ollama
-          - OpenAI 4o-mini
-          - OpenAI GPT5
-          - OpenAI Whisper
-          - OpenAI o3
-          - SearXing
-          - Gemini 3 Flash
+          - Gemini
+          - Local LLM
+          - SearXNG
           type: dropdown
         chunk_size:
           default: '10'
@@ -1625,7 +1543,7 @@ graph:
           description: Show review window for array output
           type: boolean
         searxng_api_url:
-          default: http://localhost:8888/search
+          default: http://127.0.0.1:8080/search
           description: Endpoint used for optional web-search enrichment
           label: SearXNG API URL
           type: text
@@ -1644,22 +1562,22 @@ graph:
       y: 25
     d40b6cbb-3284-47de-ab07-da0ec7176748:
       canvas_items:
-        body: 125
-        description: 128
-        header: 126
-        input_input: 129
-        input_label_input: 130
-        output_label_output1: 132
-        output_label_output2: 134
-        output_label_output3: 136
-        output_label_output4: 138
-        output_output1: 131
-        output_output2: 133
-        output_output3: 135
-        output_output4: 137
-        resize_handle: 139
-        shadow: 124
-        title: 127
+        body: 1692
+        description: 1695
+        header: 1693
+        input_input: 1696
+        input_label_input: 1697
+        output_label_output1: 1699
+        output_label_output2: 1701
+        output_label_output3: 1703
+        output_label_output4: 1705
+        output_output1: 1698
+        output_output2: 1700
+        output_output3: 1702
+        output_output4: 1704
+        resize_handle: 1706
+        shadow: 1691
+        title: 1694
       height: 120
       highlight_state: false
       id: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -1722,18 +1640,18 @@ graph:
       y: 200
     ef04ae7a-8247-4da6-9621-f36766e76fdd:
       canvas_items:
-        badge: 144
-        badge_label: 145
-        body: 141
-        description: 146
-        header: 142
-        input_input: 147
-        input_label_input: 148
-        output_label_output: 150
-        output_output: 149
-        resize_handle: 151
-        shadow: 140
-        title: 143
+        badge: 1711
+        badge_label: 1712
+        body: 1708
+        description: 1713
+        header: 1709
+        input_input: 1714
+        input_label_input: 1715
+        output_label_output: 1717
+        output_output: 1716
+        resize_handle: 1718
+        shadow: 1707
+        title: 1710
       height: 120
       highlight_state: false
       id: ef04ae7a-8247-4da6-9621-f36766e76fdd
@@ -1786,32 +1704,32 @@ graph:
           label: Custom Node Name
           type: text
         output_folder:
-          default: ''
+          default: F:/My_AI/Books
           label: Output Folder
           type: folder
       title: Final Book Review
       type: ExportDocumentNode
       width: 180
-      x: 925
+      x: 1150
       y: 575
     f08be467-3921-42ce-befa-51c12bc15775:
       canvas_items:
-        body: 153
-        description: 156
-        header: 154
-        input_input: 157
-        input_label_input: 158
-        output_label_output1: 160
-        output_label_output2: 162
-        output_label_output3: 164
-        output_label_output4: 166
-        output_output1: 159
-        output_output2: 161
-        output_output3: 163
-        output_output4: 165
-        resize_handle: 167
-        shadow: 152
-        title: 155
+        body: 1720
+        description: 1723
+        header: 1721
+        input_input: 1724
+        input_label_input: 1725
+        output_label_output1: 1727
+        output_label_output2: 1729
+        output_label_output3: 1731
+        output_label_output4: 1733
+        output_output1: 1726
+        output_output2: 1728
+        output_output3: 1730
+        output_output4: 1732
+        resize_handle: 1734
+        shadow: 1719
+        title: 1722
       height: 120
       highlight_state: false
       id: f08be467-3921-42ce-befa-51c12bc15775
@@ -1873,9 +1791,9 @@ graph:
       x: 100
       y: 400
   viewport:
-    pan_offset_x: 16.5
-    pan_offset_y: 3.099999999999966
+    pan_offset_x: 171.90647546897566
+    pan_offset_y: 153.1342532467532
     window_height: 764
     window_width: 1239
-    zoom_level: 0.9
+    zoom_level: 0.6499999999999999
 name: Write long form story content

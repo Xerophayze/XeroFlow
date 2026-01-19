@@ -1,5 +1,5 @@
 from .basic_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 from youtube_transcript_api import YouTubeTranscriptApi
 import yt_dlp
 import re

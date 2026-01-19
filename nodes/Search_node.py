@@ -3,8 +3,8 @@ import re
 import string
 import unicodedata
 from .base_node import BaseNode
-from node_registry import register_node  # Import the decorator
-from api_handler import process_api_request  # Correct import
+from src.workflows.node_registry import register_node  # Import the decorator
+from src.api.handler import process_api_request  # Correct import
 
 @register_node('SearchNode')
 class SearchNode(BaseNode):

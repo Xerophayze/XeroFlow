@@ -18,8 +18,8 @@ from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from .base_node import BaseNode
-from node_registry import register_node
-from api_handler import process_api_request
+from src.workflows.node_registry import register_node
+from src.api.handler import process_api_request
 from docx import Document
 from docx.shared import Pt, RGBColor, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -29,8 +29,8 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from .youtube_transcript_node import YoutubeTranscriptNode
 from .web_scrape_node import WebScrapingNode
-from ExportWord import convert_markdown_to_docx
-from Process_output import process_api_output
+from src.export.word import convert_markdown_to_docx
+from src.export.process_output import process_api_output
 from pydub import AudioSegment
 import traceback
 from datetime import datetime

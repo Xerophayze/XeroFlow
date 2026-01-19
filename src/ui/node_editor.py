@@ -8,7 +8,7 @@ import os
 import importlib
 import inspect
 import json
-from node_registry import NODE_REGISTRY
+from src.workflows.node_registry import NODE_REGISTRY
 from nodes.missing_node import MissingNode
 from nodes.base_node import BaseNode
 

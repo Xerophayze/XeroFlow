@@ -5,7 +5,7 @@ Each array element is processed through a loop of API calls until a specified co
 Adds previous/next chapter context to validation/refinement prompts.
 """
 from .base_node import BaseNode
-from node_registry import register_node
+from src.workflows.node_registry import register_node
 from utils.progress_window import ProgressWindow
 from utils.refinement_review_window import RefinementReviewWindow
 import threading
