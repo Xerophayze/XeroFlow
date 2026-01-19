@@ -1,24 +1,24 @@
 graph:
   connections:
-  - canvas_item: 24387
+  - canvas_item: 2804
     canvas_items:
-    - 24387
-    - 24388
-    - 24389
-    - 24390
-    - 24391
-    - 24392
-    - 24393
-    - 24394
-    - 24395
-    - 24396
-    - 24397
-    - 24398
-    - 24399
-    - 24400
-    - 24401
-    - 24402
-    - 24403
+    - 2804
+    - 2805
+    - 2806
+    - 2807
+    - 2808
+    - 2809
+    - 2810
+    - 2811
+    - 2812
+    - 2813
+    - 2814
+    - 2815
+    - 2816
+    - 2817
+    - 2818
+    - 2819
+    - 2820
     disabled: false
     flow_offset: 0
     from_node: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -44,11 +44,11 @@ graph:
     - '#559dfa'
     to_input: input
     to_node: 3b531ecb-da74-483a-93cf-11de692f0b68
-  - canvas_item: 24404
+  - canvas_item: 2821
     canvas_items:
-    - 24404
-    - 24405
-    - 24406
+    - 2821
+    - 2822
+    - 2823
     disabled: false
     flow_offset: 2
     from_node: b02230a3-53b8-49d1-b90a-d06a1cb59c73
@@ -66,25 +66,25 @@ graph:
     - '#55a9ee'
     to_input: input
     to_node: 6976a651-76f1-410c-b10b-0f4324774546
-  - canvas_item: 24407
+  - canvas_item: 2824
     canvas_items:
-    - 24407
-    - 24408
-    - 24409
-    - 24410
-    - 24411
-    - 24412
-    - 24413
-    - 24414
-    - 24415
-    - 24416
-    - 24417
-    - 24418
-    - 24419
-    - 24420
-    - 24421
-    - 24422
-    - 24423
+    - 2824
+    - 2825
+    - 2826
+    - 2827
+    - 2828
+    - 2829
+    - 2830
+    - 2831
+    - 2832
+    - 2833
+    - 2834
+    - 2835
+    - 2836
+    - 2837
+    - 2838
+    - 2839
+    - 2840
     disabled: false
     flow_offset: 8
     from_node: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -110,25 +110,25 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d40b6cbb-3284-47de-ab07-da0ec7176748
-  - canvas_item: 24424
+  - canvas_item: 2841
     canvas_items:
-    - 24424
-    - 24425
-    - 24426
-    - 24427
-    - 24428
-    - 24429
-    - 24430
-    - 24431
-    - 24432
-    - 24433
-    - 24434
-    - 24435
-    - 24436
-    - 24437
-    - 24438
-    - 24439
-    - 24440
+    - 2841
+    - 2842
+    - 2843
+    - 2844
+    - 2845
+    - 2846
+    - 2847
+    - 2848
+    - 2849
+    - 2850
+    - 2851
+    - 2852
+    - 2853
+    - 2854
+    - 2855
+    - 2856
+    - 2857
     disabled: false
     flow_offset: 8
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -154,25 +154,25 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: 96669a06-cf73-4bde-9fbf-613c80727d20
-  - canvas_item: 24441
+  - canvas_item: 2858
     canvas_items:
-    - 24441
-    - 24442
-    - 24443
-    - 24444
-    - 24445
-    - 24446
-    - 24447
-    - 24448
-    - 24449
-    - 24450
-    - 24451
-    - 24452
-    - 24453
-    - 24454
-    - 24455
-    - 24456
-    - 24457
+    - 2858
+    - 2859
+    - 2860
+    - 2861
+    - 2862
+    - 2863
+    - 2864
+    - 2865
+    - 2866
+    - 2867
+    - 2868
+    - 2869
+    - 2870
+    - 2871
+    - 2872
+    - 2873
+    - 2874
     disabled: false
     flow_offset: 0
     from_node: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -190,17 +190,17 @@ graph:
     - '#55b4e3'
     to_input: input
     to_node: f08be467-3921-42ce-befa-51c12bc15775
-  - canvas_item: 24458
+  - canvas_item: 2875
     canvas_items:
-    - 24458
-    - 24459
-    - 24460
-    - 24461
-    - 24462
-    - 24463
-    - 24464
-    - 24465
-    - 24466
+    - 2875
+    - 2876
+    - 2877
+    - 2878
+    - 2879
+    - 2880
+    - 2881
+    - 2882
+    - 2883
     disabled: false
     flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
@@ -226,21 +226,17 @@ graph:
     - '#55a1f6'
     to_input: input
     to_node: d407e984-dd52-4549-ae40-821e2646d5ae
-  - canvas_item: 24467
+  - canvas_item: 2884
     canvas_items:
-    - 24467
-    - 24468
-    - 24469
-    - 24470
-    - 24471
-    - 24472
-    - 24473
-    - 24474
-    - 24475
-    - 24476
-    - 24477
-    - 24478
-    - 24479
+    - 2884
+    - 2885
+    - 2886
+    - 2887
+    - 2888
+    - 2889
+    - 2890
+    - 2891
+    - 2892
     disabled: false
     flow_offset: 0
     from_node: f08be467-3921-42ce-befa-51c12bc15775
@@ -266,84 +262,82 @@ graph:
     - '#559ff8'
     to_input: input
     to_node: 3039be00-3cd7-4220-9a08-0347e8208a57
-  - canvas_item: 24480
+  - canvas_item: 2893
     canvas_items:
-    - 24480
-    - 24481
-    - 24482
-    - 24483
-    - 24484
-    - 24485
-    - 24486
-    - 24487
-    - 24488
+    - 2893
+    - 2894
+    - 2895
+    - 2896
+    - 2897
+    - 2898
+    - 2899
+    - 2900
+    - 2901
     disabled: false
     from_node: 96669a06-cf73-4bde-9fbf-613c80727d20
     from_output: output
     to_input: input
     to_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
-  - canvas_item: 24489
+  - canvas_item: 2902
     canvas_items:
-    - 24489
-    - 24490
-    - 24491
+    - 2902
     disabled: false
     from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
     from_output: output1
     to_input: input
     to_node: a674f96f-b608-4852-b39f-7a4b1f15b13f
-  - canvas_item: 24492
+  - canvas_item: 2903
     canvas_items:
-    - 24492
-    - 24493
-    - 24494
-    - 24495
-    - 24496
-    - 24497
-    - 24498
-    - 24499
-    - 24500
-    - 24501
-    - 24502
-    - 24503
-    - 24504
-    - 24505
-    - 24506
-    - 24507
-    - 24508
+    - 2903
+    - 2904
+    - 2905
+    - 2906
+    - 2907
+    - 2908
+    - 2909
+    - 2910
+    - 2911
+    - 2912
+    - 2913
+    - 2914
+    - 2915
+    - 2916
+    - 2917
+    - 2918
+    - 2919
     disabled: false
     from_node: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
     from_output: output2
     to_input: input
     to_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
-  - canvas_item: 24509
+  - canvas_item: 2920
     canvas_items:
-    - 24509
+    - 2920
     disabled: false
     from_node: cf33029e-9118-4bfa-a8cd-469a4d0230fd
     from_output: output
     to_input: input
     to_node: ef04ae7a-8247-4da6-9621-f36766e76fdd
-  - canvas_item: 24510
+  - canvas_item: 2921
     canvas_items:
-    - 24510
-    - 24511
-    - 24512
-    - 24513
-    - 24514
-    - 24515
-    - 24516
-    - 24517
-    - 24518
-    - 24519
-    - 24520
-    - 24521
-    - 24522
-    - 24523
-    - 24524
-    - 24525
-    - 24526
-    - 24527
+    - 2921
+    - 2922
+    - 2923
+    - 2924
+    - 2925
+    - 2926
+    - 2927
+    - 2928
+    - 2929
+    - 2930
+    - 2931
+    - 2932
+    - 2933
+    - 2934
+    - 2935
+    - 2936
+    - 2937
+    - 2938
     disabled: true
     from_node: d40b6cbb-3284-47de-ab07-da0ec7176748
     from_output: output1
@@ -352,22 +346,22 @@ graph:
   nodes:
     2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf:
       canvas_items:
-        body: 24239
-        description: 24242
-        header: 24240
-        input_input: 24243
-        input_label_input: 24244
-        output_label_output1: 24246
-        output_label_output2: 24248
-        output_label_output3: 24250
-        output_label_output4: 24252
-        output_output1: 24245
-        output_output2: 24247
-        output_output3: 24249
-        output_output4: 24251
-        resize_handle: 24253
-        shadow: 24238
-        title: 24241
+        body: 2789
+        description: 2792
+        header: 2790
+        input_input: 2793
+        input_label_input: 2794
+        output_label_output1: 2796
+        output_label_output2: 2798
+        output_label_output3: 2800
+        output_label_output4: 2802
+        output_output1: 2795
+        output_output2: 2797
+        output_output3: 2799
+        output_output4: 2801
+        resize_handle: 2803
+        shadow: 2788
+        title: 2791
       height: 121.11111111111111
       highlight_state: false
       id: 2586ffd7-e519-4c4b-ad18-e8ef7f8f6cbf
@@ -423,24 +417,24 @@ graph:
           description: How many outputs to populate (up to 4).
           label: Number of Outputs (1-4)
           type: text
-      selection_state: false
+      selection_state: true
       title: split to final export and review
       type: SplitterNode
       width: 182.22222222222223
-      x: 675
-      y: 275
+      x: 650
+      y: 325
     3039be00-3cd7-4220-9a08-0347e8208a57:
       canvas_items:
-        body: 24255
-        description: 24258
-        header: 24256
-        input_input: 24259
-        input_label_input: 24260
-        output_label_output: 24262
-        output_output: 24261
-        resize_handle: 24263
-        shadow: 24254
-        title: 24257
+        body: 18
+        description: 21
+        header: 19
+        input_input: 22
+        input_label_input: 23
+        output_label_output: 25
+        output_output: 24
+        resize_handle: 26
+        shadow: 17
+        title: 20
       height: 120
       highlight_state: false
       id: 3039be00-3cd7-4220-9a08-0347e8208a57
@@ -503,16 +497,16 @@ graph:
       y: 550
     3b531ecb-da74-483a-93cf-11de692f0b68:
       canvas_items:
-        body: 24265
-        description: 24268
-        header: 24266
-        input_input: 24269
-        input_label_input: 24270
-        output_label_output: 24272
-        output_output: 24271
-        resize_handle: 24273
-        shadow: 24264
-        title: 24267
+        body: 28
+        description: 31
+        header: 29
+        input_input: 32
+        input_label_input: 33
+        output_label_output: 35
+        output_output: 34
+        resize_handle: 36
+        shadow: 27
+        title: 30
       height: 150
       highlight_state: false
       id: 3b531ecb-da74-483a-93cf-11de692f0b68
@@ -636,16 +630,16 @@ graph:
       y: 200
     6976a651-76f1-410c-b10b-0f4324774546:
       canvas_items:
-        body: 24275
-        description: 24278
-        header: 24276
-        input_input: 24279
-        input_label_input: 24280
-        output_label_output: 24282
-        output_output: 24281
-        resize_handle: 24283
-        shadow: 24274
-        title: 24277
+        body: 38
+        description: 41
+        header: 39
+        input_input: 42
+        input_label_input: 43
+        output_label_output: 45
+        output_output: 44
+        resize_handle: 46
+        shadow: 37
+        title: 40
       height: 120
       highlight_state: false
       id: 6976a651-76f1-410c-b10b-0f4324774546
@@ -705,20 +699,20 @@ graph:
       title: Final Book Export v1
       type: ExportDocumentNode
       width: 180
-      x: 1050
-      y: 75
+      x: 1022.3076923076922
+      y: 121.15384615384615
     96669a06-cf73-4bde-9fbf-613c80727d20:
       canvas_items:
-        body: 24285
-        description: 24288
-        header: 24286
-        input_input: 24289
-        input_label_input: 24290
-        output_label_output: 24292
-        output_output: 24291
-        resize_handle: 24293
-        shadow: 24284
-        title: 24287
+        body: 48
+        description: 51
+        header: 49
+        input_input: 52
+        input_label_input: 53
+        output_label_output: 55
+        output_output: 54
+        resize_handle: 56
+        shadow: 47
+        title: 50
       height: 117.0
       highlight_state: false
       id: 96669a06-cf73-4bde-9fbf-613c80727d20
@@ -867,16 +861,16 @@ graph:
       y: 400
     a674f96f-b608-4852-b39f-7a4b1f15b13f:
       canvas_items:
-        body: 24295
-        description: 24298
-        header: 24296
-        input_input: 24299
-        input_label_input: 24300
-        output_label_output: 24302
-        output_output: 24301
-        resize_handle: 24303
-        shadow: 24294
-        title: 24297
+        body: 58
+        description: 61
+        header: 59
+        input_input: 62
+        input_label_input: 63
+        output_label_output: 65
+        output_output: 64
+        resize_handle: 66
+        shadow: 57
+        title: 60
       height: 120
       highlight_state: false
       id: a674f96f-b608-4852-b39f-7a4b1f15b13f
@@ -932,24 +926,24 @@ graph:
           default: F:/My_AI/Books
           label: Output Folder
           type: folder
-      selection_state: false
+      selection_state: true
       title: Final Book Export
       type: ExportDocumentNode
       width: 180
-      x: 1175
-      y: 250
+      x: 1147.3076923076924
+      y: 296.15384615384625
     b02230a3-53b8-49d1-b90a-d06a1cb59c73:
       canvas_items:
-        body: 24305
-        description: 24308
-        header: 24306
-        input_input: 24309
-        input_label_input: 24310
-        output_label_output: 24312
-        output_output: 24311
-        resize_handle: 24313
-        shadow: 24304
-        title: 24307
+        body: 68
+        description: 71
+        header: 69
+        input_input: 72
+        input_label_input: 73
+        output_label_output: 75
+        output_output: 74
+        resize_handle: 76
+        shadow: 67
+        title: 70
       connections: []
       height: 112
       highlight_state: false
@@ -1096,20 +1090,20 @@ graph:
       title: Reviewer and Editor V1
       type: ArrayProcessTestProcessNode
       width: 153
-      x: 762.6923076923073
-      y: 72.69230769230774
+      x: 734.9999999999995
+      y: 118.84615384615388
     b6533fcc-5a95-4d2f-9be7-ffbba1fe2362:
       canvas_items:
-        body: 24315
-        description: 24318
-        header: 24316
-        input_input: 24319
-        input_label_input: 24320
-        output_label_output: 24322
-        output_output: 24321
-        resize_handle: 24323
-        shadow: 24314
-        title: 24317
+        body: 78
+        description: 81
+        header: 79
+        input_input: 82
+        input_label_input: 83
+        output_label_output: 85
+        output_output: 84
+        resize_handle: 86
+        shadow: 77
+        title: 80
       height: 132
       highlight_state: false
       id: b6533fcc-5a95-4d2f-9be7-ffbba1fe2362
@@ -1187,16 +1181,16 @@ graph:
       y: 25
     cf33029e-9118-4bfa-a8cd-469a4d0230fd:
       canvas_items:
-        body: 24325
-        description: 24328
-        header: 24326
-        input_input: 24329
-        input_label_input: 24330
-        output_label_output: 24332
-        output_output: 24331
-        resize_handle: 24333
-        shadow: 24324
-        title: 24327
+        body: 88
+        description: 91
+        header: 89
+        input_input: 92
+        input_label_input: 93
+        output_label_output: 95
+        output_output: 94
+        resize_handle: 96
+        shadow: 87
+        title: 90
       height: 120
       highlight_state: false
       id: cf33029e-9118-4bfa-a8cd-469a4d0230fd
@@ -1277,23 +1271,23 @@ graph:
           default: BasicNode
           label: Custom Node Name
           type: text
-      selection_state: false
+      selection_state: true
       title: BasicNode
       type: BasicNode
       width: 180
-      x: 675
-      y: 475
+      x: 647.3076923076923
+      y: 521.1538461538462
     d407e984-dd52-4549-ae40-821e2646d5ae:
       canvas_items:
-        body: 24335
-        header: 24336
-        input_input: 24338
-        input_label_input: 24339
-        output_label_prompt: 24341
-        output_prompt: 24340
-        resize_handle: 24342
-        shadow: 24334
-        title: 24337
+        body: 98
+        header: 99
+        input_input: 101
+        input_label_input: 102
+        output_label_prompt: 104
+        output_prompt: 103
+        resize_handle: 105
+        shadow: 97
+        title: 100
       height: 100
       highlight_state: false
       id: d407e984-dd52-4549-ae40-821e2646d5ae
@@ -1424,22 +1418,22 @@ graph:
       y: 52.6923076923077
     d40b6cbb-3284-47de-ab07-da0ec7176748:
       canvas_items:
-        body: 24344
-        description: 24347
-        header: 24345
-        input_input: 24348
-        input_label_input: 24349
-        output_label_output1: 24351
-        output_label_output2: 24353
-        output_label_output3: 24355
-        output_label_output4: 24357
-        output_output1: 24350
-        output_output2: 24352
-        output_output3: 24354
-        output_output4: 24356
-        resize_handle: 24358
-        shadow: 24343
-        title: 24346
+        body: 107
+        description: 110
+        header: 108
+        input_input: 111
+        input_label_input: 112
+        output_label_output1: 114
+        output_label_output2: 116
+        output_label_output3: 118
+        output_label_output4: 120
+        output_output1: 113
+        output_output2: 115
+        output_output3: 117
+        output_output4: 119
+        resize_handle: 121
+        shadow: 106
+        title: 109
       height: 120
       highlight_state: false
       id: d40b6cbb-3284-47de-ab07-da0ec7176748
@@ -1502,18 +1496,18 @@ graph:
       y: 200
     ef04ae7a-8247-4da6-9621-f36766e76fdd:
       canvas_items:
-        badge: 24363
-        badge_label: 24364
-        body: 24360
-        description: 24365
-        header: 24361
-        input_input: 24366
-        input_label_input: 24367
-        output_label_output: 24369
-        output_output: 24368
-        resize_handle: 24370
-        shadow: 24359
-        title: 24362
+        badge: 126
+        badge_label: 127
+        body: 123
+        description: 128
+        header: 124
+        input_input: 129
+        input_label_input: 130
+        output_label_output: 132
+        output_output: 131
+        resize_handle: 133
+        shadow: 122
+        title: 125
       height: 120
       highlight_state: false
       id: ef04ae7a-8247-4da6-9621-f36766e76fdd
@@ -1569,30 +1563,30 @@ graph:
           default: F:/My_AI/Books
           label: Output Folder
           type: folder
-      selection_state: false
+      selection_state: true
       title: Final Book Review
       type: ExportDocumentNode
       width: 180
-      x: 1175
-      y: 475
+      x: 1147.3076923076924
+      y: 521.1538461538462
     f08be467-3921-42ce-befa-51c12bc15775:
       canvas_items:
-        body: 24372
-        description: 24375
-        header: 24373
-        input_input: 24376
-        input_label_input: 24377
-        output_label_output1: 24379
-        output_label_output2: 24381
-        output_label_output3: 24383
-        output_label_output4: 24385
-        output_output1: 24378
-        output_output2: 24380
-        output_output3: 24382
-        output_output4: 24384
-        resize_handle: 24386
-        shadow: 24371
-        title: 24374
+        body: 135
+        description: 138
+        header: 136
+        input_input: 139
+        input_label_input: 140
+        output_label_output1: 142
+        output_label_output2: 144
+        output_label_output3: 146
+        output_label_output4: 148
+        output_output1: 141
+        output_output2: 143
+        output_output3: 145
+        output_output4: 147
+        resize_handle: 149
+        shadow: 134
+        title: 137
       height: 120
       highlight_state: false
       id: f08be467-3921-42ce-befa-51c12bc15775
