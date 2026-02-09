@@ -24,7 +24,7 @@ def manage_databases_window(parent, config, refresh_callback):
         try:
             result = db_manager.create_database(db_name)
             if result:
-                messagebox.showinfo("Success", f"Database '{db_name}' created successfully!")
+                # messagebox.showinfo("Success", f"Database '{db_name}' created successfully!")
                 refresh_db_list()
                 refresh_callback()  # Refresh the dropdown in main.py
                 db_name_entry.delete(0, tk.END)
@@ -45,7 +45,7 @@ def manage_databases_window(parent, config, refresh_callback):
             try:
                 result = db_manager.delete_database(db_name)
                 if result.get("success"):
-                    messagebox.showinfo("Success", f"Database '{db_name}' deleted successfully!")
+                    # messagebox.showinfo("Success", f"Database '{db_name}' deleted successfully!")
                     refresh_db_list()
                     refresh_callback()  # Refresh the dropdown in main.py
                 else:

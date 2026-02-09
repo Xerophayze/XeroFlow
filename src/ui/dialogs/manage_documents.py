@@ -56,7 +56,7 @@ def manage_documents_window(parent, config, refresh_callback):
             # Perform the add operation
             result = db_manager.add_documents(db, file_objects)
             if result.get("success"):
-                messagebox.showinfo("Success", "Documents added successfully!")
+                # messagebox.showinfo("Success", "Documents added successfully!")
                 refresh_doc_list()
                 refresh_callback()  # Refresh the dropdown in main.py
             else:
@@ -93,7 +93,7 @@ def manage_documents_window(parent, config, refresh_callback):
 
                 result = db_manager.delete_document(db, doc_name)
                 if result.get("success"):
-                    messagebox.showinfo("Success", f"Document '{doc_name}' deleted successfully!")
+                    # messagebox.showinfo("Success", f"Document '{doc_name}' deleted successfully!")
                     refresh_doc_list()
                     refresh_callback()  # Refresh the dropdown in main.py
                 else:

@@ -152,7 +152,7 @@ def manage_nodes_window(parent, config, refresh_callback):
             module_name = f'nodes.{copied_file_name[:-3]}'
             try:
                 importlib.import_module(module_name)
-                messagebox.showinfo("Success", f"Node '{copied_file_name}' added successfully.")
+                # messagebox.showinfo("Success", f"Node '{copied_file_name}' added successfully.")
             except Exception as e:
                 messagebox.showerror("Import Error", f"Failed to import the node module:\n{e}")
                 # Remove the copied file if import fails
@@ -205,7 +205,7 @@ def manage_nodes_window(parent, config, refresh_callback):
             os.remove(node_file_path)
 
             # Inform the user
-            messagebox.showinfo("Success", f"Node '{node_type}' deleted successfully.")
+            # messagebox.showinfo("Success", f"Node '{node_type}' deleted successfully.")
 
             # Refresh the nodes list
             populate_nodes_list()
@@ -228,7 +228,7 @@ def manage_nodes_window(parent, config, refresh_callback):
             description_text.config(state='normal')
             description_text.delete('1.0', tk.END)
             description_text.config(state='disabled')
-            messagebox.showinfo("Success", "Nodes refreshed successfully.")
+            # messagebox.showinfo("Success", "Nodes refreshed successfully.")
             stop_busy()
         except Exception as e:
             logging.error(f"Exception during refresh_nodes: {e}")

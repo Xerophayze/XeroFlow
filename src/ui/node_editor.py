@@ -224,7 +224,7 @@ class ModernNodeEditor:
         self.initial_window_size = None
         self.editor_window.bind('<Configure>', self.on_window_configure)
 
-        self.create_button(bottom, "Cancel", self.on_close).pack(side=tk.RIGHT, padx=5, pady=12)
+        self.create_button(bottom, "Close", self.on_close).pack(side=tk.RIGHT, padx=5, pady=12)
 
     def draw_grid(self):
         self.canvas.delete('grid')
@@ -2223,7 +2223,7 @@ class ModernNodeEditor:
 
         self.is_modified = False
         self.update_save_button_state()
-        self.on_close()
+        # messagebox.showinfo("Success", f"Workflow '{self.instruction_name}' saved successfully.")
 
 
 # Alias for backward compatibility

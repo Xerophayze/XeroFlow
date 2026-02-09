@@ -104,7 +104,7 @@ def manage_modules_window(parent_frame, config, refresh_callback=None):
             success = preprocess.save_module_config(module_name, settings)
             
             if success:
-                messagebox.showinfo("Success", f"Settings for {module_name} saved successfully")
+                # messagebox.showinfo("Success", f"Settings for {module_name} saved successfully")
                 if refresh_callback:
                     refresh_callback()
             else:
@@ -156,7 +156,7 @@ def manage_modules_window(parent_frame, config, refresh_callback=None):
                 success = preprocess.save_module_config(module_name, settings)
                 
                 if success:
-                    messagebox.showinfo("Success", f"Module '{module_name}' added successfully")
+                    # messagebox.showinfo("Success", f"Module '{module_name}' added successfully")
                     # Update modules list
                     modules.append(module_name)
                     module_dropdown['values'] = modules
@@ -219,7 +219,7 @@ def manage_modules_window(parent_frame, config, refresh_callback=None):
                     if api_endpoints:
                         selected_api.set(api_endpoints[0])
                 
-                messagebox.showinfo("Success", f"Module '{module_name}' deleted successfully")
+                # messagebox.showinfo("Success", f"Module '{module_name}' deleted successfully")
                 if refresh_callback:
                     refresh_callback()
             else:

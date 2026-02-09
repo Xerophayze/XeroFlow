@@ -451,7 +451,7 @@ class AdminConsole:
             success = PricingService.update_model_pricing(model, input_cost=input_cost, output_cost=output_cost)
         
         if success:
-            messagebox.showinfo("Success", f"Pricing updated for {model}")
+            # messagebox.showinfo("Success", f"Pricing updated for {model}")
             
             # Refresh any cost views
             if self.data is not None:
@@ -497,7 +497,7 @@ class AdminConsole:
             success = PricingService.update_model_pricing(model, input_cost=input_cost, output_cost=output_cost)
         
         if success:
-            messagebox.showinfo("Success", f"Pricing reset to default for {model}")
+            # messagebox.showinfo("Success", f"Pricing reset to default for {model}")
             
             # Refresh any cost views
             if self.data is not None:
@@ -1360,10 +1360,10 @@ class AdminConsole:
             self.update_costs_view()
             
             # Show message with filter results
-            if len(self.filtered_data) > 0:
-                messagebox.showinfo("Filter Applied", f"Found {len(self.filtered_data)} records in the date range")
-            else:
-                messagebox.showinfo("Filter Applied", "No records found in the selected date range")
+            # if len(self.filtered_data) > 0:
+            #     messagebox.showinfo("Filter Applied", f"Found {len(self.filtered_data)} records in the date range")
+            # else:
+            #     messagebox.showinfo("Filter Applied", "No records found in the selected date range")
                 
         except Exception as e:
             messagebox.showerror("Error", f"Error applying filter: {str(e)}")
@@ -1407,7 +1407,7 @@ class AdminConsole:
             if messagebox.askyesno("Confirm", f"Are you sure you want to delete {os.path.basename(file_path)}?"):
                 try:
                     os.remove(file_path)
-                    messagebox.showinfo("Success", "File deleted successfully")
+                    # messagebox.showinfo("Success", "File deleted successfully")
                     self.refresh_file_list()
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to delete file: {str(e)}")
@@ -1428,7 +1428,7 @@ class AdminConsole:
             if save_path:
                 # Export the data
                 self.data.to_csv(save_path, index=False)
-                messagebox.showinfo("Success", f"File exported to {save_path}")
+                # messagebox.showinfo("Success", f"File exported to {save_path}")
                 
         except Exception as e:
             messagebox.showerror("Error", f"Failed to export file: {str(e)}")
@@ -1472,7 +1472,7 @@ class AdminConsole:
         self.update_costs_view()
         
         # Show message with filter results
-        messagebox.showinfo("Year Filter", f"Showing data for {year}: {len(self.filtered_data)} records")
+        # messagebox.showinfo("Year Filter", f"Showing data for {year}: {len(self.filtered_data)} records")
         
     def show_month(self):
         """Quick filter to show a specific month in a specific year"""
@@ -1525,7 +1525,7 @@ class AdminConsole:
         
         # Show message with filter results
         month_name = pd.Timestamp(year=year, month=month, day=1).strftime("%B")
-        messagebox.showinfo("Month Filter", f"Showing data for {month_name} {year}: {len(self.filtered_data)} records")
+        # messagebox.showinfo("Month Filter", f"Showing data for {month_name} {year}: {len(self.filtered_data)} records")
     
     def show_current_month(self):
         """Quick filter to show the current month"""
@@ -1588,7 +1588,7 @@ class AdminConsole:
         self.update_costs_view()
         
         # Show message with filter results
-        messagebox.showinfo("Last 30 Days", f"Showing data from {start_date} to {max_date}: {len(self.filtered_data)} records")
+        # messagebox.showinfo("Last 30 Days", f"Showing data from {start_date} to {max_date}: {len(self.filtered_data)} records")
         
 def main():
     root = tk.Tk()
