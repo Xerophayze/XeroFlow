@@ -267,7 +267,7 @@ def copy_instruction_prompt(config, chat_instruction_listbox):
         # Copy the workflow with the new name
         save_workflow({'name': new_name, 'graph': selected_item['graph'].copy()})
         update_workflow_list(chat_instruction_listbox)  # Refresh the list
-        messagebox.showinfo("Success", f"Workflow copied as '{new_name}'")
+        # messagebox.showinfo("Success", f"Workflow copied as '{new_name}'")
 
 def delete_instruction_prompt(config, chat_instruction_listbox):
     """Delete an existing Workflow."""

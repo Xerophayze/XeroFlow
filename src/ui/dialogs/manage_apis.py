@@ -463,7 +463,7 @@ def manage_apis_window(parent, config, refresh_callback):
             
             if models:
                 model_dropdown['values'] = models
-                messagebox.showinfo("Success", f"Found {len(models)} available models")
+                # messagebox.showinfo("Success", f"Found {len(models)} available models")
             else:
                 messagebox.showwarning("Warning", "No models found or couldn't fetch models")
         except Exception as e:
@@ -520,7 +520,7 @@ def manage_apis_window(parent, config, refresh_callback):
             refresh_callback()
             
             action = "added" if is_new else "updated"
-            messagebox.showinfo("Success", f"API interface {action} successfully")
+            # messagebox.showinfo("Success", f"API interface {action} successfully")
             clear_form()
             
         except Exception as e:
@@ -605,7 +605,7 @@ def manage_apis_window(parent, config, refresh_callback):
             refresh_api_list()
             refresh_callback()
             clear_form()
-            messagebox.showinfo("Success", "API interface deleted successfully")
+            # messagebox.showinfo("Success", "API interface deleted successfully")
             
     def clear_form():
         """Clear all form fields."""
@@ -654,7 +654,7 @@ def manage_apis_window(parent, config, refresh_callback):
             if max_tokens:
                 max_tokens_entry.delete(0, tk.END)
                 max_tokens_entry.insert(0, str(max_tokens))
-                messagebox.showinfo("Success", f"Successfully retrieved max tokens: {max_tokens}")
+                # messagebox.showinfo("Success", f"Successfully retrieved max tokens: {max_tokens}")
             else:
                 messagebox.showwarning("Warning", "Could not automatically determine max tokens. Please enter manually.")
         except Exception as e:

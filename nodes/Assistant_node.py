@@ -59,6 +59,7 @@ class AssistantNode(BaseNode):
         self.output_text = None
         self.current_job_folder = None  # Store the current job's output folder
         self.custom_project_name = None  # Store the custom project name if provided
+        self.folder_sync_state = {}
 
     def define_inputs(self):
         return []  # No inputs needed as this node monitors a folder
@@ -160,7 +161,7 @@ class AssistantNode(BaseNode):
             if hasattr(self, 'inputs') and isinstance(self.inputs, dict):
                 # Try to get workflow name from workflow_id
                 if 'workflow_id' in self.inputs:
-                    from main import workflow_manager
+                    from src.workflows.workflow_manager import workflow_manager
                     workflow_id = self.inputs.get('workflow_id')
                     workflow = workflow_manager.get_workflow(workflow_id)
                     if workflow and workflow.workflow_name:
@@ -608,7 +609,7 @@ class AssistantNode(BaseNode):
             
         # If we have a workflow_id, mark it as stopped in the workflow manager
         if workflow_id:
-            from main import workflow_manager
+            from src.workflows.workflow_manager import workflow_manager
             try:
                 workflow_manager.stop_workflow(workflow_id)
                 print(f"[DEBUG] Marked workflow {workflow_id} as stopped in workflow manager")
@@ -712,6 +713,34 @@ class AssistantNode(BaseNode):
                 print(f"[DEBUG] Error extracting audio from video: {str(e)}")
                 return False
         return False
+
+    def get_folder_snapshot(self, folder_path):
+        """Create a stable snapshot of file sizes and mtimes for a folder.
+
+        Returns:
+            tuple: (snapshot_tuple, files_list)
+        """
+        folder_path = Path(folder_path)
+        files = []
+        snapshot_parts = []
+        ignore_prefixes = ('.', '~$')
+        ignore_suffixes = ('.tmp', '.crdownload', '.part', '.download', '.gdoc', '.gsheet', '.gslides')
+
+        for file_path in folder_path.glob('**/*'):
+            if not file_path.is_file():
+                continue
+            name_lower = file_path.name.lower()
+            if name_lower.startswith(ignore_prefixes) or name_lower.endswith(ignore_suffixes):
+                continue
+            try:
+                stat = file_path.stat()
+            except OSError:
+                continue
+            files.append(file_path)
+            snapshot_parts.append((str(file_path), stat.st_size, stat.st_mtime))
+
+        snapshot_parts.sort()
+        return tuple(snapshot_parts), files
 
     def wait_for_file_access(self, file_path, max_retries=5, initial_delay=1):
         """Wait for a file to become accessible with exponential backoff."""
@@ -2333,6 +2362,7 @@ class AssistantNode(BaseNode):
             
             # Remove any processed files references from this folder
             self.processed_files = [f for f in self.processed_files if not str(f).startswith(str(project_folder))]
+            self.folder_sync_state.pop(str(project_folder), None)
             
             # Add a small delay before attempting deletion to allow pending operations to complete
             print(f"[DEBUG] Waiting 2 seconds before deletion attempt...")
@@ -2416,12 +2446,43 @@ class AssistantNode(BaseNode):
             if not folder_path.exists() or not folder_path.is_dir():
                 return False
                 
-            # Check all files in the folder
-            for file_path in folder_path.glob('**/*'):
-                if file_path.is_file():
-                    if not self.is_file_ready_for_processing(file_path):
-                        return False
-                        
+            now = time.time()
+            snapshot, files = self.get_folder_snapshot(folder_path)
+
+            if not files:
+                return False
+
+            folder_key = str(folder_path)
+            state = self.folder_sync_state.get(folder_key)
+
+            if not state:
+                self.folder_sync_state[folder_key] = {
+                    "snapshot": snapshot,
+                    "last_change": now,
+                    "stable_count": 0
+                }
+                return False
+
+            if snapshot != state["snapshot"]:
+                state["snapshot"] = snapshot
+                state["last_change"] = now
+                state["stable_count"] = 0
+                return False
+
+            state["stable_count"] += 1
+            stable_seconds = now - state["last_change"]
+
+            if stable_seconds < 20 or state["stable_count"] < 2:
+                return False
+
+            for file_path in files:
+                try:
+                    with open(file_path, 'rb') as f:
+                        f.read(1024)
+                except (PermissionError, IOError) as e:
+                    print(f"[DEBUG] File {file_path.name} is still locked or inaccessible: {str(e)}")
+                    return False
+
             return True
             
         except Exception as e:
