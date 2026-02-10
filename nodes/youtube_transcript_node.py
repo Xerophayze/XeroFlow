@@ -3,6 +3,10 @@ from src.workflows.node_registry import register_node
 from youtube_transcript_api import YouTubeTranscriptApi
 import yt_dlp
 import re
+import requests
+import xml.etree.ElementTree as ET
+from dataclasses import dataclass
+from html import unescape
 from urllib.parse import urlparse, parse_qs
 
 @register_node('YoutubeTranscriptNode')
@@ -36,84 +40,232 @@ class YoutubeTranscriptNode(BaseNode):
 
     def extract_video_id(self, url):
         """Extract the video ID from various forms of YouTube URLs."""
+        url = url.strip()
+        if re.fullmatch(r"[a-zA-Z0-9_-]{11}", url):
+            return url
         try:
-            # Parse the URL
             parsed_url = urlparse(url)
-            
-            # Handle different URL formats
+            if parsed_url.query:
+                query = parse_qs(parsed_url.query)
+                if query.get('v'):
+                    return query['v'][0]
             if 'youtube.com' in parsed_url.netloc:
-                if '/watch' in parsed_url.path:
-                    # Regular watch URL
-                    query = parse_qs(parsed_url.query)
-                    return query.get('v', [None])[0]
-                elif '/shorts/' in parsed_url.path:
-                    # Shorts URL
+                if '/shorts/' in parsed_url.path:
                     return parsed_url.path.split('/shorts/')[1]
-                elif '/embed/' in parsed_url.path:
-                    # Embed URL
+                if '/embed/' in parsed_url.path:
                     return parsed_url.path.split('/embed/')[1]
-            elif 'youtu.be' in parsed_url.netloc:
-                # Short URL
-                return parsed_url.path[1:]
-                
+                if '/live/' in parsed_url.path:
+                    return parsed_url.path.split('/live/')[1]
+            if 'youtu.be' in parsed_url.netloc:
+                return parsed_url.path.lstrip('/')
         except Exception as e:
             print(f"[YoutubeTranscriptNode] Error parsing URL: {str(e)}")
-            
-        # Fallback to regex if URL parsing fails
+
         patterns = [
-            r'(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)',
-            r'youtube\.com\/shorts\/([^&\n?#]+)'
+            r'(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})',
+            r'youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})',
+            r'youtube\.com\/live\/([a-zA-Z0-9_-]{11})'
         ]
-        
         for pattern in patterns:
             match = re.search(pattern, url)
             if match:
                 return match.group(1)
-        return None
+        fallback = re.search(r"([a-zA-Z0-9_-]{11})", url)
+        return fallback.group(1) if fallback else None
 
-    def get_video_metadata(self, url):
-        """Get video title and description using yt-dlp."""
+    @dataclass
+    class TranscriptResult:
+        source: str
+        language: str
+        items: list
+
+    def parse_caption_xml(self, xml_text):
+        items = []
+        root = ET.fromstring(xml_text)
+        for node in root.findall(".//text"):
+            start = float(node.attrib.get("start", 0))
+            duration = float(node.attrib.get("dur", 0))
+            text = unescape("".join(node.itertext()))
+            items.append({"start": start, "duration": duration, "text": text})
+        return items
+
+    def timestamp_to_seconds(self, ts):
+        match = re.match(r"(?:(\d+):)?(\d+):(\d+)(?:\.(\d+))?", ts)
+        if not match:
+            return 0.0
+        hours = int(match.group(1) or 0)
+        minutes = int(match.group(2) or 0)
+        seconds = int(match.group(3) or 0)
+        millis = int((match.group(4) or "0")[:3].ljust(3, "0"))
+        return hours * 3600 + minutes * 60 + seconds + millis / 1000
+
+    def parse_vtt(self, vtt_text):
+        items = []
+        lines = [line.strip("\ufeff") for line in vtt_text.splitlines()]
+        buffer = []
+        start = None
+        duration = None
+
+        def flush():
+            nonlocal buffer, start, duration
+            if start is not None and buffer:
+                items.append({
+                    "start": start,
+                    "duration": duration or 0,
+                    "text": " ".join(buffer).strip(),
+                })
+            buffer = []
+            start = None
+            duration = None
+
+        for line in lines:
+            if not line:
+                flush()
+                continue
+            if "-->" in line:
+                parts = line.split("-->")
+                start_ts = parts[0].strip()
+                end_ts = parts[1].strip().split()[0]
+                start = self.timestamp_to_seconds(start_ts)
+                end = self.timestamp_to_seconds(end_ts)
+                duration = max(0, end - start)
+                continue
+            if re.match(r"^\d+$", line):
+                continue
+            buffer.append(line)
+
+        flush()
+        return items
+
+    def fetch_url(self, url, headers=None):
+        response = requests.get(url, headers=headers or {})
+        response.raise_for_status()
+        return response.text
+
+    def fetch_transcript_yta(self, video_id, languages):
+        api = YouTubeTranscriptApi()
         try:
-            print(f"[YoutubeTranscriptNode] Fetching metadata for URL: {url}")
-            
-            # Configure yt-dlp options
+            transcript = api.fetch(video_id, languages=languages)
+            items = transcript.to_raw_data()
+            return self.TranscriptResult("youtube-transcript-api", transcript.language_code, items)
+        except Exception:
+            return None
+
+    def fetch_metadata_yt_dlp(self, url):
+        try:
             ydl_opts = {
                 'quiet': True,
                 'no_warnings': True,
-                'extract_flat': True,
-                'force_generic_extractor': False
+                'skip_download': True
             }
-            
-            # Create yt-dlp object
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                try:
-                    # Extract video information
-                    info = ydl.extract_info(url, download=False)
-                    
-                    if info:
-                        title = info.get('title', '')
-                        description = info.get('description', '')
-                        
-                        print(f"[YoutubeTranscriptNode] Successfully got title: {title}")
-                        if description:
-                            print(f"[YoutubeTranscriptNode] Successfully got description (length: {len(description)})")
-                        
-                        return {
-                            'title': title or 'Error: Could not fetch video title',
-                            'description': description or 'Error: Could not fetch video description'
-                        }
-                    else:
-                        print("[YoutubeTranscriptNode] No metadata found in yt-dlp response")
-                        
-                except Exception as e:
-                    print(f"[YoutubeTranscriptNode] Error extracting info: {str(e)}")
-                    
+                return ydl.extract_info(url, download=False)
         except Exception as e:
-            print(f"[YoutubeTranscriptNode] Error in yt-dlp setup: {str(e)}")
-            
+            print(f"[YoutubeTranscriptNode] Error in yt-dlp metadata: {str(e)}")
+            return None
+
+    def pick_caption_track(self, info, languages):
+        def pick_from(captions):
+            for lang in languages:
+                if lang in captions:
+                    track = captions[lang][0]
+                    return lang, track.get("url")
+            if captions:
+                lang, tracks = next(iter(captions.items()))
+                return lang, tracks[0].get("url")
+            return None
+
+        subtitles = info.get("subtitles") or {}
+        auto_captions = info.get("automatic_captions") or {}
+        return pick_from(subtitles) or pick_from(auto_captions)
+
+    def fetch_transcript_from_yt_dlp(self, info, languages):
+        track = self.pick_caption_track(info, languages)
+        if not track:
+            return None
+        lang, url = track
+        if not url:
+            return None
+        text = self.fetch_url(url)
+        if text.lstrip().startswith("WEBVTT"):
+            items = self.parse_vtt(text)
+        else:
+            items = self.parse_caption_xml(text)
+        return self.TranscriptResult("yt-dlp", lang, items)
+
+    def extract_innertube_key(self, html):
+        match = re.search(r"INNERTUBE_API_KEY\":\"([^\"]+)\"", html)
+        return match.group(1) if match else None
+
+    def fetch_innertube_player(self, video_id, api_key):
+        url = f"https://www.youtube.com/youtubei/v1/player?key={api_key}"
+        payload = {
+            "videoId": video_id,
+            "context": {
+                "client": {
+                    "clientName": "ANDROID",
+                    "clientVersion": "17.31.35",
+                    "androidSdkVersion": 30,
+                }
+            },
+        }
+        response = requests.post(url, json=payload, headers={"Content-Type": "application/json"})
+        response.raise_for_status()
+        return response.json()
+
+    def fetch_transcript_innertube(self, video_id, video_url, languages):
+        html = self.fetch_url(video_url, headers={"User-Agent": "Mozilla/5.0"})
+        api_key = self.extract_innertube_key(html)
+        if not api_key:
+            return None
+        player = self.fetch_innertube_player(video_id, api_key)
+        tracks = (
+            player
+            .get("captions", {})
+            .get("playerCaptionsTracklistRenderer", {})
+            .get("captionTracks", [])
+        )
+        if not tracks:
+            return None
+        track = None
+        for lang in languages:
+            track = next((t for t in tracks if t.get("languageCode") == lang), None)
+            if track:
+                break
+        if not track:
+            track = tracks[0]
+        caption_url = track.get("baseUrl")
+        if not caption_url:
+            return None
+        text = self.fetch_url(caption_url)
+        if text.lstrip().startswith("WEBVTT"):
+            items = self.parse_vtt(text)
+        else:
+            items = self.parse_caption_xml(text)
+        return self.TranscriptResult("innertube", track.get("languageCode", "unknown"), items)
+
+    def normalize_transcript(self, items):
+        text = " ".join(item.get("text", "") for item in items if item.get("text"))
+        return " ".join(text.split())
+
+    def get_video_metadata(self, url):
+        """Get video title and description using yt-dlp."""
+        print(f"[YoutubeTranscriptNode] Fetching metadata for URL: {url}")
+        info = self.fetch_metadata_yt_dlp(url)
+        if not info:
+            return {
+                'title': 'Error: Could not fetch video title',
+                'description': 'Error: Could not fetch video description'
+            }
+        title = info.get('title', '')
+        description = info.get('description', '')
+        print(f"[YoutubeTranscriptNode] Successfully got title: {title}")
+        if description:
+            print(f"[YoutubeTranscriptNode] Successfully got description (length: {len(description)})")
         return {
-            'title': 'Error: Could not fetch video title',
-            'description': 'Error: Could not fetch video description'
+            'title': title or 'Error: Could not fetch video title',
+            'description': description or 'Error: Could not fetch video description',
+            'info': info
         }
 
     def process(self, inputs):
@@ -147,38 +299,24 @@ class YoutubeTranscriptNode(BaseNode):
                 }
 
             # Get preferred language from properties
-            preferred_lang = self.properties.get('language', {}).get('default', 'en')
-            print(f"[YoutubeTranscriptNode] Using preferred language: {preferred_lang}")
+            preferred_lang = self.properties.get('language', {}).get('value') or self.properties.get('language', {}).get('default', 'en')
+            languages = [lang.strip() for lang in preferred_lang.split(',') if lang.strip()]
+            print(f"[YoutubeTranscriptNode] Using preferred language(s): {languages}")
 
-            # Fetch transcript
-            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-            print(f"[YoutubeTranscriptNode] Successfully got transcript list")
-            
-            try:
-                # Try to get transcript in preferred language
-                transcript = transcript_list.find_transcript([preferred_lang])
-                print(f"[YoutubeTranscriptNode] Found transcript in preferred language")
-            except:
-                try:
-                    # Fallback to auto-translated transcript
-                    transcript = transcript_list.find_transcript(['en']).translate(preferred_lang)
-                    print(f"[YoutubeTranscriptNode] Using auto-translated transcript")
-                except Exception as e:
-                    print(f"[YoutubeTranscriptNode] Error getting transcript: {str(e)}")
-                    return {
-                        'transcript': f'Error: Could not get transcript - {str(e)}',
-                        'title': metadata['title'],
-                        'description': metadata['description']
-                    }
+            transcript = self.fetch_transcript_yta(video_id, languages)
+            if not transcript and metadata.get('info'):
+                transcript = self.fetch_transcript_from_yt_dlp(metadata['info'], languages)
+            if not transcript:
+                transcript = self.fetch_transcript_innertube(video_id, youtube_url, languages)
 
-            # Extract transcript text
-            transcript_parts = transcript.fetch()
-            try:
-                # Try accessing as dictionary (older API version)
-                transcript_text = ' '.join(part['text'] for part in transcript_parts)
-            except (TypeError, KeyError):
-                # Try accessing as object attributes (newer API version)
-                transcript_text = ' '.join(part.text for part in transcript_parts)
+            if not transcript:
+                return {
+                    'transcript': 'Error: Could not retrieve transcript with available methods',
+                    'title': metadata['title'],
+                    'description': metadata['description']
+                }
+
+            transcript_text = self.normalize_transcript(transcript.items)
             print(f"[YoutubeTranscriptNode] Successfully extracted transcript of length: {len(transcript_text)}")
 
             return {
