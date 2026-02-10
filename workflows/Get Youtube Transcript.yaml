@@ -3,15 +3,18 @@ graph:
   nodes:
     ac5fa116-15a3-48f9-9b02-ab4dad747b1c:
       canvas_items:
-        description: 13
-        drag_bar: 11
-        input_label_youtube_url: 15
-        input_youtube_url: 14
-        output_label_transcript: 17
-        output_transcript: 16
-        rect: 10
-        resize_handle: 18
-        title: 12
+        badge: 320
+        badge_label: 321
+        body: 317
+        description: 322
+        header: 318
+        input_label_youtube_url: 324
+        input_youtube_url: 323
+        output_label_transcript: 326
+        output_transcript: 325
+        resize_handle: 327
+        shadow: 316
+        title: 319
       height: 150
       id: ac5fa116-15a3-48f9-9b02-ab4dad747b1c
       inputs:
@@ -45,4 +48,10 @@ graph:
       width: 200
       x: 100
       y: 100
+  viewport:
+    pan_offset_x: 0
+    pan_offset_y: 0
+    window_height: 800
+    window_width: 1200
+    zoom_level: 1.0
 name: Get Youtube Transcript

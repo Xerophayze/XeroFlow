@@ -1229,6 +1229,8 @@ class AssistantNode(BaseNode):
         youtube_patterns = [
             r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=[\w-]+',
             r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/shorts\/[\w-]+',
+            r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/live\/[\w-]+',
+            r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/[\w-]+',
             r'(?:https?:\/\/)?youtu\.be\/[\w-]+'
         ]
         
