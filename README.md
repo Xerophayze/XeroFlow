@@ -1,6 +1,14 @@
 
 # XeroFlow
 
+## ☕ Support Ongoing Development
+
+If you enjoy TTS-Story and my other open-source projects, consider supporting continued development! Every contribution helps keep things moving and motivates new features, bug fixes, and improvements across all my projects.
+
+👉 **[Buy me a pizza (or whatever you'd like to contribute)](https://xerophayze.com/store.html?category=patron+support)**
+
+Thank you — it genuinely means a lot! 🙏
+
 <table>
   <tr>
     <td align="center"><img src="Images/python_108Ev4PbJ2.png" width="200" alt="Image 1"/></td>
