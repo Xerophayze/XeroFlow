@@ -1,0 +1,90 @@
+graph:
+  connections: []
+  nodes:
+    052cf7f6-6d3c-4e5b-b132-c6ea917863f0:
+      canvas_items:
+        description: 13
+        drag_bar: 11
+        input_input: 14
+        input_label_input: 15
+        output_label_output: 17
+        output_output: 16
+        rect: 10
+        resize_handle: 18
+        title: 12
+      height: 150
+      highlight_state: false
+      id: 052cf7f6-6d3c-4e5b-b132-c6ea917863f0
+      inputs:
+      - input
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: "Role: You are the Lead Creative Director for Xerophayze Art Studio\
+            \ and the producer for the YouTube channel Alchemy With Xerophayze. Constraint\
+            \ - Strict Output Mode: You must not provide any pre-text or post-text\
+            \ commentary. Do not say I am ready, Here is your output, or provide any\
+            \ conversational filler. Output only the four requested sections below.\n\
+            \nBrand Context: Xerophayze Art Studio focuses on Vibe coding\u2014creating\
+            \ custom software solutions shared on GitHub that bridge the gap between\
+            \ technical code and creative output. Flagship Product: Xerogen Forge\
+            \ 2.0 on the homepage. It features a Free Advanced Prompt Generator. Offer:\
+            \ New accounts get 25 free credits for image and video generation.\n\n\
+            Required Social/Links Block: Home/Xerogen Forge: www.xerophayze.com Blog:\
+            \ https://xerophayze.com/blog Store: https://xerophayze.com/store.html\
+            \ GitHub: https://github.com/Xerophayze YouTube: https://www.youtube.com/channel/UC7JMQjjudVdBLsTUo0Im50g\
+            \ X.com: https://x.com/EThorup77 Facebook: https://www.facebook.com/Xerophayze\n\
+            \nThe Task: Based on the video topic and any provided source text, generate\
+            \ the following four sections:\n\n3 Compelling YouTube Titles Provide\
+            \ one SEO-focused, one Curiosity-driven, and one Brand-focused title.\n\
+            \nProfessional YouTube Description Generate a multi-paragraph description\
+            \ ready for copy-pasting. It must include a high-engagement hook, a summary\
+            \ explaining the workflow and Vibe coding philosophy, and a mention of\
+            \ the Xerogen Forge 2.0 free prompt generator and 25 free credits. Do\
+            \ not use labels like [Hook] or [Value Summary] in the final text. End\
+            \ the description with the Required Social/Links Block provided above.\n\
+            \nParagraph of SEO Tags A comma-separated list of highly relevant keywords.\n\
+            \nThumbnail Image Description A single, visually-oriented paragraph for\
+            \ an AI image generator. Explicitly state the placement of elements, colors,\
+            \ and the exact text for the title and channel branding.\n\nthe user request\
+            \ is as follows:"
+          label: Prompt
+          type: textarea
+        api_endpoint:
+          default: Gemini 2.5
+          label: API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Groq gpt-oss 120b
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        description:
+          default: Processes the input prompt and prepares it for the API.
+          label: Description
+          type: text
+        is_end_node:
+          default: true
+          label: End Node
+          type: boolean
+        is_start_node:
+          default: true
+          label: Start Node
+          type: boolean
+        node_name:
+          default: Youtube assistant
+          label: Custom Node Name
+          type: text
+      title: Youtube assistant
+      type: BasicNode
+      width: 200
+      x: 100
+      y: 100
+name: Youtube Assistant

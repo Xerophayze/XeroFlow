@@ -1,0 +1,745 @@
+graph:
+  connections:
+  - canvas_item: 572
+    canvas_items:
+    - 572
+    - 573
+    - 574
+    - 575
+    - 576
+    - 577
+    - 578
+    - 579
+    - 580
+    disabled: false
+    from_node: 6f6a4fd0-64c1-4c4c-a0e1-730e5a6d9f9f
+    from_output: channel_id
+    to_input: channel_id
+    to_node: 8fa5a7b4-1e3b-4cf2-9c6f-0f2f7f787a10
+  - canvas_item: 581
+    canvas_items:
+    - 581
+    - 582
+    - 583
+    - 584
+    - 585
+    - 586
+    - 587
+    - 588
+    - 589
+    disabled: false
+    from_node: 6f6a4fd0-64c1-4c4c-a0e1-730e5a6d9f9f
+    from_output: channel_id
+    to_input: channel_id
+    to_node: b0c5d0b8-2b45-4b8a-9fcb-5b3c9f1d5c9f
+  - canvas_item: 590
+    canvas_items:
+    - 590
+    - 591
+    - 592
+    - 593
+    - 594
+    - 595
+    - 596
+    - 597
+    - 598
+    - 599
+    - 600
+    - 601
+    - 602
+    - 603
+    - 604
+    - 605
+    - 606
+    disabled: false
+    from_node: 8fa5a7b4-1e3b-4cf2-9c6f-0f2f7f787a10
+    from_output: output
+    to_input: input
+    to_node: b0c5d0b8-2b45-4b8a-9fcb-5b3c9f1d5c9f
+  - canvas_item: 607
+    canvas_items:
+    - 607
+    disabled: false
+    from_node: 0b80c6af-033b-467d-bfe5-b348e91e5109
+    from_output: output
+    to_input: input
+    to_node: 8fa5a7b4-1e3b-4cf2-9c6f-0f2f7f787a10
+  - canvas_item: 608
+    canvas_items:
+    - 608
+    - 609
+    - 610
+    - 611
+    - 612
+    - 613
+    - 614
+    - 615
+    - 616
+    - 617
+    - 618
+    - 619
+    - 620
+    - 621
+    - 622
+    - 623
+    - 624
+    disabled: false
+    flow_offset: 0
+    from_node: 0b80c6af-033b-467d-bfe5-b348e91e5109
+    from_output: whatsapp_response
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55fa9d'
+    - '#55f99e'
+    - '#55f99e'
+    - '#55f89f'
+    - '#55edaa'
+    - '#55ecab'
+    - '#55ebac'
+    - '#55ebac'
+    - '#55d7c0'
+    - '#55d6c1'
+    - '#55d6c1'
+    - '#55d5c2'
+    - '#55a2f5'
+    - '#55a2f5'
+    - '#55a1f6'
+    - '#55a0f7'
+    to_input: response
+    to_node: 50c8a8fd-abb1-42b4-8598-880376d2e42b
+  - canvas_item: 625
+    canvas_items:
+    - 625
+    - 626
+    - 627
+    - 628
+    - 629
+    - 630
+    - 631
+    - 632
+    - 633
+    - 634
+    - 635
+    - 636
+    - 637
+    - 638
+    - 639
+    - 640
+    - 641
+    disabled: false
+    flow_offset: 6
+    from_node: 50c8a8fd-abb1-42b4-8598-880376d2e42b
+    from_output: message
+    is_flowing: false
+    original_colors:
+    - '#55ff99'
+    - '#55fb9c'
+    - '#55fb9c'
+    - '#55fa9d'
+    - '#55fa9d'
+    - '#55f2a5'
+    - '#55f1a6'
+    - '#55f1a6'
+    - '#55f1a6'
+    - '#55c4d3'
+    - '#55c4d3'
+    - '#55c3d4'
+    - '#55c3d4'
+    - '#559dfa'
+    - '#559dfa'
+    - '#559cfb'
+    - '#559cfb'
+    to_input: whatsapp_input
+    to_node: 0b80c6af-033b-467d-bfe5-b348e91e5109
+  nodes:
+    02a0939c-5a99-45ed-9dce-2d77c30f6fee:
+      canvas_items:
+        body: 495
+        description: 498
+        header: 496
+        input_label_response: 500
+        input_response: 499
+        output_label_message: 502
+        output_message: 501
+        resize_handle: 503
+        shadow: 494
+        title: 497
+      height: 120
+      highlight_state: false
+      id: 02a0939c-5a99-45ed-9dce-2d77c30f6fee
+      inputs:
+      - response
+      outputs:
+      - message
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        alert_check_interval:
+          default: '300'
+          description: How often to check for upcoming events.
+          label: Alert Check Interval (seconds)
+          type: text
+        alert_minutes_before:
+          default: '15'
+          description: How many minutes before an event to send an alert.
+          label: Alert Lead Time (minutes)
+          type: text
+        calendar_id:
+          default: AIAssistant,Work Eric Thorup
+          description: 'Comma-separated list of calendars to use. Can be display names
+            or full IDs. Example: ''AIAssistant, primary, Work''. The first calendar
+            is the default for creating events.'
+          label: Calendar ID(s)
+          type: text
+        credentials_path:
+          default: data\client_secret_google.json
+          description: Path to the Google OAuth2 credentials.json file. Download from
+            Google Cloud Console.
+          label: OAuth2 Credentials Path
+          type: text
+        description:
+          default: Google Calendar integration via OAuth2. Reads, creates, updates,
+            and deletes calendar events. Sends proactive alerts for upcoming events.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_persistent:
+          default: true
+          description: Keeps the calendar connection alive for proactive alerts.
+          label: Persistent Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: CalendarNode
+          label: Custom Node Name
+          type: text
+      title: CalendarNode
+      type: CalendarNode
+      width: 180
+      x: 625
+      y: 700
+    0b80c6af-033b-467d-bfe5-b348e91e5109:
+      canvas_items:
+        badge: 508
+        badge_label: 509
+        body: 505
+        description: 510
+        header: 506
+        input_label_whatsapp_input: 512
+        input_whatsapp_input: 511
+        output_label_output: 514
+        output_label_whatsapp_response: 516
+        output_output: 513
+        output_whatsapp_response: 515
+        resize_handle: 517
+        shadow: 504
+        title: 507
+      height: 120
+      highlight_state: false
+      id: 0b80c6af-033b-467d-bfe5-b348e91e5109
+      inputs:
+      - whatsapp_input
+      outputs:
+      - output
+      - whatsapp_response
+      properties:
+        PreProcess:
+          default: ''
+          label: Pre-Process Text
+          type: textarea
+        Prompt:
+          default: ''
+          label: Prompt Template
+          type: textarea
+        channel_name:
+          default: team
+          label: Comms Channel Name
+          type: text
+        description:
+          default: 'Master control agent with split-pane chat. Handles clarification,
+            delegation, and optional exports. Accepts tool_calls in delegation JSON:
+            {"type": "NodeType", "input": "...", "properties": {...}}. Use markdown
+            in responses for rich formatting and include export_format (word/excel/text)
+            when requested.'
+          label: Description
+          type: text
+        inbox_folder:
+          default: H:\tmp\agentictesting\inbox
+          label: Inbox Folder Path
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: MasterAgentNode
+          label: Custom Node Name
+          type: text
+        num_search_results:
+          default: '3'
+          label: Number of Search Results
+          max: 10
+          min: 1
+          type: number
+        outbox_folder:
+          default: H:\tmp\agentictesting\outbox
+          label: Outbox Folder Path
+          type: text
+        search_api_endpoint:
+          default: SearXing
+          label: Search API
+          options:
+          - SearXing
+          type: dropdown
+        search_url:
+          default: ''
+          label: Search URL (Deprecated)
+          type: text
+        text_api_endpoint:
+          default: Gemini 2.5
+          label: Text Processing API
+          options: &id001
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Gemini 3 Flash
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        whisper_api_endpoint:
+          default: OpenAI Whisper
+          label: Audio Transcription API
+          options: *id001
+          type: dropdown
+      title: MasterAgentNode
+      type: MasterAgentNode
+      width: 180
+      x: 225
+      y: 150
+    3c5ef87d-201e-4317-b76e-45d28920dd79:
+      canvas_items:
+        body: 519
+        description: 522
+        header: 520
+        input_label_response: 524
+        input_response: 523
+        output_label_message: 526
+        output_message: 525
+        resize_handle: 527
+        shadow: 518
+        title: 521
+      height: 120.0
+      highlight_state: false
+      id: 3c5ef87d-201e-4317-b76e-45d28920dd79
+      inputs:
+      - response
+      outputs:
+      - message
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        allowed_senders:
+          default: ''
+          description: Comma-separated email addresses to monitor. Leave empty to
+            forward ALL incoming emails.
+          label: Allowed Senders
+          type: textarea
+        auto_forward_to_master:
+          default: true
+          description: Automatically forward new incoming emails to the Master Agent.
+          label: Auto-Forward to Master Agent
+          type: boolean
+        description:
+          default: Gmail integration via app password. Sends and receives email. Incoming
+            messages are forwarded to the Master Agent for summarisation and interactive
+            reply.
+          label: Description
+          type: text
+        gmail_address:
+          default: eric@tekutah.com
+          description: Your full Gmail address (e.g. you@gmail.com).
+          label: Gmail Address
+          type: text
+        gmail_app_password:
+          default: 'opsb dlmr qezc ygbj
+
+            '
+          description: A Google App Password for your account. Generate one at https://myaccount.google.com/apppasswords
+          label: Gmail App Password
+          sensitive: true
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_persistent:
+          default: true
+          description: Keeps the email connection alive to poll for new messages.
+          label: Persistent Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: EmailNode
+          label: Custom Node Name
+          type: text
+        poll_interval_seconds:
+          default: '120'
+          description: How often to check for new emails. Default 300 (5 min).
+          label: Inbox Poll Interval (seconds)
+          type: text
+      title: EmailNode
+      type: EmailNode
+      width: 181.66666666666666
+      x: 350
+      y: 700
+    50c8a8fd-abb1-42b4-8598-880376d2e42b:
+      canvas_items:
+        body: 529
+        description: 532
+        header: 530
+        input_label_response: 534
+        input_response: 533
+        output_files: 537
+        output_label_files: 538
+        output_label_message: 536
+        output_message: 535
+        resize_handle: 539
+        shadow: 528
+        title: 531
+      height: 120
+      highlight_state: false
+      id: 50c8a8fd-abb1-42b4-8598-880376d2e42b
+      inputs:
+      - response
+      outputs:
+      - message
+      - files
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        allowed_numbers:
+          default: 207348169728082, 63359525363743
+          description: Comma-separated phone numbers or JIDs allowed to interact (e.g.
+            11234567890). Use 'self' to allow only your own self-chat. Empty = allow
+            all.
+          label: Allowed Phone Numbers
+          type: textarea
+        auto_reply:
+          default: true
+          description: Automatically forward messages to the AI and send the response
+            back.
+          label: Auto-Reply Mode
+          type: boolean
+        description:
+          default: Connects to your personal WhatsApp via QR code scan. No API keys
+            needed. Scan the QR code displayed in the monitor window with your phone
+            to link. Supports text and file messages.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          label: End Node
+          type: boolean
+        is_persistent:
+          default: true
+          description: Keeps the WhatsApp connection alive to receive messages continuously.
+          label: Persistent Node
+          type: boolean
+        is_start_node:
+          default: false
+          label: Start Node
+          type: boolean
+        node_name:
+          default: WhatsAppWebNode
+          label: Custom Node Name
+          type: text
+        reply_to_groups:
+          default: true
+          description: If enabled, the bot will also respond to messages in group
+            chats.
+          label: Reply to Group Messages
+          type: boolean
+        session_name:
+          default: xeroflow_wa
+          description: Name for the session database file. Changing this creates a
+            new session.
+          label: Session Name
+          type: text
+        trigger_keyword:
+          default: jack
+          description: A name or keyword that external (non-self) messages must contain
+            for the bot to respond (e.g. 'Jarvis'). Case-insensitive. Self-chat messages
+            are always processed regardless. Leave empty to respond to all allowed
+            messages.
+          label: Bot Trigger Name
+          type: text
+      title: WhatsAppWebNode
+      type: WhatsAppWebNode
+      width: 180
+      x: 375
+      y: 425
+    6f6a4fd0-64c1-4c4c-a0e1-730e5a6d9f9f:
+      canvas_items:
+        body: 541
+        description: 544
+        header: 542
+        output_channel_id: 545
+        output_label_channel_id: 546
+        resize_handle: 547
+        shadow: 540
+        title: 543
+      height: 120
+      highlight_state: false
+      id: 6f6a4fd0-64c1-4c4c-a0e1-730e5a6d9f9f
+      inputs: []
+      outputs:
+      - channel_id
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        channel_name:
+          default: team
+          label: Channel Name
+          type: text
+        description:
+          default: Creates a per-workflow in-memory comms channel for agents.
+          label: Description
+          type: text
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        node_name:
+          default: AgentCommsChannelNode
+          label: Custom Node Name
+          type: text
+      title: AgentCommsChannelNode
+      type: AgentCommsChannelNode
+      width: 200
+      x: 450
+      y: 275
+    8fa5a7b4-1e3b-4cf2-9c6f-0f2f7f787a10:
+      canvas_items:
+        body: 549
+        description: 552
+        header: 550
+        input_channel_id: 555
+        input_input: 553
+        input_label_channel_id: 556
+        input_label_input: 554
+        output_label_output: 558
+        output_output: 557
+        resize_handle: 559
+        shadow: 548
+        title: 551
+      height: 120
+      highlight_state: false
+      id: 8fa5a7b4-1e3b-4cf2-9c6f-0f2f7f787a10
+      inputs:
+      - input
+      - channel_id
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        agent_id:
+          default: team_lead
+          label: Agent ID
+          type: text
+        auto_tool_calls:
+          default: true
+          label: Auto Inject Tool Calls
+          type: boolean
+        default_top_k:
+          default: '5'
+          label: RAG Top K
+          max: 20
+          min: 1
+          type: number
+        description:
+          default: Headless team lead agent for planning and coordination.
+          label: Description
+          type: text
+        enable_llm:
+          default: true
+          label: Enable LLM Synthesis
+          type: boolean
+        enable_self_reflection:
+          default: true
+          label: Enable Self Reflection
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        llm_api_endpoint:
+          default: Gemini 2.5
+          label: LLM API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Gemini 3 Flash
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        llm_model:
+          default: ''
+          label: LLM Model (optional)
+          type: text
+        llm_temperature:
+          default: '0.3'
+          label: LLM Temperature
+          max: 1
+          min: 0
+          type: number
+        max_followup_rounds:
+          default: '1'
+          label: Max Followup Rounds
+          max: 5
+          min: 0
+          type: number
+        node_name:
+          default: TeamLeadNode
+          label: Custom Node Name
+          type: text
+        search_api_url:
+          default: http://searxng.local:8888/
+          label: Search API URL (SearxNG)
+          type: text
+      title: TeamLeadNode
+      type: TeamLeadNode
+      width: 200
+      x: 750
+      y: 150
+    b0c5d0b8-2b45-4b8a-9fcb-5b3c9f1d5c9f:
+      canvas_items:
+        body: 561
+        description: 564
+        header: 562
+        input_channel_id: 567
+        input_input: 565
+        input_label_channel_id: 568
+        input_label_input: 566
+        output_label_output: 570
+        output_output: 569
+        resize_handle: 571
+        shadow: 560
+        title: 563
+      height: 120
+      highlight_state: false
+      id: b0c5d0b8-2b45-4b8a-9fcb-5b3c9f1d5c9f
+      inputs:
+      - input
+      - channel_id
+      outputs:
+      - output
+      properties:
+        Prompt:
+          default: ''
+          type: textarea
+        agent_id:
+          default: worker
+          label: Agent ID
+          type: text
+        default_top_k:
+          default: '5'
+          label: RAG Top K
+          max: 20
+          min: 1
+          type: number
+        description:
+          default: Headless worker agent for RAG lookup and note capture.
+          label: Description
+          type: text
+        enable_llm:
+          default: true
+          label: Enable LLM Synthesis
+          type: boolean
+        is_end_node:
+          default: false
+          type: boolean
+        is_start_node:
+          default: false
+          type: boolean
+        llm_api_endpoint:
+          default: Gemini 2.5
+          label: LLM API Endpoint
+          options:
+          - Claude
+          - GPT 5 chat
+          - Gemini 2.5
+          - Gemini 3 Flash
+          - Groq gpt-oss 120b
+          - LMStudio-MIstral-Nemo-Instruct
+          - Ollama
+          - OpenAI 4o-mini
+          - OpenAI GPT5
+          - OpenAI Whisper
+          - OpenAI o3
+          - SearXing
+          type: dropdown
+        llm_model:
+          default: ''
+          label: LLM Model (optional)
+          type: text
+        llm_temperature:
+          default: '0.3'
+          label: LLM Temperature
+          max: 1
+          min: 0
+          type: number
+        node_name:
+          default: WorkerAgentNode
+          label: Custom Node Name
+          type: text
+        search_api_url:
+          default: http://searxng.local:8888/
+          label: Search API URL (SearxNG)
+          type: text
+      title: WorkerAgentNode
+      type: WorkerAgentNode
+      width: 200
+      x: 775
+      y: 375
+  viewport:
+    pan_offset_x: -89.49761904761908
+    pan_offset_y: -24.79523809523809
+    window_height: 613
+    window_width: 822
+    zoom_level: 0.6000000000000001
+name: agentic test
