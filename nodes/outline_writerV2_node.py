@@ -231,7 +231,8 @@ class OutlineWriterV2Node(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[OutlineWriterV2Node] Available API endpoints: {api_list}")
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[OutlineWriterV2Node] Available API endpoints: {api_list}")
         return api_list
 
     def process_with_api(self, prompt):

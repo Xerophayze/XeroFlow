@@ -11,6 +11,7 @@ from src.api.handler import process_api_request  # Correct import
 from utils.progress_window import ProgressWindow
 from utils.array_review_window import ArrayReviewWindow
 import time
+import os
 
 @register_node('LongOutputV3Node')
 class LongOutputV3Node(BaseNode):
@@ -117,7 +118,8 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[LongOutputNodeV3] Available API endpoints: {api_list}")  # Debug statement
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[LongOutputNodeV3] Available API endpoints: {api_list}")  # Debug statement
         return api_list
 
     def check_rate_limits(self, prompt_tokens=0):

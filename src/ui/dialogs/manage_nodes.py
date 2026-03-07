@@ -105,9 +105,18 @@ def manage_nodes_window(parent, config, refresh_callback):
         index = selection[0]
         node_type = nodes_listbox.get(index)
         node_class = NODE_REGISTRY.get(node_type)
-        if node_class and node_class.__doc__:
+        description = None
+        if node_class:
+            try:
+                instance = node_class(node_id=f"_desc_{node_type}", config=config)
+                props = instance.define_properties()
+                if isinstance(props, dict):
+                    description = props.get('description', {}).get('default')
+            except Exception:
+                description = None
+        if not description and node_class and node_class.__doc__:
             description = node_class.__doc__.strip()
-        else:
+        if not description:
             description = "No description available for this node."
         description_text.config(state='normal')
         description_text.delete('1.0', tk.END)

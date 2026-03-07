@@ -72,7 +72,7 @@ from typing import Dict, List, Optional, Tuple
 
 import requests
 from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.drawing.image import Image as OpenPyxlImage
 from datetime import datetime
 
@@ -129,8 +129,11 @@ def parse_table(lines: List[str], current_index: int) -> Tuple[Optional[Dict[str
         if not line.startswith('|'):
             break
         row = [cell.strip() for cell in line.strip('|').split('|')]
-        if len(row) == len(headers):
-            data.append(row)
+        # Pad short rows with empty cells to match header count
+        if len(row) < len(headers):
+            row.extend([''] * (len(headers) - len(row)))
+        if len(row) >= len(headers):
+            data.append(row[:len(headers)])
         current_index += 1
 
     if not data:
@@ -484,13 +487,13 @@ def convert_markdown_to_excel(markdown_text: str, output_path: Optional[str] = N
                 if re.match(r'^(\*\*\*|---|___)$', stripped):
                     # Represent a horizontal rule as an empty row with a bottom border
                     cell = ws.cell(row=current_row, column=1, value='')
-                    cell.border = cell.border.copy(bottom=cell.border.bottom.copy(style='thin'))
+                    cell.border = Border(bottom=Side(style='thin'))
                     current_row += 1
                     index += 1
                     continue
 
                 # Parse table
-                if stripped.startswith('|') and stripped.endswith('|'):
+                if stripped.startswith('|') and '|' in stripped[1:]:
                     parsed, new_index = parse_table(lines, index)
                     if parsed:
                         _write_table(ws, parsed, current_row)
@@ -838,6 +841,16 @@ def _infer_cell_value_and_format(raw_value: str, row_offset: int = 0) -> Tuple[o
     if raw_value is None:
         return '', None
     s = str(raw_value).strip()
+    # Strip surrounding quotes that LLMs sometimes wrap around formulas
+    # e.g. '=SUM(B2:B10)' or "=SUM(B2:B10)" or `=SUM(B2:B10)`
+    if len(s) >= 2:
+        if (s[0] == "'" and s[-1] == "'") or (s[0] == '"' and s[-1] == '"') or (s[0] == '`' and s[-1] == '`'):
+            inner = s[1:-1].strip()
+            if inner.startswith('='):
+                s = inner
+    # Also handle a leading apostrophe before '=' without trailing quote
+    if s.startswith("'="):
+        s = s[1:]
     # Formula detection
     if s.startswith('='):
         # Adjust A1-style row numbers by row_offset (used for tables)

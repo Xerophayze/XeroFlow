@@ -63,13 +63,37 @@ if not exist "%VENV_DIR%\Scripts\activate.bat" (
         pause
         exit /b 1
     )
+ ) else (
+    REM Validate existing venv Python (base install may have moved)
+    set "BASE_PY="
+    for /f "tokens=1,* delims==" %%A in ('findstr /b "executable" "%VENV_DIR%\pyvenv.cfg"') do (
+        set "BASE_PY=%%B"
+    )
+    set "BASE_PY=%BASE_PY: =%"
+    if not exist "%BASE_PY%" (
+        echo Existing virtual environment is broken.
+        set /p "REBUILD_VENV=Rebuild it now? This will delete '%VENV_DIR%'. (Y/N): "
+        if /i not "%REBUILD_VENV%"=="Y" (
+            echo Rebuild declined.
+            pause
+            exit /b 1
+        )
+        rmdir /s /q "%VENV_DIR%"
+        echo Creating virtual environment...
+        %PYTHON_CMD% -m venv %VENV_DIR%
+        if %errorlevel% neq 0 (
+            echo Failed to create virtual environment.
+            pause
+            exit /b 1
+        )
+    )
 )
 
 echo Activating virtual environment...
 call "%VENV_DIR%\Scripts\activate.bat"
 
 echo Installing dependencies from requirements.txt...
-pip install -r requirements.txt
+"%VENV_DIR%\Scripts\python.exe" -m pip install -r requirements.txt
 if %errorlevel% neq 0 (
     echo Failed to install dependencies.
     pause
@@ -77,7 +101,7 @@ if %errorlevel% neq 0 (
 )
 
 echo Starting XeroFlow Client...
-python "%SCRIPT_PATH%"
+"%VENV_DIR%\Scripts\python.exe" "%SCRIPT_PATH%"
 
 echo.
 echo XeroFlow Client has closed.

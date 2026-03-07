@@ -1,0 +1,32 @@
+[
+  {
+    "doc_id": "e75c1524-2d88-43fc-8e5f-d102016a967e",
+    "source": "worker_worker_synthesis",
+    "tags": [
+      "agent_result",
+      "worker",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-11T19:23:58.125075",
+    "updated_at": "2026-02-11T19:23:58.125075",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "5282922a-7ac9-49bd-92ed-1190c1122696",
+    "source": "worker_worker_synthesis",
+    "tags": [
+      "agent_result",
+      "worker",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:22:49.295601",
+    "updated_at": "2026-02-13T18:22:49.295601",
+    "chunk_count": 3
+  }
+]

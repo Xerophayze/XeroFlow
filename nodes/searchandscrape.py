@@ -36,7 +36,14 @@ class SearchAndScrapeNode(BaseNode):
         props = self.get_default_properties()
         props.update({
             'node_name': {'type': 'text', 'default': 'SearchAndScrapeNode'},
-            'description': {'type': 'text', 'default': 'Processes the input for web search and scraping.'},
+            'description': {
+                'type': 'text',
+                'default': (
+                    'Runs SearxNG search and scrapes matching pages. Provide query text in input; '
+                    'output includes scraped content or errors. Configure searxng_api_url, '
+                    'result limits, and enable_web_search/enable_url_selection as needed.'
+                )
+            },
             'Prompt': {'type': 'textarea', 'default': ''},  # User-defined prompt
             'searxng_api_url': {'type': 'text', 'default': 'http://localhost:8888/search'},  # User-specified SearxNG API URL
             'num_search_results': {'type': 'number', 'default': 5},  # User-specified number of search results
@@ -52,12 +59,32 @@ class SearchAndScrapeNode(BaseNode):
         print("[SearchAndScrapeNode] Starting process method.")
 
         # Retrieve properties
-        prompt = self.properties.get('Prompt', {}).get('default', '')
-        searxng_api_url = self.properties.get('searxng_api_url', {}).get('default', 'http://localhost:8888/search')
-        num_results = self.properties.get('num_search_results', {}).get('default', 5)
-        num_results_to_skip = self.properties.get('num_results_to_skip', {}).get('default', 0)
-        enable_web_search = self.properties.get('enable_web_search', {}).get('default', True)
-        enable_url_selection = self.properties.get('enable_url_selection', {}).get('default', False)
+        prompt = (
+            self.properties.get('Prompt', {}).get('value')
+            or self.properties.get('Prompt', {}).get('default', '')
+        )
+        searxng_api_url = (
+            self.properties.get('searxng_api_url', {}).get('value')
+            or self.properties.get('searxng_api_url', {}).get('default', 'http://localhost:8888/search')
+        )
+        num_results = (
+            self.properties.get('num_search_results', {}).get('value')
+            or self.properties.get('num_search_results', {}).get('default', 5)
+        )
+        num_results_to_skip = (
+            self.properties.get('num_results_to_skip', {}).get('value')
+            or self.properties.get('num_results_to_skip', {}).get('default', 0)
+        )
+        enable_web_search = (
+            self.properties.get('enable_web_search', {}).get('value')
+            if self.properties.get('enable_web_search', {}).get('value') is not None
+            else self.properties.get('enable_web_search', {}).get('default', True)
+        )
+        enable_url_selection = (
+            self.properties.get('enable_url_selection', {}).get('value')
+            if self.properties.get('enable_url_selection', {}).get('value') is not None
+            else self.properties.get('enable_url_selection', {}).get('default', False)
+        )
 
         # Use the input provided by the user
         user_input = inputs.get('input', '').strip()

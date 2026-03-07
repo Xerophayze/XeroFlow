@@ -66,6 +66,9 @@ DEFAULT_FILTERABLE_FIELDS = {"tags", "doc_id", "source"}
 MMR_LAMBDA = 0.6
 
 class DatabaseManager:
+    _device_cache: Optional[str] = None
+    _device_logged: bool = False
+
     def __init__(self):
         # Switch to a more robust model
         self.device = self._detect_device()
@@ -297,8 +300,13 @@ class DatabaseManager:
 
     def _detect_device(self) -> str:
         """Determine the preferred device for embedding computations."""
+        if DatabaseManager._device_cache:
+            return DatabaseManager._device_cache
         if torch is None:
-            logging.warning("PyTorch not available. Defaulting embeddings to CPU.")
+            if not DatabaseManager._device_logged:
+                logging.warning("PyTorch not available. Defaulting embeddings to CPU.")
+                DatabaseManager._device_logged = True
+            DatabaseManager._device_cache = "cpu"
             return "cpu"
 
         if torch.cuda.is_available():
@@ -306,18 +314,25 @@ class DatabaseManager:
                 device_index = torch.cuda.current_device()
                 device_name = torch.cuda.get_device_name(device_index)
                 capability = torch.cuda.get_device_capability(device_index)
-                logging.info(
-                    "CUDA available - using GPU %s: %s (compute capability %s.%s)",
-                    device_index,
-                    device_name,
-                    capability[0],
-                    capability[1]
-                )
+                if not DatabaseManager._device_logged:
+                    logging.info(
+                        "CUDA available - using GPU %s: %s (compute capability %s.%s)",
+                        device_index,
+                        device_name,
+                        capability[0],
+                        capability[1]
+                    )
             except Exception as cuda_error:
-                logging.warning("Failed to query CUDA device details: %s", cuda_error)
+                if not DatabaseManager._device_logged:
+                    logging.warning("Failed to query CUDA device details: %s", cuda_error)
+            DatabaseManager._device_logged = True
+            DatabaseManager._device_cache = "cuda"
             return "cuda"
 
-        logging.info("CUDA not available. Falling back to CPU for embeddings.")
+        if not DatabaseManager._device_logged:
+            logging.info("CUDA not available. Falling back to CPU for embeddings.")
+            DatabaseManager._device_logged = True
+        DatabaseManager._device_cache = "cpu"
         return "cpu"
     
     def preprocess_content(self, content: str) -> str:
@@ -617,6 +632,128 @@ class DatabaseManager:
             logging.error("Failed to create database '%s': %s", db_name, exc)
             shutil.rmtree(db_path, ignore_errors=True)
             return False
+
+    def ensure_database(self, db_name: str) -> bool:
+        """Ensure a database exists, creating it if necessary. Idempotent."""
+        db_path = self._db_path(db_name)
+        if os.path.exists(db_path) and os.path.exists(self._faiss_path(db_name)):
+            return True
+        if os.path.exists(db_path):
+            # Directory exists but missing FAISS index — initialize it
+            try:
+                index = faiss.IndexFlatIP(self.embedding_dimension)
+                self.save_faiss_index(db_name, index)
+                if not os.path.exists(self._metadata_path(db_name)):
+                    self._save_chunk_metadata(db_name, [])
+                if not os.path.exists(self._documents_index_path(db_name)):
+                    self._save_documents_index(db_name, [])
+                if not os.path.exists(self._notes_path(db_name)):
+                    self.save_notes(db_name, {})
+                logging.info("Repaired database '%s' (missing FAISS index).", db_name)
+                return True
+            except Exception as exc:
+                logging.error("Failed to repair database '%s': %s", db_name, exc)
+                return False
+        return self.create_database(db_name)
+
+    def add_text_content(
+        self,
+        db_name: str,
+        content: str,
+        source_label: str = "agent_content",
+        tags: Optional[List[str]] = None,
+        max_content_length: int = 4000
+    ) -> Dict[str, Any]:
+        """Add raw text content directly to the RAG database.
+
+        Designed for agents to store research results, summaries, and other
+        text data without needing file uploads.  Content longer than
+        *max_content_length* is truncated to prevent database bloat.
+
+        Args:
+            db_name: Target database name.
+            content: The text to store.
+            source_label: A short label identifying the content origin
+                          (e.g. 'worker_research', 'web_summary').
+            tags: Optional list of tags for filtering.
+            max_content_length: Hard cap on stored content length.
+
+        Returns:
+            Dict with 'success' bool and 'chunks_added' count.
+        """
+        if not content or not content.strip():
+            return {"success": False, "error": "Empty content"}
+        try:
+            self.ensure_database(db_name)
+            # Truncate excessively long content to prevent bloat
+            if len(content) > max_content_length:
+                content = content[:max_content_length]
+                logging.info("Truncated content for '%s' in '%s' to %d chars.",
+                             source_label, db_name, max_content_length)
+
+            with self._with_db_lock(db_name):
+                index = self._ensure_faiss_index(db_name)
+                chunk_metadata = self._load_chunk_metadata(db_name)
+                documents_index = self._load_documents_index(db_name)
+
+                doc_id = str(uuid.uuid4())
+                timestamp = datetime.utcnow().isoformat()
+
+                splitter = self._get_text_splitter()
+                docs = [Document(page_content=content, metadata={"source": source_label})]
+                chunks = splitter.split_documents(docs)
+                if not chunks:
+                    return {"success": False, "error": "No chunks produced"}
+
+                new_entries = []
+                vectors = []
+                for i, chunk in enumerate(chunks):
+                    cleaned = self.preprocess_content(chunk.page_content)
+                    if not cleaned.strip():
+                        continue
+                    embedding = self._embed_text(cleaned)
+                    if embedding is None:
+                        continue
+                    entry = {
+                        "chunk_id": str(uuid.uuid4()),
+                        "doc_id": doc_id,
+                        "source": source_label,
+                        "chunk_number": i,
+                        "content": cleaned,
+                        "embedding": embedding.tolist(),
+                        "created_at": timestamp
+                    }
+                    new_entries.append(entry)
+                    vectors.append(embedding)
+
+                if not new_entries:
+                    return {"success": False, "error": "All chunks empty after processing"}
+
+                chunk_metadata.extend(new_entries)
+                documents_index.append({
+                    "doc_id": doc_id,
+                    "source": source_label,
+                    "tags": tags or [],
+                    "metadata": {"type": "agent_content"},
+                    "added_at": timestamp,
+                    "updated_at": timestamp,
+                    "chunk_count": len(new_entries)
+                })
+
+                self._save_chunk_metadata(db_name, chunk_metadata)
+                self._save_documents_index(db_name, documents_index)
+
+                if vectors:
+                    stacked = np.vstack(vectors).astype('float32')
+                    index.add(stacked)
+                    self.save_faiss_index(db_name, index)
+
+            logging.info("Added %d chunks to '%s' from '%s'.", len(new_entries), db_name, source_label)
+            return {"success": True, "chunks_added": len(new_entries), "doc_id": doc_id}
+        except Exception as exc:
+            error_msg = f"Failed to add text content to '{db_name}': {exc}"
+            logging.exception(error_msg)
+            return {"success": False, "error": error_msg}
 
     def delete_document(self, db_name: str, doc_identifier: str) -> Dict[str, Any]:
         """Remove a document (by name or path) and rebuild indexes."""

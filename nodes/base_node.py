@@ -61,10 +61,16 @@ class BaseNode(ABC):
         Returns:
             APIResponse object containing the response
         """
+        model = kwargs.get('model')
+        if not isinstance(model, str) or not model.strip():
+            api_config = self.config.get('interfaces', {}).get(api_name, {})
+            selected_model = api_config.get('selected_model')
+            model = selected_model if isinstance(selected_model, str) else None
+
         request = APIRequest(
             content=content,
             api_name=api_name,
-            model=kwargs.get('model'),
+            model=model,
             max_tokens=kwargs.get('max_tokens'),
             temperature=kwargs.get('temperature'),
             # Pass all other kwargs as additional_params

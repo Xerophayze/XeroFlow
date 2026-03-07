@@ -1,0 +1,199 @@
+graph:
+  connections:
+    - from_node: 6e5a5a86-1b59-4d14-9bb3-64ff2a2c52b5
+      from_output: channel_id
+      to_node: 2b1d2c61-6a44-4f3a-95b0-0e2ea3f0f56c
+      to_input: channel_id
+      disabled: false
+    - from_node: 6e5a5a86-1b59-4d14-9bb3-64ff2a2c52b5
+      from_output: channel_id
+      to_node: 0c7f9c6c-3b1b-4b52-9f10-2a3b5bd99f72
+      to_input: channel_id
+      disabled: false
+    - from_node: 2b1d2c61-6a44-4f3a-95b0-0e2ea3f0f56c
+      from_output: output
+      to_node: 0c7f9c6c-3b1b-4b52-9f10-2a3b5bd99f72
+      to_input: input
+      disabled: false
+  nodes:
+    1a9f5b1b-34c5-4b5a-9d4f-20a2b2a1f11c:
+      canvas_items:
+        description: 11
+        drag_bar: 9
+        output_label_output: 13
+        output_output: 12
+        rect: 8
+        resize_handle: 14
+        title: 10
+      height: 150
+      id: 1a9f5b1b-34c5-4b5a-9d4f-20a2b2a1f11c
+      inputs: []
+      outputs:
+        - output
+      properties:
+        Prompt:
+          default: ""
+          label: Prompt Template
+          type: text
+        description:
+          default: Master control agent interface. Monitors a folder for tasks and provides a split-pane chat for direct interaction.
+          label: Description
+          type: text
+        inbox_folder:
+          default: ""
+          label: Inbox Folder Path
+          type: text
+        is_end_node:
+          default: true
+          type: boolean
+        is_start_node:
+          default: true
+          type: boolean
+        node_name:
+          default: MasterAgentNode
+          label: Custom Node Name
+          type: text
+        outbox_folder:
+          default: ""
+          label: Outbox Folder Path
+          type: text
+        text_api_endpoint:
+          default: ""
+          label: Text Processing API
+          options: []
+          refresh_trigger: true
+          type: dropdown
+        whisper_api_endpoint:
+          default: ""
+          label: Audio Transcription API
+          options: []
+          refresh_trigger: true
+          type: dropdown
+        search_api_endpoint:
+          default: ""
+          label: Search API
+          options: []
+          refresh_trigger: true
+          type: dropdown
+        num_search_results:
+          default: 3
+          label: Number of Search Results
+          type: number
+        PreProcess:
+          default: ""
+          label: Pre-Process Text
+          type: textarea
+      title: MasterAgentNode
+      type: MasterAgentNode
+      width: 220
+      x: 100
+      y: 120
+    6e5a5a86-1b59-4d14-9bb3-64ff2a2c52b5:
+      canvas_items:
+        description: 11
+        drag_bar: 9
+        output_label_channel_id: 13
+        output_channel_id: 12
+        rect: 8
+        resize_handle: 14
+        title: 10
+      height: 140
+      id: 6e5a5a86-1b59-4d14-9bb3-64ff2a2c52b5
+      inputs: []
+      outputs:
+        - channel_id
+      properties:
+        channel_name:
+          default: team
+          label: Channel Name
+          type: text
+        description:
+          default: Creates a per-workflow in-memory comms channel for agents.
+          label: Description
+          type: text
+        node_name:
+          default: AgentCommsChannelNode
+          label: Custom Node Name
+          type: text
+      title: AgentCommsChannelNode
+      type: AgentCommsChannelNode
+      width: 220
+      x: 420
+      y: 120
+    2b1d2c61-6a44-4f3a-95b0-0e2ea3f0f56c:
+      canvas_items:
+        description: 11
+        drag_bar: 9
+        output_label_output: 13
+        output_output: 12
+        rect: 8
+        resize_handle: 14
+        title: 10
+      height: 150
+      id: 2b1d2c61-6a44-4f3a-95b0-0e2ea3f0f56c
+      inputs:
+        - input
+        - channel_id
+      outputs:
+        - output
+      properties:
+        agent_id:
+          default: team_lead
+          label: Agent ID
+          type: text
+        default_top_k:
+          default: 5
+          label: RAG Top K
+          type: number
+        description:
+          default: Headless team lead agent for planning and coordination.
+          label: Description
+          type: text
+        node_name:
+          default: TeamLeadNode
+          label: Custom Node Name
+          type: text
+      title: TeamLeadNode
+      type: TeamLeadNode
+      width: 220
+      x: 740
+      y: 80
+    0c7f9c6c-3b1b-4b52-9f10-2a3b5bd99f72:
+      canvas_items:
+        description: 11
+        drag_bar: 9
+        output_label_output: 13
+        output_output: 12
+        rect: 8
+        resize_handle: 14
+        title: 10
+      height: 150
+      id: 0c7f9c6c-3b1b-4b52-9f10-2a3b5bd99f72
+      inputs:
+        - input
+        - channel_id
+      outputs:
+        - output
+      properties:
+        agent_id:
+          default: worker
+          label: Agent ID
+          type: text
+        default_top_k:
+          default: 5
+          label: RAG Top K
+          type: number
+        description:
+          default: Headless worker agent for RAG lookup and note capture.
+          label: Description
+          type: text
+        node_name:
+          default: WorkerAgentNode
+          label: Custom Node Name
+          type: text
+      title: WorkerAgentNode
+      type: WorkerAgentNode
+      width: 220
+      x: 740
+      y: 260
+name: Master Agent Template

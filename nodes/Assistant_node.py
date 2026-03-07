@@ -372,14 +372,70 @@ class AssistantNode(BaseNode):
             self.refresh_file_browser()
             
     def setup_drag_and_drop(self, widget):
-        """Setup drag and drop functionality for the given widget."""
+        """Setup drag and drop functionality for the given widget.
+
+        Tries TkDND first (requires TkinterDnD root).  Falls back to
+        ``windnd`` on Windows — but schedules the callback onto the
+        tkinter main thread via ``widget.after()`` to avoid a fatal
+        GIL crash (windnd fires from a native thread).
+        """
         try:
-            # This will only work on Windows
+            # Prefer TkDND if available on this widget/root.
             widget.drop_target_register("DND_Files")
             widget.dnd_bind('<<Drop>>', self.handle_drop)
-        except:
-            # If drag and drop registration fails, just log it
-            print("[DEBUG] Drag and drop registration failed. This feature may not be available on this platform.")
+            self.update_log("Drag and drop enabled (TkDND).")
+            return
+        except Exception:
+            pass
+
+        # Windows fallback: windnd does not require a TkDND-enabled root.
+        # IMPORTANT: windnd fires its callback from a raw Win32 thread
+        # that does NOT hold the Python GIL.  Doing any real work there
+        # (imports, tkinter calls, etc.) causes a fatal interpreter crash.
+        # We therefore only stash the paths and use widget.after() to
+        # schedule processing on the safe tkinter main-loop thread.
+        try:
+            import windnd
+
+            _pending_drops = []
+
+            def _windnd_native_callback(files):
+                """Called from a native thread — do as little as possible."""
+                _pending_drops.append(list(files))
+                try:
+                    widget.after(50, _process_pending)
+                except Exception:
+                    pass
+
+            def _process_pending():
+                """Runs on the tkinter main thread — safe to touch widgets."""
+                while _pending_drops:
+                    batch = _pending_drops.pop(0)
+                    self.handle_drop_windnd(batch)
+
+            windnd.hook_dropfiles(widget, func=_windnd_native_callback)
+            self.update_log("Drag and drop enabled (windnd fallback).")
+        except Exception:
+            print("[DEBUG] Drag and drop registration failed. Install 'tkinterdnd2' or 'windnd'.")
+            self.update_log("Drag and drop registration failed. Install 'tkinterdnd2' or 'windnd'.")
+
+    def _add_dropped_paths(self, raw_paths):
+        """Normalize dropped file paths and add valid files to project list."""
+        added = 0
+        for path in raw_paths or []:
+            try:
+                if isinstance(path, bytes):
+                    path = path.decode("utf-8", errors="ignore")
+                path = str(path).strip().strip('"').strip("{}")
+                if not path:
+                    continue
+                if os.path.isfile(path):
+                    self.add_file_to_project(path)
+                    added += 1
+            except Exception:
+                continue
+        if added:
+            self.update_log(f"Added {added} dropped file(s) to project.")
             
     def handle_drop(self, event):
         """Handle files dropped onto the widget."""
@@ -389,35 +445,23 @@ class AssistantNode(BaseNode):
             
             # Check if it's a file path or paths
             if data:
-                # On Windows, paths might be enclosed in curly braces and separated by spaces
-                if data.startswith('{') and data.endswith('}'):
-                    data = data[1:-1]  # Remove the curly braces
-                
-                # Split by space, but handle paths with spaces correctly
-                paths = []
-                in_quotes = False
-                current_path = ""
-                
-                for char in data:
-                    if char == '"':
-                        in_quotes = not in_quotes
-                    elif char == ' ' and not in_quotes:
-                        if current_path:
-                            paths.append(current_path)
-                            current_path = ""
-                    else:
-                        current_path += char
-                
-                if current_path:
-                    paths.append(current_path)
-                
-                # Add each file to the project
-                for path in paths:
-                    path = path.strip('"')  # Remove any remaining quotes
-                    self.add_file_to_project(path)
+                # Use Tk splitlist to correctly parse braces/spaces in file paths.
+                try:
+                    paths = list(event.widget.tk.splitlist(data))
+                except Exception:
+                    paths = [data]
+                self._add_dropped_paths(paths)
         except Exception as e:
             print(f"[DEBUG] Error handling dropped files: {str(e)}")
             self.update_log(f"Error handling dropped files: {str(e)}")
+
+    def handle_drop_windnd(self, files):
+        """Handle files dropped via windnd fallback on Windows."""
+        try:
+            self._add_dropped_paths(files)
+        except Exception as e:
+            print(f"[DEBUG] Error handling windnd dropped files: {str(e)}")
+            self.update_log(f"Error handling windnd dropped files: {str(e)}")
 
     def add_files(self):
         """Open a file dialog to add files to the project."""
@@ -725,12 +769,13 @@ class AssistantNode(BaseNode):
         snapshot_parts = []
         ignore_prefixes = ('.', '~$')
         ignore_suffixes = ('.tmp', '.crdownload', '.part', '.download', '.gdoc', '.gsheet', '.gslides')
+        ignore_names = ('desktop',)  # Ignore Windows Desktop files
 
         for file_path in folder_path.glob('**/*'):
             if not file_path.is_file():
                 continue
             name_lower = file_path.name.lower()
-            if name_lower.startswith(ignore_prefixes) or name_lower.endswith(ignore_suffixes):
+            if name_lower.startswith(ignore_prefixes) or name_lower.endswith(ignore_suffixes) or name_lower in ignore_names:
                 continue
             try:
                 stat = file_path.stat()
@@ -1045,52 +1090,53 @@ class AssistantNode(BaseNode):
                             # Replace the search tag with the results
                             search_tag = f'<search>{search_query}</search>'
                             initial_response = initial_response.replace(search_tag, f'\n\nSearch Results:\n{search_results}\n\n')
-                
-                # Continue with URL processing only if we have an initial response
-                urls = self.extract_urls(initial_response)
-                
-                if urls:
-                    self.update_log(f"Found {len(urls)} URLs in processed content")
-                    for url in urls:
-                        if self.is_youtube_url(url):
-                            self.update_log(f"Processing YouTube URL: {url}")
-                            # Create YouTube transcript node
-                            youtube_node = YoutubeTranscriptNode(
-                                node_id="youtube_transcript_temp",
-                                config=self.config
-                            )
-                            result = youtube_node.process({'input': url})
-                            
-                            youtube_content = []
-                            if 'title' in result and result['title']:
-                                youtube_content.append(f"Title: {result['title']}")
-                            if 'description' in result and result['description']:
-                                youtube_content.append(f"Description: {result['description']}")
-                            if 'transcript' in result and not result['transcript'].startswith('Error:'):
-                                youtube_content.append(f"Transcript: {result['transcript']}")
-                            
-                            if youtube_content:
-                                content = f"\n\nYouTube Video Content from {url}:\n" + "\n\n".join(youtube_content)
+            
+            # Process URLs from the content (either initial_response or original content)
+            content_to_scan = initial_response if initial_response else content
+            urls = self.extract_urls(content_to_scan)
+
+            if urls:
+                self.update_log(f"Found {len(urls)} URLs in processed content")
+                for url in urls:
+                    if self.is_youtube_url(url):
+                        self.update_log(f"Processing YouTube URL: {url}")
+                        # Create YouTube transcript node
+                        youtube_node = YoutubeTranscriptNode(
+                            node_id="youtube_transcript_temp",
+                            config=self.config
+                        )
+                        result = youtube_node.process({'input': url})
+
+                        youtube_content = []
+                        if 'title' in result and result['title']:
+                            youtube_content.append(f"Title: {result['title']}")
+                        if 'description' in result and result['description']:
+                            youtube_content.append(f"Description: {result['description']}")
+                        if 'transcript' in result and not result['transcript'].startswith('Error:'):
+                            youtube_content.append(f"Transcript: {result['transcript']}")
+
+                        if youtube_content:
+                            content = f"\n\nYouTube Video Content from {url}:\n" + "\n\n".join(youtube_content)
+                            additional_content.append(content)
+                    else:
+                        self.update_log(f"Processing web URL: {url}")
+                        # Create web scraping node
+                        web_node = WebScrapingNode(
+                            node_id="web_scrape_temp",
+                            config={
+                                'depth': 1,
+                                'max_retries': 2,
+                                'interfaces': self.config.get('interfaces', {})
+                            }
+                        )
+                        web_node.get_depth_from_user = lambda: 1
+                        result = web_node.process({'input': url})
+
+                        if result and isinstance(result, dict) and 'scraped_text' in result:
+                            scraped_text = result['scraped_text'].strip()
+                            if scraped_text:
+                                content = f"\n\nWeb Content from {url}:\n{scraped_text}"
                                 additional_content.append(content)
-                        else:
-                            self.update_log(f"Processing web URL: {url}")
-                            # Create web scraping node
-                            web_node = WebScrapingNode(
-                                node_id="web_scrape_temp",
-                                config={
-                                    'depth': 1,
-                                    'max_retries': 2,
-                                    'interfaces': self.config.get('interfaces', {})
-                                }
-                            )
-                            web_node.get_depth_from_user = lambda: 1
-                            result = web_node.process({'input': url})
-                            
-                            if result and isinstance(result, dict) and 'scraped_text' in result:
-                                scraped_text = result['scraped_text'].strip()
-                                if scraped_text:
-                                    content = f"\n\nWeb Content from {url}:\n{scraped_text}"
-                                    additional_content.append(content)
             
             # Combine content
             combined_content = [initial_response if initial_response else content]
@@ -1336,13 +1382,9 @@ class AssistantNode(BaseNode):
             print(f"[DEBUG] File already in project folder: {project_folder}")
             return project_folder
             
-        # First check if we can access the file before creating a project folder
-        try:
-            with open(file_path, 'rb') as f:
-                # Just try to read 1 byte to verify access
-                f.read(1)
-        except (PermissionError, OSError) as e:
-            print(f"[DEBUG] Process error: {str(e)}")
+        # Wait until the file is fully written (size/mtime stable, not locked)
+        if not self.is_file_ready_for_processing(file_path):
+            print(f"[DEBUG] File not ready yet (still being copied/written): {file_path.name}")
             return None
             
         # Create project folder for single file only after verifying access

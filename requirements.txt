@@ -71,6 +71,8 @@ youtube-transcript-api>=0.6.2
 
 # GUI dependencies
 PyQt5>=5.15.11  # Required for OutlineWriterNode review window
+tkinterdnd2>=0.3.0  # Native Tk drag-and-drop support (DND_FILES)
+windnd>=1.0.7  # Windows drag-and-drop fallback when TkDND is unavailable
 
 pillow
 scikit-learn==1.5.0  # Specific version for compatibility
@@ -86,6 +88,16 @@ mpmath<1.4,>=1.1.0
 pypdf  # For PDF support
 markupsafe  # Required by Jinja2
 
+# WhatsApp integration dependencies
+flask>=3.0.0  # Webhook server for WhatsApp Business Cloud API
+neonize  # WhatsApp Web client via QR code (built on Whatsmeow) — personal account
+qrcode>=7.0  # QR code generation for displaying in tkinter window
+
+# Google Calendar API dependencies (CalendarNode)
+google-api-python-client>=2.100.0
+google-auth-oauthlib>=1.1.0
+google-auth-httplib2>=0.2.0
+
 # Text-to-speech dependencies
 gradio_client>=0.10.0
 pydub
@@ -94,6 +106,7 @@ pydub
 watchdog  # For file system monitoring
 pydub  # For audio processing
 PyPDF2  # For PDF processing
+PyMuPDF>=1.24.0  # For scanned PDF page rendering and text extraction
 quickchart-io  # For chart generation in ExportWord module
 # Note: Mermaid diagrams are limited to ~784px width due to mermaid.ink API constraints
 # SVG conversion libraries (cairosvg, svglib) have compatibility issues with Mermaid SVG output

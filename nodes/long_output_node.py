@@ -6,6 +6,7 @@ It iteratively processes each item from this list, sending each to the API,
 and accumulates the responses by appending each new response to the previous one along with the next item.
 """
 from .base_node import BaseNode
+import os
 from src.workflows.node_registry import register_node  # Import the decorator
 from src.api.handler import process_api_request  # Correct import
 
@@ -61,7 +62,8 @@ class LongOutputNode(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[LongOutputNode] Available API endpoints: {api_list}")  # Debug statement
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[LongOutputNode] Available API endpoints: {api_list}")  # Debug statement
         return api_list
 
     def process(self, inputs):

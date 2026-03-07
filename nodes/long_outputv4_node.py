@@ -15,6 +15,7 @@ from tkinter import ttk
 import requests
 from bs4 import BeautifulSoup
 import time
+import os
 from src.api.handler import process_api_request
 import sys
 import os
@@ -438,7 +439,8 @@ if the section above starts with "(Continued)" then only include "(Continued) - 
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[LongOutputNodeV4] Available API endpoints: {api_list}")  # Debug statement
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[LongOutputNodeV4] Available API endpoints: {api_list}")  # Debug statement
         return api_list
 
     def check_rate_limits(self, prompt_tokens=0):

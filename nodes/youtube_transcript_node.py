@@ -28,7 +28,12 @@ class YoutubeTranscriptNode(BaseNode):
             'description': {
                 'type': 'text',
                 'label': 'Description',
-                'default': 'Extracts transcript and metadata from a YouTube video URL'
+                'default': (
+                    'Extracts transcript and metadata from a YouTube video URL or video ID. '
+                    'Provide a full URL (watch/shorts/embed/live) or 11-char ID in input. '
+                    'Outputs transcript (plain text), title, and description; set language '
+                    'property to comma-separated codes (e.g., "en,es") for preferred captions.'
+                )
             },
             'language': {
                 'type': 'text',

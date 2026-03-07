@@ -1,0 +1,1893 @@
+[
+  {
+    "doc_id": "ece7c15f-1131-4697-bc72-fd9b765958e5",
+    "source": "worker_worker_4da2f7e5_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_4da2f7e5",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T20:23:36.496829",
+    "updated_at": "2026-02-12T20:23:36.496829",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "7a6bcc2d-f9d6-4468-ac88-665769db862c",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T20:23:54.700971",
+    "updated_at": "2026-02-12T20:23:54.700971",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "687617f9-8195-4c02-872f-74e3473f3e16",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T20:24:52.892206",
+    "updated_at": "2026-02-12T20:24:52.892206",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "4ffd430d-8185-4203-bae8-a21eb606c322",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T21:47:49.425254",
+    "updated_at": "2026-02-12T21:47:49.425254",
+    "chunk_count": 4
+  },
+  {
+    "doc_id": "75a80233-b41e-43e0-912b-8818f646bda6",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T22:06:00.100189",
+    "updated_at": "2026-02-12T22:06:00.100189",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "95e5dc33-f022-4e89-968a-c4c1b1ce70d4",
+    "source": "worker_worker_6613959b_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_6613959b",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T22:24:11.071557",
+    "updated_at": "2026-02-12T22:24:11.071557",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "24f4adc2-272a-46b0-9dc0-1c63a269fbd4",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T22:24:18.510656",
+    "updated_at": "2026-02-12T22:24:18.510656",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "a81bc050-949e-403f-9b79-b510e765484e",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T22:24:19.902185",
+    "updated_at": "2026-02-12T22:24:19.902185",
+    "chunk_count": 5
+  },
+  {
+    "doc_id": "8d0bcca5-eccd-448b-ae4c-fca78109f82f",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:02:28.101819",
+    "updated_at": "2026-02-12T23:02:28.101819",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "cd46caf2-faa8-468d-b7f0-8194ef9c0a0d",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:03:46.567796",
+    "updated_at": "2026-02-12T23:03:46.567796",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "bd3005db-de04-494e-87f8-b8e3c5682b54",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:15:26.370704",
+    "updated_at": "2026-02-12T23:15:26.370704",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "19e2dbf4-9924-478e-85c8-5f67417916e7",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:32:18.435317",
+    "updated_at": "2026-02-12T23:32:18.435317",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "a4b55f8c-c929-4584-a122-4359282935f0",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:42:37.341587",
+    "updated_at": "2026-02-12T23:42:37.341587",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "bf6a9444-2b1c-4592-8d9c-dd2b54df848b",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:55:26.473501",
+    "updated_at": "2026-02-12T23:55:26.473501",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "5fa188af-5947-40ee-9f07-7109b6e9b926",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-12T23:57:37.118884",
+    "updated_at": "2026-02-12T23:57:37.118884",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "9635b3c3-bcd3-45f2-9574-6bd41d4f224d",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:07:54.551797",
+    "updated_at": "2026-02-13T00:07:54.551797",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "a3dfcf90-9cbf-4b23-87e0-81ff8b1a8921",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:17:34.120532",
+    "updated_at": "2026-02-13T00:17:34.120532",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "0759f48a-528e-4fa0-9597-a1e8fab40143",
+    "source": "user_stored_fact",
+    "tags": [
+      "user_fact",
+      "user_profile"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:37:04.255007",
+    "updated_at": "2026-02-13T00:37:04.255007",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "6adc75c0-c4d8-4437-abdd-b9139de197ed",
+    "source": "user_stored_fact",
+    "tags": [
+      "user_fact",
+      "user_profile"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:37:05.716013",
+    "updated_at": "2026-02-13T00:37:05.716013",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "111eb987-bd4a-4a2c-9091-6b3967e86a08",
+    "source": "user_stored_fact",
+    "tags": [
+      "user_fact",
+      "company_info"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:37:07.134266",
+    "updated_at": "2026-02-13T00:37:07.134266",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "8f4db287-1a20-4efd-a1ad-5be57d8bc418",
+    "source": "user_stored_fact",
+    "tags": [
+      "user_fact",
+      "company_info"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:37:08.519673",
+    "updated_at": "2026-02-13T00:37:08.519673",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "740e06e9-5dd5-4d30-9cd0-040ffe3172a9",
+    "source": "user_stored_fact",
+    "tags": [
+      "user_fact",
+      "contact_info"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:37:09.918715",
+    "updated_at": "2026-02-13T00:37:09.918715",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "8afda8c2-032b-48f2-813b-6e37ada24413",
+    "source": "user_stored_fact",
+    "tags": [
+      "user_fact",
+      "contact_info"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:37:11.442262",
+    "updated_at": "2026-02-13T00:37:11.442262",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "6acf60a9-470a-4696-842d-370720353029",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:38:08.135698",
+    "updated_at": "2026-02-13T00:38:08.135698",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "26b0d9ba-197c-493c-bca7-4e49a7096348",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:41:56.818729",
+    "updated_at": "2026-02-13T00:41:56.818729",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "090910fa-7d4d-407e-86c4-ca00d03d879b",
+    "source": "worker_worker_1264f26d_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_1264f26d",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:46:19.095133",
+    "updated_at": "2026-02-13T00:46:19.095133",
+    "chunk_count": 9
+  },
+  {
+    "doc_id": "34e1fb40-72ae-448c-97e8-eae0ea5ae1f3",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:46:26.935351",
+    "updated_at": "2026-02-13T00:46:26.935351",
+    "chunk_count": 5
+  },
+  {
+    "doc_id": "c6de2f8e-cf8a-4a5c-b347-ff08ba22bae6",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T00:46:33.050826",
+    "updated_at": "2026-02-13T00:46:33.050826",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "1da971af-58b3-424b-a6ed-1d50748bf543",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T01:28:44.942268",
+    "updated_at": "2026-02-13T01:28:44.942268",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "27070af5-6619-4e9b-b370-05a3fa9a1c66",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T01:30:24.924197",
+    "updated_at": "2026-02-13T01:30:24.924197",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "b8c39622-b6b2-44fe-9ed1-3d555ddec5e6",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T01:32:25.341478",
+    "updated_at": "2026-02-13T01:32:25.341478",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "b6aac803-4942-4b61-86e6-c3e367d34f9d",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T02:24:47.443698",
+    "updated_at": "2026-02-13T02:24:47.443698",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "eb1bdb7a-9c27-4cb2-b306-1ae35e575b70",
+    "source": "worker_worker_53cee4bb_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_53cee4bb",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:19:43.999334",
+    "updated_at": "2026-02-13T03:19:43.999334",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "23292045-e6cb-4ebb-9dd2-fcd3848268ba",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:19:50.707310",
+    "updated_at": "2026-02-13T03:19:50.707310",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "94e2d8b0-9adb-4fa0-982c-b93b82f60ab2",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:20:12.145051",
+    "updated_at": "2026-02-13T03:20:12.145051",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "1e7e1707-00a7-4436-9110-b4fb25a2568b",
+    "source": "worker_worker_ebe5a2c9_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_ebe5a2c9",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:29:08.773869",
+    "updated_at": "2026-02-13T03:29:08.773869",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "9da7f889-ec7e-4867-838b-ed942cafa507",
+    "source": "worker_worker_ebe5a2c9_ExportDocumentNode",
+    "tags": [
+      "agent_result",
+      "worker_ebe5a2c9",
+      "tool_output",
+      "ExportDocumentNode"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:29:09.009177",
+    "updated_at": "2026-02-13T03:29:09.009177",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "ba455156-296e-405c-bbb8-0e7ae8fbcc7c",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:29:15.000953",
+    "updated_at": "2026-02-13T03:29:15.000953",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "092eaf78-c337-47c3-b38a-c8d881a251d6",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:29:25.250667",
+    "updated_at": "2026-02-13T03:29:25.250667",
+    "chunk_count": 6
+  },
+  {
+    "doc_id": "93a4367f-3119-4285-b074-ec16e6d5881d",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T03:57:08.807567",
+    "updated_at": "2026-02-13T03:57:08.807567",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "14b737fb-e98c-45fc-97cb-1d1bc611b4ee",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T04:20:57.018264",
+    "updated_at": "2026-02-13T04:20:57.018264",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "0a688ade-8549-4d95-9647-ec13b25938c8",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T04:48:57.798648",
+    "updated_at": "2026-02-13T04:48:57.798648",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "8dc45f3e-ba14-47b4-8820-129857c7ae0e",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T06:28:36.092038",
+    "updated_at": "2026-02-13T06:28:36.092038",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "f87f03d8-4dc1-4e14-a2dd-ce833746ca9e",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T06:29:23.319882",
+    "updated_at": "2026-02-13T06:29:23.319882",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "7f41a1ab-1d46-4b7e-adef-59575fe132d6",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T06:30:14.795835",
+    "updated_at": "2026-02-13T06:30:14.795835",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "9ba405d1-e6c1-493a-a76c-f9a2c696bbac",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T06:30:53.705193",
+    "updated_at": "2026-02-13T06:30:53.705193",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "d1cb1e17-53d9-4fca-b1d5-3b3f59d06c8b",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T06:32:40.719726",
+    "updated_at": "2026-02-13T06:32:40.719726",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "313e6c59-adf9-4c50-bdcf-2743173b190d",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T14:31:13.044799",
+    "updated_at": "2026-02-13T14:31:13.044799",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "4461f7f3-c4ea-4a5d-a7e4-99066001d498",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T14:39:56.444795",
+    "updated_at": "2026-02-13T14:39:56.444795",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "a8423fd3-c77c-4f87-a68d-03ca0a64f7ad",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:13:33.304546",
+    "updated_at": "2026-02-13T15:13:33.304546",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "9cf74868-efb8-4bfc-8ba6-db935d347481",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:14:12.428908",
+    "updated_at": "2026-02-13T15:14:12.428908",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "b640a126-d8f1-49dd-9c10-b6f6f700f546",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:27:53.819297",
+    "updated_at": "2026-02-13T15:27:53.819297",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "b032432c-2904-45e5-a152-75fc4fc86989",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:36:48.045603",
+    "updated_at": "2026-02-13T15:36:48.045603",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "3734579d-2c22-4bab-8143-c1e1cfe7aea1",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:37:19.310645",
+    "updated_at": "2026-02-13T15:37:19.310645",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "b388be9f-7313-4b35-b759-7464d38b8ac6",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:38:11.287481",
+    "updated_at": "2026-02-13T15:38:11.287481",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "81ce553f-c114-4bde-8234-a052a8d5b475",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:38:47.643697",
+    "updated_at": "2026-02-13T15:38:47.643697",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "7cd3232d-dca7-436c-b96a-2420435e4a03",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T15:48:59.111849",
+    "updated_at": "2026-02-13T15:48:59.111849",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "6879518f-79ab-4c74-9422-702c5c8a1fcc",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T16:00:36.361988",
+    "updated_at": "2026-02-13T16:00:36.361988",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "df5b77fc-9de7-4c07-a61b-5d25811c3472",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T16:03:02.683748",
+    "updated_at": "2026-02-13T16:03:02.683748",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "c1c94264-03a3-4477-8e47-937275448ce2",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T16:04:24.989788",
+    "updated_at": "2026-02-13T16:04:24.989788",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "8722360d-d888-4795-afa5-8100d362bf24",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T16:05:34.528013",
+    "updated_at": "2026-02-13T16:05:34.528013",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "15022e64-10c5-4e5d-948a-f82c16298ebc",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T16:05:53.915684",
+    "updated_at": "2026-02-13T16:05:53.915684",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "d6ef7c5d-3b23-4205-b351-af0a009e65e5",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T16:17:54.382450",
+    "updated_at": "2026-02-13T16:17:54.382450",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "d890437b-2d47-4bd4-ae3e-3521d7c0abdc",
+    "source": "worker_worker_84cd191e_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_84cd191e",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:24:18.525403",
+    "updated_at": "2026-02-13T17:24:18.525403",
+    "chunk_count": 4
+  },
+  {
+    "doc_id": "d792f041-b314-462b-a4ab-241e1bf60cbb",
+    "source": "worker_worker_a6b1b93f_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_a6b1b93f",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:25:56.761338",
+    "updated_at": "2026-02-13T17:25:56.761338",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "4226ef65-24e5-4a5f-94b4-cd480d0ce561",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:26:22.970531",
+    "updated_at": "2026-02-13T17:26:22.970531",
+    "chunk_count": 6
+  },
+  {
+    "doc_id": "600f83cf-bfe6-415f-ab4a-14036e034e96",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:26:40.081235",
+    "updated_at": "2026-02-13T17:26:40.081235",
+    "chunk_count": 4
+  },
+  {
+    "doc_id": "fcfdd4e8-ea84-4607-858d-ee0b874a74ed",
+    "source": "project_file:meeting_agenda_template_20260213_102637.docx",
+    "tags": [
+      "project_file",
+      "submitted_document"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:43:41.488873",
+    "updated_at": "2026-02-13T17:43:41.488873",
+    "chunk_count": 9
+  },
+  {
+    "doc_id": "478791f9-7411-47a1-808e-1593996cfa37",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:44:01.572784",
+    "updated_at": "2026-02-13T17:44:01.572784",
+    "chunk_count": 4
+  },
+  {
+    "doc_id": "4c79f3c5-85b2-48cf-ae06-80754cf17cf2",
+    "source": "project_file:Endpoint Backup.pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:47:18.054291",
+    "updated_at": "2026-02-13T17:47:18.054291",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "37b50b41-6a87-4ce3-a670-d63779ea684a",
+    "source": "project_file:executive-summary.pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:47:18.236773",
+    "updated_at": "2026-02-13T17:47:18.236773",
+    "chunk_count": 5
+  },
+  {
+    "doc_id": "107bec93-f104-4cbd-9b79-0e556a4c91cc",
+    "source": "project_file:CRC Assets Overview(202602010011).pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:47:18.458863",
+    "updated_at": "2026-02-13T17:47:18.458863",
+    "chunk_count": 6
+  },
+  {
+    "doc_id": "4808ad52-0022-4fab-b445-37745e28f2e7",
+    "source": "project_file:CRC Executive Summary(202602131708).pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:47:18.674070",
+    "updated_at": "2026-02-13T17:47:18.674070",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "bc692afc-2f13-469e-902a-b3944286c43f",
+    "source": "worker_worker_fda9de46_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_fda9de46",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:48:31.184535",
+    "updated_at": "2026-02-13T17:48:31.184535",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "6831828a-ca03-4ace-8851-da10b2b51f01",
+    "source": "worker_worker_8a997531_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_8a997531",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:48:34.188912",
+    "updated_at": "2026-02-13T17:48:34.188912",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "d0ead788-e0d9-45a8-a50b-5f4d4483a1fb",
+    "source": "worker_worker_8a997531_SearchAndScrapeNode",
+    "tags": [
+      "agent_result",
+      "worker_8a997531",
+      "tool_output",
+      "SearchAndScrapeNode"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:48:34.430910",
+    "updated_at": "2026-02-13T17:48:34.430910",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "985b50ab-d5f6-41c1-9933-ba411a0b4476",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:48:53.254870",
+    "updated_at": "2026-02-13T17:48:53.254870",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "bd9a3b74-cccb-4cbe-a69c-5f9c63328720",
+    "source": "teamlead_team_lead_SearchAndScrapeNode",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "tool_output",
+      "SearchAndScrapeNode"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:48:53.505192",
+    "updated_at": "2026-02-13T17:48:53.505192",
+    "chunk_count": 3
+  },
+  {
+    "doc_id": "60d081b9-edb9-400f-aed8-b748f3ac4527",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T17:49:40.489111",
+    "updated_at": "2026-02-13T17:49:40.489111",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "a4cec33d-ba16-4739-9b29-11afdcb46716",
+    "source": "project_file:CRC Executive Summary(202602131708).pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:21:27.476429",
+    "updated_at": "2026-02-13T18:21:27.476429",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "27511484-593d-45fb-a023-ceb77e46567d",
+    "source": "project_file:Endpoint Backup.pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:21:27.759891",
+    "updated_at": "2026-02-13T18:21:27.759891",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "798934a5-0f05-41ff-80ad-151bd92f4192",
+    "source": "project_file:executive-summary.pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:21:27.959817",
+    "updated_at": "2026-02-13T18:21:27.959817",
+    "chunk_count": 5
+  },
+  {
+    "doc_id": "a206a46e-15f5-4605-8748-b0170ca644d4",
+    "source": "project_file:CRC Assets Overview(202602010011).pdf",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "crc_tbr_executive_review"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:21:28.193825",
+    "updated_at": "2026-02-13T18:21:28.193825",
+    "chunk_count": 6
+  },
+  {
+    "doc_id": "4442a2fc-5a36-4710-8bbd-cbd8f726780b",
+    "source": "worker_worker_51726977_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_51726977",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:23:37.263574",
+    "updated_at": "2026-02-13T18:23:37.263574",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "9ef66ea9-69e0-4111-b302-d2678f2744d4",
+    "source": "worker_worker_51726977_ExportDocumentNode",
+    "tags": [
+      "agent_result",
+      "worker_51726977",
+      "tool_output",
+      "ExportDocumentNode"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:23:37.704948",
+    "updated_at": "2026-02-13T18:23:37.704948",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "322cd636-2e77-42dc-979e-9814163b6f3c",
+    "source": "worker_worker_eafb6fb0_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_eafb6fb0",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:24:33.377895",
+    "updated_at": "2026-02-13T18:24:33.377895",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "5a9dee63-a2b0-45f6-a90b-c8cf095724b2",
+    "source": "worker_worker_eafb6fb0_WorkerAgentNode",
+    "tags": [
+      "agent_result",
+      "worker_eafb6fb0",
+      "tool_output",
+      "WorkerAgentNode"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:24:33.713512",
+    "updated_at": "2026-02-13T18:24:33.713512",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "c3a2fa37-6712-4826-bb0e-cd509600c9a4",
+    "source": "worker_worker_75ac6888_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_75ac6888",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:25:21.903889",
+    "updated_at": "2026-02-13T18:25:21.903889",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "4525f381-c308-4e13-a107-d51ad201c069",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:25:46.805128",
+    "updated_at": "2026-02-13T18:25:46.805128",
+    "chunk_count": 4
+  },
+  {
+    "doc_id": "1f5dd08d-b28e-4497-9469-e0d4b09671a6",
+    "source": "teamlead_team_lead_SearchAndScrapeNode",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "tool_output",
+      "SearchAndScrapeNode"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:25:47.144989",
+    "updated_at": "2026-02-13T18:25:47.144989",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "a64ae359-acac-4d16-8e93-cc74b036b70d",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T18:26:30.620453",
+    "updated_at": "2026-02-13T18:26:30.620453",
+    "chunk_count": 9
+  },
+  {
+    "doc_id": "3fc34e52-a2ec-463d-ae22-893473c3e411",
+    "source": "project_file:Pulseway Meeting with Gabriel and Harry.mp3",
+    "tags": [
+      "project_file",
+      "submitted_document",
+      "pulseway_meeting_with_gabriel_and_harry"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:02:34.301689",
+    "updated_at": "2026-02-13T19:02:34.301689",
+    "chunk_count": 11
+  },
+  {
+    "doc_id": "99a35eac-0da6-4b6f-ad32-0f3905f800d7",
+    "source": "worker_worker_5173fff7_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_5173fff7",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:03:34.750560",
+    "updated_at": "2026-02-13T19:03:34.750560",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "4fec3324-fbc5-4277-91cf-77a64e140aeb",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:03:52.767795",
+    "updated_at": "2026-02-13T19:03:52.767795",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "bc01652c-ac88-4f67-a3f6-b0e77293d873",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:04:41.134593",
+    "updated_at": "2026-02-13T19:04:41.134593",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "f1be1ae6-39da-4963-9dd8-072c76a2da9a",
+    "source": "worker_worker_0ef7da4d_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_0ef7da4d",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:38:10.929138",
+    "updated_at": "2026-02-13T19:38:10.929138",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "fe1d9797-1293-4407-a211-ea2d6b80d28a",
+    "source": "worker_worker_bbbb22de_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_bbbb22de",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:38:34.832126",
+    "updated_at": "2026-02-13T19:38:34.832126",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "acd38d14-f468-4cf8-ac89-37941e942407",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:39:12.740289",
+    "updated_at": "2026-02-13T19:39:12.740289",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "0ded394c-2a4d-4e53-9ca3-b8916d2a4baa",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:39:14.460113",
+    "updated_at": "2026-02-13T19:39:14.460113",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "ecb1cc57-a7ec-45ac-b1f6-97e0c190fdf7",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T19:42:23.120764",
+    "updated_at": "2026-02-13T19:42:23.120764",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "3813b07c-6781-47fe-89ae-4e41cd7d7398",
+    "source": "youtube_transcript",
+    "tags": [
+      "youtube",
+      "transcript",
+      "video"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:19:00.972623",
+    "updated_at": "2026-02-13T20:19:00.972623",
+    "chunk_count": 25
+  },
+  {
+    "doc_id": "c908f699-0f66-4b94-9410-a555f636d4af",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:19:14.123086",
+    "updated_at": "2026-02-13T20:19:14.123086",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "fb90824f-48c3-4e71-b5a4-beae834f4b58",
+    "source": "worker_worker_1cdc3cf9_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_1cdc3cf9",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:48:54.806413",
+    "updated_at": "2026-02-13T20:48:54.806413",
+    "chunk_count": 8
+  },
+  {
+    "doc_id": "75cf79e2-1162-44d6-b84d-6e0857803f7e",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:49:04.908630",
+    "updated_at": "2026-02-13T20:49:04.908630",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "ff678bf0-b7d2-4be1-8eb6-5021e2dd9675",
+    "source": "worker_worker_188f9f9d_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_188f9f9d",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:49:24.290142",
+    "updated_at": "2026-02-13T20:49:24.290142",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "cf52f815-0577-407d-b0cf-065192b90508",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:49:32.075114",
+    "updated_at": "2026-02-13T20:49:32.075114",
+    "chunk_count": 4
+  },
+  {
+    "doc_id": "59c95ad9-db84-41c8-b66e-ad5ac535d029",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T20:49:50.116784",
+    "updated_at": "2026-02-13T20:49:50.116784",
+    "chunk_count": 9
+  },
+  {
+    "doc_id": "c893bd5d-7727-444d-b6d8-f47446bf099c",
+    "source": "youtube_transcript",
+    "tags": [
+      "youtube",
+      "transcript",
+      "video"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T21:22:56.648810",
+    "updated_at": "2026-02-13T21:22:56.648810",
+    "chunk_count": 21
+  },
+  {
+    "doc_id": "fdc3a3e3-0ec7-4747-8da0-d5ef096d5f4d",
+    "source": "youtube_transcript",
+    "tags": [
+      "youtube",
+      "transcript",
+      "video"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T21:22:57.263296",
+    "updated_at": "2026-02-13T21:22:57.263296",
+    "chunk_count": 25
+  },
+  {
+    "doc_id": "4fe96c10-be8b-4d3a-bd8a-f517ed973b8d",
+    "source": "youtube_transcript",
+    "tags": [
+      "youtube",
+      "transcript",
+      "video"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T21:22:57.850569",
+    "updated_at": "2026-02-13T21:22:57.850569",
+    "chunk_count": 22
+  },
+  {
+    "doc_id": "1260950b-df88-4b74-90b3-003a19a236ce",
+    "source": "worker_worker_7e30862f_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_7e30862f",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T21:23:41.072522",
+    "updated_at": "2026-02-13T21:23:41.072522",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "bb2fac48-d83d-42ac-af0d-7245b313c2f5",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T21:25:19.179470",
+    "updated_at": "2026-02-13T21:25:19.179470",
+    "chunk_count": 7
+  },
+  {
+    "doc_id": "31df3945-c255-4221-903b-180251d94c83",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T22:15:19.476615",
+    "updated_at": "2026-02-13T22:15:19.476615",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "ee0a1ef2-9d7d-4afc-8d91-cbf2e1cbf4dc",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T22:33:13.307878",
+    "updated_at": "2026-02-13T22:33:13.307878",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "017312e7-bcf0-4533-a3a8-aebfeaccc89b",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T22:54:02.812498",
+    "updated_at": "2026-02-13T22:54:02.812498",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "dd6440a6-0357-4d9b-8c86-a39b403d7fab",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T22:57:51.535858",
+    "updated_at": "2026-02-13T22:57:51.535858",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "c2b51ce4-e64b-427f-8d61-b9eb30e2ac43",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T23:06:00.939981",
+    "updated_at": "2026-02-13T23:06:00.939981",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "b86cd5dc-2eee-4dec-9a8b-fef800def4af",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T23:16:35.323329",
+    "updated_at": "2026-02-13T23:16:35.323329",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "c1afb891-ce25-4974-94b9-956b985af7fc",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T23:18:59.785577",
+    "updated_at": "2026-02-13T23:18:59.785577",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "62234b86-2904-4279-9414-6c073c8a24ed",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-13T23:19:35.988989",
+    "updated_at": "2026-02-13T23:19:35.988989",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "448b3699-4259-4082-949f-f2d7f75512b5",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:18:46.147813",
+    "updated_at": "2026-02-14T00:18:46.147813",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "26a8c62c-e952-427e-b068-9765aff022ce",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:20:01.826378",
+    "updated_at": "2026-02-14T00:20:01.826378",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "b8199bbb-17d3-4597-b585-903318fcfe71",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:20:38.556170",
+    "updated_at": "2026-02-14T00:20:38.556170",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "2a227b62-5859-4694-bc63-67a9c183cb04",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:25:42.703928",
+    "updated_at": "2026-02-14T00:25:42.703928",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "4ba40f05-9edf-423a-a1b7-b8fc2db92a23",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:25:59.168707",
+    "updated_at": "2026-02-14T00:25:59.168707",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "e47054bc-5d5b-4b23-9f42-4a79d3572f52",
+    "source": "worker_worker_86b38f51_synthesis",
+    "tags": [
+      "agent_result",
+      "worker_86b38f51",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:26:38.099355",
+    "updated_at": "2026-02-14T00:26:38.099355",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "d6fa716e-7f99-4be6-b107-264c0fa2b7f7",
+    "source": "teamlead_team_lead_synthesis",
+    "tags": [
+      "agent_result",
+      "team_lead",
+      "synthesis"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:26:40.651868",
+    "updated_at": "2026-02-14T00:26:40.651868",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "28aee3a0-03a7-4ce7-acac-33c2a18a9867",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:26:42.353464",
+    "updated_at": "2026-02-14T00:26:42.353464",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "54b6d826-f8bb-44b2-b765-2672b6b7e568",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:29:18.158971",
+    "updated_at": "2026-02-14T00:29:18.158971",
+    "chunk_count": 2
+  },
+  {
+    "doc_id": "bfa210d7-4472-42e3-9d0d-bd921d32e9eb",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:29:39.701497",
+    "updated_at": "2026-02-14T00:29:39.701497",
+    "chunk_count": 1
+  },
+  {
+    "doc_id": "f8f88151-083f-4688-bc3a-e0481fb4dfa0",
+    "source": "master_agent_response",
+    "tags": [
+      "master_agent",
+      "chat_response"
+    ],
+    "metadata": {
+      "type": "agent_content"
+    },
+    "added_at": "2026-02-14T00:45:59.722905",
+    "updated_at": "2026-02-14T00:45:59.722905",
+    "chunk_count": 1
+  }
+]

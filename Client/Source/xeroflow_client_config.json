@@ -2,7 +2,8 @@
     "inbox_folders": {
         "Master Executive Assistant": "G:/Shared drives/Eric Thorup/Assistant/Executive Master Assistant Inbox",
         "Financial Assistant": "G:/Shared drives/Eric Thorup/Assistant/Financial Inbox",
-        "TEK Security Assistant": "G:/Shared drives/Eric Thorup/Assistant/TEK Security Analysis"
+        "TEK Security Assistant": "G:/Shared drives/Eric Thorup/Assistant/TEK Security Analysis",
+        "Powerzone testing": "G:/Shared drives/Client Assistants/Power Zone/Basic Assistant/Inbox"
     },
     "outbox_folder": "G:/Shared drives/Eric Thorup/Assistant/Outbox"
 }

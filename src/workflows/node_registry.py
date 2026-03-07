@@ -6,6 +6,54 @@ from pathlib import Path
 
 NODE_REGISTRY = {}
 
+# Runtime registry of live node instances (for cross-node communication).
+# Persistent nodes register themselves here when they start so other nodes
+# (e.g. WhatsAppWebNode) can discover and call them directly.
+RUNNING_INSTANCES = {}  # node_type -> node_instance
+
+
+def register_running_instance(node_type: str, instance):
+    """Register a live node instance so other nodes can discover it."""
+    RUNNING_INSTANCES[node_type] = instance
+
+
+def get_running_instance(node_type: str):
+    """Get a live node instance by type, or None if not running."""
+    return RUNNING_INSTANCES.get(node_type)
+
+
+def unregister_running_instance(node_type: str):
+    """Remove a node instance from the running registry."""
+    RUNNING_INSTANCES.pop(node_type, None)
+
+
+def get_node_catalog():
+    """Return metadata about registered nodes for agent tool selection."""
+    catalog = []
+    for node_type, node_cls in NODE_REGISTRY.items():
+        description = (node_cls.__doc__ or '').strip() or None
+        inputs = []
+        outputs = []
+        try:
+            instance = node_cls(node_id=f"_catalog_{node_type}", config={})
+            inputs = instance.define_inputs()
+            outputs = instance.define_outputs()
+            props = instance.define_properties()
+            prop_desc = None
+            if isinstance(props, dict):
+                prop_desc = props.get('description', {}).get('default')
+            if prop_desc:
+                description = prop_desc
+        except Exception:
+            pass
+        catalog.append({
+            'type': node_type,
+            'description': description or 'No description available.',
+            'inputs': inputs,
+            'outputs': outputs
+        })
+    return catalog
+
 def register_node(node_type):
     """
     Decorator to register node classes with a unique type identifier.

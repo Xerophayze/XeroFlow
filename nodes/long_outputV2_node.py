@@ -5,6 +5,8 @@ The initial input is expected to be split by paragraph (empty lines between bloc
 It iteratively processes each item from this list, sending each to the API,
 and accumulates the responses either as a combined string or as an array of responses.
 """
+import os
+
 from .base_node import BaseNode
 from src.workflows.node_registry import register_node  # Import the decorator
 from src.api.handler import process_api_request  # Correct import
@@ -91,7 +93,8 @@ class LongOutputV2Node(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[LongOutputNodeV2] Available API endpoints: {api_list}")  # Debug statement
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[LongOutputNodeV2] Available API endpoints: {api_list}")  # Debug statement
         return api_list
 
     def check_rate_limits(self, prompt_tokens=0):

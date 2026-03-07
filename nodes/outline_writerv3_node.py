@@ -978,23 +978,27 @@ class OutlineWriterV3Node(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[OutlineWriterV3Node] Available API endpoints: {api_list}")
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[OutlineWriterV3Node] Available API endpoints: {api_list}")
         return api_list
     
     def get_searxng_default(self):
         """Get the default SearxNG endpoint, preferring 'searxng' if available"""
         endpoints = self.get_api_endpoints()
-        print(f"[OutlineWriterV3Node] Looking for SearxNG endpoint in: {endpoints}")
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[OutlineWriterV3Node] Looking for SearxNG endpoint in: {endpoints}")
         
         # Look for 'searxng' or 'searxing' endpoint first (case insensitive)
         for endpoint in endpoints:
             endpoint_lower = endpoint.lower()
             if 'searxng' in endpoint_lower or 'searxing' in endpoint_lower:
-                print(f"[OutlineWriterV3Node] Found SearxNG endpoint: {endpoint}")
+                if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+                    print(f"[OutlineWriterV3Node] Found SearxNG endpoint: {endpoint}")
                 return endpoint
         
         # Otherwise return first available or empty string
-        print(f"[OutlineWriterV3Node] No SearxNG endpoint found, using first: {endpoints[0] if endpoints else 'None'}")
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[OutlineWriterV3Node] No SearxNG endpoint found, using first: {endpoints[0] if endpoints else 'None'}")
         return endpoints[0] if endpoints else ''
 
     def process_with_api(self, prompt):

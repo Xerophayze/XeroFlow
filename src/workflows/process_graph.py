@@ -55,6 +55,17 @@ def process_node_graph(
 
         print(f"[PARALLEL] Starting workflow with start node ID: {start_node['id']}")
 
+        # Find persistent nodes that should auto-launch alongside the start node.
+        # These are always-on service nodes (e.g. WhatsAppWebNode) that have
+        # is_persistent=True and are NOT the start node.
+        persistent_nodes = [
+            node for node in nodes.values()
+            if node.get('properties', {}).get('is_persistent', {}).get('default', False)
+            and node['id'] != start_node['id']
+        ]
+        if persistent_nodes:
+            print(f"[PARALLEL] Found {len(persistent_nodes)} persistent node(s) to auto-launch: {[n['id'] for n in persistent_nodes]}")
+
         editor = open_editors.get(selected_prompt_name)
         if editor and editor.is_open():
             gui_queue.put(editor.clear_all_highlights)
@@ -210,6 +221,13 @@ def process_node_graph(
             
             future = executor.submit(process_single_node, start_node['id'], start_inputs)
             futures[future] = start_node['id']
+
+            # Also launch persistent nodes immediately (they don't wait for inputs)
+            for pnode in persistent_nodes:
+                pnode_inputs = dict(base_metadata)
+                print(f"[PARALLEL] Auto-launching persistent node '{pnode['id']}' ({pnode['type']})")
+                pfuture = executor.submit(process_single_node, pnode['id'], pnode_inputs)
+                futures[pfuture] = pnode['id']
             
             while True:
                 # Check for stop event

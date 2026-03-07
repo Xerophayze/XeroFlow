@@ -4,6 +4,8 @@ ArrayProcessTestProcessNodeV2: Processes an array input through a two-stage API 
 Each array element is processed through a loop of API calls until a specified condition is met.
 Adds previous/next chapter context to validation/refinement prompts.
 """
+import os
+
 from .base_node import BaseNode
 from src.workflows.node_registry import register_node
 from utils.progress_window import ProgressWindow
@@ -104,7 +106,8 @@ class ArrayProcessTestProcessV2Node(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[ArrayProcessTestProcessNodeV2] Available API endpoints: {api_list}")
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[ArrayProcessTestProcessNodeV2] Available API endpoints: {api_list}")
         return api_list
 
     def make_api_call(self, prompt, api_details):

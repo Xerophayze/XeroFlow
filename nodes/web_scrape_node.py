@@ -27,38 +27,8 @@ class WebScrapingNode(BaseNode):
         return props
 
     def get_depth_from_user(self):
-        # Initialize tkinter root
-        root = tk.Tk()
-        root.withdraw()  # Hide the root window
-
-        # Prompt the user for depth input
-        depth = 1  # Default value
-        try:
-            user_input = simpledialog.askstring(
-                title="Set Scraping Depth",
-                prompt="Enter the depth for link following (1 for initial page only):",
-                initialvalue="1",
-                parent=root
-            )
-
-            if user_input is None:
-                # User cancelled the dialog
-                print("[WebScrapingNode] User cancelled the depth input. Using default depth of 1.")
-                return depth
-
-            depth = int(user_input)
-            if depth < 1:
-                raise ValueError
-        except ValueError:
-            messagebox.showwarning(
-                title="Invalid Input",
-                message="Invalid depth value entered. Using default depth of 1."
-            )
-            depth = 1
-        finally:
-            root.destroy()  # Destroy the tkinter root
-
-        print(f"[WebScrapingNode] Scraping depth set to: {depth}")
+        depth = 1
+        print("[WebScrapingNode] Scraping depth defaulted to 1.")
         return depth
 
     def process(self, inputs):

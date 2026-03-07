@@ -42,7 +42,11 @@ class ExportDocumentNode(BaseNode):
             'description': {
                 'type': 'text',
                 'label': 'Description',
-                'default': 'Exports input text to Word or Excel document.'
+                'default': (
+                    'Exports input text to Word (.docx), Excel (.xlsx), or Text (.txt). '
+                    'Set export_format/output_folder/filename properties. Input should be '
+                    'markdown for formatting when formatting_enabled is true.'
+                )
             },
             'export_format': {
                 'type': 'dropdown',

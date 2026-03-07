@@ -130,10 +130,19 @@ class ModernNodeEditor:
 
     def get_node_class_by_type(self, node_type):
         try:
-            return NODE_REGISTRY.get(node_type, lambda: MissingNode(original_type=node_type))
+            if node_type in NODE_REGISTRY:
+                return NODE_REGISTRY[node_type]
+
+            def _missing_node(node_id=None, config=None, **_kwargs):
+                return MissingNode(node_id=node_id, config=config, original_type=node_type)
+
+            return _missing_node
         except Exception as e:
             print(f"Error getting node class for type {node_type}: {e}")
-            return lambda: MissingNode(original_type=node_type)
+            def _fallback_missing(node_id=None, config=None, **_kwargs):
+                return MissingNode(node_id=node_id, config=config, original_type=node_type)
+
+            return _fallback_missing
 
     def create_editor_window(self):
         self.editor_window = tk.Toplevel(self.parent)

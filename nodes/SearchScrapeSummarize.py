@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import re
+import os
 import tkinter as tk
 from tkinter import messagebox
 
@@ -37,7 +38,14 @@ class SearchScrapeSummarizeNode(BaseNode):
         props = self.get_default_properties()
         props.update({
             'node_name': {'type': 'text', 'default': 'SearchScrapeSummarizeNode'},
-            'description': {'type': 'text', 'default': 'Processes the input for web search, scraping, and summarization via API.'},
+            'description': {
+                'type': 'text',
+                'default': (
+                    'Runs web search, scrapes pages, and summarizes via selected API endpoint. '
+                    'Provide query in input; output is a markdown summary prompt. '
+                    'Configure api_endpoint and result limits; summaries should keep markdown formatting.'
+                )
+            },
             'Prompt': {'type': 'textarea', 'default': ''},  # User-defined prompt
             'api_endpoint': {
                 'type': 'dropdown',
@@ -60,16 +68,40 @@ class SearchScrapeSummarizeNode(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[SearchScrapeSummarizeNode] Available API endpoints: {api_list}")
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[SearchScrapeSummarizeNode] Available API endpoints: {api_list}")
         return api_list
 
     def get_summarization_prompt(self, query, content):
         """Create a prompt for summarizing the scraped content."""
         return f"Please summarize the important details from the following information, keep it well formatted using proper markdown formatting, but include all relevant information, links, references, number and data relevant data: {query}\n\nScraped Content:\n{content}"
 
+    def _normalize_endpoint_name(self, endpoint: str) -> str:
+        if not endpoint:
+            return ''
+        interfaces = self.config.get('interfaces', {}) or {}
+        if endpoint in interfaces:
+            return endpoint
+        lower = endpoint.strip().lower()
+        for name in interfaces:
+            if name.lower() == lower:
+                return name
+        tokens = [token for token in re.split(r"\s+", lower) if token]
+        best_match = ''
+        best_score = 0
+        for name in interfaces:
+            name_lower = name.lower()
+            score = sum(1 for token in tokens if token in name_lower)
+            if score > best_score:
+                best_score = score
+                best_match = name
+        return best_match or endpoint
+
     def send_to_summarization_api(self, prompt):
         """Send the prompt to the selected API endpoint."""
-        selected_api = self.properties.get('api_endpoint', {}).get('value') or self.properties.get('api_endpoint', {}).get('default', '')
+        prop = self.properties.get('api_endpoint', {})
+        selected_api = prop.get('value') or prop.get('default', '')
+        print(f"[SearchScrapeSummarizeNode] send_to_summarization_api: value={prop.get('value')!r}, default={prop.get('default')!r}, selected_api={selected_api!r}")
         if not selected_api:
             print("[SearchScrapeSummarizeNode] No API endpoint selected.")
             return "No API endpoint selected."
@@ -98,6 +130,8 @@ class SearchScrapeSummarizeNode(BaseNode):
             else:
                 print(f"[SearchScrapeSummarizeNode] API request failed: {api_response.error}")
                 summary = f"Error during summarization: {api_response.error}"
+
+            return summary
 
             
         except Exception as e:
@@ -204,12 +238,7 @@ class SearchScrapeSummarizeNode(BaseNode):
                 
                 text = main_content.get_text(separator=' ', strip=True)
                 
-                # Truncate text if it's too long
-                if len(text) > 5000:
-                    print(f"[SearchScrapeSummarizeNode] Truncating content from {len(text)} to 5000 characters")
-                    text = text[:5000] + "..."
-                else:
-                    print(f"[SearchScrapeSummarizeNode] Content length: {len(text)} characters")
+                print(f"[SearchScrapeSummarizeNode] Content length: {len(text)} characters")
                 
                 scraped_content.append(f"Content from {url}:\n{text}\n")
             except requests.exceptions.Timeout:
@@ -236,13 +265,24 @@ class SearchScrapeSummarizeNode(BaseNode):
             print("[SearchScrapeSummarizeNode] Error: No input provided.")
             return {"prompt": "No search query provided."}
         
-        # Get the API endpoint
-        api_endpoint_name = self.properties.get('api_endpoint', {}).get('value') or self.properties.get('api_endpoint', {}).get('default', '')
+        # Get the API endpoint (allow override from input payload)
+        input_endpoint = data.get('api_endpoint') or data.get('llm_api_endpoint')
+        api_endpoint_name = (
+            input_endpoint
+            or self.properties.get('api_endpoint', {}).get('value')
+            or self.properties.get('api_endpoint', {}).get('default', '')
+        )
+        api_endpoint_name = self._normalize_endpoint_name(api_endpoint_name)
         if api_endpoint_name:
             print(f"[SearchScrapeSummarizeNode] Using API endpoint: {api_endpoint_name}")
         else:
             print("[SearchScrapeSummarizeNode] Warning: No API endpoint specified")
             return {"prompt": "No API endpoint specified for search summarization."}
+        if api_endpoint_name not in (self.config.get('interfaces', {}) or {}):
+            print(f"[SearchScrapeSummarizeNode] Invalid API endpoint: {api_endpoint_name}")
+            return {"prompt": f"Invalid API endpoint configured: {api_endpoint_name}."}
+        self.properties.setdefault('api_endpoint', {'type': 'dropdown', 'default': api_endpoint_name})
+        self.properties['api_endpoint']['value'] = api_endpoint_name
         
         # Log the search query
         print(f"[SearchScrapeSummarizeNode] Searching for: {input_data}")
@@ -305,11 +345,7 @@ class SearchScrapeSummarizeNode(BaseNode):
         if not summary or summary == "API response is None.":
             # If summarization fails, return the scraped content directly
             print("[SearchScrapeSummarizeNode] Summarization failed. Returning scraped content directly.")
-            # Truncate the content if it's too long
-            truncated_content = scraped_content
-            if len(truncated_content) > 2000:
-                truncated_content = truncated_content[:2000] + "..."
-            return {"prompt": f"Here are some search results for '{input_data}':\n\n{truncated_content}"}
+            return {"prompt": f"Here are some search results for '{input_data}':\n\n{scraped_content}"}
         
         return {"prompt": summary}
 

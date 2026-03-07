@@ -172,7 +172,7 @@ def apply_formatting(text_widget, text, base_tag=None):
                 image_data = response.content
                 image_stream = BytesIO(image_data)
                 pil_image = Image.open(image_stream)
-                pil_image = pil_image.resize((150, 150), Image.ANTIALIAS)
+                pil_image = pil_image.resize((150, 150), Image.Resampling.LANCZOS)
                 tk_image = ImageTk.PhotoImage(pil_image)
                 text_widget.image_create(END, image=tk_image)
                 if not hasattr(text_widget, 'images'):
@@ -225,7 +225,7 @@ def apply_formatting(text_widget, text, base_tag=None):
                     ratio = max_width / width
                     new_width = max_width
                     new_height = int(height * ratio)
-                    pil_image = pil_image.resize((new_width, new_height), Image.ANTIALIAS)
+                    pil_image = pil_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
                 
                 # Create Tkinter image and display it
                 tk_image = ImageTk.PhotoImage(pil_image)
@@ -436,30 +436,73 @@ def apply_formatting(text_widget, text, base_tag=None):
             pos = earliest_match.end()
     
     def process_table_block(table_lines):
-        for row in table_lines:
-            if re.match(r'^\s*\|?(?:\s*:?-+:?\s*\|)+\s*$', row):
-                insert_with_base_tag(row.strip() + "\n", "table")
-            else:
-                row = row.strip()
-                if row.startswith("|"):
-                    row = row[1:]
-                if row.endswith("|"):
-                    row = row[:-1]
-                cells = row.split("|")
-                for idx, cell in enumerate(cells):
-                    cell_text = cell.strip()
-                    if idx > 0:
-                        text_widget.insert(END, " | ", "table")
-                    # Check if cell begins with a blockquote marker (one or more ">")
-                    bq_match = re.match(r'^(>+)\s*(.*)$', cell_text)
-                    if bq_match:
-                        markers = bq_match.group(1)
-                        quote_level = len(markers)
-                        content = bq_match.group(2)
-                        process_inline_formatting(text_widget, content, ("table", f"blockquote_{quote_level}"))
-                    else:
-                        process_inline_formatting(text_widget, cell_text, ("table",))
-                text_widget.insert(END, "\n")
+        """Render a markdown table as a tkinter Frame grid embedded in the text widget."""
+        # Parse table data: skip separator rows, extract header and body rows
+        parsed_rows = []
+        separator_idx = -1
+        for idx, row in enumerate(table_lines):
+            stripped = row.strip()
+            if re.match(r'^\s*\|?(?:\s*:?-+:?\s*\|)+\s*:?-*:?\s*$', stripped):
+                separator_idx = idx
+                continue
+            if stripped.startswith("|"):
+                stripped = stripped[1:]
+            if stripped.endswith("|"):
+                stripped = stripped[:-1]
+            cells = [c.strip() for c in stripped.split("|")]
+            parsed_rows.append(cells)
+
+        if not parsed_rows:
+            return
+
+        # Determine column count from the widest row
+        num_cols = max(len(r) for r in parsed_rows)
+        # Pad short rows
+        for r in parsed_rows:
+            while len(r) < num_cols:
+                r.append("")
+
+        # Build the table frame
+        table_frame = tk.Frame(text_widget, bd=1, relief=tk.SOLID, bg="#cccccc")
+
+        # Calculate column widths based on content (min 80px, max 250px)
+        col_widths = []
+        for col_idx in range(num_cols):
+            max_len = 0
+            for r in parsed_rows:
+                if col_idx < len(r):
+                    max_len = max(max_len, len(r[col_idx]))
+            # Approximate pixel width: ~8px per char, clamped
+            px = max(80, min(250, max_len * 8 + 16))
+            col_widths.append(px)
+
+        for row_idx, row_cells in enumerate(parsed_rows):
+            is_header = (row_idx == 0 and separator_idx >= 0)
+            bg = "#e8e8e8" if is_header else ("#ffffff" if row_idx % 2 == 0 else "#f5f5f5")
+            font_weight = "bold" if is_header else "normal"
+
+            for col_idx, cell_text in enumerate(row_cells):
+                cell_frame = tk.Frame(table_frame, bd=0, bg=bg,
+                                      highlightbackground="#cccccc",
+                                      highlightthickness=1)
+                cell_frame.grid(row=row_idx, column=col_idx, sticky="nsew",
+                                padx=0, pady=0)
+
+                lbl = tk.Label(cell_frame, text=cell_text, bg=bg,
+                               font=("Calibri", 10, font_weight),
+                               anchor="w", justify=tk.LEFT,
+                               wraplength=col_widths[col_idx] - 10,
+                               padx=6, pady=3)
+                lbl.pack(fill=tk.BOTH, expand=True)
+
+            # Configure column weights so they expand
+            for col_idx in range(num_cols):
+                table_frame.grid_columnconfigure(col_idx, weight=1, minsize=col_widths[col_idx])
+
+        # Embed the table frame into the text widget
+        text_widget.insert(END, "\n")
+        text_widget.window_create(END, window=table_frame)
+        text_widget.insert(END, "\n")
     
     # --- UPDATED BLOCKQUOTE AND HEADING HANDLING ---
     def process_line(line):
@@ -541,9 +584,62 @@ def apply_formatting(text_widget, text, base_tag=None):
         process_inline_formatting(text_widget, line, ())
         text_widget.insert(END, '\n')
     
+    # Patterns that start a mermaid diagram (unfenced)
+    _mermaid_start_re = re.compile(
+        r'^\s*(?:graph\s+(?:TD|TB|BT|RL|LR)|flowchart\s+(?:TD|TB|BT|RL|LR)'
+        r'|sequenceDiagram|classDiagram|stateDiagram|erDiagram'
+        r'|gantt|pie|gitgraph|mindmap|timeline|journey)\s*$',
+        re.IGNORECASE
+    )
+
+    def _collect_mermaid_block(lines, start):
+        """Collect an unfenced mermaid block starting at *start*.
+
+        Returns (mermaid_code, next_index) or (None, start) if not a valid block.
+        """
+        if not _mermaid_start_re.match(lines[start]):
+            return None, start
+        block = [lines[start]]
+        j = start + 1
+        while j < len(lines):
+            line = lines[j]
+            # Stop at a blank line or a line that clearly isn't part of the diagram
+            if not line.strip():
+                break
+            # Mermaid body lines are typically indented or contain arrows/keywords
+            # Accept lines that are indented, contain -->, ---|, -.-, ==>, or
+            # start with %%, subgraph, end, style, class, click, etc.
+            if (line.startswith(' ') or line.startswith('\t')
+                    or '--' in line or '==>' in line
+                    or line.strip().startswith(('%', 'subgraph', 'end', 'style',
+                                               'class ', 'click ', 'linkStyle',
+                                               'note ', 'participant', 'actor',
+                                               'activate', 'deactivate', 'loop',
+                                               'alt', 'opt', 'par', 'rect',
+                                               'section', 'title'))
+                    or re.match(r'^\s*\w+[\[\({]', line)):
+                block.append(line)
+                j += 1
+            else:
+                break
+        if len(block) < 2:
+            return None, start
+        return '\n'.join(block), j
+
     def process_lines(lines):
         i = 0
         while i < len(lines):
+            # --- Detect unfenced mermaid diagram blocks ---
+            if _mermaid_start_re.match(lines[i]):
+                mermaid_code, next_i = _collect_mermaid_block(lines, i)
+                if mermaid_code:
+                    rendered = process_mermaid_diagram(mermaid_code)
+                    if rendered:
+                        insert_with_base_tag("\n")
+                        i = next_i
+                        continue
+                    # Rendering failed — fall through to display as code text
+            # --- Markdown table detection ---
             if i + 1 < len(lines) and re.match(r'^\s*\|?(?:\s*:?-+:?\s*\|)+\s*$', lines[i+1]):
                 table_lines = []
                 while i < len(lines) and '|' in lines[i]:
@@ -615,9 +711,8 @@ def apply_formatting(text_widget, text, base_tag=None):
                 if language and language.lower() == 'mermaid':
                     # Try to render the Mermaid diagram
                     if process_mermaid_diagram(code_content):
-                        # If successful, we're done
                         insert_with_base_tag("\n")
-                        return
+                        continue
                 
                 # Regular code block handling (fallback for Mermaid if rendering fails)
                 if language and language.lower() == 'plaintext':

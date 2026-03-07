@@ -15,7 +15,14 @@ class WebSearchNode(BaseNode):
         props = self.get_default_properties()
         props.update({
             'node_name': {'type': 'text', 'default': 'WebSearchNode'},
-            'description': {'type': 'text', 'default': 'Performs web search and returns URLs only.'},
+            'description': {
+                'type': 'text',
+                'default': (
+                    'Performs web search via SearxNG and returns URLs only. '
+                    'Provide query in input; output is newline-separated URLs. '
+                    'Configure searxng_api_url and result counts in properties.'
+                )
+            },
             'search_query': {'type': 'textarea', 'default': ''},  # User-defined search query
             'searxng_api_url': {'type': 'text', 'default': 'http://localhost:8888/search'},  # API URL for SearxNG
             'num_search_results': {'type': 'number', 'default': 5},  # Number of results to retrieve

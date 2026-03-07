@@ -508,6 +508,213 @@ class APIService:
                 pricing_model=pricing_model
             )
 
+    def send_vision_request(self, image_path: str, prompt: str, api_name: str,
+                            model: Optional[str] = None,
+                            max_tokens: Optional[int] = None,
+                            temperature: Optional[float] = None) -> APIResponse:
+        """Send a vision (image + text) request to the specified API endpoint.
+
+        Encodes the image as base64 and builds the provider-specific
+        multimodal payload.  Supports OpenAI, Google Gemini, Ollama, Groq,
+        Claude, and LM Studio.
+
+        Args:
+            image_path: Local path to the image file.
+            prompt: Text prompt / question about the image.
+            api_name: Name of the configured API endpoint.
+            model: Model override (uses endpoint default if None).
+            max_tokens: Max tokens for the response.
+            temperature: Sampling temperature.
+
+        Returns:
+            APIResponse with the text content from the vision model.
+        """
+        import base64
+        import mimetypes as _mt
+        import os
+
+        pricing_model = self._resolve_pricing_model(api_name, model)
+
+        if api_name not in self._clients:
+            return APIResponse(content="", success=False,
+                               error=f"API endpoint {api_name} not initialized",
+                               pricing_model=pricing_model)
+
+        client_info = self._clients[api_name]
+        client = client_info.get("client")
+        api_type = client_info["type"]
+
+        # Resolve model from config if not provided
+        if not model:
+            api_config = self.config.get('interfaces', {}).get(api_name, {})
+            model = api_config.get('selected_model')
+
+        # Read and encode the image
+        if not os.path.isfile(image_path):
+            return APIResponse(content="", success=False,
+                               error=f"Image file not found: {image_path}",
+                               pricing_model=pricing_model)
+
+        mime_type = _mt.guess_type(image_path)[0] or "image/png"
+        with open(image_path, "rb") as f:
+            image_bytes = f.read()
+        image_b64 = base64.b64encode(image_bytes).decode("utf-8")
+
+        prompt_tokens = 0
+        completion_tokens = 0
+        total_tokens = 0
+
+        try:
+            logger.info(f"Sending vision request to {api_type} API ({api_name})")
+
+            if api_type == "openai":
+                messages = [{
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url", "image_url": {
+                            "url": f"data:{mime_type};base64,{image_b64}"
+                        }}
+                    ]
+                }]
+                params: Dict[str, Any] = {"model": model, "messages": messages}
+                if max_tokens:
+                    params["max_tokens"] = max_tokens
+                if temperature is not None:
+                    params["temperature"] = temperature
+                params = self._sanitize_params(api_type, model, params)
+                response = client.chat.completions.create(**params)
+                content = response.choices[0].message.content
+                if hasattr(response, 'usage') and response.usage:
+                    prompt_tokens = getattr(response.usage, 'prompt_tokens', 0)
+                    completion_tokens = getattr(response.usage, 'completion_tokens', 0)
+                    total_tokens = getattr(response.usage, 'total_tokens', 0)
+
+            elif api_type == "google":
+                from google.genai import types as _gtypes
+                parts = [
+                    _gtypes.Part.from_text(text=prompt),
+                    _gtypes.Part.from_bytes(data=image_bytes, mime_type=mime_type),
+                ]
+                response = client.models.generate_content(
+                    model=model, contents=parts
+                )
+                content = response.text
+                prompt_tokens = max(1, len(prompt) // 4)
+                completion_tokens = max(1, len(content) // 4) if content else 0
+                total_tokens = prompt_tokens + completion_tokens
+
+            elif api_type == "ollama":
+                messages = [{
+                    "role": "user",
+                    "content": prompt,
+                    "images": [image_b64],
+                }]
+                response = client.chat(model=model, messages=messages)
+                content = response['message']['content']
+
+            elif api_type == "groq":
+                messages = [{
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url", "image_url": {
+                            "url": f"data:{mime_type};base64,{image_b64}"
+                        }}
+                    ]
+                }]
+                params = {"model": model, "messages": messages}
+                if max_tokens:
+                    params["max_tokens"] = max_tokens
+                if temperature is not None:
+                    params["temperature"] = temperature
+                response = client.chat.completions.create(**params)
+                content = response.choices[0].message.content
+                if hasattr(response, 'usage') and response.usage:
+                    prompt_tokens = getattr(response.usage, 'prompt_tokens', 0)
+                    completion_tokens = getattr(response.usage, 'completion_tokens', 0)
+                    total_tokens = getattr(response.usage, 'total_tokens', 0)
+
+            elif api_type == "claude":
+                messages = [{
+                    "role": "user",
+                    "content": [
+                        {"type": "image", "source": {
+                            "type": "base64",
+                            "media_type": mime_type,
+                            "data": image_b64,
+                        }},
+                        {"type": "text", "text": prompt},
+                    ]
+                }]
+                response = client.messages.create(
+                    model=model,
+                    max_tokens=max_tokens or 1024,
+                    messages=messages,
+                )
+                content = response.content[0].text
+                if hasattr(response, 'usage') and response.usage:
+                    prompt_tokens = getattr(response.usage, 'input_tokens', 0)
+                    completion_tokens = getattr(response.usage, 'output_tokens', 0)
+                    total_tokens = prompt_tokens + completion_tokens
+
+            elif api_type == "lmstudio":
+                base_url = client_info.get("api_url") or "http://localhost:1234"
+                base_url = base_url.rstrip('/')
+                if not base_url.endswith("/v1"):
+                    base_url = f"{base_url}/v1"
+                url = f"{base_url}/chat/completions"
+                messages = [{
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url", "image_url": {
+                            "url": f"data:{mime_type};base64,{image_b64}"
+                        }}
+                    ]
+                }]
+                payload: Dict[str, Any] = {"model": model, "messages": messages}
+                if max_tokens:
+                    payload["max_tokens"] = max_tokens
+                if temperature is not None:
+                    payload["temperature"] = temperature
+                headers = {"Content-Type": "application/json"}
+                api_key = client_info.get("api_key")
+                if api_key:
+                    headers["Authorization"] = f"Bearer {api_key}"
+                resp = requests.post(url, headers=headers, json=payload, timeout=120)
+                if resp.status_code != 200:
+                    raise ValueError(f"LM Studio vision request failed ({resp.status_code}): {resp.text}")
+                data = resp.json()
+                choices = data.get("choices", [])
+                if not choices:
+                    raise ValueError("LM Studio response missing choices")
+                content = choices[0].get("message", {}).get("content", "")
+                usage = data.get("usage", {})
+                prompt_tokens = usage.get("prompt_tokens", 0)
+                completion_tokens = usage.get("completion_tokens", 0)
+                total_tokens = usage.get("total_tokens", prompt_tokens + completion_tokens)
+
+            else:
+                return APIResponse(content="", success=False,
+                                   error=f"Vision not supported for API type: {api_type}",
+                                   pricing_model=pricing_model)
+
+            return APIResponse(
+                content=content,
+                raw_response=response if 'response' in dir() else None,
+                success=True,
+                prompt_tokens=prompt_tokens,
+                completion_tokens=completion_tokens,
+                total_tokens=total_tokens,
+                pricing_model=pricing_model,
+            )
+
+        except Exception as e:
+            logger.error(f"Vision request error ({api_name}): {e}")
+            return APIResponse(content="", success=False, error=str(e),
+                               pricing_model=pricing_model)
+
     def validate_request(self, request: APIRequest) -> Optional[str]:
         """
         Validate an API request before sending.

@@ -3,6 +3,7 @@
 import re
 import string
 import unicodedata
+import os
 from .base_node import BaseNode
 from src.workflows.node_registry import register_node
 from src.api.handler import process_api_request
@@ -72,7 +73,8 @@ class ReviewNode(BaseNode):
         if interfaces is None:
             interfaces = {}
         api_list = list(interfaces.keys())
-        print(f"[ReviewNode] Available API endpoints: {api_list}")  # Debug statement
+        if os.environ.get("XF_LOG_API_ENDPOINTS") == "1":
+            print(f"[ReviewNode] Available API endpoints: {api_list}")  # Debug statement
         return api_list
 
     def sanitize_text(self, text):
