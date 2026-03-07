@@ -42,6 +42,11 @@ config.yaml          # Contains API keys
 nodes/Logs/          # Token usage logs
 **/workflow_data/    # Workflow history and run data (anywhere in repo)
 
+# Sensitive credential/token files - NEVER commit
+data/calendar_token.json
+data/client_secret_google.json
+data/personality.json
+
 # Sync scripts (dev only)
 sync_to_repo.py
 sync-to-git.bat
